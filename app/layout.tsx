@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'WP4.4 — UX & UI Redesign for Society | Quantum Inspire',
-  description: 'Redesigning the quantum computing experience. Making quantum algorithms accessible to non-specialists through human-centered design.',
+  title: 'AI x Quantum — TU Delft / Quantum Inspire',
+  description: 'How might generative AI accelerate quantum computing? An open research initiative from TU Delft.',
   openGraph: {
-    title: 'WP4.4 — UX & UI Redesign for Society',
-    description: 'Making quantum computing accessible through design',
+    title: 'AI x Quantum — TU Delft / Quantum Inspire',
+    description: 'How might generative AI accelerate quantum computing? Research from TU Delft.',
     type: 'website',
   },
 }
@@ -26,7 +26,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="noise-overlay">{children}</body>
+      <body className="noise-overlay quantum-grid min-h-screen">{children}</body>
     </html>
   )
 }
