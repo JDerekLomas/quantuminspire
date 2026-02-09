@@ -1,5 +1,3 @@
 {
-  "deploymentProtection": {
-    "deploymentType": "none"
-  }
+  "framework": "nextjs"
 }
