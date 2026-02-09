@@ -1,0 +1,19 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+.next/
+
+# Secrets
+.secrets.json
+.env
+.env.local
+
+# Vercel
+.vercel
+
+# Build output
+out/

@@ -1,0 +1,24 @@
+{
+  "model": "claude-sonnet-4-5-20250929",
+  "variant": "standard",
+  "timestamp": "20260209_210440",
+  "total_tasks": 1,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "total_input_tokens": 0,
+  "total_output_tokens": 0,
+  "results": [
+    {
+      "task_id": "qiskitHumanEval/0",
+      "difficulty": "basic",
+      "entry_point": "create_quantum_circuit",
+      "passed": false,
+      "error": "API error: \"Could not resolve authentication method. Expected either api_key or auth_token to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted\"",
+      "completion": "",
+      "api_time": 0,
+      "exec_time": 0,
+      "input_tokens": 0,
+      "output_tokens": 0
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "model": "gemini-3-flash-preview",
+  "variant": "standard",
+  "timestamp": "20260209_214945",
+  "total_tasks": 1,
+  "passed": 1,
+  "pass_rate": 100.0,
+  "total_input_tokens": 143,
+  "total_output_tokens": 13,
+  "by_difficulty": {
+    "basic": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 100.0
+    }
+  },
+  "results": [
+    {
+      "task_id": "qiskitHumanEval/0",
+      "difficulty": "basic",
+      "entry_point": "create_quantum_circuit",
+      "passed": true,
+      "completion": "qc = QuantumCircuit(n_qubits)\nreturn qc",
+      "stdout": "BENCHMARK_PASS\n",
+      "stderr": "",
+      "api_time": 4.94,
+      "exec_time": 1.58,
+      "input_tokens": 143,
+      "output_tokens": 13
+    }
+  ]
+}
