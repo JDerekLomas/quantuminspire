@@ -34,20 +34,19 @@
           "error_kcal_mol": 0.75
         },
         "tuna9": {
-          "measured_value": -1.1274,
-          "discrepancy": 0.0099,
+          "measured_value": -1.1325,
+          "discrepancy": 0.0048,
           "within_published_error": false,
           "failure_mode": "partial_noise",
-          "failure_description": "q[4,6] with Z-parity post-selection + readout error mitigation. Significant improvement over previous q[0,1] result (-1.00448 Ha, 83.35 kcal/mol). New qubit pair and mitigation pipeline reduce error from 83.35 to 6.2 kcal/mol.",
+          "failure_description": "Best result: q[2,4] with Z-parity post-selection achieves 3.0 kcal/mol. Three qubit pairs tested: q[0,1]=9.45, q[4,6]=6.2 (with REM), q[2,4]=3.04 kcal/mol. Qubit selection provides 3.1x improvement (q[0,1] vs q[2,4]). Post-selection keeps 96% of shots.",
           "severity": "low",
-          "error_kcal_mol": 6.2,
-          "qubit_pair": [4, 6],
-          "mitigation": "Z-parity post-selection + readout error mitigation",
-          "previous_result": {
-            "measured_value": -1.00448,
-            "error_kcal_mol": 83.35,
-            "qubit_pair": [0, 1],
-            "note": "Original q[0,1] result without mitigation"
+          "error_kcal_mol": 3.04,
+          "qubit_pair": [2, 4],
+          "mitigation": "Z-parity post-selection",
+          "all_qubit_pairs": {
+            "q01": {"measured_value": -1.1222, "error_kcal_mol": 9.45, "bell_fidelity": 0.870, "postselection_keep": 0.826},
+            "q24": {"measured_value": -1.1325, "error_kcal_mol": 3.04, "bell_fidelity": 0.923, "postselection_keep": 0.961},
+            "q46": {"measured_value": -1.1274, "error_kcal_mol": 6.2, "bell_fidelity": 0.935, "postselection_keep": null, "mitigation": "Z-PS + readout error mitigation"}
           }
         },
         "ibm_torino": {
@@ -136,6 +135,6 @@
       "tuna9",
       "ibm_torino"
     ],
-    "notes": "Tuna-9 results updated 2026-02-10 with q[4,6] + Z-PS + readout mitigation. VQE energy improved from 83.35 to 6.2 kcal/mol. Symmetry verification claim now PASSES (3.6x improvement vs published >2x)."
+    "notes": "Tuna-9 results updated with 3 qubit pairs: q[0,1]=9.45, q[4,6]=6.2, q[2,4]=3.04 kcal/mol. Best result is q[2,4] with post-selection only (no REM needed). Qubit selection alone gives 3.1x improvement. Symmetry verification PASSES (3.6x on q[4,6])."
   }
 }

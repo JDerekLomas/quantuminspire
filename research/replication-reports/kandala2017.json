@@ -12,7 +12,8 @@
   "generated": "2026-02-10T18:28:00.385360",
   "backends_tested": [
     "emulator",
-    "ibm_torino"
+    "ibm_torino",
+    "tuna9"
   ],
   "comparisons": [
     {
@@ -40,6 +41,16 @@
           "failure_description": "Hardware noise degrades Z correlations by 3-5%. Correct ansatz state maintained.",
           "severity": "medium",
           "error_kcal_mol": 9.22
+        },
+        "tuna9": {
+          "measured_value": -1.1325,
+          "discrepancy": 0.0048,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Best qubit pair q[2,4] with Z-parity post-selection. 3.04 kcal/mol error (vs 9.22 on IBM). Post-selection keeps 96% of shots.",
+          "severity": "none",
+          "error_kcal_mol": 3.04,
+          "qubit_pair": [2, 4]
         }
       }
     },
@@ -62,6 +73,15 @@
         "ibm_torino": {
           "status": "no_data",
           "note": "IBM hardware run was single-point only (R=0.735 A), not full curve"
+        },
+        "tuna9": {
+          "measured_value": 18.34,
+          "discrepancy": 18.34,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "5-point PES on q[2,4]: R=0.5(9.98), R=1.0(4.12), R=1.5(12.68), R=2.0(17.32), R=2.5(13.42) kcal/mol. MAE=18.3 mHa. Curve shape qualitatively correct but systematically above FCI.",
+          "severity": "medium",
+          "pes_points_kcal_mol": {"0.5": 9.98, "1.0": 4.12, "1.5": 12.68, "2.0": 17.32, "2.5": 13.42}
         }
       }
     },
@@ -88,6 +108,14 @@
           "failure_mode": "partial_noise",
           "failure_description": "9.22 kcal/mol error — hardware noise prevents chemical accuracy but qualitative behavior correct",
           "severity": "medium"
+        },
+        "tuna9": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "Best single-point: 3.04 kcal/mol at R=0.735 on q[2,4]. Best PES point: 4.12 kcal/mol at R=1.0. Neither achieves chemical accuracy (1.0 kcal/mol) but Tuna-9 outperforms IBM at equilibrium.",
+          "severity": "medium"
         }
       }
     }
@@ -102,7 +130,9 @@
     },
     "backends_tested": [
       "emulator",
-      "ibm_torino"
-    ]
+      "ibm_torino",
+      "tuna9"
+    ],
+    "notes": "Updated with Tuna-9 PES sweep (5 bond distances on q[2,4]) and bestpair comparison. Tuna-9 outperforms IBM at equilibrium (3.04 vs 9.22 kcal/mol) with qubit-aware selection."
   }
 }

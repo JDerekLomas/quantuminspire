@@ -244,17 +244,17 @@
     }
   },
   "analysis": {
-    "gate_fidelity": 1.0,
-    "error_per_gate": 0.0,
-    "depolarizing_parameter": 1.0,
-    "fit_amplitude": 0.0,
+    "gate_fidelity": 0.998299,
+    "error_per_gate": 0.001701,
+    "depolarizing_parameter": 0.996599,
+    "fit_amplitude": 0.4858,
     "survival_probabilities": {
-      "1": 0.0,
-      "2": 0.0,
-      "4": 0.0,
-      "8": 0.0,
-      "16": 0.0,
-      "32": 0.0
+      "1": 0.9873,
+      "2": 0.9795,
+      "4": 0.9805,
+      "8": 0.9811,
+      "16": 0.9455,
+      "32": 0.9406
     },
     "sequence_lengths": [
       1,
@@ -266,7 +266,7 @@
     ],
     "num_sequences": 5,
     "qubit": 2,
-    "interpretation": "1-qubit RB: gate fidelity 100.00%, error per gate 0.0000. Excellent quality."
+    "interpretation": "1-qubit RB on qubit 2: gate fidelity 99.83%, error per gate 0.17%. Survival decays from 98.7% at m=1 to 94.1% at m=32. Comparable to q0 (99.82%)."
   },
   "circuit_cqasm": "version 3.0\nqubit[3] q\nbit[3] b\n\n// RB sequence: m=1, seed=0\nX q[2]\nS q[2]\nH q[2]\n// Inverse Clifford (index 14)\nY q[2]\nH q[2]\nb = measure q",
   "errors": null
