@@ -1,12 +1,19 @@
 {
   "id": "rb-tuna9-q0-001",
   "type": "rb_1qubit",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T20:00:00Z",
   "parameters": {
     "qubit": 0,
-    "sequence_lengths": [1, 2, 4, 8, 16, 32],
+    "sequence_lengths": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
     "num_sequences": 5,
     "seed": 42,
     "shots": 1024
