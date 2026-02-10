@@ -87,10 +87,16 @@ export const typeLabels: Record<string, string> = {
   bell_calibration: 'Bell Calibration',
   ghz_state: 'GHZ State',
   vqe_h2: 'H\u2082 VQE',
+  rb_1qubit: 'Randomized Benchmarking',
+  qaoa_maxcut: 'QAOA MaxCut',
+  quantum_volume: 'Quantum Volume',
 }
 
 export const typeColors: Record<string, string> = {
   bell_calibration: '#00d4ff',
   ghz_state: '#00ff88',
   vqe_h2: '#8b5cf6',
+  rb_1qubit: '#ff8c42',
+  qaoa_maxcut: '#ff6b9d',
+  quantum_volume: '#14b8a6',
 }

@@ -399,7 +399,21 @@ function MultiBasisCounts({ rawCounts }: { rawCounts: Record<string, any> }) {
 // Experiment Cards
 // ---------------------------------------------------------------------------
 
-function BellCard({ result }: { result: ExperimentResult }) {
+function ComparisonRow({ label, thisVal, otherVal, otherBackend, unit, better }: {
+  label: string; thisVal: string; otherVal: string; otherBackend: string; unit?: string; better?: 'higher' | 'lower'
+}) {
+  return (
+    <div className="flex items-center gap-3 text-xs font-mono bg-white/[0.01] rounded px-3 py-2 border border-white/[0.03]">
+      <span className="text-gray-500 w-28">{label}</span>
+      <span className="text-white font-bold">{thisVal}{unit ? ` ${unit}` : ''}</span>
+      <span className="text-gray-600">vs</span>
+      <span className="text-gray-400">{otherVal}{unit ? ` ${unit}` : ''}</span>
+      <span className="text-gray-600 text-[10px]">({otherBackend})</span>
+    </div>
+  )
+}
+
+function BellCard({ result, comparisonResult }: { result: ExperimentResult; comparisonResult?: ExperimentResult }) {
   const analysis = result.analysis
   const counts = flatCounts(result.raw_counts)
   const total = totalFromCounts(counts)
@@ -425,6 +439,16 @@ function BellCard({ result }: { result: ExperimentResult }) {
       {analysis.fidelity !== undefined && (
         <FidelityBar value={analysis.fidelity} label="Bell State Fidelity" />
       )}
+      {comparisonResult && comparisonResult.analysis.fidelity !== undefined && (
+        <div className="mt-3">
+          <ComparisonRow
+            label="Fidelity"
+            thisVal={`${(analysis.fidelity * 100).toFixed(1)}%`}
+            otherVal={`${(comparisonResult.analysis.fidelity * 100).toFixed(1)}%`}
+            otherBackend={comparisonResult.backend}
+          />
+        </div>
+      )}
       <div className="mt-4">
         <CountsBar counts={counts} total={total} />
       </div>
@@ -437,7 +461,7 @@ function BellCard({ result }: { result: ExperimentResult }) {
   )
 }
 
-function GHZCard({ result }: { result: ExperimentResult }) {
+function GHZCard({ result, comparisonResult }: { result: ExperimentResult; comparisonResult?: ExperimentResult }) {
   const analysis = result.analysis
   const counts = flatCounts(result.raw_counts)
   const total = totalFromCounts(counts)
@@ -462,6 +486,16 @@ function GHZCard({ result }: { result: ExperimentResult }) {
       </div>
       {analysis.fidelity !== undefined && (
         <FidelityBar value={analysis.fidelity} label="GHZ State Fidelity" />
+      )}
+      {comparisonResult && comparisonResult.analysis.fidelity !== undefined && (
+        <div className="mt-3">
+          <ComparisonRow
+            label="Fidelity"
+            thisVal={`${(analysis.fidelity * 100).toFixed(1)}%`}
+            otherVal={`${(comparisonResult.analysis.fidelity * 100).toFixed(1)}%`}
+            otherBackend={comparisonResult.backend}
+          />
+        </div>
       )}
       {analysis.parity_distribution && (
         <div className="mt-3 flex gap-4 text-xs font-mono">
@@ -575,14 +609,426 @@ function VQECard({ result, comparisonResult }: { result: ExperimentResult; compa
   )
 }
 
-function ResultCard({ result, vqeComparison }: { result: ExperimentResult; vqeComparison?: ExperimentResult }) {
+// ---------------------------------------------------------------------------
+// RB Card — Randomized Benchmarking
+// ---------------------------------------------------------------------------
+
+function RBDecayCurve({ survival, seqLengths }: { survival: Record<string, number>; seqLengths: number[] }) {
+  const svgW = 400
+  const svgH = 160
+  const padL = 50
+  const padR = 20
+  const padT = 15
+  const padB = 30
+  const chartW = svgW - padL - padR
+  const chartH = svgH - padT - padB
+
+  const maxM = Math.max(...seqLengths)
+  const xScale = (m: number) => padL + (m / maxM) * chartW
+  const yScale = (p: number) => padT + (1 - p) * chartH
+
+  const points = seqLengths
+    .filter(m => survival[String(m)] !== undefined)
+    .map(m => ({ m, p: survival[String(m)] }))
+
+  if (points.length < 2) return null
+
+  const pathD = points.map((pt, i) =>
+    `${i === 0 ? 'M' : 'L'} ${xScale(pt.m).toFixed(1)} ${yScale(pt.p).toFixed(1)}`
+  ).join(' ')
+
+  return (
+    <div className="mt-4">
+      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Survival Probability Decay</p>
+      <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-md" xmlns="http://www.w3.org/2000/svg">
+        <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="3" />
+        {/* Grid lines */}
+        {[0.5, 0.75, 1.0].map(p => (
+          <g key={p}>
+            <line x1={padL} y1={yScale(p)} x2={padL + chartW} y2={yScale(p)} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+            <text x={padL - 4} y={yScale(p) + 3} textAnchor="end" fill="#666" fontFamily="monospace" fontSize="9">
+              {(p * 100).toFixed(0)}%
+            </text>
+          </g>
+        ))}
+        {/* Decay curve */}
+        <path d={pathD} fill="none" stroke="#ff8c42" strokeWidth="2" strokeLinecap="round" />
+        {/* Data points */}
+        {points.map(pt => (
+          <circle key={pt.m} cx={xScale(pt.m)} cy={yScale(pt.p)} r="3" fill="#ff8c42" />
+        ))}
+        {/* X-axis labels */}
+        {seqLengths.filter(m => survival[String(m)] !== undefined).map(m => (
+          <text key={m} x={xScale(m)} y={svgH - 5} textAnchor="middle" fill="#666" fontFamily="monospace" fontSize="9">
+            {m}
+          </text>
+        ))}
+        <text x={padL + chartW / 2} y={svgH} textAnchor="middle" fill="#555" fontFamily="monospace" fontSize="9">
+          Sequence Length
+        </text>
+      </svg>
+    </div>
+  )
+}
+
+function RBCard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const emu = isEmulator(result.backend)
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#ff8c42]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.rb_1qubit }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.rb_1qubit}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{result.backend} -- {new Date(result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={result.backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {analysis.gate_fidelity !== undefined && (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Gate Fidelity</p>
+              <p className="text-lg font-mono font-bold" style={{ color: analysis.gate_fidelity > 0.999 ? '#00ff88' : analysis.gate_fidelity > 0.99 ? '#00d4ff' : '#eab308' }}>
+                {(analysis.gate_fidelity * 100).toFixed(2)}%
+              </p>
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Error per Gate</p>
+              <p className="text-lg font-mono text-white">{analysis.error_per_gate.toFixed(4)}</p>
+            </div>
+          </div>
+
+          {analysis.survival_probabilities && (
+            <RBDecayCurve
+              survival={analysis.survival_probabilities}
+              seqLengths={analysis.sequence_lengths || [1, 4, 8, 16, 32]}
+            />
+          )}
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+      {emu && <EmulatorNote />}
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// QAOA Card — MaxCut
+// ---------------------------------------------------------------------------
+
+function QAOAHeatmap({ heatmap, gammaValues, betaValues }: {
+  heatmap: Record<string, { gamma: number; beta: number; approximation_ratio: number }>
+  gammaValues: number[]; betaValues: number[]
+}) {
+  const cellSize = 48
+
+  return (
+    <div className="mt-4">
+      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Approximation Ratio Heatmap</p>
+      <div className="inline-block">
+        <div className="flex items-end gap-1 mb-1">
+          <div style={{ width: 40 }} />
+          {betaValues.map((b, bi) => (
+            <div key={bi} className="text-[9px] font-mono text-gray-500 text-center" style={{ width: cellSize }}>
+              {b.toFixed(1)}
+            </div>
+          ))}
+        </div>
+        {gammaValues.map((g, gi) => (
+          <div key={gi} className="flex items-center gap-1 mb-1">
+            <div className="text-[9px] font-mono text-gray-500 text-right" style={{ width: 40 }}>
+              {g.toFixed(1)}
+            </div>
+            {betaValues.map((b, bi) => {
+              const key = `g${gi}_b${bi}`
+              const data = heatmap[key]
+              const ratio = data?.approximation_ratio || 0
+              const intensity = Math.min(ratio, 1)
+              const r = Math.round(255 * (1 - intensity))
+              const gv = Math.round(255 * intensity)
+              const color = `rgb(${r}, ${gv}, 100)`
+              return (
+                <div
+                  key={bi}
+                  className="rounded text-[10px] font-mono text-center flex items-center justify-center"
+                  style={{
+                    width: cellSize, height: cellSize,
+                    backgroundColor: `rgba(${Math.round(255 * intensity * 0.4)}, ${Math.round(255 * intensity)}, ${Math.round(100 * intensity)}, 0.3)`,
+                    border: `1px solid rgba(${Math.round(255 * intensity * 0.4)}, ${Math.round(255 * intensity)}, ${Math.round(100 * intensity)}, 0.2)`,
+                    color: intensity > 0.5 ? '#fff' : '#888',
+                  }}
+                >
+                  {(ratio * 100).toFixed(0)}%
+                </div>
+              )
+            })}
+          </div>
+        ))}
+        <div className="flex items-center gap-1 mt-1">
+          <div className="text-[9px] font-mono text-gray-500 text-right" style={{ width: 40 }} />
+          <div className="text-[9px] font-mono text-gray-500">beta &rarr;</div>
+        </div>
+        <div className="text-[9px] font-mono text-gray-500 -mt-1" style={{ marginLeft: -8, transform: 'rotate(-90deg) translateX(-30px)', transformOrigin: 'left' }}>
+          gamma
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function QAOACard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const emu = isEmulator(result.backend)
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#ff6b9d]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.qaoa_maxcut }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.qaoa_maxcut}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{result.backend} -- {new Date(result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={result.backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {analysis.best_approximation_ratio !== undefined && (
+        <div className="space-y-3">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Best Ratio</p>
+              <p className="text-lg font-mono font-bold" style={{
+                color: analysis.best_approximation_ratio > 0.9 ? '#00ff88' : analysis.best_approximation_ratio > 0.7 ? '#00d4ff' : '#eab308'
+              }}>
+                {(analysis.best_approximation_ratio * 100).toFixed(1)}%
+              </p>
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Best gamma</p>
+              <p className="text-lg font-mono text-white">{analysis.best_gamma?.toFixed(2)}</p>
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Best beta</p>
+              <p className="text-lg font-mono text-white">{analysis.best_beta?.toFixed(2)}</p>
+            </div>
+          </div>
+
+          {analysis.heatmap && (
+            <QAOAHeatmap
+              heatmap={analysis.heatmap}
+              gammaValues={analysis.gamma_values || [0.3, 0.6, 0.9]}
+              betaValues={analysis.beta_values || [0.3, 0.6, 0.9]}
+            />
+          )}
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+      {emu && <EmulatorNote />}
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// QV Card — Quantum Volume
+// ---------------------------------------------------------------------------
+
+function QVCard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const emu = isEmulator(result.backend)
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#14b8a6]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.quantum_volume }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.quantum_volume}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{result.backend} -- {new Date(result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={result.backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {analysis.quantum_volume !== undefined && (
+        <div className="space-y-3">
+          <div className="bg-white/[0.02] rounded p-4 text-center">
+            <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Quantum Volume</p>
+            <p className="text-3xl font-mono font-bold" style={{ color: '#14b8a6' }}>
+              {analysis.quantum_volume}
+            </p>
+          </div>
+
+          {analysis.results_by_qubit_count && (
+            <div className="grid grid-cols-2 gap-3">
+              {Object.entries(analysis.results_by_qubit_count as Record<string, any>).map(([n, info]) => (
+                <div key={n} className="bg-white/[0.02] rounded p-3 border border-white/[0.03]">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-mono text-gray-400">n={n} qubits</span>
+                    <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border ${
+                      info.passed
+                        ? 'text-[#00ff88] bg-[#00ff88]/10 border-[#00ff88]/20'
+                        : 'text-[#ff6b9d] bg-[#ff6b9d]/10 border-[#ff6b9d]/20'
+                    }`}>
+                      {info.passed ? 'PASS' : 'FAIL'}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-lg font-mono font-bold text-white">
+                      {(info.heavy_output_fraction * 100).toFixed(1)}%
+                    </span>
+                    <span className="text-[10px] font-mono text-gray-500">heavy output</span>
+                  </div>
+                  <div className="mt-1 w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
+                    <div
+                      className="h-full rounded-full"
+                      style={{
+                        width: `${info.heavy_output_fraction * 100}%`,
+                        backgroundColor: info.passed ? '#00ff88' : '#ff6b9d',
+                      }}
+                    />
+                  </div>
+                  <div className="mt-0.5 text-[9px] font-mono text-gray-600 text-right">
+                    threshold: 66.7%
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+      {emu && <EmulatorNote />}
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Comparison Table
+// ---------------------------------------------------------------------------
+
+function ComparisonTable({ results }: { results: ExperimentResult[] }) {
+  const types = ['bell_calibration', 'ghz_state', 'vqe_h2', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume']
+  const backendsSet = new Set(results.map(r => r.backend))
+  const backends = Array.from(backendsSet).sort((a, b) => {
+    // Emulators first, then hardware
+    const aEmu = isEmulator(a) ? 0 : 1
+    const bEmu = isEmulator(b) ? 0 : 1
+    return aEmu - bEmu || a.localeCompare(b)
+  })
+
+  if (backends.length < 2 || results.length < 3) return null
+
+  function getMetric(r: ExperimentResult | undefined): { text: string; color: string } {
+    if (!r) return { text: '--', color: '#555' }
+    const a = r.analysis
+    if (a.fidelity !== undefined) {
+      const pct = a.fidelity * 100
+      return { text: `${pct.toFixed(1)}%`, color: pct > 95 ? '#00ff88' : pct > 85 ? '#00d4ff' : '#eab308' }
+    }
+    if (a.energy_hartree !== undefined) {
+      const err = a.error_kcal_mol || (Math.abs(a.energy_hartree - a.fci_energy) * 627.509)
+      return { text: `${a.energy_hartree.toFixed(4)} Ha`, color: a.chemical_accuracy ? '#00ff88' : '#eab308' }
+    }
+    if (a.gate_fidelity !== undefined) {
+      const pct = a.gate_fidelity * 100
+      return { text: `${pct.toFixed(2)}%`, color: pct > 99.9 ? '#00ff88' : pct > 99 ? '#00d4ff' : '#eab308' }
+    }
+    if (a.best_approximation_ratio !== undefined) {
+      return { text: `${(a.best_approximation_ratio * 100).toFixed(0)}%`, color: a.best_approximation_ratio > 0.9 ? '#00ff88' : '#eab308' }
+    }
+    if (a.quantum_volume !== undefined) {
+      return { text: `QV ${a.quantum_volume}`, color: '#14b8a6' }
+    }
+    return { text: '--', color: '#555' }
+  }
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-xs font-mono border-collapse">
+        <thead>
+          <tr>
+            <th className="text-left text-gray-500 font-normal py-2 px-3 border-b border-white/5">Experiment</th>
+            {backends.map(b => (
+              <th key={b} className="text-center text-gray-500 font-normal py-2 px-3 border-b border-white/5">
+                {backendLabel(b).label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {types.map(type => {
+            const typeResults = results.filter(r => r.type === type)
+            if (typeResults.length === 0) return null
+            return (
+              <tr key={type} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                <td className="py-2.5 px-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: typeColors[type] || '#666' }} />
+                    <span className="text-gray-300">{typeLabels[type] || type}</span>
+                  </div>
+                </td>
+                {backends.map(b => {
+                  const r = typeResults.find(r => r.backend === b)
+                  const metric = getMetric(r)
+                  return (
+                    <td key={b} className="text-center py-2.5 px-3">
+                      <span style={{ color: metric.color }}>{metric.text}</span>
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function ResultCard({ result, comparison }: { result: ExperimentResult; comparison?: ExperimentResult }) {
   switch (result.type) {
     case 'bell_calibration':
-      return <BellCard result={result} />
+      return <BellCard result={result} comparisonResult={comparison} />
     case 'ghz_state':
-      return <GHZCard result={result} />
+      return <GHZCard result={result} comparisonResult={comparison} />
     case 'vqe_h2':
-      return <VQECard result={result} comparisonResult={vqeComparison} />
+      return <VQECard result={result} comparisonResult={comparison} />
+    case 'rb_1qubit':
+      return <RBCard result={result} />
+    case 'qaoa_maxcut':
+      return <QAOACard result={result} />
+    case 'quantum_volume':
+      return <QVCard result={result} />
     default:
       return (
         <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">

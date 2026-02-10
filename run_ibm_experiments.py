@@ -81,6 +81,21 @@ def analyze_ghz(counts, shots, n=3):
     }
 
 
+def parity_postselect(counts):
+    """Filter Z-basis counts to odd-parity bitstrings only.
+
+    For BK-reduced 2-qubit H2, valid states are |01> and |10> (odd parity).
+    Even-parity states (|00>, |11>) are leakage from hardware noise.
+    """
+    filtered = {}
+    for bs, count in counts.items():
+        bits = bs[-2:]
+        parity = int(bits[0]) ^ int(bits[1])
+        if parity == 1:  # odd parity = valid
+            filtered[bs] = count
+    return filtered
+
+
 def analyze_vqe(z_counts, x_counts, y_counts, shots):
     """Reconstruct H2 energy from 3-basis measurement.
 
@@ -106,24 +121,43 @@ def analyze_vqe(z_counts, x_counts, y_counts, shots):
             ev += sign * count
         return ev / total
 
+    fci_energy = -1.137306  # exact FCI for H2 STO-3G at R=0.735 A
+
+    # Raw energy (no mitigation)
     ez0 = expval_z(z_counts, [0], shots)
     ez1 = expval_z(z_counts, [1], shots)
     ez0z1 = expval_z(z_counts, [0, 1], shots)
-    # After H rotation, X→Z
     ex0x1 = expval_z(x_counts, [0, 1], shots)
-    # After Sdg+H rotation, Y→Z
     ey0y1 = expval_z(y_counts, [0, 1], shots)
+    energy_raw = g0 + g1 * ez0 + g2 * ez1 + g3 * ez0z1 + g4 * ex0x1 + g5 * ey0y1
 
-    energy = g0 + g1 * ez0 + g2 * ez1 + g3 * ez0z1 + g4 * ex0x1 + g5 * ey0y1
-    fci_energy = -1.137306  # exact FCI for H2 STO-3G at R=0.735 A
+    # Post-selected energy (filter Z-basis to odd-parity states only)
+    z_filtered = parity_postselect(z_counts)
+    z_kept = sum(z_filtered.values())
+    keep_fraction = z_kept / shots if shots > 0 else 0
+
+    if z_kept > 0:
+        ps_z0 = expval_z(z_filtered, [0], z_kept)
+        ps_z1 = expval_z(z_filtered, [1], z_kept)
+        ps_z0z1 = expval_z(z_filtered, [0, 1], z_kept)
+        energy_ps = g0 + g1 * ps_z0 + g2 * ps_z1 + g3 * ps_z0z1 + g4 * ex0x1 + g5 * ey0y1
+    else:
+        energy_ps = energy_raw
+        ps_z0, ps_z1, ps_z0z1 = ez0, ez1, ez0z1
 
     return {
-        "energy_hartree": energy,
+        "energy_hartree": energy_ps,
+        "energy_raw": energy_raw,
+        "energy_postselected": energy_ps,
+        "postselection_keep_fraction": keep_fraction,
         "fci_energy": fci_energy,
-        "error_hartree": abs(energy - fci_energy),
-        "error_millihartree": abs(energy - fci_energy) * 1000,
+        "error_hartree": abs(energy_ps - fci_energy),
+        "error_millihartree": abs(energy_ps - fci_energy) * 1000,
+        "error_raw_millihartree": abs(energy_raw - fci_energy) * 1000,
+        "error_kcal_mol": abs(energy_ps - fci_energy) * 627.509,
+        "chemical_accuracy": abs(energy_ps - fci_energy) < 0.0016,
         "expectation_values": {
-            "Z0": ez0, "Z1": ez1, "Z0Z1": ez0z1,
+            "Z0": ps_z0, "Z1": ps_z1, "Z0Z1": ps_z0z1,
             "X0X1": ex0x1, "Y0Y1": ey0y1,
         },
         "total_shots_per_basis": shots,
@@ -153,6 +187,7 @@ if __name__ == "__main__":
 
     print(f"\nSubmitting to {backend.name} ({SHOTS} shots each)...")
     sampler = SamplerV2(backend)
+    sampler.options.resilience_level = 1  # readout error mitigation
     job = sampler.run(transpiled, shots=SHOTS)
     job_id = job.job_id()
     print(f"Job ID: {job_id}")
@@ -191,9 +226,10 @@ if __name__ == "__main__":
     print(f"  Z counts: {vqe_z_counts}")
     print(f"  X counts: {vqe_x_counts}")
     print(f"  Y counts: {vqe_y_counts}")
-    print(f"  Energy: {vqe_analysis['energy_hartree']:.5f} Ha")
-    print(f"  FCI:    {vqe_analysis['fci_energy']:.5f} Ha")
-    print(f"  Error:  {vqe_analysis['error_millihartree']:.1f} mHa")
+    print(f"  Energy (raw):           {vqe_analysis['energy_raw']:.5f} Ha ({vqe_analysis['error_raw_millihartree']:.1f} mHa error)")
+    print(f"  Energy (post-selected): {vqe_analysis['energy_postselected']:.5f} Ha ({vqe_analysis['error_millihartree']:.1f} mHa error)")
+    print(f"  FCI:                    {vqe_analysis['fci_energy']:.5f} Ha")
+    print(f"  Post-selection kept:    {vqe_analysis['postselection_keep_fraction']:.1%}")
 
     # Save results
     for exp_id, exp_type, analysis, raw_counts in [
