@@ -100,9 +100,8 @@ def ibm_submit_circuit(
         # Transpile with high optimization
         transpiled = transpile(circuit, backend=backend, optimization_level=3)
 
-        # Submit via SamplerV2 with readout error mitigation
+        # Submit via SamplerV2
         sampler = SamplerV2(backend)
-        sampler.options.resilience_level = 1
         job = sampler.run([transpiled], shots=shots)
 
         return json.dumps({
@@ -176,13 +175,25 @@ def ibm_get_results(job_id: str) -> str:
         result = job.result()
 
         # Extract counts from each pub result
+        # DataBin attributes are named after classical registers (e.g. 'c', 'meas')
         pub_results = []
         for i, pub in enumerate(result):
-            counts = pub.data.meas.get_counts()
+            data_bin = pub.data
+            # Find the BitArray attribute dynamically
+            counts = None
+            for attr_name in dir(data_bin):
+                if attr_name.startswith("_"):
+                    continue
+                attr = getattr(data_bin, attr_name, None)
+                if hasattr(attr, "get_counts"):
+                    counts = attr.get_counts()
+                    break
+            if counts is None:
+                counts = {"error": f"No BitArray found in DataBin (attrs: {[a for a in dir(data_bin) if not a.startswith('_')]})"}
             pub_results.append({
                 "pub_index": i,
                 "counts": counts,
-                "total_shots": sum(counts.values()),
+                "total_shots": sum(counts.values()) if isinstance(counts, dict) and all(isinstance(v, (int, float)) for v in counts.values()) else 0,
             })
 
         return json.dumps({
