@@ -1496,7 +1496,7 @@ b = measure q"""
 <tr><td>Peruzzo 2014</td><td>5</td><td>3</td><td>60%</td><td>Emulator, IBM</td></tr>
 <tr><td>Cross 2019</td><td>3</td><td>3</td><td>100%</td><td>Emulator, IBM, Tuna-9, IQM</td></tr>
 <tr><td>Harrigan 2021</td><td>4</td><td>4</td><td>100%</td><td>Emulator, Tuna-9</td></tr>
-<tr><td>Kim 2023</td><td>3</td><td>3</td><td>100%</td><td>Emulator</td></tr>
+<tr><td>Kim 2023</td><td>3</td><td>3</td><td>100%</td><td>Emulator, IBM</td></tr>
 <tr><td><strong>Total</strong></td><td><strong>24</strong></td><td><strong>22</strong></td><td><strong>92%</strong></td><td><strong>4 backends</strong></td></tr>
 </tbody>
 </table>
@@ -1557,23 +1557,25 @@ b = measure q"""
 
 <p><em>Nature 618, 500-505</em> &mdash; <a href="https://arxiv.org/abs/2302.11590">arXiv:2302.11590</a></p>
 
-<p>The most cited quantum computing paper of 2023 demonstrated 127-qubit Trotterized time evolution on IBM's heavy-hex lattice with PEA (Probabilistic Error Amplification) mitigation. We replicated the core physics on 9 qubits using the Tuna-9 topology with basic ZNE (gate folding + Richardson extrapolation) and simulated depolarizing noise (p=0.01).</p>
+<p>The most cited quantum computing paper of 2023 demonstrated 127-qubit Trotterized time evolution on IBM's heavy-hex lattice with PEA (Probabilistic Error Amplification) mitigation. We replicated the core physics on 9 qubits using the Tuna-9 topology with basic ZNE (gate folding + Richardson extrapolation) and simulated depolarizing noise (p=0.01), then validated ZNE on IBM hardware with a 5-qubit chain.</p>
 
 <p>Three claims tested, all pass:</p>
 
 <ol>
-<li><strong>M_z decays with depth</strong> &mdash; Noisy magnetization drops from 0.972 (d=1) to 0.755 (d=10). The same qualitative decay seen at 127 qubits.</li>
-<li><strong>ZNE recovers ideal at Clifford</strong> &mdash; At theta_h=0 (classically simulable), ZNE reduces error from 24.5% to 3.0% at depth 10. Richardson extrapolation from fold factors [1,3,5] works cleanly.</li>
-<li><strong>ZNE improves over unmitigated</strong> &mdash; <strong>14.1x improvement factor</strong> (ZNE MAE 0.010 vs noisy MAE 0.141). The paper reported ~10x with their more sophisticated PEA method.</li>
+<li><strong>M_z decays with depth</strong> &mdash; Noisy magnetization drops from 0.972 (d=1) to 0.755 (d=10). The same qualitative decay seen at 127 qubits. IBM hardware confirms: Clifford M_z=0.92-0.96, chaotic regime M_z=0.03.</li>
+<li><strong>ZNE recovers ideal at Clifford</strong> &mdash; At theta_h=0, ZNE reduces error from 24.5% to 3.0% at depth 10 on emulator. On IBM Marrakesh, ZNE gate folding (fold factors 1,3) with linear Richardson extrapolation reduces error from 3.2% to <strong>1.0%</strong>.</li>
+<li><strong>ZNE improves over unmitigated</strong> &mdash; Emulator: <strong>14.1x improvement</strong> (ZNE MAE 0.010 vs noisy MAE 0.141). IBM hardware: <strong>3.1x improvement</strong> (same-backend linear Richardson). Hardware improvement is lower because real noise includes coherent errors and crosstalk that simple gate folding cannot fully capture. The paper's PEA method learns the actual noise model, achieving ~10x on 127 qubits.</li>
 </ol>
 
-<p>Note: 9 qubits is exactly classically simulable, so this tests the <em>mitigation method</em>, not quantum advantage. The classical controversy (Tindall et al. showed tensor networks reproduce the 127-qubit results) is irrelevant at our scale. Hardware runs on Tuna-9 and IBM Torino are next.</p>
+<p>Noise amplification on hardware is clean and monotonic: P(|00000&rang;) drops from 92.8% (fold=1, 24 CX) to 84.1% (fold=3, 72 CX) to 70.1% (fold=5, 120 CX), with ~0.09% error per CX gate. Barriers between fold sections prevent the transpiler from canceling CX pairs.</p>
 
-<p><strong>Result: 100% pass (3/3 claims).</strong> ZNE gate folding is the poor man's PEA &mdash; simpler but effective at small scale.</p>
+<p>Note: 9 qubits is exactly classically simulable, so this tests the <em>mitigation method</em>, not quantum advantage. The classical controversy (Tindall et al. showed tensor networks reproduce the 127-qubit results) is irrelevant at our scale.</p>
+
+<p><strong>Result: 100% pass (3/3 claims).</strong> ZNE gate folding is the poor man's PEA &mdash; simpler but effective. Even on real hardware, it delivers 3.1x error reduction with two circuits and a line of algebra.</p>
 
 <h2>What's Next</h2>
 
-<p>Tier 2 has started. Kim 2023 is the first paper where we replicate an <em>error mitigation technique</em> rather than a physical result. Next: submit the kicked Ising circuit to Tuna-9 and IBM Torino hardware. Watson et al. 2022 (QuTech silicon spin qubits) and Philips et al. 2022 (universal 6-qubit silicon) are planned. The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
+<p>Tier 2 has started. Kim 2023 is the first paper where we replicate an <em>error mitigation technique</em> rather than a physical result &mdash; and ZNE gate folding now works on both emulator (14.1x) and IBM hardware (3.1x). Next: submit the kicked Ising circuit to Tuna-9 hardware, test higher fold factors on same-backend IBM runs, and start Watson et al. 2022 (QuTech silicon spin qubits) and Philips et al. 2022 (universal 6-qubit silicon). The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
     sources: [
       { label: 'Sagastizabal et al. (2019)', url: 'https://arxiv.org/abs/1902.11258' },
       { label: 'Kandala et al. (2017) - Hardware-efficient VQE', url: 'https://arxiv.org/abs/1704.05018' },

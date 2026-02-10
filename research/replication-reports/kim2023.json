@@ -80,13 +80,19 @@
           "max_noisy_error": 0.2453,
           "zne_method": "gate folding (1x,3x,5x) + Richardson extrapolation"
         },
-        "ibm_torino": {
-          "status": "partial",
-          "note": "ZNE gate folding not yet implemented on hardware. Raw M_z at Clifford d=1: 0.918 (8.2% error). ZNE hardware experiments planned."
-        },
         "ibm_marrakesh": {
-          "status": "partial",
-          "note": "Raw M_z at Clifford d=5: 0.957 (4.3% error). ZNE gate folding not yet submitted."
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "ZNE gate folding on 5-qubit chain (Clifford d=3). Fold 1: M_z=0.968, Fold 3: M_z=0.925 (both marrakesh). Linear Richardson extrapolation to fold=0 gives M_z=0.990 (1.0% error vs 3.2% raw). ZNE recovers ideal within ~1%.",
+          "severity": "none",
+          "raw_mz_fold1": 0.96792,
+          "raw_mz_fold3": 0.92446,
+          "zne_mz_linear": 0.98965,
+          "zne_error": 0.01035,
+          "raw_error": 0.03208,
+          "zne_method": "gate folding (1x,3x) + linear Richardson extrapolation (same-backend)"
         }
       }
     },
@@ -110,9 +116,17 @@
           "improvement_factor": 14.1,
           "note": "Paper used PEA (learned Pauli-Lindblad noise model). We use basic ZNE gate folding, which is simpler but effective at 9-qubit scale."
         },
-        "ibm_torino": {
-          "status": "partial",
-          "note": "ZNE not yet run on hardware. Raw results show 8.2% M_z error at Clifford d=1. Need gate-folded circuits to compute improvement factor."
+        "ibm_marrakesh": {
+          "measured_value": 3.1,
+          "discrepancy": 6.9,
+          "within_published_error": false,
+          "failure_mode": "partial_success",
+          "failure_description": "ZNE gate folding on IBM Marrakesh achieves 3.1x improvement (M_z error 3.2% raw -> 1.0% ZNE). Lower than emulator's 14.1x because hardware has non-depolarizing noise (coherent errors, crosstalk) that ZNE gate folding cannot fully amplify linearly. Paper's PEA method learns the actual noise model, achieving ~10x on 127 qubits.",
+          "severity": "minor",
+          "raw_mz_error": 0.03208,
+          "zne_mz_error": 0.01035,
+          "improvement_factor": 3.1,
+          "note": "3.1x improvement is from same-backend (marrakesh) linear Richardson. The 5-qubit chain has only 24 CX gates at fold=1, limiting the noise budget available for ZNE to exploit."
         }
       }
     }
@@ -167,7 +181,69 @@
         "error": 0.0309
       }
     ],
-    "analysis": "Physics reproduces correctly on IBM hardware. Clifford points preserve M_z near 1.0 (4-8% error). Intermediate theta_h=pi/8 shows 9.3% error. Chaotic point (theta_h=pi/4) correctly gives M_z~0. Error budget: dominated by readout and gate noise, not algorithmic issues. ZNE gate folding on hardware is the next step to test claim 3."
+    "analysis": "Physics reproduces correctly on IBM hardware. Clifford points preserve M_z near 1.0 (4-8% error). Intermediate theta_h=pi/8 shows 9.3% error. Chaotic point (theta_h=pi/4) correctly gives M_z~0. Error budget: dominated by readout and gate noise, not algorithmic issues."
+  },
+  "ibm_zne_data": {
+    "description": "ZNE gate folding on 5-qubit chain (Clifford d=3, theta_h=0)",
+    "topology": "chain5: (0,1),(1,2),(2,3),(3,4)",
+    "shots": 8192,
+    "zne_method": "Gate folding: U -> U U^dag U (fold=3), U U^dag U U^dag U (fold=5). Barriers between fold sections to prevent transpiler cancellation.",
+    "results": [
+      {
+        "fold_factor": 1,
+        "backend": "ibm_marrakesh",
+        "job_id": "d65oq0pv6o8c73d38vm0",
+        "cx_gates": 24,
+        "transpiled_depth": 68,
+        "mz": 0.96792,
+        "z_per_qubit": [0.99927, 0.95459, 0.95288, 0.97925, 0.95386],
+        "p_all_zero": 0.9280
+      },
+      {
+        "fold_factor": 3,
+        "backend": "ibm_marrakesh",
+        "job_id": "d65oq3be4kfs73cvmnc0",
+        "cx_gates": 72,
+        "transpiled_depth": 254,
+        "mz": 0.92446,
+        "z_per_qubit": [0.99536, 0.92017, 0.89355, 0.92578, 0.89087],
+        "p_all_zero": 0.8408
+      },
+      {
+        "fold_factor": 5,
+        "backend": "ibm_torino",
+        "job_id": "d65oq81v6o8c73d3901g",
+        "cx_gates": 120,
+        "transpiled_depth": 440,
+        "mz": 0.84932,
+        "z_per_qubit": [0.83203, 0.82129, 0.86987, 0.90430, 0.81909],
+        "p_all_zero": 0.7005,
+        "note": "Different backend (torino vs marrakesh) - mixed-backend comparison is less reliable"
+      }
+    ],
+    "richardson_extrapolation": {
+      "linear_same_backend": {
+        "points": [1, 3],
+        "backend": "ibm_marrakesh",
+        "zne_mz": 0.98965,
+        "zne_error": 0.01035,
+        "raw_error": 0.03208,
+        "improvement_factor": 3.1
+      },
+      "quadratic_mixed_backend": {
+        "points": [1, 3, 5],
+        "backends": ["ibm_marrakesh", "ibm_marrakesh", "ibm_torino"],
+        "zne_mz": 0.97776,
+        "zne_error": 0.02224,
+        "improvement_factor": 1.4,
+        "note": "Mixed backends make quadratic extrapolation unreliable. Torino has different noise characteristics than marrakesh."
+      }
+    },
+    "noise_analysis": {
+      "error_per_cx_gate": "0.091% (from fold 1→3 on marrakesh)",
+      "noise_amplification": "Clean and monotonic: P(|00000>) drops from 92.8% to 84.1% to 70.1%",
+      "backend_mismatch": "Fold 5 on torino shows more noise than extrapolated from marrakesh trend, consistent with different noise profile"
+    }
   },
   "scaling_notes": {
     "original_qubits": 127,
@@ -201,6 +277,6 @@
       "success": 3
     },
     "backends_tested": ["emulator", "ibm_torino", "ibm_marrakesh"],
-    "notes": "All 3 claims PASS on emulator (noisy simulation). IBM hardware confirms physics: Clifford M_z=0.92-0.96 (ideal 1.0), chaotic regime M_z=0.03 (ideal 0.0). ZNE gate folding on emulator gives 14.1x improvement. Hardware ZNE pending. 5-qubit chain on IBM, 9-qubit Tuna-9 topology on emulator."
+    "notes": "All 3 claims PASS on emulator. IBM hardware confirms physics AND ZNE works on real hardware: 3.1x improvement (M_z error 3.2% -> 1.0%) with same-backend linear Richardson on marrakesh. Emulator achieves 14.1x (simpler noise model). Hardware ZNE is lower because real noise includes coherent errors and crosstalk not captured by simple gate folding. 5-qubit chain on IBM, 9-qubit Tuna-9 topology on emulator."
   }
 }
