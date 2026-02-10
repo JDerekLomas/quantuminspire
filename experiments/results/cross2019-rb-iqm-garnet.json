@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "id": "cross2019-rb-iqm-garnet",
+  "type": "rb_1qubit",
+  "backend": "iqm-garnet",
+  "backend_provider": "IQM Resonance (Finland)",
+  "hardware": "20q superconducting transmon (Garnet)",
+  "qubits_used": [
+    "QB1"
+  ],
+  "submitted": "2026-02-10T19:09:00.020499+00:00",
+  "completed": "2026-02-10T19:09:52.020841+00:00",
+  "parameters": {
+    "shots": 1024,
+    "sequence_lengths": [
+      1,
+      4,
+      8,
+      16,
+      32
+    ],
+    "n_seeds": 5,
+    "qubit": "QB1"
+  },
+  "raw_counts": {
+    "rb_m1_s0": {},
+    "rb_m1_s1": {},
+    "rb_m1_s2": {},
+    "rb_m1_s3": {},
+    "rb_m1_s4": {},
+    "rb_m4_s0": {},
+    "rb_m4_s1": {},
+    "rb_m4_s2": {},
+    "rb_m4_s3": {},
+    "rb_m4_s4": {},
+    "rb_m8_s0": {},
+    "rb_m8_s1": {},
+    "rb_m8_s2": {},
+    "rb_m8_s3": {},
+    "rb_m8_s4": {},
+    "rb_m16_s0": {},
+    "rb_m16_s1": {},
+    "rb_m16_s2": {},
+    "rb_m16_s3": {},
+    "rb_m16_s4": {},
+    "rb_m32_s0": {},
+    "rb_m32_s1": {},
+    "rb_m32_s2": {},
+    "rb_m32_s3": {},
+    "rb_m32_s4": {}
+  },
+  "job_ids": {
+    "rb_m1_s0": "",
+    "rb_m1_s1": "",
+    "rb_m1_s2": "",
+    "rb_m1_s3": "",
+    "rb_m1_s4": "",
+    "rb_m4_s0": "",
+    "rb_m4_s1": "",
+    "rb_m4_s2": "",
+    "rb_m4_s3": "",
+    "rb_m4_s4": "",
+    "rb_m8_s0": "",
+    "rb_m8_s1": "",
+    "rb_m8_s2": "",
+    "rb_m8_s3": "",
+    "rb_m8_s4": "",
+    "rb_m16_s0": "",
+    "rb_m16_s1": "",
+    "rb_m16_s2": "",
+    "rb_m16_s3": "",
+    "rb_m16_s4": "",
+    "rb_m32_s0": "",
+    "rb_m32_s1": "",
+    "rb_m32_s2": "",
+    "rb_m32_s3": "",
+    "rb_m32_s4": ""
+  },
+  "analysis": {
+    "survival_probabilities": {
+      "1": {
+        "mean_survival": 0.0,
+        "per_seed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "4": {
+        "mean_survival": 0.0,
+        "per_seed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "8": {
+        "mean_survival": 0.0,
+        "per_seed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "16": {
+        "mean_survival": 0.0,
+        "per_seed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "32": {
+        "mean_survival": 0.0,
+        "per_seed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "sequence_lengths": [
+      1,
+      4,
+      8,
+      16,
+      32
+    ]
+  },
+  "environment": "experiments/environment.json"
+}

@@ -65,108 +65,138 @@ def cnot_gates(ctrl, tgt):
 
 # ── Clifford group for single-qubit RB ──────────────────────────────────────
 
-# 24 single-qubit Cliffords as 2x2 unitary matrices
-# Generated from {I, X, Y, Z, H, S} and compositions
-def _make_clifford_group():
-    """Build all 24 single-qubit Clifford unitaries.
-
-    Systematically generate by composing {I,H,S} up to depth 4
-    and deduplicating up to global phase.
+def _prx_matrix(angle, phase):
+    """Compute the 2x2 unitary for prx(angle, phase).
+    prx(θ, φ) = cos(θ/2)·I − i·sin(θ/2)·(cos(φ)·σx + sin(φ)·σy)
     """
-    I = np.eye(2, dtype=complex)
-    X = np.array([[0,1],[1,0]], dtype=complex)
-    H = np.array([[1,1],[1,-1]], dtype=complex) / np.sqrt(2)
-    S = np.array([[1,0],[0,1j]], dtype=complex)
+    c = np.cos(angle / 2)
+    s = np.sin(angle / 2)
+    cphi = np.cos(phase)
+    sphi = np.sin(phase)
+    # Off-diag: -i*s*(cos(phi) ± i*sin(phi)) = -i*s*e^{∓i*phi}
+    return np.array([
+        [c, -1j * s * np.exp(-1j * phase)],
+        [-1j * s * np.exp(1j * phase), c]
+    ], dtype=complex)
 
-    # H, S, X generate the full single-qubit Clifford group
-    generators = [H, S, X]
-    candidates = [I]
-    for _ in range(5):
-        new = []
-        for c in candidates:
-            for g in generators:
-                new.append(g @ c)
-        candidates = new
 
-    # Deduplicate up to global phase
-    cliffords = []
-    for U in candidates:
-        is_dup = False
-        for C in cliffords:
-            if abs(abs(np.trace(U @ C.conj().T)) - 2.0) < 1e-6:
-                is_dup = True
-                break
-        if not is_dup:
-            cliffords.append(U)
+def _seq_to_matrix(seq):
+    """Convert a list of (angle, phase) tuples to a 2x2 unitary.
+    Gates applied left-to-right: seq[0] first, seq[-1] last.
+    Matrix = M[-1] @ ... @ M[0]
+    """
+    M = np.eye(2, dtype=complex)
+    for angle, phase in seq:
+        M = _prx_matrix(angle, phase) @ M
+    return M
 
-    assert len(cliffords) == 24, f"Expected 24 Cliffords, got {len(cliffords)}"
-    return cliffords
 
-CLIFFORDS = _make_clifford_group()
+# Generator gate sequences as (angle, phase) tuples
+# H: prx(pi, 0) then prx(pi/2, pi/2) — verified by Bell fidelity on IQM
+_H_SEQ = [(pi, 0.0), (pi / 2, pi / 2)]
+# S (= Rz(pi/2) up to phase): prx(pi, 0) then prx(pi, pi/4)
+_S_SEQ = [(pi, 0.0), (pi, pi / 4)]
+# X: prx(pi, 0)
+_X_SEQ = [(pi, 0.0)]
+
+
+def _make_clifford_table():
+    """Build all 24 single-qubit Cliffords with precomputed prx gate sequences.
+
+    Uses BFS from generators {H, S, X} to find the shortest gate sequence
+    for each Clifford. Returns list of (matrix, gate_sequence) pairs.
+    """
+    H_mat = _seq_to_matrix(_H_SEQ)
+    S_mat = _seq_to_matrix(_S_SEQ)
+    X_mat = _seq_to_matrix(_X_SEQ)
+    generators = [(H_mat, list(_H_SEQ)), (S_mat, list(_S_SEQ)), (X_mat, list(_X_SEQ))]
+
+    # BFS: start with identity (empty sequence), grow by applying generators
+    table = [(np.eye(2, dtype=complex), [])]
+    queue = list(table)
+
+    while len(table) < 24 and queue:
+        mat, seq = queue.pop(0)
+        for g_mat, g_seq in generators:
+            # g applied AFTER mat → new_mat = g_mat @ mat
+            # Hardware: mat's gates first, then g's gates
+            new_mat = g_mat @ mat
+            new_seq = seq + g_seq
+
+            is_new = True
+            for t_mat, _ in table:
+                if abs(abs(np.trace(new_mat @ t_mat.conj().T)) - 2.0) < 1e-6:
+                    is_new = False
+                    break
+
+            if is_new:
+                table.append((new_mat, new_seq))
+                queue.append((new_mat, new_seq))
+
+    assert len(table) == 24, f"Expected 24 Cliffords, got {len(table)}"
+
+    # Verify: each gate sequence faithfully reproduces its matrix
+    for mat, seq in table:
+        if seq:
+            recomputed = _seq_to_matrix(seq)
+            overlap = abs(np.trace(recomputed @ mat.conj().T))
+            assert abs(overlap - 2.0) < 1e-6, \
+                f"Gate sequence mismatch: trace overlap = {overlap:.6f}"
+
+    return table
+
+
+CLIFFORD_TABLE = _make_clifford_table()
+CLIFFORDS = [mat for mat, _ in CLIFFORD_TABLE]
+_CLIFFORD_SEQS = [seq for _, seq in CLIFFORD_TABLE]
+
 
 def clifford_to_prx(qubit, U):
-    """Decompose a 2x2 unitary into prx gates.
-    Any SU(2) = prx(a1, p1) . prx(a2, p2) . prx(a3, p3)
-    We use ZYZ decomposition: U = Rz(alpha) Ry(beta) Rz(gamma)
-    Then convert to prx representation.
-    """
-    # Extract ZYZ Euler angles
-    # U = e^(i*delta) * Rz(alpha) * Ry(beta) * Rz(gamma)
-    # where Ry(b) = [[cos(b/2), -sin(b/2)], [sin(b/2), cos(b/2)]]
+    """Look up the precomputed prx gate sequence for a Clifford unitary."""
+    for i, C in enumerate(CLIFFORDS):
+        if abs(abs(np.trace(U @ C.conj().T)) - 2.0) < 1e-6:
+            return [prx(qubit, float(a), float(p)) for a, p in _CLIFFORD_SEQS[i]]
+    raise ValueError("Unitary not found in Clifford group")
 
-    # Normalize to SU(2)
+
+def unitary_to_prx(qubit, U):
+    """Decompose an arbitrary SU(2) unitary into prx gates (ZYZ method).
+
+    U = Rz(alpha) @ Ry(beta) @ Rz(gamma)
+      = prx(beta, pi/2 + alpha) @ Rz(alpha + gamma)
+
+    At most 3 prx gates.
+    """
     det = np.linalg.det(U)
     U_su2 = U / np.sqrt(det)
-
-    # Extract angles
-    # U_su2 = [[a, -b*], [b, a*]] where |a|^2 + |b|^2 = 1
     a = U_su2[0, 0]
     b = U_su2[1, 0]
 
-    beta = 2 * np.arccos(min(abs(a), 1.0))
+    beta = 2 * np.arccos(np.clip(abs(a), 0, 1))
 
     if abs(np.sin(beta / 2)) < 1e-10:
-        alpha = np.angle(a)
+        # beta ≈ 0: pure Rz, set gamma = 0
+        alpha = -2 * np.angle(a)
         gamma = 0.0
     elif abs(np.cos(beta / 2)) < 1e-10:
-        alpha = np.angle(b)
+        # beta ≈ pi: |a| ≈ 0, set gamma = 0
+        alpha = 2 * np.angle(b)
         gamma = 0.0
     else:
-        alpha = np.angle(a) + np.angle(b)
-        gamma = np.angle(a) - np.angle(b)
+        alpha = np.angle(b) - np.angle(a)
+        gamma = -np.angle(a) - np.angle(b)
 
-    # Convert Rz(alpha) Ry(beta) Rz(gamma) to prx gates
-    # Rz(theta) = prx(pi, theta/2) . prx(pi, 0) -- but this adds extra gates
-    # Better: Rz(theta) is a virtual Z rotation, implemented as phase shift
-    # prx(theta, phi) with phi tracking the Rz rotations
-    #
-    # Efficient decomposition:
-    # Rz(a) Ry(b) Rz(g) = Rz(a) prx(b, pi/2) Rz(g)
-    #                     = prx(b, pi/2 + a) Rz(a + g)  [absorb left Rz into phase]
-    # If a+g != 0, need one more prx for the residual Rz
-    #
-    # Most efficient: 1-2 prx gates
     instructions = []
 
-    if beta < 1e-10:
-        # Pure Rz(alpha + gamma) — virtual, but we need physical gate
-        total_z = alpha + gamma
-        if abs(total_z % (2*pi)) > 1e-10:
-            # Rz(t) = prx(pi, t/2) . prx(pi, 0) but that's 2 gates
-            # Simpler: prx(0, anything) is identity, can't do Rz as single prx
-            # Use: Rz(t) = e^(-i*t/2) * prx(t, pi/2) ... no that's Ry
-            # Actually: prx(pi, phi) . prx(pi, 0) implements Rz(2*phi)
-            # So Rz(t) = prx(pi, t/2) . prx(pi, 0)
-            instructions = [prx(qubit, pi, total_z / 2), prx(qubit, pi, 0)]
-        # else: identity, no gates needed
-    else:
-        # General case: prx(beta, pi/2 + alpha) handles Rz(a).Ry(b)
-        # Then need Rz(gamma) which shifts phase of subsequent gates
-        combined_phase = pi / 2 + alpha
-        instructions.append(prx(qubit, beta, combined_phase))
-        residual_z = gamma
-        if abs(residual_z % (2*pi)) > 1e-10:
-            instructions += [prx(qubit, pi, residual_z / 2), prx(qubit, pi, 0)]
+    # Rz(alpha + gamma) via prx(pi, 0) then prx(pi, (alpha+gamma)/2)
+    rz_total = alpha + gamma
+    if abs(rz_total) > 1e-10 and abs(rz_total % (2 * pi)) > 1e-10:
+        instructions.append(prx(qubit, pi, 0.0))
+        instructions.append(prx(qubit, pi, float(rz_total / 2)))
+
+    # Main rotation: prx(beta, pi/2 + alpha)
+    if beta > 1e-10:
+        instructions.append(prx(qubit, float(beta), float(pi / 2 + alpha)))
 
     return instructions
 
@@ -234,7 +264,7 @@ def random_su4_layer(qubits, rng):
         Rz_a = np.array([[np.exp(-1j*alpha/2), 0], [0, np.exp(1j*alpha/2)]], dtype=complex)
         Rz_g = np.array([[np.exp(-1j*gamma/2), 0], [0, np.exp(1j*gamma/2)]], dtype=complex)
         U = Rz_a @ Ry @ Rz_g
-        instructions += clifford_to_prx(q, U)
+        instructions += unitary_to_prx(q, U)
 
     # CNOT between pairs
     for i in range(0, len(qubits) - 1, 2):

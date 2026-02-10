@@ -265,12 +265,23 @@ function Hero() {
           <br />
           <span className="text-white">computing?</span>
         </h1>
-        <p className="text-lg text-gray-400 max-w-2xl leading-relaxed mb-8">
+        <p className="text-lg text-gray-400 max-w-2xl leading-relaxed mb-6">
           An experimental research program at{' '}
           <span className="text-white font-medium">TU Delft</span> building autonomous
           AI infrastructure for quantum computing research &mdash; benchmarking LLMs on quantum
           tasks, replicating published papers, and designing agent systems that run
           experiments continuously.
+        </p>
+
+        <p className="text-sm font-mono text-gray-600 mb-8 tracking-wide">
+          <span className="text-gray-500">h</span>
+          <span className="gradient-text font-bold">AI</span>
+          <span className="text-gray-500">qu</span>
+          <span className="text-gray-700 mx-2">&mdash;</span>
+          <span className="text-gray-500">AI as the interface between </span>
+          <span className="text-gray-400">humans</span>
+          <span className="text-gray-500"> and </span>
+          <span className="text-gray-400">quantum</span>
         </p>
 
         {/* Quick stats */}

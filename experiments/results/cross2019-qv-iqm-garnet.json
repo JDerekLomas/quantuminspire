@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "id": "cross2019-qv-iqm-garnet",
+  "type": "quantum_volume",
+  "backend": "iqm-garnet",
+  "backend_provider": "IQM Resonance (Finland)",
+  "hardware": "20q superconducting transmon (Garnet)",
+  "qubits_used": [
+    "QB1",
+    "QB2",
+    "QB3"
+  ],
+  "submitted": "2026-02-10T19:08:55.743393+00:00",
+  "completed": "2026-02-10T19:09:16.297530+00:00",
+  "parameters": {
+    "shots": 1024,
+    "qubit_counts": [
+      2,
+      3
+    ],
+    "num_circuits": 5,
+    "seed": 123
+  },
+  "raw_counts": {
+    "qv_n2_c0": {},
+    "qv_n2_c1": {},
+    "qv_n2_c2": {},
+    "qv_n2_c3": {},
+    "qv_n2_c4": {},
+    "qv_n3_c0": {},
+    "qv_n3_c1": {},
+    "qv_n3_c2": {},
+    "qv_n3_c3": {},
+    "qv_n3_c4": {}
+  },
+  "job_ids": {
+    "qv_n2_c0": "",
+    "qv_n2_c1": "",
+    "qv_n2_c2": "",
+    "qv_n2_c3": "",
+    "qv_n2_c4": "",
+    "qv_n3_c0": "",
+    "qv_n3_c1": "",
+    "qv_n3_c2": "",
+    "qv_n3_c3": "",
+    "qv_n3_c4": ""
+  },
+  "analysis": {
+    "note": "HOF analysis requires ideal simulation to determine heavy output set"
+  },
+  "environment": "experiments/environment.json"
+}

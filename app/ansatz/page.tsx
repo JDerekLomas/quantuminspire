@@ -28,6 +28,8 @@ interface Ansatz {
   name: string
   paper: string
   year: number
+  paperUrl: string
+  replicationId: string
   type: 'Chemistry' | 'Generic' | 'Optimization'
   color: string
   qubits: number
@@ -71,6 +73,8 @@ const ANSATZE: Record<AnsatzId, Ansatz> = {
     name: 'Subspace-Preserving VQE',
     paper: 'Sagastizabal 2019',
     year: 2019,
+    paperUrl: 'https://arxiv.org/abs/1902.11258',
+    replicationId: 'sagastizabal2019',
     type: 'Chemistry',
     color: '#00d4ff',
     qubits: 2,
@@ -89,6 +93,8 @@ const ANSATZE: Record<AnsatzId, Ansatz> = {
     name: 'UCCSD (DoubleExcitation)',
     paper: 'Peruzzo 2014',
     year: 2014,
+    paperUrl: 'https://arxiv.org/abs/1304.3061',
+    replicationId: 'peruzzo2014',
     type: 'Chemistry',
     color: '#ff6b9d',
     qubits: 4,
@@ -115,6 +121,8 @@ const ANSATZE: Record<AnsatzId, Ansatz> = {
     name: 'Hardware-Efficient',
     paper: 'Kandala 2017',
     year: 2017,
+    paperUrl: 'https://arxiv.org/abs/1704.05018',
+    replicationId: 'kandala2017',
     type: 'Generic',
     color: '#8b5cf6',
     qubits: 4,
@@ -139,6 +147,8 @@ const ANSATZE: Record<AnsatzId, Ansatz> = {
     name: 'QAOA MaxCut p=1',
     paper: 'Harrigan 2021',
     year: 2021,
+    paperUrl: 'https://arxiv.org/abs/2004.04197',
+    replicationId: 'harrigan2021',
     type: 'Optimization',
     color: '#00ff88',
     qubits: 4,
@@ -390,7 +400,16 @@ function AnsatzCard({
         >
           {ansatz.type}
         </span>
-        <span className="text-xs text-gray-500">{ansatz.paper}</span>
+        <a
+          href={ansatz.paperUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="text-xs text-gray-500 hover:text-quantum-accent transition-colors"
+          title={`View paper on arXiv`}
+        >
+          {ansatz.paper} &nearr;
+        </a>
       </div>
       <h3 className="text-sm font-semibold text-white mb-2">{ansatz.name}</h3>
 
@@ -459,7 +478,7 @@ function AnsatzCard({
       </svg>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs mb-2">
         <div className="text-gray-400">
           Qubits: <span className="text-white">{ansatz.qubits}</span>
         </div>
@@ -473,6 +492,13 @@ function AnsatzCard({
           Depth: <span className="text-white">{ansatz.depth}</span>
         </div>
       </div>
+      <Link
+        href={`/replications/${ansatz.replicationId}`}
+        onClick={(e) => e.stopPropagation()}
+        className="text-xs text-quantum-accent/70 hover:text-quantum-accent transition-colors"
+      >
+        See our replication &rarr;
+      </Link>
     </button>
   )
 }
@@ -947,9 +973,28 @@ export default function AnsatzPage() {
             <span className="gradient-text">Ansatz Architecture</span> Explorer
           </h1>
           <p className="text-gray-400 max-w-2xl">
-            Compare variational ansatz topologies and how they map onto real quantum hardware.
-            Each ansatz makes different tradeoffs between expressibility, circuit depth, and
-            hardware compatibility.
+            An{' '}
+            <Link href="/learn" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
+              ansatz
+            </Link>{' '}
+            is a parameterized quantum circuit used as a trial wavefunction in variational algorithms
+            like{' '}
+            <Link href="/learn" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
+              VQE
+            </Link>{' '}
+            and{' '}
+            <Link href="/learn" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
+              QAOA
+            </Link>.
+            Different ansatz designs trade off expressibility, circuit depth, and hardware
+            compatibility. This page compares four architectures from our{' '}
+            <Link href="/replications" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
+              paper replications
+            </Link>{' '}
+            and maps them onto{' '}
+            <Link href="/platforms" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
+              three quantum processors
+            </Link>.
           </p>
         </div>
 
@@ -1008,7 +1053,10 @@ export default function AnsatzPage() {
                 <div>
                   <h3 className="font-semibold">{backend.fullName}</h3>
                   <p className="text-xs text-gray-500">
-                    {backend.provider} &middot; {backend.totalQubits} qubits total
+                    <Link href="/platforms" className="hover:text-quantum-accent transition-colors">
+                      {backend.provider}
+                    </Link>{' '}
+                    &middot; {backend.totalQubits} qubits total
                   </p>
                 </div>
                 <span
@@ -1035,6 +1083,28 @@ export default function AnsatzPage() {
                 <pre className="text-xs font-mono text-gray-400 bg-quantum-bg rounded p-3 overflow-x-auto">
                   {ansatz.circuit}
                 </pre>
+                <div className="flex gap-4 mt-3 text-xs">
+                  <a
+                    href={ansatz.paperUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-500 hover:text-quantum-accent transition-colors"
+                  >
+                    Paper (arXiv) &nearr;
+                  </a>
+                  <Link
+                    href={`/replications/${ansatz.replicationId}`}
+                    className="text-gray-500 hover:text-quantum-accent transition-colors"
+                  >
+                    Our replication &rarr;
+                  </Link>
+                  <Link
+                    href="/experiments"
+                    className="text-gray-500 hover:text-quantum-accent transition-colors"
+                  >
+                    All experiments &rarr;
+                  </Link>
+                </div>
               </div>
 
               {/* Mapping details */}
@@ -1110,8 +1180,15 @@ export default function AnsatzPage() {
         <section className="mb-16">
           <h2 className="text-xl font-semibold mb-1">Parameter Landscape</h2>
           <p className="text-sm text-gray-500 mb-6">
-            E(θ) for the 2-qubit H₂ VQE at R=0.735 A. The single parameter θ controls the
-            superposition cos(θ/2)|10⟩ + sin(θ/2)|01⟩. Hover to explore.
+            E(θ) for the 2-qubit H₂{' '}
+            <Link href="/learn" className="text-quantum-accent/60 hover:text-quantum-accent">VQE</Link>{' '}
+            at R=0.735 &Aring;, from{' '}
+            <a href="https://arxiv.org/abs/1902.11258" target="_blank" rel="noopener noreferrer"
+              className="text-quantum-accent/60 hover:text-quantum-accent">Sagastizabal 2019</a>.
+            The single parameter θ controls the superposition cos(θ/2)|10⟩ + sin(θ/2)|01⟩.
+            Green band shows{' '}
+            <Link href="/learn" className="text-quantum-accent/60 hover:text-quantum-accent">chemical accuracy</Link>{' '}
+            (1 kcal/mol). Hover to explore.
           </p>
 
           <div className="bg-quantum-card rounded-lg border border-quantum-border p-6">
@@ -1144,9 +1221,21 @@ export default function AnsatzPage() {
           <div className="mt-4 bg-quantum-card/60 rounded-lg border border-quantum-border p-4 text-sm text-gray-300">
             <span className="text-quantum-accent font-semibold">Key insight:</span>{' '}
             The landscape has a single minimum at θ = {THETA_OPT.toFixed(4)} rad, giving E = {vqeEnergy(THETA_OPT).toFixed(4)} Ha
-            (within 0.75 kcal/mol of FCI). Hardware noise shifts measurements upward: IBM Torino sees
-            +9.2 kcal/mol error, Tuna-9 with error mitigation gets +6.2 kcal/mol. The smooth, convex
-            landscape means VQE convergence is guaranteed — the challenge is purely noise, not optimization.
+            (within 0.75 kcal/mol of{' '}
+            <span className="text-gray-400" title="Full Configuration Interaction — exact solution within the basis set">FCI</span>).
+            Hardware noise shifts measurements upward:{' '}
+            <Link href="/platforms" className="text-purple-400 hover:underline">IBM Torino</Link>{' '}
+            sees +9.2 kcal/mol error,{' '}
+            <Link href="/platforms" className="text-orange-400 hover:underline">Tuna-9</Link>{' '}
+            with{' '}
+            <Link href="/replications/sagastizabal2019" className="text-gray-400 hover:text-white underline decoration-gray-600">
+              error mitigation
+            </Link>{' '}
+            gets +6.2 kcal/mol. The smooth, convex landscape means VQE convergence is guaranteed —
+            the challenge is purely noise, not optimization. Compare our{' '}
+            <Link href="/experiments" className="text-quantum-accent/70 hover:text-quantum-accent">
+              full VQE results across bond distances
+            </Link>.
           </div>
         </section>
 
@@ -1213,12 +1302,301 @@ export default function AnsatzPage() {
           </div>
         </section>
 
+        {/* ======================================= */}
+        {/* SECTION 5: Key Terms                    */}
+        {/* ======================================= */}
+        <section className="mb-16">
+          <h2 className="text-xl font-semibold mb-4">Key Terms</h2>
+          <p className="text-sm text-gray-500 mb-6">
+            See the full{' '}
+            <Link href="/learn" className="text-quantum-accent hover:underline">glossary</Link>{' '}
+            for more definitions.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              {
+                term: 'Ansatz',
+                definition: 'A parameterized quantum circuit used as a trial wavefunction in variational algorithms. The name comes from German, meaning "approach" or "initial guess."',
+                learnAnchor: 'Algorithms',
+              },
+              {
+                term: 'VQE',
+                definition: 'Variational Quantum Eigensolver — a hybrid quantum-classical algorithm that finds the ground state energy of a molecule by minimizing ⟨ψ(θ)|H|ψ(θ)⟩ over parameters θ.',
+                learnAnchor: 'Algorithms',
+              },
+              {
+                term: 'QAOA',
+                definition: 'Quantum Approximate Optimization Algorithm — alternates cost and mixer layers to find approximate solutions to combinatorial problems like MaxCut.',
+                learnAnchor: 'Algorithms',
+              },
+              {
+                term: 'CNOT',
+                definition: 'Controlled-NOT gate — a two-qubit entangling gate that flips the target qubit when the control is |1⟩. The primary source of noise in most circuits.',
+                learnAnchor: 'Gates & Circuits',
+              },
+              {
+                term: 'UCCSD',
+                definition: 'Unitary Coupled Cluster Singles and Doubles — a chemistry-motivated ansatz derived from classical coupled cluster theory. Preserves particle number and spin symmetry.',
+                learnAnchor: 'Algorithms',
+              },
+              {
+                term: 'Circuit Depth',
+                definition: 'The number of sequential gate layers in a circuit. Deeper circuits accumulate more noise from decoherence. Keeping depth low is critical on NISQ hardware.',
+                learnAnchor: 'Gates & Circuits',
+              },
+              {
+                term: 'Chemical Accuracy',
+                definition: '1 kcal/mol (1.6 mHa) — the precision threshold needed for quantum chemistry to be practically useful. Achieving this on real hardware is a key benchmark.',
+                learnAnchor: 'Metrics & Benchmarks',
+              },
+              {
+                term: 'Fidelity',
+                definition: 'How closely a measured quantum state matches the ideal target state. A Bell state fidelity of 93.5% means 93.5% of measurements agree with the expected entangled outcome.',
+                learnAnchor: 'Metrics & Benchmarks',
+              },
+              {
+                term: 'Native Gates',
+                definition: 'The physical gate set a quantum processor can execute directly. Non-native gates must be decomposed, adding depth and noise. SWAP routing adds ~3 CNOTs per non-native connection.',
+                learnAnchor: 'Gates & Circuits',
+              },
+              {
+                term: 'Barren Plateau',
+                definition: 'A region of parameter space where the cost function gradient vanishes exponentially with qubit count, making optimization intractable. Hardware-efficient ansatze are especially prone to this.',
+                learnAnchor: 'Algorithms',
+              },
+            ].map((item) => (
+              <div
+                key={item.term}
+                className="bg-quantum-card/60 rounded-lg border border-quantum-border p-4"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="text-sm font-semibold text-quantum-accent">{item.term}</h3>
+                  <Link
+                    href="/learn"
+                    className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors font-mono"
+                  >
+                    {item.learnAnchor}
+                  </Link>
+                </div>
+                <p className="text-xs text-gray-400 leading-relaxed">{item.definition}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ======================================= */}
+        {/* SECTION 6: References                    */}
+        {/* ======================================= */}
+        <section className="mb-16">
+          <h2 className="text-xl font-semibold mb-4">References</h2>
+
+          {/* Hardware Documentation */}
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Hardware Documentation</h3>
+          <p className="text-xs text-gray-500 mb-4">
+            The three quantum processors shown above are real, publicly accessible superconducting transmon chips.
+            All topology and fidelity data on this page comes from our own measurements — verify the hardware specs below.
+          </p>
+          <div className="space-y-3 text-sm mb-10">
+            {[
+              {
+                id: 'H1',
+                name: 'Tuna-9',
+                provider: 'QuTech / TU Delft',
+                specs: '9-qubit transmon, diamond topology, 12 flux-tunable couplers. Fabricated by DiCarlo Lab at QuTech. Available since December 2025.',
+                links: [
+                  { label: 'Backends page', url: 'https://www.quantum-inspire.com/backends/' },
+                  { label: 'Transmon details', url: 'https://www.quantum-inspire.com/backends/transmons/' },
+                  { label: 'Quantum Inspire platform', url: 'https://www.quantum-inspire.com/' },
+                ],
+                color: '#ff8c42',
+              },
+              {
+                id: 'H2',
+                name: 'IQM Garnet',
+                provider: 'IQM Quantum Computers',
+                specs: '20-qubit transmon, square-lattice topology, 30 tunable couplers. CZ native gate with 99.51% median two-qubit fidelity. Quantum Volume 32.',
+                links: [
+                  { label: 'QPU specifications', url: 'https://meetiqm.com/technology/qpu/' },
+                  { label: 'Whitepaper (arXiv:2408.12433)', url: 'https://arxiv.org/abs/2408.12433' },
+                  { label: 'IQM Resonance access', url: 'https://www.meetiqm.com/products/iqm-resonance/' },
+                ],
+                color: '#8b5cf6',
+              },
+              {
+                id: 'H3',
+                name: 'IBM Torino',
+                provider: 'IBM Quantum',
+                specs: '133-qubit Heron r1 processor, heavy-hex topology. CZ + SX + RZ native gate set. Echoed cross-resonance entangling gates.',
+                links: [
+                  { label: 'Processor types guide', url: 'https://quantum.cloud.ibm.com/docs/en/guides/processor-types' },
+                  { label: 'Live calibration data', url: 'https://quantum.cloud.ibm.com/computers?type=Heron' },
+                  { label: 'IBM Quantum platform', url: 'https://quantum.cloud.ibm.com/' },
+                ],
+                color: '#00d4ff',
+              },
+            ].map((hw) => (
+              <div
+                key={hw.id}
+                className="flex gap-3 bg-quantum-card/40 rounded border border-quantum-border/50 p-4"
+              >
+                <span className="font-mono text-xs mt-0.5" style={{ color: hw.color }}>[{hw.id}]</span>
+                <div className="flex-1">
+                  <p className="text-gray-300">
+                    <span className="font-semibold" style={{ color: hw.color }}>{hw.name}</span>
+                    {' '}&mdash; {hw.provider}.{' '}
+                    <span className="text-gray-400">{hw.specs}</span>
+                  </p>
+                  <div className="flex flex-wrap gap-4 mt-1 text-xs">
+                    {hw.links.map((link) => (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-500 hover:text-quantum-accent transition-colors"
+                      >
+                        {link.label} &nearr;
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Algorithm Papers */}
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Algorithm Papers</h3>
+          <p className="text-xs text-gray-500 mb-4">
+            The ansatz circuits above come from these published experiments, which we{' '}
+            <Link href="/replications" className="text-quantum-accent hover:underline">replicated</Link>{' '}
+            on all three backends.
+          </p>
+          <div className="space-y-3 text-sm">
+            {[
+              {
+                id: 'A1',
+                authors: 'R. Sagastizabal et al.',
+                title: 'Experimental error mitigation via symmetry verification in a variational quantum eigensolver',
+                journal: 'Phys. Rev. A 100, 010302(R)',
+                year: 2019,
+                arxiv: 'https://arxiv.org/abs/1902.11258',
+                doi: 'https://doi.org/10.1103/PhysRevA.100.010302',
+                replicationId: 'sagastizabal2019',
+              },
+              {
+                id: 'A2',
+                authors: 'A. Peruzzo et al.',
+                title: 'A variational eigenvalue solver on a photonic quantum processor',
+                journal: 'Nature Communications 5, 4213',
+                year: 2014,
+                arxiv: 'https://arxiv.org/abs/1304.3061',
+                doi: 'https://doi.org/10.1038/ncomms5213',
+                replicationId: 'peruzzo2014',
+              },
+              {
+                id: 'A3',
+                authors: 'A. Kandala et al.',
+                title: 'Hardware-efficient variational quantum eigensolver for small molecules and quantum magnets',
+                journal: 'Nature 549, 242-246',
+                year: 2017,
+                arxiv: 'https://arxiv.org/abs/1704.05018',
+                doi: 'https://doi.org/10.1038/nature23879',
+                replicationId: 'kandala2017',
+              },
+              {
+                id: 'A4',
+                authors: 'M.P. Harrigan et al.',
+                title: 'Quantum approximate optimization of non-planar graph problems on a planar superconducting processor',
+                journal: 'Nature Physics 17, 332-336',
+                year: 2021,
+                arxiv: 'https://arxiv.org/abs/2004.04197',
+                doi: 'https://doi.org/10.1038/s41567-020-01105-y',
+                replicationId: 'harrigan2021',
+              },
+              {
+                id: 'A5',
+                authors: 'A.W. Cross et al.',
+                title: 'Validating quantum computers using randomized model circuits',
+                journal: 'Phys. Rev. A 100, 032328',
+                year: 2019,
+                arxiv: 'https://arxiv.org/abs/1811.12926',
+                doi: 'https://doi.org/10.1103/PhysRevA.100.032328',
+                replicationId: 'cross2019',
+              },
+            ].map((ref) => (
+              <div
+                key={ref.id}
+                className="flex gap-3 bg-quantum-card/40 rounded border border-quantum-border/50 p-4"
+              >
+                <span className="text-quantum-accent font-mono text-xs mt-0.5">[{ref.id}]</span>
+                <div className="flex-1">
+                  <p className="text-gray-300">
+                    {ref.authors}, &ldquo;{ref.title},&rdquo;{' '}
+                    <span className="text-gray-500 italic">{ref.journal}</span> ({ref.year}).
+                  </p>
+                  <div className="flex gap-4 mt-1 text-xs">
+                    <a
+                      href={ref.arxiv}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-500 hover:text-quantum-accent transition-colors"
+                    >
+                      arXiv &nearr;
+                    </a>
+                    <a
+                      href={ref.doi}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-500 hover:text-quantum-accent transition-colors"
+                    >
+                      DOI &nearr;
+                    </a>
+                    <Link
+                      href={`/replications/${ref.replicationId}`}
+                      className="text-gray-500 hover:text-quantum-accent transition-colors"
+                    >
+                      Our replication &rarr;
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ======================================= */}
+        {/* SECTION 7: Explore More                  */}
+        {/* ======================================= */}
+        <section className="mb-16">
+          <h2 className="text-xl font-semibold mb-4">Explore More</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { href: '/platforms', title: 'Platform Comparison', desc: 'Tuna-9 vs Garnet vs Torino: fidelity, QV, noise fingerprints' },
+              { href: '/replications', title: 'Paper Replications', desc: '5 papers, 19 claims tested across 3 quantum backends' },
+              { href: '/experiments', title: 'Experiment Dashboard', desc: '50+ experiments: Bell, GHZ, VQE, QAOA, QV, RB' },
+              { href: '/learn', title: 'Quantum Glossary', desc: '37 terms across 7 categories with clear definitions' },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="bg-quantum-card rounded-lg border border-quantum-border p-4 hover:border-quantum-accent/40 transition-colors group"
+              >
+                <h3 className="text-sm font-semibold text-white group-hover:text-quantum-accent transition-colors mb-1">
+                  {link.title} &rarr;
+                </h3>
+                <p className="text-xs text-gray-500">{link.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="text-center text-xs text-gray-600 py-8 border-t border-quantum-border">
-          Data from experiments on Quantum Inspire Tuna-9, IQM Garnet, and IBM Torino.
-          See <Link href="/experiments" className="text-quantum-accent hover:underline">experiments</Link>{' '}
-          and <Link href="/replications" className="text-quantum-accent hover:underline">replications</Link>{' '}
-          for raw results.
+          Part of the{' '}
+          <Link href="/" className="text-quantum-accent hover:underline">AI x Quantum</Link>{' '}
+          research initiative at TU Delft / QuTech.
+          All hardware data collected from{' '}
+          <Link href="/platforms" className="text-quantum-accent hover:underline">three quantum processors</Link>.
         </footer>
       </div>
     </div>
