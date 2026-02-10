@@ -3,7 +3,7 @@
   "id": "vqe-mitigation-ladder-001-ibm",
   "type": "vqe_mitigation_ladder",
   "backend": "ibm_torino",
-  "timestamp": "2026-02-10T19:09:53.349361+00:00",
+  "timestamp": "2026-02-10T19:22:43.771506+00:00",
   "parameters": {
     "molecule": "H2",
     "bond_distance": 0.735,
@@ -174,16 +174,171 @@
         "weighted_error_kcal": 3.91
       },
       "ibm_minutes_used": 0
+    },
+    "phase_1_estimator_baseline": {
+      "phase": "phase_1_estimator_baseline",
+      "jobs": [
+        {
+          "label": "1a: Raw (resilience=0)",
+          "job_id": "d65o9qbe4kfs73cvlvn0",
+          "shots": 4096,
+          "resilience_level": 0,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "zne_noise_factors": null,
+          "zne_extrapolator": null,
+          "energy_hartree": -1.095555,
+          "std_hartree": 0.003815,
+          "error_kcal_mol": 26.2,
+          "chemical_accuracy": false,
+          "qpu_seconds": 5
+        },
+        {
+          "label": "1b: TREX (resilience=1)",
+          "job_id": "d65o9s8qbmes739d5gm0",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "zne_noise_factors": null,
+          "zne_extrapolator": null,
+          "energy_hartree": -1.137655,
+          "std_hartree": 0.003615,
+          "error_kcal_mol": 0.22,
+          "chemical_accuracy": true,
+          "qpu_seconds": 14
+        }
+      ]
+    },
+    "phase_2_dd_twirling": {
+      "phase": "phase_2_dd_twirling",
+      "jobs": [
+        {
+          "label": "2a: TREX + DD",
+          "job_id": "d65oa11v6o8c73d388b0",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": true,
+          "twirling": false,
+          "zne_noise_factors": null,
+          "zne_extrapolator": null,
+          "energy_hartree": -1.135184,
+          "std_hartree": 0.003773,
+          "error_kcal_mol": 1.33,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14
+        },
+        {
+          "label": "2b: TREX + DD + Twirl",
+          "job_id": "d65oa6dbujdc73ctnk90",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": true,
+          "twirling": true,
+          "zne_noise_factors": null,
+          "zne_extrapolator": null,
+          "energy_hartree": -1.121362,
+          "std_hartree": 0.004026,
+          "error_kcal_mol": 10.0,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14
+        }
+      ]
+    },
+    "phase_3_zne": {
+      "phase": "phase_3_zne",
+      "jobs": [
+        {
+          "label": "3a: ZNE linear [1,2,3]",
+          "job_id": "d65oab1v6o8c73d388kg",
+          "shots": 4096,
+          "resilience_level": 2,
+          "dynamical_decoupling": true,
+          "twirling": true,
+          "zne_noise_factors": [
+            1,
+            2,
+            3
+          ],
+          "zne_extrapolator": "linear",
+          "energy_hartree": -1.116844,
+          "std_hartree": 0.016812,
+          "error_kcal_mol": 12.84,
+          "chemical_accuracy": false,
+          "qpu_seconds": 20
+        },
+        {
+          "label": "3b: ZNE exp [1,2,3,5]",
+          "job_id": "d65oai1v6o8c73d388s0",
+          "shots": 4096,
+          "resilience_level": 2,
+          "dynamical_decoupling": true,
+          "twirling": true,
+          "zne_noise_factors": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "zne_extrapolator": "exponential",
+          "energy_hartree": NaN,
+          "std_hartree": NaN,
+          "error_kcal_mol": NaN,
+          "chemical_accuracy": false,
+          "qpu_seconds": 23
+        }
+      ]
+    },
+    "phase_4_high_shots": {
+      "phase": "phase_4_high_shots",
+      "jobs": [
+        {
+          "label": "4: Best (1b: TREX (resilience=1)) + 16K shots",
+          "job_id": "d65oapoqbmes739d5hl0",
+          "shots": 16384,
+          "resilience_level": 1,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "zne_noise_factors": null,
+          "zne_extrapolator": null,
+          "energy_hartree": -1.131288,
+          "std_hartree": 0.001919,
+          "error_kcal_mol": 3.77,
+          "chemical_accuracy": false,
+          "qpu_seconds": 23
+        }
+      ]
     }
   },
   "analysis": {
     "ranking": [
+      {
+        "label": "1b: TREX (resilience=1)",
+        "energy": -1.137655,
+        "error_kcal": 0.22,
+        "chemical_accuracy": true,
+        "job_id": "d65o9s8qbmes739d5gm0"
+      },
+      {
+        "label": "2a: TREX + DD",
+        "energy": -1.135184,
+        "error_kcal": 1.33,
+        "chemical_accuracy": false,
+        "job_id": "d65oa11v6o8c73d388b0"
+      },
       {
         "label": "P0: Run 1 (equilibrium-001) (PS)",
         "energy": -1.134654,
         "error_kcal": 1.66,
         "chemical_accuracy": false,
         "job_id": "offline"
+      },
+      {
+        "label": "4: Best (1b: TREX (resilience=1)) + 16K shots",
+        "energy": -1.131288,
+        "error_kcal": 3.77,
+        "chemical_accuracy": false,
+        "job_id": "d65oapoqbmes739d5hl0"
       },
       {
         "label": "P0: Weighted mean (PS)",
@@ -221,6 +376,13 @@
         "job_id": "offline"
       },
       {
+        "label": "2b: TREX + DD + Twirl",
+        "energy": -1.121362,
+        "error_kcal": 10.0,
+        "chemical_accuracy": false,
+        "job_id": "d65oa6dbujdc73ctnk90"
+      },
+      {
         "label": "P0: Run 3 (sagastizabal) (raw)",
         "energy": -1.119721,
         "error_kcal": 11.03,
@@ -228,22 +390,43 @@
         "job_id": "offline"
       },
       {
+        "label": "3a: ZNE linear [1,2,3]",
+        "energy": -1.116844,
+        "error_kcal": 12.84,
+        "chemical_accuracy": false,
+        "job_id": "d65oab1v6o8c73d388kg"
+      },
+      {
         "label": "P0: Run 2 (variance rerun) (raw)",
         "energy": -1.109395,
         "error_kcal": 17.51,
         "chemical_accuracy": false,
         "job_id": "offline"
+      },
+      {
+        "label": "1a: Raw (resilience=0)",
+        "energy": -1.095555,
+        "error_kcal": 26.2,
+        "chemical_accuracy": false,
+        "job_id": "d65o9qbe4kfs73cvlvn0"
+      },
+      {
+        "label": "3b: ZNE exp [1,2,3,5]",
+        "energy": NaN,
+        "error_kcal": NaN,
+        "chemical_accuracy": false,
+        "job_id": "d65oai1v6o8c73d388s0"
       }
     ],
     "best_technique": {
-      "label": "P0: Run 1 (equilibrium-001) (PS)",
-      "energy": -1.134654,
-      "error_kcal": 1.66,
-      "chemical_accuracy": false,
-      "job_id": "offline"
+      "label": "1b: TREX (resilience=1)",
+      "energy": -1.137655,
+      "error_kcal": 0.22,
+      "chemical_accuracy": true,
+      "job_id": "d65o9s8qbmes739d5gm0"
     },
-    "chemical_accuracy_achieved": false,
-    "interpretation": "Best: P0: Run 1 (equilibrium-001) (PS) at 1.66 kcal/mol. Worst: P0: Run 2 (variance rerun) (raw) at 17.51 kcal/mol. No technique achieved chemical accuracy. Gap: 0.66 kcal/mol from best result. "
+    "chemical_accuracy_achieved": true,
+    "interpretation": "Best: 1b: TREX (resilience=1) at 0.22 kcal/mol. Worst: 3b: ZNE exp [1,2,3,5] at nan kcal/mol. 1/15 techniques achieved chemical accuracy (<1.0 kcal/mol). "
   },
   "environment": "experiments/environment.json"
 }
