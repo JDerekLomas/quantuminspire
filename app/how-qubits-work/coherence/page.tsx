@@ -391,25 +391,25 @@ export default function HowQubitsWorkCoherencePage() {
                 title: 'How Qubits Talk',
                 desc: 'Avoided crossings and coupling.',
                 href: '/how-qubits-work/coupling',
-                status: 'soon',
+                status: 'live',
               },
               {
                 title: 'How Gates Happen',
                 desc: 'Pulses, leakage, and control errors.',
                 href: '/how-qubits-work/gates',
-                status: 'soon',
+                status: 'live',
               },
               {
                 title: 'How We Measure',
                 desc: 'Dispersive readout + fidelity.',
                 href: '/how-qubits-work/measurement',
-                status: 'soon',
+                status: 'live',
               },
               {
                 title: 'How We Scale',
                 desc: 'Topology, routing, and spectral crowding.',
                 href: '/how-qubits-work/scaling',
-                status: 'soon',
+                status: 'live',
               },
             ].map((item) => (
               <div

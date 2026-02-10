@@ -412,10 +412,17 @@ export default function LearnPage() {
               { name: "Grover's Search", href: '/grovers', desc: 'Amplitude amplification' },
               { name: 'Teleportation', href: '/teleportation', desc: 'Step-by-step protocol' },
               { name: 'Rabi Oscillations', href: '/rabi', desc: 'Qubit dynamics & T2' },
+              { name: 'How We Tune a Qubit', href: '/how-qubits-work/spectroscopy', desc: 'Spectroscopy & calibration basics' },
+              { name: 'Why Qubits Forget', href: '/how-qubits-work/coherence', desc: 'T1, T2, and linewidth' },
+              { name: 'How Qubits Talk', href: '/how-qubits-work/coupling', desc: 'Avoided crossings & dispersive shifts' },
+              { name: 'How Gates Happen', href: '/how-qubits-work/gates', desc: 'Pulse shaping & control errors' },
+              { name: 'How We Measure', href: '/how-qubits-work/measurement', desc: 'Dispersive readout & fidelity' },
+              { name: 'How We Scale', href: '/how-qubits-work/scaling', desc: 'Crowding & routing cost' },
               { name: 'Resonance', href: '/resonance', desc: 'Spectroscopy & avoided crossings' },
               { name: 'Hamiltonians', href: '/hamiltonians', desc: 'H\u2082 Pauli decomposition' },
               { name: 'Ansatz Explorer', href: '/ansatz', desc: 'VQE circuit design' },
               { name: 'Sonification', href: '/sonification', desc: 'Quantum states as sound' },
+              { name: 'How Qubits Work (Series)', href: '/how-qubits-work', desc: 'Index of physical foundations labs' },
             ].map(tool => (
               <Link
                 key={tool.href}

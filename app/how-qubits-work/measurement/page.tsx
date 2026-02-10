@@ -399,7 +399,7 @@ export default function HowQubitsWorkMeasurementPage() {
                 title: 'How We Scale',
                 desc: 'Topology, routing, and spectral crowding.',
                 href: '/how-qubits-work/scaling',
-                status: 'soon',
+                status: 'live',
               },
             ].map((item) => (
               <div

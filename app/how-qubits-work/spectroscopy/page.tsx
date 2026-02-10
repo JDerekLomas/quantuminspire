@@ -407,13 +407,13 @@ export default function HowQubitsWorkSpectroscopyPage() {
                 title: 'How We Measure',
                 desc: 'Dispersive readout + fidelity.',
                 href: '/how-qubits-work/measurement',
-                status: 'soon',
+                status: 'live',
               },
               {
                 title: 'How We Scale',
                 desc: 'Topology, routing, and spectral crowding.',
                 href: '/how-qubits-work/scaling',
-                status: 'soon',
+                status: 'live',
               },
             ].map((item) => (
               <div
