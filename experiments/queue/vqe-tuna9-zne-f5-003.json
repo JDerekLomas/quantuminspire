@@ -1,14 +1,17 @@
 {
   "id": "vqe-tuna9-zne-f5-003",
   "type": "vqe_h2",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T19:10:00Z",
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.735,
     "alpha": -0.2234,
-    "qubits": [2, 4],
+    "qubits": [
+      2,
+      4
+    ],
     "cnot_folds": 5,
     "g0": -0.321124,
     "g1": 0.397937,

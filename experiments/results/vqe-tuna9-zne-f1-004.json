@@ -1,0 +1,117 @@
+{
+  "id": "vqe-tuna9-zne-f1-004",
+  "type": "vqe_h2",
+  "backend": "tuna-9",
+  "submitted": "2026-02-10T19:06:52.361143+00:00",
+  "completed": "2026-02-10T19:07:24.630285+00:00",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "alpha": -0.2234,
+    "qubits": [
+      2,
+      4
+    ],
+    "cnot_folds": 1,
+    "g0": -0.321124,
+    "g1": 0.397937,
+    "g2": -0.397937,
+    "g3": 0.0,
+    "g4": 0.090466,
+    "g5": 0.090466,
+    "fci_energy": -1.137306
+  },
+  "raw_counts": {
+    "z_basis": {
+      "00000": 125,
+      "00001": 7,
+      "00010": 3,
+      "00100": 3671,
+      "00101": 82,
+      "00110": 42,
+      "00111": 3,
+      "01000": 1,
+      "01100": 11,
+      "01101": 1,
+      "10000": 64,
+      "10100": 85,
+      "10110": 1
+    },
+    "x_basis": {
+      "00000": 800,
+      "00001": 16,
+      "00010": 12,
+      "00100": 1205,
+      "00101": 16,
+      "00110": 15,
+      "00111": 1,
+      "01000": 3,
+      "01100": 9,
+      "10000": 1204,
+      "10001": 23,
+      "10010": 15,
+      "10100": 745,
+      "10101": 14,
+      "10110": 6,
+      "11000": 4,
+      "11100": 8
+    },
+    "y_basis": {
+      "00000": 870,
+      "00001": 15,
+      "00010": 15,
+      "00100": 1172,
+      "00101": 26,
+      "00110": 24,
+      "00111": 1,
+      "01000": 1,
+      "01100": 6,
+      "10000": 1200,
+      "10001": 23,
+      "10010": 21,
+      "10011": 3,
+      "10100": 681,
+      "10101": 13,
+      "10110": 16,
+      "10111": 1,
+      "11000": 4,
+      "11010": 1,
+      "11100": 3
+    }
+  },
+  "analysis": {
+    "energy_hartree": -1.129441,
+    "energy_raw": -1.087731,
+    "energy_postselected": -1.129441,
+    "postselection_keep_fraction": 0.9458,
+    "fci_energy": -1.137306,
+    "error_hartree": 0.007865,
+    "error_kcal_mol": 4.94,
+    "chemical_accuracy": false,
+    "expectation_values": {
+      "Z0": -0.967,
+      "Z1": 0.967,
+      "Z0Z1": -1.0,
+      "X0X1": -0.2168,
+      "Y0Y1": -0.2114
+    },
+    "hamiltonian_coefficients": {
+      "g0": -0.321124,
+      "g1": 0.397937,
+      "g2": -0.397937,
+      "g3": 0.0,
+      "g4": 0.090466,
+      "g5": 0.090466
+    },
+    "bond_distance_angstrom": 0.735,
+    "total_shots_per_basis": {
+      "z": 4096,
+      "x": 4096,
+      "y": 4096
+    },
+    "postselection_z_kept": 3874,
+    "interpretation": "VQE energy: -1.1294 Ha (FCI: -1.1373 Ha). Error: 4.9 kcal/mol. Outside chemical accuracy. Post-selection kept 95% of Z-basis shots."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[5] q\nbit[5] b\n\n// Subspace-preserving ansatz: Ry-CNOT-X (cnot_folds=1)\n// State = cos(a/2)|10> + sin(a/2)|01>, alpha=-0.223400\nRy(-0.223400) q[2]\nCNOT q[2], q[4]\nX q[2]\n\n// Z-basis measurement\nb = measure q",
+  "errors": null
+}
