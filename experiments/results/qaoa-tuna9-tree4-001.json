@@ -1,0 +1,36 @@
+{
+  "id": "qaoa-tuna9-tree4-001",
+  "type": "qaoa_maxcut",
+  "backend": "tuna-9",
+  "status": "completed",
+  "timestamp": "2026-02-10T18:26:38Z",
+  "parameters": {
+    "shots": 4096,
+    "graph": "tuna9_4node",
+    "nodes": [2, 4, 5, 6],
+    "edges": [[2,4], [2,5], [4,6]],
+    "p": 1,
+    "gamma": 0.9517,
+    "beta": 0.3668,
+    "classical_max_cut": 3
+  },
+  "results": {
+    "average_cuts": 1.604,
+    "approximation_ratio": 0.5345,
+    "emulator_ratio": 0.7917,
+    "random_baseline": 0.500,
+    "beats_random": true,
+    "hardware_degradation_pct": 32.5,
+    "cut_distribution": {
+      "0": 424,
+      "1": 1403,
+      "2": 1642,
+      "3": 627
+    },
+    "optimal_bitstrings_pct": 15.3
+  },
+  "jobs": {
+    "qaoa_p1": 415513
+  },
+  "analysis": "First QAOA MaxCut on Tuna-9 hardware. Beats random (0.534 > 0.500) but 32.5% degradation from ideal (0.792). 4-qubit circuit with 3 CNOT layers highly noise-sensitive. 15.3% of shots found optimal cut."
+}
