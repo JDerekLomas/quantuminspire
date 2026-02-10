@@ -1096,7 +1096,7 @@ export const posts: BlogPost[] = [
     tags: ['benchmark', 'RAG', 'Context7', 'Qiskit', 'LLM', 'Gemini', 'API staleness'],
     heroImage: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80',
     heroCaption: 'The right documentation at the right time makes all the difference.',
-    excerpt: 'API staleness is the dominant failure mode when LLMs write quantum code. We tested two RAG strategies on Gemini 3 Flash and Claude Opus 4.6: a static cheatsheet (no improvement) and dynamic per-task retrieval via Context7 (+14%). Both models converge to exactly 70.9% — the ceiling is the documentation, not the model.',
+    excerpt: 'API staleness is the dominant failure mode when LLMs write quantum code. Dynamic RAG via Context7 boosts Pass@1 from 62-64% to 68-71% across models. A second Gemini run reveals 2.7pp variance and 16 flaky tasks. The union of 3 runs reaches 79.5% — the ceiling is documentation and sampling, not model capability.',
     content: `
 <p>In our <a href="/blog/llms-write-quantum-code">previous post</a>, we found that frontier LLMs score around 62-64% on the Qiskit HumanEval benchmark — 151 quantum programming tasks graded by automated code execution. The most interesting finding wasn't the score but the failure mode: <strong>the dominant error is API staleness, not algorithmic misunderstanding</strong>. Models trained on Qiskit 1.x documentation generate code for APIs that no longer exist in Qiskit 2.x.</p>
 
@@ -1124,8 +1124,9 @@ export const posts: BlogPost[] = [
 <tr><td>Gemini 3 Flash (baseline)</td><td>62.3% (94)</td><td>65.8% (52)</td><td>61.2% (41)</td><td>20% (1)</td><td>28K</td></tr>
 <tr><td>Claude Opus 4.6 (baseline)</td><td>63.6% (96)</td><td>67.1% (53)</td><td>62.7% (42)</td><td>20% (1)</td><td>30K</td></tr>
 <tr><td>Gemini + Static Cheatsheet</td><td>62.3% (94)</td><td>65.8% (52)</td><td>62.7% (42)</td><td>0% (0)</td><td>486K</td></tr>
-<tr><td><strong>Gemini + Context7</strong></td><td><strong>70.9% (107)</strong></td><td><strong>77.2% (61)</strong></td><td><strong>67.2% (45)</strong></td><td>20% (1)</td><td>287K</td></tr>
+<tr><td><strong>Gemini + Context7 (run 1)</strong></td><td><strong>70.9% (107)</strong></td><td><strong>77.2% (61)</strong></td><td><strong>67.2% (45)</strong></td><td>20% (1)</td><td>287K</td></tr>
 <tr><td><strong>Opus 4.6 + Context7</strong></td><td><strong>70.9% (107)</strong></td><td>76.0% (60)</td><td><strong>67.2% (45)</strong></td><td><strong>40% (2)</strong></td><td>406K</td></tr>
+<tr><td>Gemini + Context7 (run 2)</td><td>68.2% (103)</td><td>69.6% (55)</td><td>70.1% (47)</td><td>20% (1)</td><td>287K</td></tr>
 </tbody>
 </table>
 
@@ -1158,21 +1159,25 @@ export const posts: BlogPost[] = [
 
 <p>Intermediate tasks see a smaller but real improvement. Difficult tasks — which require multi-step algorithmic reasoning — don't improve. Dynamic RAG helps with <em>API recall</em>, not <em>quantum reasoning</em>.</p>
 
-<h2>The Convergence: Opus Matches Gemini Exactly</h2>
+<h2>Run-to-Run Variance: 16 Flaky Tasks</h2>
 
-<p>We ran the same Context7 experiment with <strong>Claude Opus 4.6</strong>. The result: <strong>exactly 70.9% Pass@1</strong> (107/151) — identical to Gemini 3 Flash.</p>
+<p>We re-ran the Gemini + Context7 configuration to measure stability. Run 2 scored <strong>68.2% (103/151)</strong> — 4 tasks fewer than run 1's 70.9%. This 2.7pp variance is significant: <strong>16 of 151 tasks (10.6%) gave different results across the two identical runs</strong>.</p>
 
-<p>This convergence is striking. Two very different models — Google's fast model and Anthropic's flagship — land on the same number when given the same documentation context. The differences are in the margins:</p>
+<p>None of these 16 tasks involve randomness in the test — they're deterministic. The variance comes from Gemini's sampling (temperature=0 does not guarantee identical output across API calls) and from minor wording differences in Context7's retrieved snippets.</p>
+
+<p>The consistent core is 97 tasks (64.2%) that pass in both runs. The ceiling — tasks that pass in at least one run — is 113/151 (74.8%). This gives us a confidence interval: <strong>Gemini + Context7 reliably scores 64-75%, with a mean around 69-71%</strong>.</p>
+
+<h2>The Convergence: Opus Matches Gemini</h2>
+
+<p>Opus 4.6 + Context7 scored <strong>70.9% (107/151)</strong> — identical to Gemini's run 1, and within the variance band of run 2's 68.2%. The differences by difficulty are in the margins:</p>
 
 <ul>
-<li>Gemini has a slight edge on <strong>basic tasks</strong>: 77.2% vs 76.0% (+1 task)</li>
+<li>Gemini edges ahead on <strong>basic tasks</strong> in run 1 (77.2% vs 76.0%), but drops to 69.6% in run 2 — Opus is more stable</li>
 <li>Opus pulls ahead on <strong>difficult tasks</strong>: 40% vs 20% (+1 task)</li>
-<li>They tie exactly on <strong>intermediate tasks</strong>: 67.2% (45/67)</li>
+<li>They tie on <strong>intermediate tasks</strong> in run 1 (67.2%), but Gemini run 2 actually beats both at 70.1%</li>
 </ul>
 
-<p>This suggests the <strong>ceiling is set by the documentation coverage</strong>, not the model. Context7's Qiskit index determines which API questions can be answered, and both models are good enough to use the provided docs correctly. The bottleneck has shifted from model capability to retrieval quality.</p>
-
-<p>Also notable: Opus 4.6 had only 2 infrastructure failures vs Gemini's 5 (all Context7 429 rate-limit errors in the Gemini run, which was done without an API key). The Opus run used a Context7 API key and had zero rate-limit issues.</p>
+<p>The most robust conclusion is that <strong>both models score in the 68-71% band with Context7</strong>, and the ceiling is set by documentation coverage, not model capability.</p>
 
 <h2>Inside the 34 Unsolvable Tasks</h2>
 
@@ -1201,20 +1206,20 @@ export const posts: BlogPost[] = [
 
 <h3>The Ensemble Opportunity</h3>
 
-<p>While both models score 70.9%, they don't fail on the same tasks. Each model uniquely solves 10 tasks the other misses — a perfectly symmetric disagreement. If you could pick the best answer from either model, the <strong>union pass rate is 77.5%</strong> (117/151). The disagreements cluster around logic errors where one model's reasoning happens to align with the test:</p>
+<p>With three runs (Gemini x2 + Opus x1), we can measure ensemble strategies:</p>
 
 <table>
-<thead><tr><th>Task</th><th>Gemini</th><th>Opus</th><th>Failure Type</th></tr></thead>
+<thead><tr><th>Strategy</th><th>Pass Rate</th><th>Gain vs Best Single</th></tr></thead>
 <tbody>
-<tr><td>QFT (task 65)</td><td>PASS</td><td>FAIL</td><td>Rotation order</td></tr>
-<tr><td>Conditional circuit (task 88)</td><td>FAIL</td><td>PASS</td><td>Control flow logic</td></tr>
-<tr><td>Product formula (task 112)</td><td>PASS</td><td>FAIL</td><td>Trotter decomposition</td></tr>
-<tr><td>CHSH circuit (task 67)</td><td>FAIL</td><td>PASS</td><td>Measurement basis</td></tr>
-<tr><td>Clifford equivalence (task 110)</td><td>FAIL</td><td>PASS</td><td>Circuit identity</td></tr>
+<tr><td>Best single run (Gemini r1 or Opus)</td><td>70.9% (107/151)</td><td>baseline</td></tr>
+<tr><td><strong>3-way majority vote</strong></td><td><strong>71.5% (108/151)</strong></td><td>+0.7pp</td></tr>
+<tr><td>Union of all 3 runs</td><td><strong>79.5% (120/151)</strong></td><td>+8.6pp</td></tr>
 </tbody>
 </table>
 
-<p>Model diversity is as valuable as better documentation for closing the remaining gap.</p>
+<p>Majority voting barely helps (+1 task) because the three runs are too correlated — Gemini's two runs share the same model biases. The <strong>union ceiling of 79.5%</strong> is the real headline: if you had an oracle to pick the best answer from any run, you'd solve 120 of 151 tasks. That leaves only 31 truly unsolvable tasks (20.5%).</p>
+
+<p>The disagreement between models is substantial. Gemini and Opus each uniquely solve 10 tasks the other misses. And within Gemini alone, 16 tasks flip between runs. The tasks that flip tend to be ones where the model is on the margin — small changes in retrieved documentation or sampling cause it to cross the pass/fail boundary.</p>
 
 <h3>RAG Regressions</h3>
 
@@ -1233,10 +1238,8 @@ export const posts: BlogPost[] = [
 <p>We want to be transparent about what this experiment does and doesn't show:</p>
 
 <ul>
-<li><strong>Single run per configuration.</strong> We ran each configuration once (Pass@1). Without multiple runs, we can't compute confidence intervals. The true improvement could be anywhere from ~5pp to ~12pp.</li>
-<li><strong>No contamination check.</strong> Context7 retrieves documentation that may contain example code similar to benchmark tasks. We haven't verified whether retrieved snippets overlap with test solutions — a potential source of inflated scores.</li>
-<li><strong>Context7 rate limiting.</strong> The Gemini run (without API key) had 5 of 151 tasks hit HTTP 429. The Opus run (with API key) had zero rate-limit issues.</li>
-<li><strong>No Pass@k.</strong> We use Pass@1 (one attempt per task). Standard practice in code generation benchmarks uses Pass@k to account for sampling variance. Our results represent a lower bound.</li>
+<li><strong>Two runs for Gemini, one for Opus.</strong> The 2.7pp variance between Gemini runs (70.9% vs 68.2%) suggests our measurements have a confidence interval of roughly +/-3pp. A single Opus run may be above or below its true mean.</li>
+<li><strong>No contamination check.</strong> Context7 retrieves documentation that may contain example code similar to benchmark tasks. We captured all retrieved snippets (rag_docs) but haven't yet audited them for overlap with test solutions.</li>
 <li><strong>No sandboxing.</strong> Generated code executes in a subprocess but not in a fully sandboxed environment.</li>
 </ul>
 
@@ -1254,11 +1257,10 @@ export const posts: BlogPost[] = [
 <h2>Next Steps</h2>
 
 <ol>
-<li><strong>Ensemble voting</strong> — The 77.5% union ceiling suggests a simple "pick the best of two models" approach could gain 7pp with no new infrastructure. Even a confidence-weighted vote could help.</li>
-<li><strong>Agentic retry</strong> — Let the model see error messages and try again. 21 of 34 core failures produce assertion errors with informative messages. This is how developers actually work, and how systems like QUASAR achieve 99%+ validity.</li>
+<li><strong>Ensemble selection</strong> — The 79.5% union ceiling (120/151) from just 3 runs shows massive headroom. A verifier model that checks which completion is correct — or even a simple "run the test, retry if it fails" loop — could capture much of this gap.</li>
+<li><strong>Agentic retry</strong> — 21 of 31 hard-floor failures produce assertion errors with informative messages. Letting the model see the error and retry is how developers actually work, and how systems like QUASAR achieve 99%+ validity.</li>
 <li><strong>Better retrieval</strong> — 9 core failures are API staleness that Context7 doesn't cover. Augmenting the index with <code>qiskit_ibm_transpiler</code>, <code>ResilienceOptionsV2</code>, and <code>EstimatorV2</code> keyword signatures could push the ceiling higher.</li>
-<li><strong>Pass@3 and confidence intervals</strong> — Multiple runs per configuration to establish statistical significance.</li>
-<li><strong>Contamination audit</strong> — Check whether Context7 retrievals overlap with benchmark test solutions.</li>
+<li><strong>Contamination audit</strong> — We now have all retrieved Context7 snippets saved in the run 2 results. Next: check whether any snippets contain code that overlaps with test solutions.</li>
 </ol>
 
 <p>All benchmark code and results are open source: <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results">github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results</a></p>
