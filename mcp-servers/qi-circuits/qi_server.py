@@ -159,25 +159,28 @@ def qi_get_results(job_id: int) -> str:
     try:
         backend = _get_remote()
 
-        # Use raw results API (get_final_results returns empty dicts due to pydantic issue)
-        results = backend.get_results(job_id)
-        if results is not None:
-            results_data = []
-            for r in results:
-                entry = {}
-                for attr in ["shots_requested", "shots_done", "results"]:
-                    if hasattr(r, attr):
-                        entry[attr] = getattr(r, attr)
-                results_data.append(entry)
+        # get_results returns a PageResult — access .items for the list
+        raw = backend.get_results(job_id)
+        items = raw.items if hasattr(raw, "items") else (raw or [])
+
+        results_data = []
+        for r in items:
+            entry = {}
+            for attr in ["shots_requested", "shots_done", "results"]:
+                if hasattr(r, attr):
+                    entry[attr] = getattr(r, attr)
+            results_data.append(entry)
+
+        if results_data and any(e.get("results") for e in results_data):
             return json.dumps({"job_id": job_id, "status": "COMPLETED", "results": results_data}, default=str)
 
-        # Job not done yet
+        # Job may not be done yet
         job = backend.get_job(job_id)
         status = str(getattr(job, "status", "UNKNOWN"))
         return json.dumps({
             "job_id": job_id,
             "status": status,
-            "message": "Job not yet completed. Try again later.",
+            "message": "Job not yet completed or no results available.",
         })
     except Exception as e:
         return json.dumps({"error": str(e), "traceback": traceback.format_exc()})
