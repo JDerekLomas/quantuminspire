@@ -19,6 +19,13 @@ const vizExhibits = [
   { href: '/entanglement', title: 'Entanglement Lab', desc: 'Density matrices, partial traces, Bell states. Concurrence and von Neumann entropy.', color: '#ff6b9d', features: '8 states, reduced density matrices, metrics' },
   { href: '/teleportation', title: 'Quantum Teleportation', desc: 'Step through the teleportation protocol with animated circuit, amplitude bars, and Bloch sphere.', color: '#06b6d4', features: 'Bell pairs, measurement, classical channel, corrections' },
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Watch a qubit oscillate between |0\u27E9 and |1\u27E9 under a driving field. Detuning, damping, Bloch sphere trajectory.', color: '#eab308', features: 'Animated, detuning, T\u2082 dephasing, Bloch sphere' },
+  { href: '/how-qubits-work/spectroscopy', title: 'How We Tune a Qubit', desc: 'Spectroscopy fundamentals: CW vs pulsed lineshapes, saturation, and power broadening.', color: '#8b5cf6', features: 'CW vs pulse, saturation, calibration model notes' },
+  { href: '/how-qubits-work/coherence', title: 'Why Qubits Forget', desc: 'T1, T2, coherence decay, and linewidth intuition.', color: '#ff6b9d', features: 'Decay curves, linewidth, Q consistency' },
+  { href: '/how-qubits-work/coupling', title: 'How Qubits Talk', desc: 'Avoided crossings and dispersive shifts for two-qubit interaction.', color: '#00d4ff', features: 'Gap = 2g, dispersive shift' },
+  { href: '/how-qubits-work/gates', title: 'How Gates Happen', desc: 'Pulse shaping, leakage, and control errors.', color: '#f59e0b', features: 'Pulse spectra, error knobs, Bloch dial' },
+  { href: '/how-qubits-work/measurement', title: 'How We Measure', desc: 'Dispersive readout, probe contrast, and fidelity.', color: '#22d3ee', features: 'Readout curves, histograms' },
+  { href: '/how-qubits-work/scaling', title: 'How We Scale', desc: 'Spectral crowding and routing cost.', color: '#a78bfa', features: 'Crowding vs spacing, SWAP compounding' },
+  { href: '/how-qubits-work', title: 'How Qubits Work (Series)', desc: 'Physics-first labs that explain control, coherence, coupling, and scaling.', color: '#a78bfa', features: 'Series index, module map' },
   { href: '/interference', title: 'Multi-Slit Interference', desc: 'N-slit diffraction patterns with adjustable geometry and wavelength. Photon-by-photon accumulation mode.', color: '#14b8a6', features: '1-8 slits, visible spectrum, photon mode' },
   { href: '/qsphere', title: 'Q-Sphere', desc: 'Multi-qubit states on a sphere. Basis states placed by Hamming weight, dot size = amplitude, color = phase.', color: '#e879f9', features: '2-4 qubits, Bell/GHZ/W states, gates, CNOT' },
   { href: '/gallery', title: 'Visualization Gallery', desc: 'Curated collection of the best quantum visualizations across the web. Interactive demos, open-source tools, and reference implementations.', color: '#f59e0b', features: '20+ tools, live embeds, quality ratings' },
@@ -78,6 +85,7 @@ function Nav() {
           <a href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
           <a href="/replications" className="hover:text-[#ff8c42] transition-colors">Replications</a>
           <a href="/learn" className="hover:text-[#8b5cf6] transition-colors">Learn</a>
+          <a href="/get-started" className="hover:text-[#00d4ff] transition-colors">Get Started</a>
           <a href="/sonification" className="hover:text-[#e879f9] transition-colors">Listen</a>
           <a href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</a>
           <a href="/wp44" className="hover:text-[#ff6b9d] transition-colors hidden sm:block">WP4.4</a>
