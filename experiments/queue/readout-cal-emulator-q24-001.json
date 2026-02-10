@@ -1,0 +1,16 @@
+{
+  "id": "readout-cal-emulator-q24-001",
+  "type": "readout_calibration",
+  "backend": "emulator",
+  "priority": 2,
+  "status": "completed",
+  "parameters": {
+    "shots": 4096,
+    "qubits": [
+      2,
+      4
+    ]
+  },
+  "research_question": "Control experiment: does the emulator produce perfect readout (identity confusion matrix)?",
+  "purpose": "Verify readout calibration circuits work correctly. Emulator should show 0% readout error."
+}

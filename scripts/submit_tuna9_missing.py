@@ -51,22 +51,27 @@ PERUZZO_ALPHA = -0.1273
 
 peruzzo_zbasis = f"""version 3.0
 qubit[7] q
+bit[7] b
 X q[6]
 Ry({PERUZZO_ALPHA}) q[4]
 CNOT q[4], q[6]
+b = measure q
 """
 
 peruzzo_xbasis = f"""version 3.0
 qubit[7] q
+bit[7] b
 X q[6]
 Ry({PERUZZO_ALPHA}) q[4]
 CNOT q[4], q[6]
 H q[4]
 H q[6]
+b = measure q
 """
 
 peruzzo_ybasis = f"""version 3.0
 qubit[7] q
+bit[7] b
 X q[6]
 Ry({PERUZZO_ALPHA}) q[4]
 CNOT q[4], q[6]
@@ -74,6 +79,7 @@ Sdag q[4]
 H q[4]
 Sdag q[6]
 H q[6]
+b = measure q
 """
 
 # ── Kandala H2 VQE (4-qubit JW on q[2,4,6,8]) ─────────────────
@@ -101,22 +107,27 @@ H2_ALPHA = -0.2234
 # q[6,8] pair — new pair, not tested before!
 h2_q68_zbasis = f"""version 3.0
 qubit[9] q
+bit[9] b
 X q[6]
 Ry({H2_ALPHA}) q[8]
 CNOT q[8], q[6]
+b = measure q
 """
 
 h2_q68_xbasis = f"""version 3.0
 qubit[9] q
+bit[9] b
 X q[6]
 Ry({H2_ALPHA}) q[8]
 CNOT q[8], q[6]
 H q[6]
 H q[8]
+b = measure q
 """
 
 h2_q68_ybasis = f"""version 3.0
 qubit[9] q
+bit[9] b
 X q[6]
 Ry({H2_ALPHA}) q[8]
 CNOT q[8], q[6]
@@ -124,30 +135,39 @@ Sdag q[6]
 H q[6]
 Sdag q[8]
 H q[8]
+b = measure q
 """
 
 # Readout calibration for q[4,6] (HeH+)
 cal_q46_00 = """version 3.0
 qubit[7] q
+bit[7] b
 I q[4]
+b = measure q
 """
 
 cal_q46_11 = """version 3.0
 qubit[7] q
+bit[7] b
 X q[4]
 X q[6]
+b = measure q
 """
 
 # Readout calibration for q[6,8] (H2)
 cal_q68_00 = """version 3.0
 qubit[9] q
+bit[9] b
 I q[6]
+b = measure q
 """
 
 cal_q68_11 = """version 3.0
 qubit[9] q
+bit[9] b
 X q[6]
 X q[8]
+b = measure q
 """
 
 

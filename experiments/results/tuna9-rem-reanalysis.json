@@ -1,0 +1,616 @@
+{
+  "calibration_file": "readout-cal-tuna9-q24-001",
+  "qubits": [
+    2,
+    4
+  ],
+  "n_experiments": 21,
+  "strategy_wins": {
+    "raw": 0,
+    "ps": 0,
+    "rem": 3,
+    "rem_ps": 13,
+    "ps_rem": 5
+  },
+  "results": [
+    {
+      "id": "vqe-tuna9-bestpair-001",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9607,
+      "raw": {
+        "energy": -1.101985,
+        "error_kcal": 22.16
+      },
+      "ps": {
+        "energy": -1.132457,
+        "error_kcal": 3.04
+      },
+      "rem": {
+        "energy": -1.137302,
+        "error_kcal": 0.0
+      },
+      "rem_ps": {
+        "energy": -1.140149,
+        "error_kcal": 1.78
+      },
+      "ps_rem": {
+        "energy": -1.137442,
+        "error_kcal": 0.09
+      }
+    },
+    {
+      "id": "vqe-tuna9-rem-001",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9602,
+      "raw": {
+        "energy": -1.099389,
+        "error_kcal": 23.79
+      },
+      "ps": {
+        "energy": -1.130078,
+        "error_kcal": 4.54
+      },
+      "rem": {
+        "energy": -1.132545,
+        "error_kcal": 2.99
+      },
+      "rem_ps": {
+        "energy": -1.138973,
+        "error_kcal": 1.05
+      },
+      "ps_rem": {
+        "energy": -1.135837,
+        "error_kcal": 0.92
+      }
+    },
+    {
+      "id": "vqe-tuna9-rem-002",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9126,
+      "raw": {
+        "energy": -1.056517,
+        "error_kcal": 50.7
+      },
+      "ps": {
+        "energy": -1.123585,
+        "error_kcal": 8.61
+      },
+      "rem": {
+        "energy": -1.127741,
+        "error_kcal": 6.0
+      },
+      "rem_ps": {
+        "energy": -1.13396,
+        "error_kcal": 2.1
+      },
+      "ps_rem": {
+        "energy": -1.129327,
+        "error_kcal": 5.01
+      }
+    },
+    {
+      "id": "vqe-tuna9-rem-003",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.833,
+      "raw": {
+        "energy": -0.996628,
+        "error_kcal": 88.28
+      },
+      "ps": {
+        "energy": -1.124624,
+        "error_kcal": 7.96
+      },
+      "rem": {
+        "energy": -1.07512,
+        "error_kcal": 39.02
+      },
+      "rem_ps": {
+        "energy": -1.13759,
+        "error_kcal": 0.18
+      },
+      "ps_rem": {
+        "energy": -1.13103,
+        "error_kcal": 3.94
+      }
+    },
+    {
+      "id": "vqe-tuna9-sweep-050",
+      "bond_distance": 0.5,
+      "cnot_folds": 1,
+      "fci_energy": -1.05516,
+      "ps_keep_fraction": 0.9607,
+      "raw": {
+        "energy": -0.994451,
+        "error_kcal": 38.1
+      },
+      "ps": {
+        "energy": -1.039263,
+        "error_kcal": 9.98
+      },
+      "rem": {
+        "energy": -1.03649,
+        "error_kcal": 11.72
+      },
+      "rem_ps": {
+        "energy": -1.047106,
+        "error_kcal": 5.05
+      },
+      "ps_rem": {
+        "energy": -1.041682,
+        "error_kcal": 8.46
+      }
+    },
+    {
+      "id": "vqe-tuna9-sweep-100",
+      "bond_distance": 1.0,
+      "cnot_folds": 1,
+      "fci_energy": -1.10115,
+      "ps_keep_fraction": 0.9702,
+      "raw": {
+        "energy": -1.079663,
+        "error_kcal": 13.48
+      },
+      "ps": {
+        "energy": -1.09459,
+        "error_kcal": 4.12
+      },
+      "rem": {
+        "energy": -1.106461,
+        "error_kcal": 3.33
+      },
+      "rem_ps": {
+        "energy": -1.106953,
+        "error_kcal": 3.64
+      },
+      "ps_rem": {
+        "energy": -1.105482,
+        "error_kcal": 2.72
+      }
+    },
+    {
+      "id": "vqe-tuna9-sweep-150",
+      "bond_distance": 1.5,
+      "cnot_folds": 1,
+      "fci_energy": -0.998149,
+      "ps_keep_fraction": 0.9619,
+      "raw": {
+        "energy": -0.970955,
+        "error_kcal": 17.06
+      },
+      "ps": {
+        "energy": -0.977944,
+        "error_kcal": 12.68
+      },
+      "rem": {
+        "energy": -1.002144,
+        "error_kcal": 2.51
+      },
+      "rem_ps": {
+        "energy": -1.003571,
+        "error_kcal": 3.4
+      },
+      "ps_rem": {
+        "energy": -1.002669,
+        "error_kcal": 2.84
+      }
+    },
+    {
+      "id": "vqe-tuna9-sweep-200",
+      "bond_distance": 2.0,
+      "cnot_folds": 1,
+      "fci_energy": -0.948641,
+      "ps_keep_fraction": 0.9587,
+      "raw": {
+        "energy": -0.918859,
+        "error_kcal": 18.69
+      },
+      "ps": {
+        "energy": -0.921044,
+        "error_kcal": 17.32
+      },
+      "rem": {
+        "energy": -0.95478,
+        "error_kcal": 3.85
+      },
+      "rem_ps": {
+        "energy": -0.954876,
+        "error_kcal": 3.91
+      },
+      "ps_rem": {
+        "energy": -0.954618,
+        "error_kcal": 3.75
+      }
+    },
+    {
+      "id": "vqe-tuna9-sweep-250",
+      "bond_distance": 2.5,
+      "cnot_folds": 1,
+      "fci_energy": -0.936055,
+      "ps_keep_fraction": 0.9583,
+      "raw": {
+        "energy": -0.914197,
+        "error_kcal": 13.72
+      },
+      "ps": {
+        "energy": -0.914662,
+        "error_kcal": 13.42
+      },
+      "rem": {
+        "energy": -0.939732,
+        "error_kcal": 2.31
+      },
+      "rem_ps": {
+        "energy": -0.939857,
+        "error_kcal": 2.39
+      },
+      "ps_rem": {
+        "energy": -0.939734,
+        "error_kcal": 2.31
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f1-001",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.948,
+      "raw": {
+        "energy": -1.087227,
+        "error_kcal": 31.43
+      },
+      "ps": {
+        "energy": -1.127249,
+        "error_kcal": 6.31
+      },
+      "rem": {
+        "energy": -1.127654,
+        "error_kcal": 6.06
+      },
+      "rem_ps": {
+        "energy": -1.137102,
+        "error_kcal": 0.13
+      },
+      "ps_rem": {
+        "energy": -1.132904,
+        "error_kcal": 2.76
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f1-002",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9512,
+      "raw": {
+        "energy": -1.08454,
+        "error_kcal": 33.11
+      },
+      "ps": {
+        "energy": -1.122125,
+        "error_kcal": 9.53
+      },
+      "rem": {
+        "energy": -1.123146,
+        "error_kcal": 8.89
+      },
+      "rem_ps": {
+        "energy": -1.131078,
+        "error_kcal": 3.91
+      },
+      "ps_rem": {
+        "energy": -1.12731,
+        "error_kcal": 6.27
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f1-003",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9558,
+      "raw": {
+        "energy": -1.087464,
+        "error_kcal": 31.28
+      },
+      "ps": {
+        "energy": -1.12134,
+        "error_kcal": 10.02
+      },
+      "rem": {
+        "energy": -1.126353,
+        "error_kcal": 6.87
+      },
+      "rem_ps": {
+        "energy": -1.129923,
+        "error_kcal": 4.63
+      },
+      "ps_rem": {
+        "energy": -1.126808,
+        "error_kcal": 6.59
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f1-004",
+      "bond_distance": 0.735,
+      "cnot_folds": 1,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9458,
+      "raw": {
+        "energy": -1.087731,
+        "error_kcal": 31.11
+      },
+      "ps": {
+        "energy": -1.129441,
+        "error_kcal": 4.94
+      },
+      "rem": {
+        "energy": -1.132696,
+        "error_kcal": 2.89
+      },
+      "rem_ps": {
+        "energy": -1.138923,
+        "error_kcal": 1.01
+      },
+      "ps_rem": {
+        "energy": -1.135344,
+        "error_kcal": 1.23
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f3-001",
+      "bond_distance": 0.735,
+      "cnot_folds": 3,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9458,
+      "raw": {
+        "energy": -1.081379,
+        "error_kcal": 35.09
+      },
+      "ps": {
+        "energy": -1.122956,
+        "error_kcal": 9.0
+      },
+      "rem": {
+        "energy": -1.123007,
+        "error_kcal": 8.97
+      },
+      "rem_ps": {
+        "energy": -1.133177,
+        "error_kcal": 2.59
+      },
+      "ps_rem": {
+        "energy": -1.128831,
+        "error_kcal": 5.32
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f3-002",
+      "bond_distance": 0.735,
+      "cnot_folds": 3,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.957,
+      "raw": {
+        "energy": -1.09605,
+        "error_kcal": 25.89
+      },
+      "ps": {
+        "energy": -1.129131,
+        "error_kcal": 5.13
+      },
+      "rem": {
+        "energy": -1.128465,
+        "error_kcal": 5.55
+      },
+      "rem_ps": {
+        "energy": -1.139806,
+        "error_kcal": 1.57
+      },
+      "ps_rem": {
+        "energy": -1.135509,
+        "error_kcal": 1.13
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f3-003",
+      "bond_distance": 0.735,
+      "cnot_folds": 3,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9585,
+      "raw": {
+        "energy": -1.084115,
+        "error_kcal": 33.38
+      },
+      "ps": {
+        "energy": -1.115952,
+        "error_kcal": 13.4
+      },
+      "rem": {
+        "energy": -1.11389,
+        "error_kcal": 14.69
+      },
+      "rem_ps": {
+        "energy": -1.12519,
+        "error_kcal": 7.6
+      },
+      "ps_rem": {
+        "energy": -1.120856,
+        "error_kcal": 10.32
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f3-004",
+      "bond_distance": 0.735,
+      "cnot_folds": 3,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9517,
+      "raw": {
+        "energy": -1.089028,
+        "error_kcal": 30.29
+      },
+      "ps": {
+        "energy": -1.126257,
+        "error_kcal": 6.93
+      },
+      "rem": {
+        "energy": -1.126864,
+        "error_kcal": 6.55
+      },
+      "rem_ps": {
+        "energy": -1.135364,
+        "error_kcal": 1.22
+      },
+      "ps_rem": {
+        "energy": -1.131636,
+        "error_kcal": 3.56
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f5-001",
+      "bond_distance": 0.735,
+      "cnot_folds": 5,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9285,
+      "raw": {
+        "energy": -1.068652,
+        "error_kcal": 43.08
+      },
+      "ps": {
+        "energy": -1.123757,
+        "error_kcal": 8.5
+      },
+      "rem": {
+        "energy": -1.111126,
+        "error_kcal": 16.43
+      },
+      "rem_ps": {
+        "energy": -1.136369,
+        "error_kcal": 0.59
+      },
+      "ps_rem": {
+        "energy": -1.129313,
+        "error_kcal": 5.02
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f5-002",
+      "bond_distance": 0.735,
+      "cnot_folds": 5,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9548,
+      "raw": {
+        "energy": -1.092587,
+        "error_kcal": 28.06
+      },
+      "ps": {
+        "energy": -1.127522,
+        "error_kcal": 6.14
+      },
+      "rem": {
+        "energy": -1.123774,
+        "error_kcal": 8.49
+      },
+      "rem_ps": {
+        "energy": -1.136875,
+        "error_kcal": 0.27
+      },
+      "ps_rem": {
+        "energy": -1.132266,
+        "error_kcal": 3.16
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f5-003",
+      "bond_distance": 0.735,
+      "cnot_folds": 5,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9438,
+      "raw": {
+        "energy": -1.08924,
+        "error_kcal": 30.16
+      },
+      "ps": {
+        "energy": -1.132867,
+        "error_kcal": 2.79
+      },
+      "rem": {
+        "energy": -1.123545,
+        "error_kcal": 8.64
+      },
+      "rem_ps": {
+        "energy": -1.142635,
+        "error_kcal": 3.34
+      },
+      "ps_rem": {
+        "energy": -1.137225,
+        "error_kcal": 0.05
+      }
+    },
+    {
+      "id": "vqe-tuna9-zne-f5-004",
+      "bond_distance": 0.735,
+      "cnot_folds": 5,
+      "fci_energy": -1.137306,
+      "ps_keep_fraction": 0.9319,
+      "raw": {
+        "energy": -1.069306,
+        "error_kcal": 42.67
+      },
+      "ps": {
+        "energy": -1.12133,
+        "error_kcal": 10.02
+      },
+      "rem": {
+        "energy": -1.112824,
+        "error_kcal": 15.36
+      },
+      "rem_ps": {
+        "energy": -1.133323,
+        "error_kcal": 2.5
+      },
+      "ps_rem": {
+        "energy": -1.127181,
+        "error_kcal": 6.35
+      }
+    }
+  ],
+  "summary": {
+    "raw": {
+      "mean_error_kcal": 32.45,
+      "median_error_kcal": 31.11,
+      "min_error_kcal": 13.48,
+      "max_error_kcal": 88.28
+    },
+    "ps": {
+      "mean_error_kcal": 8.3,
+      "median_error_kcal": 8.5,
+      "min_error_kcal": 2.79,
+      "max_error_kcal": 17.32
+    },
+    "rem": {
+      "mean_error_kcal": 8.62,
+      "median_error_kcal": 6.55,
+      "min_error_kcal": 0.0,
+      "max_error_kcal": 39.02
+    },
+    "rem_ps": {
+      "mean_error_kcal": 2.52,
+      "median_error_kcal": 2.39,
+      "min_error_kcal": 0.13,
+      "max_error_kcal": 7.6
+    },
+    "ps_rem": {
+      "mean_error_kcal": 3.9,
+      "median_error_kcal": 3.56,
+      "min_error_kcal": 0.05,
+      "max_error_kcal": 10.32
+    }
+  }
+}

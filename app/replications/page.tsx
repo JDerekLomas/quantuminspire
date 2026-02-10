@@ -37,7 +37,8 @@ function backendLabel(b: string): string {
     case 'emulator_rb': return 'QI Emulator (RB)'
     case 'ibm': return 'IBM Quantum'
     case 'ibm_torino': return 'IBM Torino'
-    case 'tuna9': return 'QI Tuna-9'
+    case 'tuna9': case 'tuna-9': return 'QI Tuna-9'
+    case 'iqm_garnet': return 'IQM Garnet'
     default: return b
   }
 }
@@ -46,7 +47,8 @@ function backendColor(b: string): string {
   switch (b) {
     case 'emulator': case 'emulator_rb': return '#eab308'
     case 'ibm': case 'ibm_torino': return '#00d4ff'
-    case 'tuna9': return '#8b5cf6'
+    case 'tuna9': case 'tuna-9': return '#8b5cf6'
+    case 'iqm_garnet': return '#ff6b9d'
     default: return '#666'
   }
 }
@@ -245,9 +247,11 @@ export default function ReplicationsPage() {
             reveal what&apos;s real, what&apos;s noisy, and where the field stands.
           </p>
           <p className="text-gray-400 max-w-3xl">
-            Each paper is tested on up to three backends: a noiseless emulator (correctness baseline),{' '}
+            Each paper is tested on up to four backends: a noiseless emulator (correctness baseline),{' '}
             <a href="https://www.quantum-inspire.com/" target="_blank" rel="noopener noreferrer" className="text-[#8b5cf6] hover:underline">QI Tuna-9</a>{' '}
-            (9 superconducting qubits), and{' '}
+            (9 superconducting qubits),{' '}
+            <a href="https://www.meetiqm.com/iqm-garnet" target="_blank" rel="noopener noreferrer" className="text-[#ff6b9d] hover:underline">IQM Garnet</a>{' '}
+            (20 qubits), and{' '}
             <a href="https://quantum.ibm.com/" target="_blank" rel="noopener noreferrer" className="text-[#00d4ff] hover:underline">IBM Torino</a>{' '}
             (133 qubits). Claims are compared quantitatively against published values.
           </p>
@@ -258,6 +262,132 @@ export default function ReplicationsPage() {
       <section className="px-6 pb-10">
         <div className="max-w-6xl mx-auto">
           <SummaryStats reports={reports} />
+        </div>
+      </section>
+
+      {/* Cross-Platform Comparison */}
+      <section className="px-6 pb-10">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#00d4ff] mb-6">
+            Three Chips, One Suite
+          </h2>
+          <p className="text-sm text-gray-400 mb-6 max-w-3xl">
+            Same circuits, different hardware. Each metric tested on QI Tuna-9 (9 superconducting qubits),
+            IQM Garnet (20 qubits), and IBM Torino (133 qubits).
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-3 pr-4 text-gray-500 font-mono text-xs">Metric</th>
+                  {[
+                    { name: 'QI Tuna-9', qubits: '9q', color: '#8b5cf6' },
+                    { name: 'IQM Garnet', qubits: '20q', color: '#ff6b9d' },
+                    { name: 'IBM Torino', qubits: '133q', color: '#00d4ff' },
+                  ].map(b => (
+                    <th key={b.name} className="text-center py-3 px-3 font-mono text-xs" style={{ color: b.color }}>
+                      {b.name} <span className="text-gray-600">({b.qubits})</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="font-mono text-xs">
+                {[
+                  { metric: 'Bell fidelity', tuna9: '93.5%', iqm: '98.1%', ibm: '86.5%', best: 'iqm' },
+                  { metric: 'GHZ-3 fidelity', tuna9: '88.9%', iqm: '93.9%', ibm: '82.9%', best: 'iqm' },
+                  { metric: 'GHZ-5 fidelity', tuna9: '83.8%', iqm: '81.8%', ibm: '76.6%', best: 'tuna9' },
+                  { metric: 'GHZ-10', tuna9: 'n/a', iqm: '54.7%', ibm: '62.2%', best: 'ibm' },
+                  { metric: 'Quantum Volume', tuna9: '8', iqm: '32', ibm: '32', best: 'both' },
+                  { metric: 'RB gate fidelity', tuna9: '99.82%', iqm: '99.82%', ibm: '99.99%*', best: 'tuna9' },
+                  { metric: 'VQE H2 (kcal/mol)', tuna9: '3.04', iqm: '--', ibm: '1.66', best: 'ibm' },
+                  { metric: 'Dominant noise', tuna9: 'Dephasing', iqm: 'Dephasing', ibm: 'Depolarizing', best: '' },
+                ].map(row => (
+                  <tr key={row.metric} className="border-b border-white/5 hover:bg-white/[0.02]">
+                    <td className="py-2.5 pr-4 text-gray-300">{row.metric}</td>
+                    <td className={`py-2.5 px-3 text-center ${row.best === 'tuna9' ? 'text-[#8b5cf6] font-bold' : 'text-gray-400'}`}>
+                      {row.tuna9}
+                    </td>
+                    <td className={`py-2.5 px-3 text-center ${row.best === 'iqm' ? 'text-[#ff6b9d] font-bold' : 'text-gray-400'}`}>
+                      {row.iqm}
+                    </td>
+                    <td className={`py-2.5 px-3 text-center ${row.best === 'ibm' ? 'text-[#00d4ff] font-bold' : 'text-gray-400'}`}>
+                      {row.ibm}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-[10px] text-gray-600 font-mono mt-3">
+            * IBM RB inflated by transpiler collapsing Clifford sequences. Tuna-9/IQM values are true gate fidelity.
+            Bold = best per metric. VQE uses Z-parity post-selection. -- = not yet tested.
+          </p>
+        </div>
+      </section>
+
+      {/* Replication Heatmap */}
+      <section className="px-6 pb-10">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#ff8c42] mb-6">
+            Replication Success by Backend
+          </h2>
+          <p className="text-sm text-gray-400 mb-6 max-w-3xl">
+            Which papers pass on which hardware? Green = all claims pass. Orange = partial.
+            Red = fails. Gray = not yet tested.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-3 pr-4 text-gray-500 font-mono text-xs">Paper</th>
+                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#eab308' }}>Emulator</th>
+                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#8b5cf6' }}>Tuna-9</th>
+                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#00d4ff' }}>IBM Torino</th>
+                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#ff6b9d' }}>IQM Garnet</th>
+                  <th className="text-right py-3 pl-4 text-gray-500 font-mono text-xs">Type</th>
+                </tr>
+              </thead>
+              <tbody className="font-mono text-xs">
+                {[
+                  { paper: 'Sagastizabal 2019', emulator: 'pass', tuna9: 'partial', ibm: 'partial', iqm: null, type: 'VQE + EM', note: '4/4 claims' },
+                  { paper: 'Kandala 2017', emulator: 'pass', tuna9: 'partial', ibm: 'partial', iqm: null, type: 'VQE', note: '4/5 claims' },
+                  { paper: 'Peruzzo 2014', emulator: 'pass', tuna9: null, ibm: 'fail', iqm: null, type: 'VQE', note: '3/5 claims' },
+                  { paper: 'Cross 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: 'partial', type: 'QV + RB', note: '3/3 claims' },
+                  { paper: 'Harrigan 2021', emulator: 'pass', tuna9: 'pass', ibm: null, iqm: null, type: 'QAOA', note: '4/4 claims' },
+                ].map(row => {
+                  const cellStyle = (val: string | null) => {
+                    if (val === null) return 'text-gray-700 bg-white/[0.01]'
+                    if (val === 'pass') return 'text-[#00ff88] bg-[#00ff88]/5'
+                    if (val === 'partial') return 'text-[#ff8c42] bg-[#ff8c42]/5'
+                    return 'text-[#ff6b9d] bg-[#ff6b9d]/5'
+                  }
+                  const cellLabel = (val: string | null) => {
+                    if (val === null) return '--'
+                    if (val === 'pass') return 'PASS'
+                    if (val === 'partial') return 'PARTIAL'
+                    return 'FAIL'
+                  }
+                  return (
+                    <tr key={row.paper} className="border-b border-white/5">
+                      <td className="py-2.5 pr-4 text-gray-300">
+                        {row.paper}
+                        <span className="text-gray-600 ml-2">{row.note}</span>
+                      </td>
+                      <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.emulator)}`}>{cellLabel(row.emulator)}</td>
+                      <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.tuna9)}`}>{cellLabel(row.tuna9)}</td>
+                      <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.ibm)}`}>{cellLabel(row.ibm)}</td>
+                      <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.iqm)}`}>{cellLabel(row.iqm)}</td>
+                      <td className="py-2.5 pl-4 text-right text-gray-600">{row.type}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-[10px] text-gray-600 font-mono mt-3">
+            PASS = all tested claims within published error bars. PARTIAL = some claims pass, some fail due to hardware noise.
+            FAIL = no claims pass on hardware. -- = not yet tested on this backend.
+          </p>
         </div>
       </section>
 

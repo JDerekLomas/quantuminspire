@@ -1,0 +1,16 @@
+{
+  "id": "readout-cal-tuna9-q24-001",
+  "type": "readout_calibration",
+  "backend": "tuna-9",
+  "priority": 1,
+  "status": "completed",
+  "parameters": {
+    "shots": 4096,
+    "qubits": [
+      2,
+      4
+    ]
+  },
+  "research_question": "What are the readout error rates on q[2,4]? Is there cross-talk between them? ZNE showed gate noise is NOT the dominant error source -- readout errors likely dominate the ~7 kcal/mol hardware error in VQE.",
+  "purpose": "Calibrate per-qubit confusion matrices for readout error mitigation (REM). These matrices will be used to correct VQE measurement distributions, potentially recovering chemical accuracy."
+}

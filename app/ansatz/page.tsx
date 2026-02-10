@@ -1006,6 +1006,12 @@ export default function AnsatzPage() {
           <p className="text-sm text-gray-500 mb-6">
             Nodes are qubits. Edges are entangling gates (CNOT / ZZ). Select one to see its hardware mapping below.
           </p>
+          <div className="mt-4 mb-6 rounded-lg border border-quantum-accent/20 bg-quantum-accent/5 p-4 text-sm text-gray-300">
+            <span className="text-quantum-accent font-semibold">Think of it this way:</span>{' '}
+            Each edge is a quantum conversation between two qubits &mdash; entangling gates are how
+            qubits share information. More edges mean richer conversations, but also more opportunities
+            for noise to corrupt the message.
+          </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {(Object.keys(ANSATZE) as AnsatzId[]).map((id) => (
               <AnsatzCard
@@ -1046,6 +1052,13 @@ export default function AnsatzPage() {
             ))}
           </div>
 
+          <div className="mt-4 mb-6 rounded-lg border border-purple-500/20 bg-purple-500/5 p-4 text-sm text-gray-300">
+            <span className="text-purple-400 font-semibold">Think of it this way:</span>{' '}
+            Mapping an ansatz to hardware is like seating people at a dinner table &mdash; some
+            conversations need neighbors, and the table shape constrains who sits where. When all
+            edges are &ldquo;native,&rdquo; everyone who needs to talk is already adjacent. Otherwise, you
+            need SWAP routing: shuffling seats mid-dinner, which adds noise.
+          </div>
           <div className="grid lg:grid-cols-2 gap-8 items-start">
             {/* Hardware graph */}
             <div className="bg-quantum-card rounded-lg border border-quantum-border p-6">
@@ -1191,6 +1204,15 @@ export default function AnsatzPage() {
             (1 kcal/mol). Hover to explore.
           </p>
 
+          <div className="mb-4 rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-sm text-gray-300">
+            <span className="text-green-400 font-semibold">Think of it this way:</span>{' '}
+            The optimizer is a hiker searching for the lowest valley. The landscape here has one
+            valley (no barren plateaus), so the challenge is purely noise, not navigation. On real
+            hardware, it&apos;s like hiking in fog &mdash; the valley is there, but each step&apos;s altitude reading
+            is noisy. See our{' '}
+            <Link href="/hamiltonians" className="text-quantum-accent hover:underline">Hamiltonians page</Link>{' '}
+            to understand <em>what</em> this landscape encodes.
+          </div>
           <div className="bg-quantum-card rounded-lg border border-quantum-border p-6">
             <EnergyLandscape hoverTheta={hoverTheta} onHover={setHoverTheta} />
 

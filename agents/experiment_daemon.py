@@ -1417,6 +1417,200 @@ def analyze_detection_code(all_counts, params):
     return result
 
 
+# ─── Readout Error Calibration ────────────────────────────────────────────
+
+def generate_readout_cal_circuits(params):
+    """Generate readout calibration circuits for a qubit pair.
+
+    Prepares all 4 computational basis states (|00⟩, |01⟩, |10⟩, |11⟩) on
+    the target qubits, then measures. This gives the full 2-qubit confusion
+    matrix for readout error mitigation.
+
+    Research question: What are the readout error rates on each qubit, and
+    is there cross-talk between them?
+    """
+    qubits = params.get("qubits", [0, 1])
+    q0, q1 = qubits[0], qubits[1]
+    n = max(qubits) + 1
+
+    circuits = {}
+    # Prepare |00⟩ — no gates, just measure
+    circuits["prep_00"] = f"""version 3.0
+qubit[{n}] q
+bit[{n}] b
+
+// Readout calibration: prepare |00> on q[{q0}],q[{q1}]
+b = measure q"""
+
+    # Prepare |01⟩ — X on q1 only
+    circuits["prep_01"] = f"""version 3.0
+qubit[{n}] q
+bit[{n}] b
+
+// Readout calibration: prepare |01> on q[{q0}],q[{q1}]
+X q[{q1}]
+b = measure q"""
+
+    # Prepare |10⟩ — X on q0 only
+    circuits["prep_10"] = f"""version 3.0
+qubit[{n}] q
+bit[{n}] b
+
+// Readout calibration: prepare |10> on q[{q0}],q[{q1}]
+X q[{q0}]
+b = measure q"""
+
+    # Prepare |11⟩ — X on both
+    circuits["prep_11"] = f"""version 3.0
+qubit[{n}] q
+bit[{n}] b
+
+// Readout calibration: prepare |11> on q[{q0}],q[{q1}]
+X q[{q0}]
+X q[{q1}]
+b = measure q"""
+
+    return circuits
+
+
+def analyze_readout_cal(all_counts, params):
+    """Analyze readout calibration results.
+
+    Builds per-qubit 2x2 confusion matrices and the full 4x4 tensor
+    product matrix. Reports readout error rates, asymmetry, and cross-talk.
+    """
+    qubits = params.get("qubits", [0, 1])
+
+    # For each prepared state, extract measured distribution on target qubits
+    states_2q = {}  # state_label -> {measured_2q_bitstring: count}
+    for prep_label in ["prep_00", "prep_01", "prep_10", "prep_11"]:
+        counts = all_counts.get(prep_label, {})
+        if not counts:
+            continue
+        dist = {}
+        for bs, count in counts.items():
+            bits = _extract_qubit_bits(bs, qubits)
+            dist[bits] = dist.get(bits, 0) + count
+        states_2q[prep_label] = dist
+
+    if len(states_2q) < 4:
+        return {"error": f"Only {len(states_2q)}/4 calibration states available"}
+
+    # Build full 4x4 confusion matrix: M[measured][prepared]
+    # State ordering: 00, 01, 10, 11
+    state_order = ["00", "01", "10", "11"]
+    prep_labels = ["prep_00", "prep_01", "prep_10", "prep_11"]
+    confusion_4x4 = np.zeros((4, 4))
+
+    for j, prep in enumerate(prep_labels):
+        dist = states_2q[prep]
+        total = sum(dist.values())
+        if total == 0:
+            continue
+        for i, state in enumerate(state_order):
+            confusion_4x4[i, j] = dist.get(state, 0) / total
+
+    # Extract per-qubit confusion matrices (marginalizing over other qubit)
+    # For q0: marginalize over q1
+    # Prep q0=0: prep_00 + prep_01, measure q0
+    # Prep q0=1: prep_10 + prep_11, measure q0
+    def per_qubit_confusion(qubit_idx):
+        """Build 2x2 confusion matrix for one qubit, marginalizing the other."""
+        # prep=0: states where target qubit is prepared as 0
+        # prep=1: states where target qubit is prepared as 1
+        if qubit_idx == 0:
+            prep_0_labels = ["prep_00", "prep_01"]  # q0=0
+            prep_1_labels = ["prep_10", "prep_11"]  # q0=1
+        else:
+            prep_0_labels = ["prep_00", "prep_10"]  # q1=0
+            prep_1_labels = ["prep_01", "prep_11"]  # q1=1
+
+        p00, p10, p01, p11 = 0, 0, 0, 0
+        total_prep0, total_prep1 = 0, 0
+
+        for label in prep_0_labels:
+            dist = states_2q.get(label, {})
+            for bits, count in dist.items():
+                bit = int(bits[qubit_idx])
+                if bit == 0:
+                    p00 += count
+                else:
+                    p10 += count
+                total_prep0 += count
+
+        for label in prep_1_labels:
+            dist = states_2q.get(label, {})
+            for bits, count in dist.items():
+                bit = int(bits[qubit_idx])
+                if bit == 0:
+                    p01 += count
+                else:
+                    p11 += count
+                total_prep1 += count
+
+        if total_prep0 > 0 and total_prep1 > 0:
+            return np.array([
+                [p00 / total_prep0, p01 / total_prep1],
+                [p10 / total_prep0, p11 / total_prep1],
+            ])
+        return np.eye(2)
+
+    M0 = per_qubit_confusion(0)
+    M1 = per_qubit_confusion(1)
+
+    # Inverse matrices for correction
+    try:
+        M0_inv = np.linalg.inv(M0)
+        M1_inv = np.linalg.inv(M1)
+        M_full_inv = np.kron(M0_inv, M1_inv)
+    except np.linalg.LinAlgError:
+        M0_inv = np.eye(2)
+        M1_inv = np.eye(2)
+        M_full_inv = np.eye(4)
+
+    # Readout error rates
+    e0_flip01 = M0[1, 0]  # P(measure 1 | prepared 0) for q0
+    e0_flip10 = M0[0, 1]  # P(measure 0 | prepared 1) for q0
+    e1_flip01 = M1[1, 0]  # P(measure 1 | prepared 0) for q1
+    e1_flip10 = M1[0, 1]  # P(measure 0 | prepared 1) for q1
+
+    # Cross-talk: compare full 4x4 vs tensor product of per-qubit matrices
+    M_tensor = np.kron(M0, M1)
+    crosstalk = np.max(np.abs(confusion_4x4 - M_tensor))
+
+    return {
+        "confusion_matrix_4x4": confusion_4x4.tolist(),
+        "confusion_matrix_q0": M0.tolist(),
+        "confusion_matrix_q1": M1.tolist(),
+        "inverse_matrix_q0": M0_inv.tolist(),
+        "inverse_matrix_q1": M1_inv.tolist(),
+        "inverse_matrix_4x4": M_full_inv.tolist(),
+        "readout_errors": {
+            f"q{qubits[0]}_flip_0to1": round(float(e0_flip01), 6),
+            f"q{qubits[0]}_flip_1to0": round(float(e0_flip10), 6),
+            f"q{qubits[0]}_total_error": round(float(e0_flip01 + e0_flip10), 6),
+            f"q{qubits[1]}_flip_0to1": round(float(e1_flip01), 6),
+            f"q{qubits[1]}_flip_1to0": round(float(e1_flip10), 6),
+            f"q{qubits[1]}_total_error": round(float(e1_flip01 + e1_flip10), 6),
+        },
+        "max_crosstalk": round(float(crosstalk), 6),
+        "qubits": qubits,
+        "state_distributions": {
+            prep: {k: v for k, v in dist.items()}
+            for prep, dist in states_2q.items()
+        },
+        "interpretation": (
+            f"Readout calibration q[{qubits[0]},{qubits[1]}]: "
+            f"q{qubits[0]} error {(e0_flip01 + e0_flip10):.1%} "
+            f"(0→1: {e0_flip01:.2%}, 1→0: {e0_flip10:.2%}), "
+            f"q{qubits[1]} error {(e1_flip01 + e1_flip10):.1%} "
+            f"(0→1: {e1_flip01:.2%}, 1→0: {e1_flip10:.2%}). "
+            f"Cross-talk: {crosstalk:.4f}. "
+            f"{'Low cross-talk — qubits are independent.' if crosstalk < 0.02 else 'Significant cross-talk detected.'}"
+        ),
+    }
+
+
 def generate_circuit(exp_type, params):
     """Generate the appropriate circuit(s) for an experiment type."""
     if exp_type == "bell_calibration":
@@ -1441,6 +1635,8 @@ def generate_circuit(exp_type, params):
         return generate_repetition_code_circuits(params)
     elif exp_type == "detection_code":
         return generate_detection_code_circuits(params)
+    elif exp_type == "readout_calibration":
+        return generate_readout_cal_circuits(params)
     else:
         raise ValueError(f"Unknown experiment type: {exp_type}")
 
@@ -1757,17 +1953,84 @@ def parity_postselect(counts, qubits=None):
     return filtered
 
 
+def _load_readout_cal(cal_file_id, qubits):
+    """Load readout calibration data and return per-qubit inverse matrices.
+
+    Returns (M0_inv, M1_inv) or (None, None) if unavailable.
+    """
+    cal_path = RESULTS_DIR / f"{cal_file_id}.json"
+    if not cal_path.exists():
+        log(f"REM: Calibration file {cal_file_id} not found")
+        return None, None
+    try:
+        with open(cal_path) as f:
+            cal_data = json.load(f)
+        analysis = cal_data.get("analysis", {})
+        M0_inv = np.array(analysis["inverse_matrix_q0"])
+        M1_inv = np.array(analysis["inverse_matrix_q1"])
+        log(f"REM: Loaded calibration from {cal_file_id}")
+        return M0_inv, M1_inv
+    except (KeyError, json.JSONDecodeError, ValueError) as e:
+        log(f"REM: Failed to load calibration: {e}")
+        return None, None
+
+
+def _apply_rem_to_counts(counts, qubits, M0_inv, M1_inv):
+    """Apply readout error mitigation to measurement counts.
+
+    Uses per-qubit confusion matrix inversion. For each basis measurement:
+    1. Build probability vector from 2-qubit bitstring distribution
+    2. Apply M_full_inv = M0_inv ⊗ M1_inv
+    3. Clip negatives to 0, renormalize
+    4. Convert back to counts
+
+    Returns corrected counts dict.
+    """
+    # Extract 2-qubit distribution
+    dist_2q = {}
+    for bs, count in counts.items():
+        bits = _extract_qubit_bits(bs, qubits)
+        dist_2q[bits] = dist_2q.get(bits, 0) + count
+
+    total = sum(dist_2q.values())
+    if total == 0:
+        return counts
+
+    # Build probability vector [P(00), P(01), P(10), P(11)]
+    state_order = ["00", "01", "10", "11"]
+    p_meas = np.array([dist_2q.get(s, 0) / total for s in state_order])
+
+    # Apply inverse confusion matrix
+    M_full_inv = np.kron(M0_inv, M1_inv)
+    p_corrected = M_full_inv @ p_meas
+
+    # Clip negatives and renormalize
+    p_corrected = np.maximum(p_corrected, 0)
+    p_sum = p_corrected.sum()
+    if p_sum > 0:
+        p_corrected /= p_sum
+
+    # Convert back to counts (preserving total shot count)
+    corrected_counts = {}
+    for i, state in enumerate(state_order):
+        c = int(round(p_corrected[i] * total))
+        if c > 0:
+            corrected_counts[state] = c
+
+    return corrected_counts
+
+
 def analyze_vqe(all_counts, params):
     """Analyze VQE measurement results from Z, X, Y bases.
 
     Reconstructs <H> = g0*I + g1*Z0 + g2*Z1 + g3*Z0Z1 + g4*X0X1 + g5*Y0Y1
     using expectation values from each measurement basis.
     Applies parity post-selection to Z-basis counts for error mitigation.
+    If readout_cal_file is specified, also applies confusion matrix correction.
     """
     R = params.get("bond_distance", 0.735)
 
     # H2 Hamiltonian coefficients (STO-3G, 2-qubit, JW + sector projection)
-    # Accept per-distance coefficients from params, defaults for R=0.735
     g0 = params.get("g0", -0.321124)
     g1 = params.get("g1", 0.397937)
     g2 = params.get("g2", -0.397937)
@@ -1782,12 +2045,24 @@ def analyze_vqe(all_counts, params):
 
         Uses physical qubit indices to extract the correct bits from
         full-width bitstrings (e.g. qubits [2,4] produce 5-bit strings).
+        For REM-corrected counts, bitstrings are already 2-qubit.
         """
         z0, z1, z0z1 = 0, 0, 0
         for bitstring, count in counts.items():
             bits = _extract_qubit_bits(bitstring, qubits)
             b0 = int(bits[0])  # first qubit in list
             b1 = int(bits[1])  # second qubit in list
+            z0 += (1 - 2 * b0) * count
+            z1 += (1 - 2 * b1) * count
+            z0z1 += (1 - 2 * b0) * (1 - 2 * b1) * count
+        return z0 / total, z1 / total, z0z1 / total
+
+    def expectation_from_2q_counts(counts_2q, total):
+        """Compute expectations from 2-qubit-only bitstring counts (REM output)."""
+        z0, z1, z0z1 = 0, 0, 0
+        for bits, count in counts_2q.items():
+            b0 = int(bits[0])
+            b1 = int(bits[1])
             z0 += (1 - 2 * b0) * count
             z1 += (1 - 2 * b1) * count
             z0z1 += (1 - 2 * b0) * (1 - 2 * b1) * count
@@ -1829,15 +2104,63 @@ def analyze_vqe(all_counts, params):
 
     fci_energy = params.get("fci_energy", -1.1373)
 
-    return {
-        "energy_hartree": round(energy_ps, 6),
+    # --- Readout Error Mitigation (REM) ---
+    energy_rem = None
+    energy_hybrid = None
+    rem_expectations = None
+    rem_cal_file = params.get("readout_cal_file")
+    if rem_cal_file:
+        M0_inv, M1_inv = _load_readout_cal(rem_cal_file, qubits)
+        if M0_inv is not None:
+            # Apply REM to each basis
+            z_rem = _apply_rem_to_counts(z_counts, qubits, M0_inv, M1_inv)
+            x_rem = _apply_rem_to_counts(x_counts, qubits, M0_inv, M1_inv) if total_x > 0 else {}
+            y_rem = _apply_rem_to_counts(y_counts, qubits, M0_inv, M1_inv) if total_y > 0 else {}
+
+            total_z_rem = sum(z_rem.values()) if z_rem else 0
+            total_x_rem = sum(x_rem.values()) if x_rem else 0
+            total_y_rem = sum(y_rem.values()) if y_rem else 0
+
+            if total_z_rem > 0:
+                rem_z0, rem_z1, rem_z0z1 = expectation_from_2q_counts(z_rem, total_z_rem)
+                rem_x0x1 = 0
+                if total_x_rem > 0:
+                    _, _, rem_x0x1 = expectation_from_2q_counts(x_rem, total_x_rem)
+                rem_y0y1 = 0
+                if total_y_rem > 0:
+                    _, _, rem_y0y1 = expectation_from_2q_counts(y_rem, total_y_rem)
+
+                energy_rem = g0 + g1 * rem_z0 + g2 * rem_z1 + g3 * rem_z0z1 + g4 * rem_x0x1 + g5 * rem_y0y1
+                rem_expectations = {
+                    "Z0": round(rem_z0, 4),
+                    "Z1": round(rem_z1, 4),
+                    "Z0Z1": round(rem_z0z1, 4),
+                    "X0X1": round(rem_x0x1, 4),
+                    "Y0Y1": round(rem_y0y1, 4),
+                }
+
+                # Hybrid: PS for Z-basis (catches leakage) + REM for X/Y (corrects readout)
+                energy_hybrid = g0 + g1 * ps_z0 + g2 * ps_z1 + g3 * ps_z0z1 + g4 * rem_x0x1 + g5 * rem_y0y1
+                log(f"REM: energy_rem={energy_rem:.6f}, hybrid(PS+REM)={energy_hybrid:.6f} "
+                    f"(raw={energy_raw:.6f}, ps={energy_ps:.6f})")
+
+    # Best energy: prefer hybrid (PS+REM) if available, else post-selected
+    if energy_rem is not None:
+        best_energy = energy_hybrid
+        best_label = "hybrid(PS+REM)"
+    else:
+        best_energy = energy_ps
+        best_label = "post-selected"
+
+    result = {
+        "energy_hartree": round(best_energy, 6),
         "energy_raw": round(energy_raw, 6),
         "energy_postselected": round(energy_ps, 6),
         "postselection_keep_fraction": round(keep_fraction, 4),
         "fci_energy": fci_energy,
-        "error_hartree": round(abs(energy_ps - fci_energy), 6),
-        "error_kcal_mol": round(abs(energy_ps - fci_energy) * 627.509, 2),
-        "chemical_accuracy": abs(energy_ps - fci_energy) < 0.0016,
+        "error_hartree": round(abs(best_energy - fci_energy), 6),
+        "error_kcal_mol": round(abs(best_energy - fci_energy) * 627.509, 2),
+        "chemical_accuracy": abs(best_energy - fci_energy) < 0.0016,
         "expectation_values": {
             "Z0": round(ps_z0, 4),
             "Z1": round(ps_z1, 4),
@@ -1855,12 +2178,28 @@ def analyze_vqe(all_counts, params):
         },
         "postselection_z_kept": z_kept,
         "interpretation": (
-            f"VQE energy: {energy_ps:.4f} Ha (FCI: {fci_energy:.4f} Ha). "
-            f"Error: {abs(energy_ps - fci_energy) * 627.509:.1f} kcal/mol. "
-            f"{'Within' if abs(energy_ps - fci_energy) < 0.0016 else 'Outside'} chemical accuracy. "
+            f"VQE energy: {best_energy:.4f} Ha (FCI: {fci_energy:.4f} Ha). "
+            f"Error: {abs(best_energy - fci_energy) * 627.509:.1f} kcal/mol. "
+            f"{'Within' if abs(best_energy - fci_energy) < 0.0016 else 'Outside'} chemical accuracy. "
             f"Post-selection kept {keep_fraction:.0%} of Z-basis shots."
         ),
     }
+
+    if energy_rem is not None:
+        result["energy_rem"] = round(energy_rem, 6)
+        result["error_rem_kcal_mol"] = round(abs(energy_rem - fci_energy) * 627.509, 2)
+        result["energy_hybrid"] = round(energy_hybrid, 6)
+        result["error_hybrid_kcal_mol"] = round(abs(energy_hybrid - fci_energy) * 627.509, 2)
+        result["rem_expectation_values"] = rem_expectations
+        result["readout_cal_file"] = rem_cal_file
+        result["interpretation"] += (
+            f" Hybrid(PS+REM): {energy_hybrid:.4f} Ha "
+            f"({abs(energy_hybrid - fci_energy) * 627.509:.1f} kcal/mol). "
+            f"Full-REM: {energy_rem:.4f} Ha "
+            f"({abs(energy_rem - fci_energy) * 627.509:.1f} kcal/mol)."
+        )
+
+    return result
 
 
 # ─── Experiment Runner ───────────────────────────────────────────────────────
@@ -1949,6 +2288,9 @@ def run_experiment(exp, dry_run=False):
         raw_counts = all_counts
     elif exp_type == "detection_code":
         analysis = analyze_detection_code(all_counts, params)
+        raw_counts = all_counts
+    elif exp_type == "readout_calibration":
+        analysis = analyze_readout_cal(all_counts, params)
         raw_counts = all_counts
     else:
         analysis = {"raw": all_counts}
