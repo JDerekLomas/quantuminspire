@@ -11,6 +11,7 @@ type GlossaryEntry = {
   definition: string
   category: string
   vizLink?: { label: string; href: string }
+  expLink?: { label: string; href: string }
   related?: string[]
 }
 
@@ -45,6 +46,7 @@ const GLOSSARY: GlossaryEntry[] = [
     definition: 'A quantum correlation between two or more qubits where the state of one cannot be described independently of the others. Measuring one instantly determines the other, regardless of distance. The resource behind quantum teleportation and many quantum algorithms.',
     category: 'fundamentals',
     vizLink: { label: 'Entanglement Lab', href: '/entanglement' },
+    expLink: { label: 'Bell calibration results', href: '/experiments/bell-calibration' },
     related: ['Bell state', 'GHZ state', 'Concurrence'],
   },
   {
@@ -138,6 +140,7 @@ const GLOSSARY: GlossaryEntry[] = [
     definition: 'The four maximally entangled two-qubit states: |Phi+> = (|00>+|11>)/sqrt(2), |Phi-> = (|00>-|11>)/sqrt(2), |Psi+> = (|01>+|10>)/sqrt(2), |Psi-> = (|01>-|10>)/sqrt(2). The simplest entangled states, used in teleportation, superdense coding, and as calibration benchmarks.',
     category: 'states',
     vizLink: { label: 'Entanglement Lab', href: '/entanglement' },
+    expLink: { label: 'Bell fidelity across 3 backends', href: '/experiments/bell-calibration' },
     related: ['Entanglement', 'Quantum teleportation'],
   },
   {
@@ -145,6 +148,7 @@ const GLOSSARY: GlossaryEntry[] = [
     definition: 'Greenberger-Horne-Zeilinger state: (|000...0> + |111...1>)/sqrt(2). A maximally entangled multi-qubit state where all qubits are correlated. Used for testing multipartite entanglement and as a benchmark for hardware quality.',
     category: 'states',
     vizLink: { label: 'Measurement Lab', href: '/measurement' },
+    expLink: { label: 'GHZ 3-50 qubit experiments', href: '/experiments/ghz-state' },
     related: ['Bell state', 'W state'],
   },
   {
@@ -166,6 +170,8 @@ const GLOSSARY: GlossaryEntry[] = [
     term: 'VQE (Variational Quantum Eigensolver)',
     definition: 'A hybrid quantum-classical algorithm for finding molecular ground state energies. A parameterized quantum circuit (ansatz) prepares a trial state, the quantum computer measures the energy, and a classical optimizer adjusts the parameters. Our H2 experiments use VQE.',
     category: 'algorithms',
+    vizLink: { label: 'Ansatz Explorer', href: '/ansatz' },
+    expLink: { label: 'H\u2082 VQE results', href: '/experiments/vqe-h2' },
     related: ['Ansatz', 'Hamiltonian', 'Chemical accuracy'],
   },
   {
@@ -192,12 +198,14 @@ const GLOSSARY: GlossaryEntry[] = [
     term: 'Ansatz',
     definition: 'A parameterized quantum circuit used as a trial wavefunction in variational algorithms. The choice of ansatz determines what states are reachable and affects convergence. Common types: hardware-efficient, UCCSD (chemistry-inspired), and problem-specific.',
     category: 'algorithms',
+    vizLink: { label: 'Ansatz Explorer', href: '/ansatz' },
     related: ['VQE', 'Variational circuit'],
   },
   {
     term: 'Hamiltonian',
     definition: 'The energy operator of a quantum system. In quantum chemistry, the molecular Hamiltonian encodes all electron-electron and electron-nucleus interactions. For quantum computing, it must be decomposed into Pauli strings (via Jordan-Wigner or Bravyi-Kitaev transforms).',
     category: 'algorithms',
+    vizLink: { label: 'H\u2082 Hamiltonian Explorer', href: '/hamiltonians' },
     related: ['Jordan-Wigner transform', 'VQE', 'Pauli gates'],
   },
 
@@ -210,20 +218,23 @@ const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'Chemical accuracy',
-    definition: 'The threshold of 1 kcal/mol (0.0016 Ha / 1.6 mHa) — the accuracy needed for quantum chemistry results to be practically useful. Our emulator VQE achieves 0.75 kcal/mol (within chemical accuracy); IBM hardware gets 26 kcal/mol (far outside).',
+    definition: 'The threshold of 1 kcal/mol (0.0016 Ha / 1.6 mHa) — the accuracy needed for quantum chemistry results to be practically useful. Our emulator achieves 0.75 kcal/mol, IBM TREX achieves 0.22 kcal/mol, and Tuna-9 REM+PS achieves 0.92 kcal/mol — all within chemical accuracy.',
     category: 'metrics',
-    related: ['VQE', 'Hartree'],
+    expLink: { label: 'Mitigation techniques ranked', href: '/blog/error-mitigation-showdown' },
+    related: ['VQE', 'Hartree', 'Error mitigation'],
   },
   {
     term: 'Quantum volume',
-    definition: 'A single-number benchmark (IBM) that captures the largest random circuit a processor can execute reliably. QV = 2^n where n is the effective number of qubits that can maintain sufficient fidelity through n layers of random 2-qubit gates. Higher is better.',
+    definition: 'A single-number benchmark (IBM) that captures the largest random circuit a processor can execute reliably. QV = 2^n where n is the effective number of qubits that can maintain sufficient fidelity through n layers of random 2-qubit gates. Higher is better. We measured QV=8 on Tuna-9 and QV=32 on IBM Torino and IQM Garnet.',
     category: 'metrics',
+    expLink: { label: 'QV across 3 backends', href: '/experiments/quantum-volume' },
     related: ['Circuit depth', 'Fidelity'],
   },
   {
     term: 'Randomized benchmarking (RB)',
-    definition: 'A protocol for measuring average gate fidelity by running random sequences of Clifford gates of increasing length, followed by an inverting gate. The decay rate of the survival probability gives the error per Clifford. Robust against state preparation and measurement errors.',
+    definition: 'A protocol for measuring average gate fidelity by running random sequences of Clifford gates of increasing length, followed by an inverting gate. The decay rate of the survival probability gives the error per Clifford. Robust against state preparation and measurement errors. We measured 99.82% on both Tuna-9 and IQM Garnet — but IBM reports 99.99% because their transpiler collapses Clifford sequences.',
     category: 'metrics',
+    expLink: { label: 'RB results + IBM compiler artifact', href: '/blog/cross-platform-quantum-comparison' },
     related: ['Clifford gates', 'Gate fidelity'],
   },
   {
@@ -268,9 +279,10 @@ const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'Readout error',
-    definition: 'The probability of incorrectly measuring a qubit state. A qubit in |0> might be read as 1 (and vice versa). Typical rates: 0.5-5% depending on hardware. Can be partially corrected with readout error mitigation (measuring calibration matrices).',
+    definition: 'The probability of incorrectly measuring a qubit state. A qubit in |0> might be read as 1 (and vice versa). Typical rates: 0.5-5% depending on hardware. Can be partially corrected with readout error mitigation (measuring calibration matrices). On Tuna-9, readout error accounts for >80% of total VQE error.',
     category: 'hardware',
-    related: ['Measurement', 'Error mitigation'],
+    expLink: { label: 'Readout as dominant error source', href: '/blog/error-mitigation-showdown' },
+    related: ['Measurement', 'Error mitigation', 'Readout error mitigation'],
   },
 
   // Techniques
@@ -348,6 +360,7 @@ export default function LearnPage() {
           </div>
           <div className="flex gap-6 text-xs font-mono text-gray-500">
             <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>
+            <Link href="/sonification" className="hover:text-[#e879f9] transition-colors">Listen</Link>
             <Link href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</Link>
             <Link href="/gallery" className="hover:text-[#8b5cf6] transition-colors">Viz Gallery</Link>
           </div>
@@ -392,12 +405,17 @@ export default function LearnPage() {
             {[
               { name: 'Bloch Sphere', href: '/bloch-sphere', desc: 'Single-qubit states & gates' },
               { name: 'State Vectors', href: '/state-vector', desc: 'Multi-qubit amplitudes' },
+              { name: 'Q-Sphere', href: '/qsphere', desc: 'Hamming-distance geometry' },
               { name: 'Entanglement', href: '/entanglement', desc: 'Bell, GHZ, W states' },
               { name: 'Measurement', href: '/measurement', desc: 'Born rule & statistics' },
+              { name: 'Interference', href: '/interference', desc: 'Wave-particle duality' },
               { name: "Grover's Search", href: '/grovers', desc: 'Amplitude amplification' },
               { name: 'Teleportation', href: '/teleportation', desc: 'Step-by-step protocol' },
               { name: 'Rabi Oscillations', href: '/rabi', desc: 'Qubit dynamics & T2' },
-              { name: 'Interference', href: '/interference', desc: 'Wave-particle duality' },
+              { name: 'Resonance', href: '/resonance', desc: 'Spectroscopy & avoided crossings' },
+              { name: 'Hamiltonians', href: '/hamiltonians', desc: 'H\u2082 Pauli decomposition' },
+              { name: 'Ansatz Explorer', href: '/ansatz', desc: 'VQE circuit design' },
+              { name: 'Sonification', href: '/sonification', desc: 'Quantum states as sound' },
             ].map(tool => (
               <Link
                 key={tool.href}

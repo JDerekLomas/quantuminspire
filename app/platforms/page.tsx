@@ -317,6 +317,7 @@ export default function PlatformsPage() {
             <Link href="/experiments" className="hover:text-white">Experiments</Link>
             <Link href="/replications" className="hover:text-white">Replications</Link>
             <Link href="/platforms" className="text-white">Platforms</Link>
+            <Link href="/sonification" className="hover:text-white">Listen</Link>
             <Link href="/blog" className="hover:text-white">Blog</Link>
           </div>
         </div>

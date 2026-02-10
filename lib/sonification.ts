@@ -1,5 +1,8 @@
-// lib/sonification.ts — Pure utility for quantum circuit sonification
-// No React. Web Audio API wrapper + histogram→frequency mapping.
+// lib/sonification.ts — Quantum circuit sonification engine
+// No React. Web Audio API wrapper + multiple voice/mapping strategies.
+//
+// Prior art: VQH (Itaborai et al. 2023), Sound of Decoherence (Christie 2024),
+// Entanglement Dynamics sonification (2025), Q1Synth (Hamido et al. 2023)
 
 // ---------------------------------------------------------------------------
 // Types
@@ -20,16 +23,54 @@ export interface SonificationStep {
 
 export type SonificationMode = 'chord' | 'multi_basis' | 'bond_sweep' | 'qaoa_sweep' | 'comparison'
 
+/** The different sonification voices — each maps quantum data to sound differently */
+export type Voice =
+  | 'harmonic'   // bitstring int → linear freq (original)
+  | 'musical'    // bitstring → pentatonic scale notes (always consonant)
+  | 'resonance'  // sawtooth + resonant filter shaped by distribution
+  | 'beating'    // ideal vs measured energy as two tones (VQE only)
+  | 'molecular'  // energy → pitch, hear the potential energy surface
+
+export const VOICE_INFO: Record<Voice, { label: string; description: string }> = {
+  harmonic:  { label: 'Harmonic', description: 'Bitstring value maps linearly to frequency. Simple additive synthesis.' },
+  musical:   { label: 'Pentatonic', description: 'Bitstrings map to notes on a pentatonic scale. Always consonant — noise adds notes, not dissonance.' },
+  resonance: { label: 'Resonance', description: 'Rich harmonics through a resonant filter. Peaked distributions ring clearly; noisy ones sound diffuse.' },
+  beating:   { label: 'Beating', description: 'Ideal and measured energy as two close tones. Error = beat frequency. Chemical accuracy is a slow pulse.' },
+  molecular: { label: 'Molecular', description: 'Energy maps directly to pitch. Hear the potential energy surface as you stretch the bond.' },
+}
+
 // ---------------------------------------------------------------------------
-// Frequency mapping
+// Frequency mapping strategies
 // ---------------------------------------------------------------------------
 
 const FREQ_LO = 220 // A3
 const FREQ_HI = 880 // A5
 
-export function bitstringToFrequency(bitstring: string, numQubits: number): number {
+// Pentatonic scale in A minor: A B C E F (repeating across octaves)
+// These intervals sound good in any combination
+const PENTATONIC_RATIOS = [1, 9/8, 6/5, 3/2, 8/5] // relative to root
+function buildPentatonicFreqs(numQubits: number): number[] {
+  const n = 1 << numQubits
+  const freqs: number[] = []
+  const baseFreq = 220 // A3
+  for (let i = 0; i < n; i++) {
+    const octave = Math.floor(i / PENTATONIC_RATIOS.length)
+    const degree = i % PENTATONIC_RATIOS.length
+    freqs.push(baseFreq * PENTATONIC_RATIOS[degree] * Math.pow(2, octave))
+  }
+  return freqs
+}
+
+export function bitstringToFrequency(bitstring: string, numQubits: number, voice: Voice = 'harmonic'): number {
   const value = parseInt(bitstring, 2)
   const maxValue = (1 << numQubits) - 1
+
+  if (voice === 'musical') {
+    const scale = buildPentatonicFreqs(numQubits)
+    return scale[Math.min(value, scale.length - 1)]
+  }
+
+  // Default linear mapping
   if (maxValue === 0) return FREQ_LO
   return FREQ_LO + (value / maxValue) * (FREQ_HI - FREQ_LO)
 }
@@ -38,14 +79,18 @@ export function bitstringToFrequency(bitstring: string, numQubits: number): numb
 // Histogram → partials
 // ---------------------------------------------------------------------------
 
-export function countsToPartials(counts: Record<string, number>, numQubits: number): Partial[] {
+export function countsToPartials(
+  counts: Record<string, number>,
+  numQubits: number,
+  voice: Voice = 'harmonic',
+): Partial[] {
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
   if (total === 0) return []
 
   return Object.entries(counts)
     .map(([bitstring, count]) => ({
       bitstring,
-      frequency: bitstringToFrequency(bitstring, numQubits),
+      frequency: bitstringToFrequency(bitstring, numQubits, voice),
       amplitude: count / total,
       probability: count / total,
     }))
@@ -139,7 +184,6 @@ export function extractQAOASteps(rawCounts: Record<string, any>): QAOAStep[] {
       })
     }
   }
-  // Sort row by row (gamma outer, beta inner)
   return steps.sort((a, b) => a.gammaIdx * 100 + a.betaIdx - (b.gammaIdx * 100 + b.betaIdx))
 }
 
@@ -154,13 +198,8 @@ export function getSonificationMode(result: {
 }): SonificationMode {
   const rc = result.raw_counts
   if (!rc || Object.keys(rc).length === 0) return 'chord'
-
-  // QAOA sweep
   if (Object.keys(rc).some(k => k.startsWith('qaoa_g'))) return 'qaoa_sweep'
-
-  // Multi-basis VQE
   if ('z_basis' in rc && 'x_basis' in rc) return 'multi_basis'
-
   return 'chord'
 }
 
@@ -172,13 +211,11 @@ export function getNumQubits(result: {
   raw_counts: Record<string, any>
   parameters?: Record<string, any>
 }): number {
-  // From parameters
   const qubits = result.parameters?.qubits as number[] | undefined
   if (qubits && qubits.length > 0) return qubits.length
   const nq = result.parameters?.num_qubits as number | undefined
   if (nq) return nq
 
-  // Infer from bitstring length
   const rc = result.raw_counts
   if (!rc) return 2
   let counts = rc
@@ -192,13 +229,14 @@ export function getNumQubits(result: {
 }
 
 // ---------------------------------------------------------------------------
-// SonificationEngine — Web Audio API wrapper
+// SonificationEngine — Web Audio API wrapper with multiple voices
 // ---------------------------------------------------------------------------
 
 export class SonificationEngine {
   private ctx: AudioContext | null = null
   private masterGain: GainNode | null = null
-  private activeOscillators: OscillatorNode[] = []
+  private activeNodes: (OscillatorNode | AudioBufferSourceNode)[] = []
+  private activeGains: GainNode[] = []
   private sequenceTimer: number | null = null
   private _playing = false
 
@@ -221,10 +259,11 @@ export class SonificationEngine {
     }
   }
 
-  /** Play a single chord from histogram partials */
+  // ─── Voice: Harmonic / Musical (additive sine synthesis) ───────────────
+
   playChord(partials: Partial[], duration: number = 1.5, pan?: number): void {
     if (!this.ctx || !this.masterGain) return
-    this.stopOscillators()
+    this.stopAll()
     this._playing = true
     const now = this.ctx.currentTime
 
@@ -235,7 +274,6 @@ export class SonificationEngine {
       osc.type = 'sine'
       osc.frequency.value = p.frequency
 
-      // Envelope: 50ms attack, sustain, 200ms release
       const amp = p.amplitude * 0.6
       gain.gain.setValueAtTime(0, now)
       gain.gain.linearRampToValueAtTime(amp, now + 0.05)
@@ -252,22 +290,253 @@ export class SonificationEngine {
 
       osc.start(now)
       osc.stop(now + duration + 0.05)
-      this.activeOscillators.push(osc)
+      this.activeNodes.push(osc)
     }
 
-    // Auto-cleanup
-    setTimeout(() => {
-      this._playing = false
-      this.activeOscillators = []
-    }, duration * 1000 + 100)
+    this.scheduleEnd(duration)
   }
 
-  /** Play a sequence of steps (for sweeps) */
+  // ─── Voice: Resonance (sawtooth + filter shaped by distribution) ───────
+
+  playResonance(partials: Partial[], duration: number = 2): void {
+    if (!this.ctx || !this.masterGain) return
+    this.stopAll()
+    this._playing = true
+    const now = this.ctx.currentTime
+
+    // Compute distribution statistics for filter parameters
+    const totalProb = partials.reduce((s, p) => s + p.probability, 0)
+    const meanFreq = partials.reduce((s, p) => s + p.frequency * p.probability, 0) / (totalProb || 1)
+    // Spread: std dev of frequency distribution
+    const variance = partials.reduce((s, p) => s + p.probability * Math.pow(p.frequency - meanFreq, 2), 0) / (totalProb || 1)
+    const spread = Math.sqrt(variance)
+
+    // Q inversely proportional to spread: peaked dist = high Q = ringing
+    // spread ~0 (perfect) → Q=30, spread ~300 (noisy) → Q=1
+    const Q = Math.max(1, Math.min(30, 30 / (1 + spread / 30)))
+
+    // Sawtooth oscillator as rich harmonic source
+    const osc = this.ctx.createOscillator()
+    osc.type = 'sawtooth'
+    osc.frequency.value = meanFreq * 0.5 // fundamental half the center freq
+
+    // Resonant bandpass filter
+    const filter = this.ctx.createBiquadFilter()
+    filter.type = 'bandpass'
+    filter.Q.value = Q
+
+    // Sweep the filter center frequency through the distribution
+    // Start low, sweep up through mean, back down — a resonance scan
+    const sweepLo = Math.max(100, meanFreq - spread * 2)
+    const sweepHi = Math.min(2000, meanFreq + spread * 2)
+    filter.frequency.setValueAtTime(sweepLo, now)
+    filter.frequency.linearRampToValueAtTime(sweepHi, now + duration * 0.4)
+    filter.frequency.linearRampToValueAtTime(meanFreq, now + duration * 0.7)
+    filter.frequency.linearRampToValueAtTime(sweepLo, now + duration)
+
+    const gain = this.ctx.createGain()
+    const amp = 0.4
+    gain.gain.setValueAtTime(0, now)
+    gain.gain.linearRampToValueAtTime(amp, now + 0.08)
+    gain.gain.setValueAtTime(amp, now + duration - 0.3)
+    gain.gain.linearRampToValueAtTime(0, now + duration)
+
+    osc.connect(filter).connect(gain).connect(this.masterGain!)
+    osc.start(now)
+    osc.stop(now + duration + 0.05)
+    this.activeNodes.push(osc)
+    this.activeGains.push(gain)
+
+    // Add quiet clicks at the peak frequencies (like resonance peaks being excited)
+    for (const p of partials.slice(0, 6)) {
+      const peakOsc = this.ctx.createOscillator()
+      const peakGain = this.ctx.createGain()
+      peakOsc.type = 'sine'
+      peakOsc.frequency.value = p.frequency
+
+      // Brief ping when the sweep passes through this frequency
+      const peakTime = now + duration * 0.4 * ((p.frequency - sweepLo) / (sweepHi - sweepLo || 1))
+      const pingDur = 0.3
+      const pingAmp = p.amplitude * 0.25
+      peakGain.gain.setValueAtTime(0, now)
+      peakGain.gain.setValueAtTime(0, Math.max(now, peakTime - 0.02))
+      peakGain.gain.linearRampToValueAtTime(pingAmp, peakTime + 0.02)
+      peakGain.gain.linearRampToValueAtTime(0, peakTime + pingDur)
+
+      peakOsc.connect(peakGain).connect(this.masterGain!)
+      peakOsc.start(now)
+      peakOsc.stop(now + duration + 0.1)
+      this.activeNodes.push(peakOsc)
+    }
+
+    this.scheduleEnd(duration)
+  }
+
+  // ─── Voice: Beating (ideal vs measured energy) ─────────────────────────
+  // Maps energy difference to audible beat frequency.
+  // E = hf in quantum mechanics. We map Hartree energy to ~Hz directly.
+  // Chemical accuracy (0.0016 Ha) → ~1 Hz slow pulse. 0.01 Ha → ~6 Hz buzz.
+
+  playBeating(
+    measuredEnergy: number,
+    idealEnergy: number,
+    duration: number = 3,
+  ): void {
+    if (!this.ctx || !this.masterGain) return
+    this.stopAll()
+    this._playing = true
+    const now = this.ctx.currentTime
+
+    // Base frequency: map the ideal energy to audible range
+    // H2 energies are around -1.1 Ha. Map [-2, 0] → [200, 600] Hz
+    const baseFreq = 400 + idealEnergy * 200
+
+    // Beat offset: map energy error to Hz
+    // 0.0016 Ha (chem accuracy) → 1 Hz beat
+    // 0.04 Ha (25 kcal/mol) → 25 Hz buzz
+    const errorHa = Math.abs(measuredEnergy - idealEnergy)
+    const beatHz = errorHa * 625 // 1.6 mHa → 1 Hz
+
+    // Two slightly detuned sine waves create beating
+    const osc1 = this.ctx.createOscillator()
+    const osc2 = this.ctx.createOscillator()
+    const gain1 = this.ctx.createGain()
+    const gain2 = this.ctx.createGain()
+
+    osc1.type = 'sine'
+    osc2.type = 'sine'
+    osc1.frequency.value = baseFreq
+    osc2.frequency.value = baseFreq + beatHz
+
+    // Label them with stereo: ideal (left), measured (right)
+    const pan1 = this.ctx.createStereoPanner()
+    const pan2 = this.ctx.createStereoPanner()
+    pan1.pan.value = -0.5
+    pan2.pan.value = 0.5
+
+    const amp = 0.35
+    for (const g of [gain1, gain2]) {
+      g.gain.setValueAtTime(0, now)
+      g.gain.linearRampToValueAtTime(amp, now + 0.1)
+      g.gain.setValueAtTime(amp, now + duration - 0.4)
+      g.gain.linearRampToValueAtTime(0, now + duration)
+    }
+
+    osc1.connect(gain1).connect(pan1).connect(this.masterGain!)
+    osc2.connect(gain2).connect(pan2).connect(this.masterGain!)
+
+    osc1.start(now)
+    osc2.start(now)
+    osc1.stop(now + duration + 0.05)
+    osc2.stop(now + duration + 0.05)
+
+    this.activeNodes.push(osc1, osc2)
+    this.activeGains.push(gain1, gain2)
+
+    this.scheduleEnd(duration)
+  }
+
+  // ─── Voice: Molecular (energy → pitch for sweeps) ─────────────────────
+  // Each bond distance plays a tone whose pitch tracks the energy.
+  // Lower energy = lower pitch. The equilibrium "well" is the deepest note.
+
+  playMolecularSweep(
+    steps: { energy: number; bondDistance: number; label: string }[],
+    stepDuration: number,
+    onStep?: (index: number) => void,
+  ): void {
+    if (!this.ctx || !this.masterGain) return
+    this.stop()
+    this._playing = true
+
+    // Map energy range to pitch range
+    const energies = steps.map(s => s.energy)
+    const minE = Math.min(...energies)
+    const maxE = Math.max(...energies)
+    const range = maxE - minE || 0.1
+
+    let i = 0
+    const playNext = () => {
+      if (i >= steps.length || !this._playing) {
+        this._playing = false
+        return
+      }
+      onStep?.(i)
+      const s = steps[i]
+
+      // Lower energy = lower pitch (the well is deep and resonant)
+      // Map [-1.2, -0.5] → [150, 500] Hz approximately
+      const t = (s.energy - minE) / range // 0 = min energy (well bottom), 1 = max
+      const freq = 150 + t * 350
+
+      // Timbre shifts with bond distance: compressed bonds (small R) = bright (triangle)
+      // stretched bonds (large R) = dark (sine)
+      const dur = stepDuration * 0.85
+
+      if (this.ctx) {
+        this.stopAll()
+        const now = this.ctx.currentTime
+
+        const osc = this.ctx.createOscillator()
+        osc.type = s.bondDistance < 0.8 ? 'triangle' : 'sine'
+        osc.frequency.value = freq
+
+        // Add a sub-octave for richness at the equilibrium
+        const sub = this.ctx.createOscillator()
+        sub.type = 'sine'
+        sub.frequency.value = freq * 0.5
+
+        const oscGain = this.ctx.createGain()
+        const subGain = this.ctx.createGain()
+
+        const amp = 0.35
+        const subAmp = 0.15 * (1 - t) // sub-bass stronger at well bottom
+        for (const [g, a] of [[oscGain, amp], [subGain, subAmp]] as [GainNode, number][]) {
+          g.gain.setValueAtTime(0, now)
+          g.gain.linearRampToValueAtTime(a, now + 0.04)
+          g.gain.setValueAtTime(a, now + dur - 0.15)
+          g.gain.linearRampToValueAtTime(0, now + dur)
+        }
+
+        osc.connect(oscGain).connect(this.masterGain!)
+        sub.connect(subGain).connect(this.masterGain!)
+        osc.start(now)
+        sub.start(now)
+        osc.stop(now + dur + 0.05)
+        sub.stop(now + dur + 0.05)
+        this.activeNodes.push(osc, sub)
+        this.activeGains.push(oscGain, subGain)
+      }
+
+      i++
+      this.sequenceTimer = window.setTimeout(playNext, stepDuration * 1000)
+    }
+    playNext()
+  }
+
+  // ─── Stereo comparison ─────────────────────────────────────────────────
+
+  playStereoComparison(
+    leftPartials: Partial[],
+    rightPartials: Partial[],
+    duration: number = 2,
+  ): void {
+    if (!this.ctx || !this.masterGain) return
+    this.stop()
+    this._playing = true
+
+    this.playChordInternal(leftPartials, duration, -0.8)
+    this.playChordInternal(rightPartials, duration, 0.8)
+
+    this.scheduleEnd(duration)
+  }
+
+  // ─── Sequence player (for sweeps with additive voices) ─────────────────
+
   playSequence(
     steps: SonificationStep[],
     stepDuration: number,
     onStep?: (index: number) => void,
-    numQubits?: number,
   ): void {
     if (!this.ctx || !this.masterGain) return
     this.stop()
@@ -287,26 +556,32 @@ export class SonificationEngine {
     playNext()
   }
 
-  /** Play two histograms in stereo: left vs right */
-  playStereoComparison(
-    leftPartials: Partial[],
-    rightPartials: Partial[],
-    duration: number = 2,
+  // ─── Sequence with resonance voice ─────────────────────────────────────
+
+  playResonanceSequence(
+    steps: SonificationStep[],
+    stepDuration: number,
+    onStep?: (index: number) => void,
   ): void {
     if (!this.ctx || !this.masterGain) return
     this.stop()
     this._playing = true
+    let i = 0
 
-    // Play left channel
-    this.playChordInternal(leftPartials, duration, -0.8)
-    // Play right channel
-    this.playChordInternal(rightPartials, duration, 0.8)
-
-    setTimeout(() => {
-      this._playing = false
-      this.activeOscillators = []
-    }, duration * 1000 + 100)
+    const playNext = () => {
+      if (i >= steps.length || !this._playing) {
+        this._playing = false
+        return
+      }
+      onStep?.(i)
+      this.playResonance(steps[i].partials, stepDuration * 0.9)
+      i++
+      this.sequenceTimer = window.setTimeout(playNext, stepDuration * 1000)
+    }
+    playNext()
   }
+
+  // ─── Internal helpers ──────────────────────────────────────────────────
 
   private playChordInternal(partials: Partial[], duration: number, pan: number): void {
     if (!this.ctx || !this.masterGain) return
@@ -330,8 +605,16 @@ export class SonificationEngine {
       osc.connect(gain).connect(panner).connect(this.masterGain!)
       osc.start(now)
       osc.stop(now + duration + 0.05)
-      this.activeOscillators.push(osc)
+      this.activeNodes.push(osc)
     }
+  }
+
+  private scheduleEnd(duration: number): void {
+    setTimeout(() => {
+      this._playing = false
+      this.activeNodes = []
+      this.activeGains = []
+    }, duration * 1000 + 100)
   }
 
   stop(): void {
@@ -340,14 +623,15 @@ export class SonificationEngine {
       clearTimeout(this.sequenceTimer)
       this.sequenceTimer = null
     }
-    this.stopOscillators()
+    this.stopAll()
   }
 
-  private stopOscillators(): void {
-    for (const osc of this.activeOscillators) {
-      try { osc.stop() } catch { /* already stopped */ }
+  private stopAll(): void {
+    for (const node of this.activeNodes) {
+      try { node.stop() } catch { /* already stopped */ }
     }
-    this.activeOscillators = []
+    this.activeNodes = []
+    this.activeGains = []
   }
 
   dispose(): void {

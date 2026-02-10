@@ -3,7 +3,7 @@
   "type": "readout_calibration",
   "backend": "tuna-9",
   "priority": 1,
-  "status": "running",
+  "status": "pending",
   "parameters": {
     "shots": 4096,
     "qubits": [

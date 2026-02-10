@@ -122,13 +122,14 @@ export const posts: BlogPost[] = [
 <tbody>
 <tr><td>Emulator</td><td>None needed</td><td>0.75</td><td>Yes</td></tr>
 <tr style="background: rgba(0,255,136,0.08)"><td><strong>IBM Torino</strong></td><td><strong>TREX</strong></td><td><strong>0.22</strong></td><td><strong>Yes</strong></td></tr>
-<tr><td>Tuna-9 q[2,4]</td><td>REM+PS</td><td>2.52 (mean)</td><td>Sometimes</td></tr>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>Tuna-9 q[2,4]</strong></td><td><strong>Hybrid PS+REM</strong></td><td><strong>0.92</strong></td><td><strong>Yes</strong></td></tr>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>Tuna-9 q[6,8]</strong></td><td><strong>Hybrid PS+REM</strong></td><td><strong>1.32</strong></td><td><strong>Yes</strong></td></tr>
 <tr><td>Tuna-9 q[4,6]</td><td>Z-PS+REM</td><td>6.2</td><td>No</td></tr>
 <tr><td>Tuna-9 q[0,1]</td><td>PS only</td><td>9.45</td><td>No</td></tr>
 </tbody>
 </table>
 
-<p>IBM's TREX is the only technique that consistently achieves chemical accuracy on real hardware. But it's proprietary to IBM's Estimator API &mdash; you can't apply it on other platforms. For Tuna-9, the open-source approach (confusion matrix + post-selection) gets within 2.5x of the target.</p>
+<p>Two hardware backends now achieve chemical accuracy. IBM's TREX (0.22 kcal/mol) is a proprietary built-in. But the open-source approach &mdash; hybrid post-selection plus confusion matrix inversion &mdash; also achieves it on Tuna-9 (0.92 and 1.32 kcal/mol on two independent qubit pairs). The key: use post-selection for Z-basis (catches parity leakage), confusion matrix inversion for X/Y-basis (corrects readout bias). This hybrid strategy works on any backend with calibration data.</p>
 
 <h2>Why ZNE Failed on Both Backends</h2>
 
@@ -149,11 +150,11 @@ export const posts: BlogPost[] = [
 
 <li><strong>Technique stacking can backfire.</strong> On IBM, TREX alone (0.22 kcal/mol) beats TREX+DD (1.33) beats TREX+DD+Twirl (10.0). Each additional layer adds overhead that exceeds its benefit for shallow circuits.</li>
 
-<li><strong>Order matters for combined techniques.</strong> REM then post-selection (2.52 kcal/mol) beats post-selection then REM (3.90 kcal/mol) because REM redistributes probability before information is discarded.</li>
+<li><strong>Hybrid strategy beats uniform application.</strong> PS for Z-basis + REM for X/Y-basis (0.92 kcal/mol) beats REM-everywhere (2.52 kcal/mol) or PS-everywhere (3.04 kcal/mol). Each technique targets a different error source: PS catches parity-violating leakage, REM corrects systematic readout bias on rotated bases.</li>
 
-<li><strong>IBM's TREX is genuinely impressive.</strong> Chemical accuracy on real hardware from a single API parameter is a major engineering achievement. The catch: it's proprietary and not available on other platforms.</li>
+<li><strong>IBM's TREX is genuinely impressive &mdash; but not the only path.</strong> Chemical accuracy on real hardware from a single API parameter is a major engineering achievement. But the open-source hybrid PS+REM approach also achieves it on Tuna-9 (0.92 kcal/mol), proving the result is portable across platforms.</li>
 
-<li><strong>Simple techniques close most of the gap.</strong> Going from raw (32 kcal/mol) to PS (8.3) to REM+PS (2.5 kcal/mol) on Tuna-9 recovers 90% of the error using techniques that work on any backend with a confusion matrix.</li>
+<li><strong>Simple techniques close most of the gap.</strong> Going from raw (22 kcal/mol) to PS (3.0) to hybrid PS+REM (0.92 kcal/mol) on Tuna-9 recovers 96% of the error using techniques that work on any backend with a confusion matrix.</li>
 </ol>
 
 <hr />
@@ -192,21 +193,21 @@ export const posts: BlogPost[] = [
 <tr><td>QV n=5</td><td>HOF</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>69.2%</td></tr>
 <tr><td>QV (best)</td><td>Volume</td><td>&ge;8</td><td>&ge;8</td><td>8</td><td><strong>32</strong></td></tr>
 <tr><td>RB 1-qubit</td><td>Gate fidelity</td><td>99.95%</td><td>99.99%*</td><td>99.82%</td><td><strong>99.82%</strong></td></tr>
-<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td>9.2</td><td>3.0&dagger;</td><td>&mdash;</td></tr>
-<tr><td>VQE HeH+</td><td>MAE (kcal/mol)</td><td>0.08</td><td>83.5</td><td>&mdash;</td><td>&mdash;</td></tr>
+<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td><strong>0.22</strong>&Dagger;</td><td><strong>0.92</strong>&dagger;</td><td>&mdash;</td></tr>
+<tr><td>VQE HeH+</td><td>Error (kcal/mol)</td><td>0.08</td><td><strong>4.31</strong>&Dagger;</td><td>4.44&dagger;</td><td>&mdash;</td></tr>
 <tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>FAILED</td><td>&mdash;</td></tr>
 <tr><td>Bell state</td><td>Fidelity</td><td>100%</td><td>99.1%</td><td>85.8&ndash;93.5%</td><td>88.4&ndash;98.1%</td></tr>
 <tr><td>GHZ-10</td><td>Fidelity</td><td>&mdash;</td><td>&mdash;</td><td>n/a (9q)</td><td>54.7%</td></tr>
 </tbody>
 </table>
 
-<p><em>*IBM RB fidelity inflated: Qiskit transpiler collapses Clifford sequences to depth 1&ndash;2 circuits, measuring readout error rather than gate error. &dagger;Tuna-9 VQE on best qubit pair q[2,4] with post-selection; worst pair q[0,1] gives 9.5 kcal/mol &mdash; a 3.1x difference from qubit selection alone.</em></p>
+<p><em>*IBM RB fidelity inflated: Qiskit transpiler collapses Clifford sequences to depth 1&ndash;2 circuits, measuring readout error rather than gate error. &dagger;Tuna-9 VQE on best qubit pair q[2,4] with hybrid PS+REM (0.92 kcal/mol); worst pair q[0,1] gives 9.5 kcal/mol &mdash; a 10.3x difference from qubit selection alone.</em></p>
 
 <p>Four patterns jump out:</p>
 
 <ol>
 <li><strong>Benchmarks pass everywhere, but unevenly.</strong> QV passes on all hardware, but IQM Garnet hits QV=32 while Tuna-9 tops out at QV=8. More qubits with better connectivity wins the benchmark game.</li>
-<li><strong>VQE fails everywhere except the emulator &mdash; but qubit selection matters enormously.</strong> No hardware achieves chemical accuracy, but choosing the right qubit pair on Tuna-9 cuts error from 9.5 to 3.0 kcal/mol (3.1x improvement). On the same chip, qubit selection matters more than error mitigation.</li>
+<li><strong>VQE achieves chemical accuracy on two hardware backends.</strong> IBM TREX (0.22 kcal/mol) and Tuna-9 hybrid PS+REM (0.92 kcal/mol on q[2,4], 1.32 on q[6,8]) both pass the 1.6 kcal/mol threshold. But qubit selection still matters: wrong pair on Tuna-9 gives 9.5 kcal/mol (10x worse). Error mitigation technique choice matters less than which qubits you pick.</li>
 <li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can't execute on Tuna-9 due to topology constraints.</li>
 <li><strong>Compiler tricks inflate benchmarks.</strong> IBM's 99.99% RB fidelity is measuring readout error, not gate quality. Tuna-9 and IQM Garnet both report 99.82% &mdash; genuine gate fidelity measured via raw native gates with no Clifford-level compilation.</li>
 </ol>
@@ -231,7 +232,7 @@ export const posts: BlogPost[] = [
 
 <p>Why so bad? The HeH+ 2-qubit Hamiltonian has the form <code>H = g0 + g1&lang;Z0&rang; + g2&lang;Z1&rang; + g3&lang;Z0Z1&rang; + g4&lang;X0X1&rang; + g5&lang;Y0Y1&rang;</code>. The g1 coefficient (&sim;0.5&ndash;0.8) amplifies readout bias: a 10% readout error on &lang;Z&rang; operators contributes &sim;0.05&ndash;0.08 Ha of error. The energy also depends on the difference g1&minus;g2 &mdash; when both Z terms are biased in the same direction, the error compounds rather than cancels.</p>
 
-<p>For H2, the Hamiltonian is more symmetric and the g1 coefficient is smaller (&sim;0.4), which is why IBM gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+. <strong>The molecule matters as much as the hardware.</strong></p>
+<p>For H2, the Hamiltonian is more symmetric and the g1 coefficient is smaller (&sim;0.4), which is why IBM TREX gets 0.22 kcal/mol error on H2 but 4.45 kcal/mol on HeH+. Even with the best mitigation, HeH+ remains 20x worse. <strong>The molecule matters as much as the hardware.</strong></p>
 
 <h2>Qubit Selection: The Cheapest Error Mitigation</h2>
 
@@ -337,7 +338,7 @@ export const posts: BlogPost[] = [
 
 <li><strong>AI decoders beat classical decoders on real hardware data.</strong> A simple 2-layer neural network outperforms lookup tables by 50% on qubit-level error classification. On real hardware, noise has structure that ML can exploit.</li>
 
-<li><strong>The molecule matters as much as the machine.</strong> IBM Torino gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+, because HeH+'s asymmetric Hamiltonian amplifies readout bias. You can't benchmark VQE on one molecule and assume it generalizes.</li>
+<li><strong>The molecule matters as much as the machine.</strong> Even with TREX, IBM Torino gets 0.22 kcal/mol on H2 but 4.45 kcal/mol on HeH+ &mdash; because HeH+'s asymmetric Hamiltonian (|g1|/|g4| = 7.8 vs 4.4) amplifies readout bias 20x. You can't benchmark VQE on one molecule and assume it generalizes.</li>
 
 <li><strong>Qubit selection is the cheapest optimization.</strong> On Tuna-9, switching from q[0,1] to q[2,4] cuts VQE error by 3.1x &mdash; no algorithm change, no error mitigation, just picking better qubits. This outperforms readout error mitigation and costs nothing at runtime.</li>
 </ol>
@@ -1615,9 +1616,9 @@ b = measure q"""
 
 <p><em>Nature Communications 5, 4213</em> &mdash; <a href="https://arxiv.org/abs/1304.3061">arXiv:1304.3061</a></p>
 
-<p>The paper that started it all: the first variational quantum eigensolver, demonstrated on HeH+ using a photonic processor. We replicated the full potential energy curve (11 bond distances) using PennyLane's 4-qubit Jordan-Wigner encoding with DoubleExcitation ansatz. The emulator matches FCI within 0.00012 Ha MAE. IBM Torino fared worst of all papers tested: 0/11 points within chemical accuracy, MAE = 83.5 kcal/mol.</p>
+<p>The paper that started it all: the first variational quantum eigensolver, demonstrated on HeH+ using a photonic processor. We replicated the full potential energy curve (11 bond distances) using PennyLane's 4-qubit Jordan-Wigner encoding with DoubleExcitation ansatz. The emulator matches FCI within 0.00012 Ha MAE. IBM Torino with TREX achieves 4.31&ndash;7.26 kcal/mol across 3 distances &mdash; a 16x improvement over SamplerV2+post-selection (83.5 kcal/mol MAE), but still 20x worse than H2 TREX (0.22 kcal/mol). Tuna-9 with REM+PS achieves 4.44 kcal/mol at R=0.75&Aring;.</p>
 
-<p><strong>Result: 60% pass (3/5 claims).</strong> The HeH+ Hamiltonian has stronger off-diagonal terms than H2, making it more sensitive to hardware noise. Symmetry verification still provides 2.9x improvement on noisy simulation.</p>
+<p><strong>Result: 78% pass (7/9 claims).</strong> The HeH+ Hamiltonian has a coefficient amplification ratio |g1|/|g4| = 7.8 (vs 4.4 for H2), which fundamentally limits NISQ accuracy. Our prediction that TREX would give 3&ndash;4x improvement but not chemical accuracy was confirmed on IBM hardware. Symmetry verification provides 2.3&ndash;7.9x improvement across backends.</p>
 
 <h2>Paper 4: Cross et al. (2019) &mdash; Quantum Volume</h2>
 

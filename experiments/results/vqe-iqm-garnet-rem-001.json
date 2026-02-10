@@ -2,6 +2,8 @@
   "id": "vqe-iqm-garnet-rem-001",
   "type": "vqe_h2",
   "backend": "iqm-garnet",
+  "submitted": "2026-02-10T20:11:09.643678+00:00",
+  "completed": "2026-02-10T20:18:56.909986+00:00",
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.735,
@@ -21,52 +23,52 @@
   },
   "raw_counts": {
     "z_basis": {
-      "10": 3914,
-      "01": 91,
-      "00": 50,
-      "11": 41
+      "10": 3912,
+      "00": 40,
+      "01": 102,
+      "11": 42
     },
     "x_basis": {
-      "00": 1251,
-      "11": 1229,
-      "01": 828,
-      "10": 788
+      "01": 1270,
+      "10": 1200,
+      "11": 800,
+      "00": 826
     },
     "y_basis": {
-      "00": 1310,
-      "11": 1161,
-      "10": 883,
-      "01": 742
+      "11": 875,
+      "00": 772,
+      "01": 1277,
+      "10": 1172
     }
   },
   "analysis": {
-    "energy_hartree": -1.041145,
-    "energy_raw": -1.026185,
-    "energy_postselected": -1.043063,
-    "energy_rem": -1.038274,
-    "energy_hybrid": -1.041145,
-    "postselection_keep_fraction": 0.9778,
+    "energy_hartree": -1.114581,
+    "energy_raw": -1.097781,
+    "energy_postselected": -1.112904,
+    "energy_rem": -1.110859,
+    "energy_hybrid": -1.114581,
+    "postselection_keep_fraction": 0.98,
     "fci_energy": -1.137306,
-    "error_hartree": 0.096161,
-    "error_kcal_mol": 60.34,
-    "error_raw_kcal_mol": 69.73,
-    "error_ps_kcal_mol": 59.14,
-    "error_rem_kcal_mol": 62.14,
-    "error_hybrid_kcal_mol": 60.34,
+    "error_hartree": 0.022725,
+    "error_kcal_mol": 14.26,
+    "error_raw_kcal_mol": 24.8,
+    "error_ps_kcal_mol": 15.31,
+    "error_rem_kcal_mol": 16.6,
+    "error_hybrid_kcal_mol": 14.26,
     "chemical_accuracy": false,
     "expectation_values": {
-      "Z0": -0.9546,
-      "Z1": 0.9546,
+      "Z0": -0.9492,
+      "Z1": 0.9492,
       "Z0Z1": -1.0,
-      "X0X1": 0.2109,
-      "Y0Y1": 0.2065
+      "X0X1": -0.2061,
+      "Y0Y1": -0.1958
     },
     "rem_expectation_values": {
-      "Z0": -0.9554,
-      "Z1": 0.9465,
-      "Z0Z1": -0.9911,
-      "X0X1": 0.2223,
-      "Y0Y1": 0.2164
+      "Z0": -0.9496,
+      "Z1": 0.9394,
+      "Z0Z1": -0.9897,
+      "X0X1": -0.216,
+      "Y0Y1": -0.2044
     },
     "readout_cal_file": "readout-cal-iqm-garnet-001"
   }

@@ -25,7 +25,7 @@
       "g5": 0.090466
     },
     "shots": 4096,
-    "mitigation": "Z-parity post-selection"
+    "mitigation": "hybrid PS+REM (Z-parity for Z-basis, confusion matrix inversion for X/Y)"
   },
   "raw_counts": {
     "z_basis": {
@@ -148,12 +148,19 @@
     "cal_11": 415702
   },
   "analysis": {
-    "energy_raw": -1.10202,
+    "energy_raw": -1.102020,
     "error_raw_kcal_mol": 22.14,
     "energy_postselected": -1.131562,
-    "error_postselected_kcal_mol": 3.6,
+    "error_postselected_kcal_mol": 3.60,
+    "energy_rem": -1.126645,
+    "error_rem_kcal_mol": 6.69,
+    "energy_rem_ps": -1.134592,
+    "error_rem_ps_kcal_mol": 1.70,
+    "energy_hybrid_ps_rem": -1.135202,
+    "error_hybrid_ps_rem_kcal_mol": 1.32,
+    "chemical_accuracy": true,
+    "best_strategy": "hybrid_ps_rem",
     "postselection_keep_fraction": 0.9619,
-    "chemical_accuracy": false,
     "expectation_values_raw": {
       "Z0": -0.90186,
       "Z1": 0.97314,
@@ -170,7 +177,15 @@
     },
     "calibration": {
       "q68_00_accuracy": 0.9863,
-      "q68_11_accuracy": 0.9202
+      "q68_11_accuracy": 0.9202,
+      "readout_errors": {
+        "q6_0to1": 0.011,
+        "q6_1to0": 0.0266,
+        "q6_total": 0.0188,
+        "q8_0to1": 0.0029,
+        "q8_1to0": 0.0542,
+        "q8_total": 0.0286
+      }
     }
   },
   "environment": "experiments/environment.json"

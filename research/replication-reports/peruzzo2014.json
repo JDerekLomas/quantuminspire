@@ -53,14 +53,21 @@
           "discrepancy": 0.007074,
           "within_published_error": false,
           "failure_mode": "partial_noise",
-          "failure_description": "HeH+ at R=0.75A on Tuna-9 q[4,6]: 4.44 kcal/mol (REM+PS best). Raw=35.24, PS=5.89, hybrid=5.11 kcal/mol. 20x better than IBM (91.16). Fails chemical accuracy but demonstrates HeH+ is intrinsically harder than H2 (larger g1/g2 coefficients amplify Z-errors).",
+          "failure_description": "HeH+ at R=0.75A on Tuna-9 q[4,6]: best=4.44 kcal/mol (REM+PS). Five strategies tested: raw=35.24, PS=5.89, REM=9.34, REM+PS=4.44, hybrid=5.11 kcal/mol. Fails chemical accuracy but demonstrates HeH+ is intrinsically harder than H2 (|g1|/|g4|=7.8 amplifies Z-errors). Comparable to IBM TREX (4.45 kcal/mol).",
           "severity": "medium",
           "error_kcal_mol": 4.44,
           "qubit_pair": [4, 6],
           "mitigation": "REM+PS (confusion matrix inversion then Z-parity post-selection)",
           "raw_error_kcal_mol": 35.24,
           "ps_error_kcal_mol": 5.89,
-          "job_ids": [415692, 415693, 415694, 415699, 415700]
+          "rem_error_kcal_mol": 9.34,
+          "rem_ps_error_kcal_mol": 4.44,
+          "hybrid_error_kcal_mol": 5.11,
+          "job_ids": [415692, 415693, 415694, 415699, 415700],
+          "readout_errors": {
+            "q4_total": 0.0182,
+            "q6_total": 0.019
+          }
         }
       }
     },
@@ -142,9 +149,12 @@
           "discrepancy": 6.44,
           "within_published_error": true,
           "failure_mode": "success",
-          "failure_description": "REM+PS achieves 7.9x improvement over raw (35.24 → 4.44 kcal/mol) on q[4,6]. Exceeds published 1.5x claim. Five strategies tested: raw, PS, REM, REM+PS, hybrid PS+REM.",
+          "failure_description": "REM+PS achieves 7.94x improvement over raw (35.24 → 4.44 kcal/mol) on q[4,6]. Five strategies: raw=35.24, PS=5.89 (6.0x), REM=9.34 (3.8x), REM+PS=4.44 (7.9x), hybrid=5.11 (6.9x). Best is REM+PS. Exceeds published 1.5x claim. PASSES.",
           "severity": "none",
-          "improvement_factor": 7.94
+          "improvement_factor": 7.94,
+          "raw_error_kcal_mol": 35.24,
+          "best_error_kcal_mol": 4.44,
+          "best_strategy": "rem_ps"
         }
       }
     }
@@ -162,6 +172,6 @@
       "ibm_torino",
       "tuna9"
     ],
-    "notes": "Updated 2026-02-10 with IBM mitigation ladder (9 jobs, 98s QPU). TREX best: 4.31 kcal/mol (R=1.50), 4.45 kcal/mol (R=0.75). Prediction CONFIRMED: coefficient amplification (|g1|/|g4|=7.8) prevents chemical accuracy — HeH+ TREX is 20x worse than H2 TREX (0.22 kcal/mol). Noise-resilience claim now PASSES on all 3 backends. DD hurts TREX. EstimatorV2 raw (17-19 kcal/mol) vastly better than SamplerV2+PS (91 kcal/mol)."
+    "notes": "Updated 2026-02-10 with Tuna-9 REM analysis (5 strategies) and IBM mitigation ladder. HeH+ fails chemical accuracy on ALL hardware (best: IBM TREX 4.31 kcal/mol at R=1.50, Tuna-9 REM+PS 4.44 kcal/mol on q[4,6]). Coefficient amplification (|g1|/|g4|=7.8) confirmed as root cause. Noise-resilience claim PASSES on all 3 backends (IBM 4.3x, Tuna-9 7.9x). 78% overall success (7/9 claims)."
   }
 }

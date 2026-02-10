@@ -25,7 +25,7 @@
       "g5": 0.073943
     },
     "shots": 4096,
-    "mitigation": "Z-parity post-selection"
+    "mitigation": "REM+PS (confusion matrix inversion then Z-parity post-selection)"
   },
   "raw_counts": {
     "z_basis": {
@@ -110,8 +110,15 @@
     "error_raw_kcal_mol": 35.24,
     "energy_postselected": -2.836798,
     "error_postselected_kcal_mol": 5.89,
-    "postselection_keep_fraction": 0.959,
+    "energy_rem": -2.831308,
+    "error_rem_kcal_mol": 9.34,
+    "energy_rem_ps": -2.839113,
+    "error_rem_ps_kcal_mol": 4.44,
+    "energy_hybrid_ps_rem": -2.838043,
+    "error_hybrid_ps_rem_kcal_mol": 5.11,
     "chemical_accuracy": false,
+    "best_strategy": "rem_ps",
+    "postselection_keep_fraction": 0.959,
     "expectation_values_raw": {
       "Z0": 0.97314,
       "Z1": -0.92041,
@@ -128,7 +135,15 @@
     },
     "calibration": {
       "q46_00_accuracy": 0.9753,
-      "q46_11_accuracy": 0.9504
+      "q46_11_accuracy": 0.9504,
+      "readout_errors": {
+        "q4_0to1": 0.0139,
+        "q4_1to0": 0.0225,
+        "q4_total": 0.0182,
+        "q6_0to1": 0.0107,
+        "q6_1to0": 0.0273,
+        "q6_total": 0.019
+      }
     }
   },
   "environment": "experiments/environment.json"

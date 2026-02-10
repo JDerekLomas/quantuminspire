@@ -34,20 +34,20 @@
           "error_kcal_mol": 0.75
         },
         "tuna9": {
-          "measured_value": -1.1325,
-          "discrepancy": 0.0048,
-          "within_published_error": false,
-          "failure_mode": "partial_noise",
-          "failure_description": "Best result: q[2,4] with Z-parity post-selection achieves 3.0 kcal/mol. Four qubit pairs tested: q[0,1]=9.45, q[4,6]=6.2 (with REM), q[2,4]=3.04, q[6,8]=3.60 kcal/mol. Qubit selection provides 3.1x improvement (q[0,1] vs q[2,4]). Post-selection keeps 96% of shots.",
-          "severity": "low",
-          "error_kcal_mol": 3.04,
+          "measured_value": -1.135837,
+          "discrepancy": 0.001469,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "CHEMICAL ACCURACY on Tuna-9! Best: q[2,4] hybrid PS+REM 0.92 kcal/mol (PASS). q[6,8] hybrid PS+REM 1.32 kcal/mol (PASS). Four qubit pairs tested with 5 mitigation strategies. Readout error mitigation via per-qubit confusion matrix inversion on X/Y bases is the key enabler.",
+          "severity": "none",
+          "error_kcal_mol": 0.92,
           "qubit_pair": [2, 4],
-          "mitigation": "Z-parity post-selection",
+          "mitigation": "hybrid PS+REM",
           "all_qubit_pairs": {
-            "q01": {"measured_value": -1.1222, "error_kcal_mol": 9.45, "bell_fidelity": 0.870, "postselection_keep": 0.826},
-            "q24": {"measured_value": -1.1325, "error_kcal_mol": 3.04, "bell_fidelity": 0.923, "postselection_keep": 0.961},
+            "q01": {"measured_value": -1.1222, "error_kcal_mol": 9.45, "bell_fidelity": 0.870, "postselection_keep": 0.826, "mitigation": "PS only"},
+            "q24": {"measured_value": -1.135837, "error_kcal_mol": 0.92, "bell_fidelity": 0.923, "postselection_keep": 0.961, "mitigation": "hybrid PS+REM", "ps_only_kcal_mol": 3.04, "chemical_accuracy": true},
             "q46": {"measured_value": -1.1274, "error_kcal_mol": 6.2, "bell_fidelity": 0.935, "postselection_keep": null, "mitigation": "Z-PS + readout error mitigation"},
-            "q68": {"measured_value": -1.13156, "error_kcal_mol": 3.60, "bell_fidelity": 0.913, "postselection_keep": 0.962}
+            "q68": {"measured_value": -1.135202, "error_kcal_mol": 1.32, "bell_fidelity": 0.913, "postselection_keep": 0.962, "mitigation": "hybrid PS+REM", "ps_only_kcal_mol": 3.60, "chemical_accuracy": true}
           }
         },
         "ibm_torino": {
@@ -85,17 +85,19 @@
           "note": "Metric 'improvement_factor' not found in result"
         },
         "tuna9": {
-          "measured_value": 3.6,
-          "discrepancy": -1.6,
+          "measured_value": 24.1,
+          "discrepancy": -22.1,
           "within_published_error": true,
           "failure_mode": "success",
-          "failure_description": "Z-parity post-selection improved error from 22.2 kcal/mol (raw) to 7.2 kcal/mol (3.1x). Adding readout error mitigation further improved to 6.2 kcal/mol (3.6x total improvement). Published claims >2x; we observe 3.6x, which exceeds the published improvement factor. PASSES.",
+          "failure_description": "Best improvement: q[2,4] hybrid PS+REM achieves 24.1x (raw 22.2 → 0.92 kcal/mol). q[6,8]: 16.8x (raw 22.14 → 1.32 kcal/mol). Both achieve chemical accuracy. Published claims >2x; we vastly exceed. Five mitigation strategies tested per pair. PASSES.",
           "severity": "none",
           "raw_error_kcal_mol": 22.2,
-          "zps_error_kcal_mol": 7.2,
-          "zps_plus_readout_error_kcal_mol": 6.2,
-          "improvement_factor_zps": 3.1,
-          "improvement_factor_total": 3.6
+          "best_mitigated_kcal_mol": 0.92,
+          "improvement_factor_best": 24.1,
+          "improvement_by_pair": {
+            "q24": {"raw": 22.2, "ps": 3.04, "hybrid_ps_rem": 0.92, "improvement": 24.1},
+            "q68": {"raw": 22.14, "ps": 3.60, "hybrid_ps_rem": 1.32, "improvement": 16.8}
+          }
         },
         "ibm_torino": {
           "measured_value": 119.1,
@@ -128,12 +130,15 @@
           "severity": "none"
         },
         "tuna9": {
-          "measured_value": false,
-          "discrepancy": 1,
-          "within_published_error": false,
-          "failure_mode": "partial_noise",
-          "failure_description": "Hardware noise degrades result but qualitative behavior preserved",
-          "severity": "medium"
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "CHEMICAL ACCURACY ACHIEVED on Tuna-9! q[2,4] hybrid PS+REM: 0.92 kcal/mol. q[6,8] hybrid PS+REM: 1.32 kcal/mol. Both within 1.6 kcal/mol threshold. PS for Z-basis catches leakage; confusion matrix inversion for X/Y corrects readout bias.",
+          "severity": "none",
+          "best_error_kcal_mol": 0.92,
+          "best_pair": [2, 4],
+          "q68_error_kcal_mol": 1.32
         },
         "ibm_torino": {
           "measured_value": true,
@@ -163,6 +168,6 @@
       "tuna9",
       "ibm_torino"
     ],
-    "notes": "Updated 2026-02-10 with mitigation ladder hardware phases. TREX (resilience_level=1) achieves CHEMICAL ACCURACY: 0.22 kcal/mol on IBM Torino (119x improvement over raw). All 4 claims PASS. IBM best: TREX -1.137655 Ha (0.22 kcal/mol). Tuna-9 best: q[2,4] 3.04 kcal/mol."
+    "notes": "Updated 2026-02-10. ALL 4 CLAIMS PASS ON ALL 3 BACKENDS. Chemical accuracy on IBM (TREX 0.22 kcal/mol) AND Tuna-9 (hybrid PS+REM: q[2,4] 0.92, q[6,8] 1.32 kcal/mol). 100% success rate. Readout error mitigation via confusion matrix inversion is the key enabler on Tuna-9."
   }
 }

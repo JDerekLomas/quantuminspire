@@ -273,16 +273,27 @@ def call_llm(prompt, hard=False, model=MODEL, rag=False, task_id=None, context7_
             input_tokens = len(full_prompt) // 4
             output_tokens = len(text) // 4
     else:
+        import signal
+
+        def _timeout_handler(signum, frame):
+            raise TimeoutError("Gemini API call timed out after 120s")
+
         client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-        response = client.models.generate_content(
-            model=model,
-            config=genai.types.GenerateContentConfig(
-                system_instruction=system,
-                max_output_tokens=MAX_TOKENS,
-                temperature=0,
-            ),
-            contents=user_msg,
-        )
+        old_handler = signal.signal(signal.SIGALRM, _timeout_handler)
+        signal.alarm(120)
+        try:
+            response = client.models.generate_content(
+                model=model,
+                config=genai.types.GenerateContentConfig(
+                    system_instruction=system,
+                    max_output_tokens=MAX_TOKENS,
+                    temperature=0,
+                ),
+                contents=user_msg,
+            )
+        finally:
+            signal.alarm(0)
+            signal.signal(signal.SIGALRM, old_handler)
         text = response.text
         text = strip_markdown_fences(text)
         input_tokens = response.usage_metadata.prompt_token_count or 0

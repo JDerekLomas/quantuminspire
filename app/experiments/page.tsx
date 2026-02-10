@@ -1341,6 +1341,7 @@ export default function ExperimentsPage() {
           </div>
           <div className="flex gap-6 text-xs font-mono text-gray-500">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/sonification" className="hover:text-[#e879f9] transition-colors">Listen</Link>
             <Link href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</Link>
             <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
           </div>

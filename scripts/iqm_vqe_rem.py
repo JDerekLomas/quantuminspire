@@ -168,7 +168,18 @@ def main():
         print(f"  Submitting {label}...", end=" ", flush=True)
         t0 = time.time()
         job_id = client.submit_circuits([circuit], shots=SHOTS)
-        result = client.wait_for_results(job_id, timeout_secs=600)
+        # Poll with visible progress instead of silent wait
+        while True:
+            try:
+                result = client.wait_for_results(job_id, timeout_secs=30)
+                break
+            except Exception:
+                elapsed = time.time() - t0
+                status = client.get_run_status(job_id)
+                print(f"({status.status.value} {elapsed:.0f}s)...", end=" ", flush=True)
+                if elapsed > 900:  # 15 min hard timeout
+                    print(f"TIMEOUT after {elapsed:.0f}s")
+                    sys.exit(1)
         counts = extract_counts(result)
         counts_by_label[label] = counts
         elapsed = time.time() - t0
