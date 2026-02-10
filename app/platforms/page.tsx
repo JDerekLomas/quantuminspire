@@ -186,13 +186,14 @@ function GHZScalingChart() {
 }
 
 function NoiseFingerprint() {
-  const W = 640, H = 200
+  const W = 640, H = 240
   const platforms_noise = [
     { name: 'Tuna-9', color: '#00d4ff', ...noiseData.tuna9 },
     { name: 'IQM Garnet', color: '#f59e0b', ...noiseData.garnet },
+    { name: 'IBM Torino', color: '#8b5cf6', ...noiseData.ibm },
   ]
   const bases = ['ZZ', 'XX', '|YY|'] as const
-  const barW = 60, gapBetweenBases = 100, gapBetweenPlatforms = 6
+  const barW = 40, gapBetweenBases = 80, gapBetweenPlatforms = 4
   const padL = 60, padT = 30
 
   const yScale = (v: number) => padT + (1 - v) * (H - padT - 30)
@@ -200,7 +201,7 @@ function NoiseFingerprint() {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
       {/* Y grid */}
-      {[0.7, 0.8, 0.9, 1.0].map(v => (
+      {[0.6, 0.7, 0.8, 0.9, 1.0].map(v => (
         <g key={v}>
           <line x1={padL - 10} y1={yScale(v)} x2={W - 30} y2={yScale(v)} stroke="white" strokeOpacity={0.06} />
           <text x={padL - 14} y={yScale(v) + 4} fill="#6b7280" fontSize="10" fontFamily="monospace" textAnchor="end">{v.toFixed(1)}</text>
@@ -208,10 +209,10 @@ function NoiseFingerprint() {
       ))}
       {/* Basis groups */}
       {bases.map((basis, bi) => {
-        const groupX = padL + bi * (barW * 2 + gapBetweenBases)
+        const groupX = padL + bi * (barW * 3 + gapBetweenBases)
         return (
           <g key={basis}>
-            <text x={groupX + barW} y={H - 4} fill="#9ca3af" fontSize="11" fontFamily="monospace" textAnchor="middle">
+            <text x={groupX + barW * 1.5} y={H - 4} fill="#9ca3af" fontSize="11" fontFamily="monospace" textAnchor="middle">
               {basis === '|YY|' ? '|YY|' : `\u27E8${basis}\u27E9`}
             </text>
             {platforms_noise.map((p, pi) => {
@@ -220,8 +221,8 @@ function NoiseFingerprint() {
               const x = groupX + pi * (barW + gapBetweenPlatforms)
               return (
                 <g key={p.name}>
-                  <rect x={x} y={yScale(raw)} width={barW} height={yScale(0.7) - yScale(raw)} rx={3} fill={p.color} fillOpacity={0.7} />
-                  <text x={x + barW / 2} y={yScale(raw) - 6} fill={p.color} fontSize="10" fontFamily="monospace" textAnchor="middle">{raw.toFixed(3)}</text>
+                  <rect x={x} y={yScale(raw)} width={barW} height={yScale(0.6) - yScale(raw)} rx={3} fill={p.color} fillOpacity={0.7} />
+                  <text x={x + barW / 2} y={yScale(raw) - 6} fill={p.color} fontSize="9" fontFamily="monospace" textAnchor="middle">{raw.toFixed(3)}</text>
                 </g>
               )
             })}
@@ -230,7 +231,7 @@ function NoiseFingerprint() {
       })}
       {/* Legend */}
       {platforms_noise.map((p, i) => (
-        <g key={p.name} transform={`translate(${W - 200 + i * 100}, 12)`}>
+        <g key={p.name} transform={`translate(${W - 300 + i * 100}, 12)`}>
           <rect width={10} height={10} rx={2} fill={p.color} fillOpacity={0.7} />
           <text x={14} y={9} fill={p.color} fontSize="10" fontFamily="monospace">{p.name}</text>
         </g>
@@ -240,13 +241,13 @@ function NoiseFingerprint() {
 }
 
 function QVComparison() {
-  const colors = { tuna9: '#00d4ff', garnet: '#f59e0b' }
-  const W = 400, H = 180
+  const colors = { tuna9: '#00d4ff', garnet: '#f59e0b', ibm: '#8b5cf6' }
+  const W = 400, H = 220
   const padL = 50, padR = 30, padT = 30, padB = 40
   const chartW = W - padL - padR
   const chartH = H - padT - padB
 
-  const xScale = (n: number) => padL + ((n - 1.5) / 4.5) * chartW
+  const xScale = (n: number) => padL + ((n - 1.5) / 6.5) * chartW
   const yScale = (v: number) => padT + ((1 - v) / 0.5) * chartH // 0.5 to 1.0
 
   return (
@@ -262,7 +263,7 @@ function QVComparison() {
         </g>
       ))}
       {/* X labels */}
-      {[2, 3, 4, 5].map(n => (
+      {[2, 3, 4, 5, 6, 7].map(n => (
         <text key={n} x={xScale(n)} y={H - padB + 16} fill="#6b7280" fontSize="10" fontFamily="monospace" textAnchor="middle">n={n}</text>
       ))}
       {/* Tuna-9 */}
@@ -281,12 +282,23 @@ function QVComparison() {
       {qvData.filter(d => d.garnet).map(d => (
         <circle key={`g${d.n}`} cx={xScale(d.n)} cy={yScale(d.garnet!)} r={4} fill={colors.garnet} />
       ))}
+      {/* IBM */}
+      <polyline
+        points={qvData.filter(d => d.ibm).map(d => `${xScale(d.n)},${yScale(d.ibm!)}`).join(' ')}
+        fill="none" stroke={colors.ibm} strokeWidth={2}
+      />
+      {qvData.filter(d => d.ibm).map(d => (
+        <circle key={`i${d.n}`} cx={xScale(d.n)} cy={yScale(d.ibm!)} r={4} fill={colors.ibm} />
+      ))}
       {/* Legend */}
       <g transform={`translate(${padL + 10}, ${padT + 8})`}>
-        <circle cx={0} cy={0} r={4} fill={colors.tuna9} /><text x={8} y={4} fill={colors.tuna9} fontSize="10" fontFamily="monospace">Tuna-9 (QV=8)</text>
+        <circle cx={0} cy={0} r={4} fill={colors.tuna9} /><text x={8} y={4} fill={colors.tuna9} fontSize="9" fontFamily="monospace">Tuna-9 (QV=8)</text>
       </g>
-      <g transform={`translate(${padL + 10}, ${padT + 24})`}>
-        <circle cx={0} cy={0} r={4} fill={colors.garnet} /><text x={8} y={4} fill={colors.garnet} fontSize="10" fontFamily="monospace">IQM Garnet (QV=32)</text>
+      <g transform={`translate(${padL + 10}, ${padT + 22})`}>
+        <circle cx={0} cy={0} r={4} fill={colors.garnet} /><text x={8} y={4} fill={colors.garnet} fontSize="9" fontFamily="monospace">IQM Garnet (QV=32)</text>
+      </g>
+      <g transform={`translate(${padL + 10}, ${padT + 36})`}>
+        <circle cx={0} cy={0} r={4} fill={colors.ibm} /><text x={8} y={4} fill={colors.ibm} fontSize="9" fontFamily="monospace">IBM Torino (QV=32)</text>
       </g>
     </svg>
   )
@@ -325,9 +337,11 @@ export default function PlatformsPage() {
           <div className="flex gap-2 mt-4 text-xs font-mono text-gray-500">
             <span>2026-02-10</span>
             <span>&middot;</span>
-            <span>~60 hardware jobs</span>
+            <span>~100 hardware jobs</span>
             <span>&middot;</span>
-            <span>~80K shots</span>
+            <span>~230K shots</span>
+            <span>&middot;</span>
+            <span>3 quantum processors</span>
           </div>
         </section>
 
@@ -355,8 +369,8 @@ export default function PlatformsPage() {
             </div>
           </div>
           <p className="text-xs text-gray-500 mt-2 font-mono">
-            IBM Torino&apos;s heavy-hex topology delivers the most uniform fidelity.
-            Both Tuna-9 and Garnet have &quot;hot spots&quot; that drop below 90%.
+            *IBM used default transpiler qubit placement (not cherry-picked).
+            IQM Garnet leads on best-pair fidelity. All platforms have qubit-quality variation.
           </p>
         </section>
 
@@ -365,7 +379,7 @@ export default function PlatformsPage() {
           <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#00ff88] mb-2">GHZ Fidelity vs. Qubit Count</h2>
           <p className="text-gray-400 text-sm mb-4 max-w-xl">
             How fast does entanglement quality degrade with circuit size?
-            GHZ-10 is only possible on IQM Garnet (Tuna-9 has 9 qubits but limited topology).
+            IBM Torino pushes to 50-qubit GHZ. Per-qubit error stays remarkably consistent at ~5%.
           </p>
           <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
             <GHZScalingChart />
@@ -411,10 +425,10 @@ export default function PlatformsPage() {
                 </div>
                 <div className="bg-white/[0.02] border border-[#8b5cf6]/20 rounded-lg p-4">
                   <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-black text-[#8b5cf6]">?</span>
+                    <span className="text-3xl font-black text-[#8b5cf6]">32</span>
                     <span className="text-sm font-mono text-gray-400">IBM Torino QV</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">133 qubits. Final test pending. Expected QV &ge; 32.</p>
+                  <p className="text-xs text-gray-500 mt-1">Passes n=2-5, fails at n=6. Same as Garnet despite 6.7x more qubits. 133q, heavy-hex.</p>
                 </div>
               </div>
             </div>
@@ -431,20 +445,26 @@ export default function PlatformsPage() {
           <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
             <NoiseFingerprint />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div className="bg-white/[0.02] border border-[#00d4ff]/10 rounded-lg p-4">
               <p className="text-xs font-mono text-[#00d4ff] mb-1">Tuna-9 &mdash; q4-q6 (best pair)</p>
               <p className="text-sm text-gray-300">
-                <strong>Dephasing-dominated.</strong> ZZ=0.945 significantly exceeds XX=0.902 and |YY|=0.896.
-                Phase information degrades faster than population. Dynamical decoupling would help.
+                <strong>Dephasing.</strong> ZZ=0.945 &gt; XX=0.902 &asymp; |YY|=0.896.
+                Phase degrades faster than population.
               </p>
             </div>
             <div className="bg-white/[0.02] border border-[#f59e0b]/10 rounded-lg p-4">
               <p className="text-xs font-mono text-[#f59e0b] mb-1">IQM Garnet &mdash; QB14-QB15</p>
               <p className="text-sm text-gray-300">
-                <strong>Dephasing-dominated.</strong> ZZ=0.975 &gt; XX=0.949 &gt; |YY|=0.881.
-                Similar pattern to Tuna-9 but with higher overall correlations.
-                The YY deficit suggests T2 is the limiting coherence time.
+                <strong>Dephasing.</strong> ZZ=0.975 &gt; XX=0.949 &gt; |YY|=0.881.
+                Highest overall correlations. T2 is the bottleneck.
+              </p>
+            </div>
+            <div className="bg-white/[0.02] border border-[#8b5cf6]/10 rounded-lg p-4">
+              <p className="text-xs font-mono text-[#8b5cf6] mb-1">IBM Torino &mdash; default pair</p>
+              <p className="text-sm text-gray-300">
+                <strong>Depolarizing.</strong> ZZ=0.729 &asymp; XX=0.704 &asymp; |YY|=0.675.
+                All correlators within 5%. Uniform noise across all bases.
               </p>
             </div>
           </div>
@@ -466,14 +486,16 @@ export default function PlatformsPage() {
               <tbody className="text-gray-300">
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Qubits</td><td className="text-center">9</td><td className="text-center">20</td><td className="text-center">133</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Connectivity</td><td className="text-center">10 edges</td><td className="text-center">29 edges</td><td className="text-center">Heavy-hex</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Bell (best)</td><td className="text-center">97.0%</td><td className="text-center">98.1%</td><td className="text-center">99.1%</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Bell (worst)</td><td className="text-center text-red-400">85.8%</td><td className="text-center text-yellow-400">88.4%</td><td className="text-center text-green-400">~98%</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-3</td><td className="text-center">88.9%</td><td className="text-center">93.9%</td><td className="text-center">98.1%</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-5</td><td className="text-center">83.8%</td><td className="text-center">81.8%</td><td className="text-center text-gray-600">pending</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-10</td><td className="text-center text-gray-600">n/a</td><td className="text-center">54.7%</td><td className="text-center text-gray-600">pending</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Quantum Volume</td><td className="text-center">8</td><td className="text-center font-bold">32</td><td className="text-center text-gray-600">pending</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Dominant noise</td><td className="text-center">Dephasing</td><td className="text-center">Dephasing</td><td className="text-center text-gray-600">pending</td></tr>
-                <tr><td className="py-2 px-4 text-gray-400">Weak spot</td><td className="text-center text-red-400">q0 (12.3%)</td><td className="text-center text-yellow-400">QB9 region</td><td className="text-center text-gray-600">TBD</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Bell fidelity</td><td className="text-center">93.5%</td><td className="text-center font-bold">98.1%</td><td className="text-center">86.5%*</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-3</td><td className="text-center">88.9%</td><td className="text-center font-bold">93.9%</td><td className="text-center">82.9%</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-5</td><td className="text-center">83.8%</td><td className="text-center">81.8%</td><td className="text-center">76.6%</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-10</td><td className="text-center text-gray-600">n/a</td><td className="text-center">54.7%</td><td className="text-center font-bold">62.2%</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-20</td><td className="text-center text-gray-600">n/a</td><td className="text-center text-gray-600">n/a</td><td className="text-center">34.3%</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-50</td><td className="text-center text-gray-600">n/a</td><td className="text-center text-gray-600">n/a</td><td className="text-center">8.5%</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Quantum Volume</td><td className="text-center">8</td><td className="text-center font-bold">32</td><td className="text-center font-bold">32</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Dominant noise</td><td className="text-center">Dephasing</td><td className="text-center">Dephasing</td><td className="text-center">Depolarizing</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Per-qubit error</td><td className="text-center">3.5-6.2%</td><td className="text-center">1.4-5.0%</td><td className="text-center">4.6-6.1%</td></tr>
+                <tr><td className="py-2 px-4 text-gray-400">QPU time used</td><td className="text-center">~42K shots</td><td className="text-center">~47K shots</td><td className="text-center">44s / 10 min</td></tr>
               </tbody>
             </table>
           </div>
@@ -481,20 +503,27 @@ export default function PlatformsPage() {
 
         {/* What's next */}
         <section className="bg-white/[0.02] border border-white/5 rounded-lg p-8">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">What&apos;s Next</h2>
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">Key Takeaways</h2>
           <div className="space-y-3 text-sm text-gray-300">
             <p>
-              <strong className="text-[#8b5cf6]">IBM Torino (133 qubits)</strong> &mdash; The final test.
-              Run the full diagnostic suite on the largest processor. Can we push GHZ to 20, 50, 100 qubits?
-              What does Quantum Volume look like with 133 qubits of routing freedom?
+              <strong className="text-[#f59e0b]">IQM Garnet wins on gate quality</strong> &mdash;
+              Highest Bell fidelity (98.1%), best GHZ-3 (93.9%), and strongest correlators.
+              For circuits that fit in 20 qubits, Garnet delivers the cleanest results.
             </p>
             <p>
-              <strong className="text-white">H2 VQE cross-platform</strong> &mdash; Same molecule, three chips.
-              Which processor gets closest to chemical accuracy?
+              <strong className="text-[#8b5cf6]">IBM Torino wins on scale</strong> &mdash;
+              50-qubit GHZ (8.5% fidelity) is noisy but measurable. GHZ-20 at 34.3% and GHZ-10 at 62.2%
+              beat Garnet&apos;s GHZ-10 (54.7%). More qubits = more routing options = better qubit selection.
             </p>
             <p>
-              <strong className="text-white">Noise-aware strategy</strong> &mdash; Both Tuna-9 and IQM show dephasing-dominated noise.
-              Does dynamical decoupling improve fidelity? Does the noise type predict which error mitigation works?
+              <strong className="text-[#00d4ff]">Tuna-9 punches above its weight</strong> &mdash;
+              QV=8 on 9 qubits with basic gates. Best 5-qubit GHZ (83.8%) beats both IBM (76.6%) and Garnet (81.8%).
+              Small but well-characterized.
+            </p>
+            <p>
+              <strong className="text-white">QV=32 on both Garnet and Torino</strong> &mdash;
+              More qubits doesn&apos;t mean higher QV. Per-gate error rate is the bottleneck, not qubit count.
+              Both fail at n=6 where circuit depth overwhelms coherence.
             </p>
           </div>
         </section>
