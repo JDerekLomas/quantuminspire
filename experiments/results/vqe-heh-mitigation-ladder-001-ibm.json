@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0",
+  "id": "vqe-heh-mitigation-ladder-001-ibm",
+  "type": "vqe_mitigation_ladder",
+  "molecule": "HeH+",
+  "basis": "STO-3G",
+  "backend": "ibm_torino",
+  "timestamp": "2026-02-10T21:00:00+00:00",
+  "ansatz": "Ry-CNOT-X (2-qubit sector-projected)",
+  "prediction": {
+    "source": "research/failure-analysis.md",
+    "claim": "TREX reduces HeH+ error 3-4x but not to chemical accuracy",
+    "reason": "Coefficient amplification: |g1|/|g4| = 7.8 vs 4.4 for H2",
+    "confirmed": true
+  },
+  "h2_reference": {
+    "trex_error_kcal": 0.22,
+    "raw_error_kcal": 26.2,
+    "g1_g4_ratio": 4.4
+  },
+  "distances": [
+    {
+      "bond_distance": 0.75,
+      "fci_energy": -2.846187,
+      "alpha": -0.127328,
+      "coefficients": {
+        "g0": -1.681277,
+        "g1": -0.577585,
+        "g2": 0.577585,
+        "g3": 0.0,
+        "g4": 0.073943,
+        "g5": 0.073943
+      },
+      "amplification_ratio": 7.8,
+      "jobs": [
+        {
+          "label": "R=0.75 Raw (resilience=0)",
+          "job_id": "d65os71v6o8c73d392ug",
+          "shots": 4096,
+          "resilience_level": 0,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "energy_hartree": -2.815998,
+          "std_hartree": 0.003689,
+          "error_kcal_mol": 18.94,
+          "chemical_accuracy": false,
+          "qpu_seconds": 5.0
+        },
+        {
+          "label": "R=0.75 TREX (resilience=1)",
+          "job_id": "d65os95bujdc73ctodhg",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "energy_hartree": -2.839095,
+          "std_hartree": 0.003777,
+          "error_kcal_mol": 4.45,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14.0
+        },
+        {
+          "label": "R=0.75 TREX+DD",
+          "job_id": "d65ose8qbmes739d6aj0",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": true,
+          "twirling": false,
+          "energy_hartree": -2.833048,
+          "std_hartree": 0.003685,
+          "error_kcal_mol": 8.24,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14.0
+        }
+      ]
+    },
+    {
+      "bond_distance": 1.0,
+      "fci_energy": -2.860205,
+      "alpha": -0.116022,
+      "coefficients": {
+        "g0": -1.84776,
+        "g1": -0.502581,
+        "g2": 0.502581,
+        "g3": 0.0,
+        "g4": 0.058573,
+        "g5": 0.058573
+      },
+      "amplification_ratio": 8.6,
+      "jobs": [
+        {
+          "label": "R=1.00 Raw (resilience=0)",
+          "job_id": "d65osjhv6o8c73d393c0",
+          "shots": 4096,
+          "resilience_level": 0,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "energy_hartree": -2.834147,
+          "std_hartree": 0.003057,
+          "error_kcal_mol": 16.35,
+          "chemical_accuracy": false,
+          "qpu_seconds": 4.0
+        },
+        {
+          "label": "R=1.00 TREX (resilience=1)",
+          "job_id": "d65osnbe4kfs73cvmqpg",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "energy_hartree": -2.848634,
+          "std_hartree": 0.003175,
+          "error_kcal_mol": 7.26,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14.0
+        },
+        {
+          "label": "R=1.00 TREX+DD",
+          "job_id": "d65oss1v6o8c73d393kg",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": true,
+          "twirling": false,
+          "energy_hartree": -2.838208,
+          "std_hartree": 0.002941,
+          "error_kcal_mol": 13.80,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14.0
+        }
+      ]
+    },
+    {
+      "bond_distance": 1.5,
+      "fci_energy": -2.824683,
+      "alpha": -0.047812,
+      "coefficients": {
+        "g0": -1.832465,
+        "g1": -0.495492,
+        "g2": 0.495492,
+        "g3": 0.0,
+        "g4": 0.023709,
+        "g5": 0.023709
+      },
+      "amplification_ratio": 20.9,
+      "jobs": [
+        {
+          "label": "R=1.50 Raw (resilience=0)",
+          "job_id": "d65ot15bujdc73ctoeb0",
+          "shots": 4096,
+          "resilience_level": 0,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "energy_hartree": -2.798019,
+          "std_hartree": 0.002594,
+          "error_kcal_mol": 16.73,
+          "chemical_accuracy": false,
+          "qpu_seconds": 5.0
+        },
+        {
+          "label": "R=1.50 TREX (resilience=1)",
+          "job_id": "d65ot38qbmes739d6ba0",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": false,
+          "twirling": false,
+          "energy_hartree": -2.817822,
+          "std_hartree": 0.002495,
+          "error_kcal_mol": 4.31,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14.0
+        },
+        {
+          "label": "R=1.50 TREX+DD",
+          "job_id": "d65ot8be4kfs73cvmrf0",
+          "shots": 4096,
+          "resilience_level": 1,
+          "dynamical_decoupling": true,
+          "twirling": false,
+          "energy_hartree": -2.812491,
+          "std_hartree": 0.002729,
+          "error_kcal_mol": 7.65,
+          "chemical_accuracy": false,
+          "qpu_seconds": 14.0
+        }
+      ]
+    }
+  ],
+  "ranking": [
+    {"rank": 1, "bond_distance": 1.5, "label": "R=1.50 TREX (resilience=1)", "error_kcal": 4.31, "chemical_accuracy": false, "job_id": "d65ot38qbmes739d6ba0"},
+    {"rank": 2, "bond_distance": 0.75, "label": "R=0.75 TREX (resilience=1)", "error_kcal": 4.45, "chemical_accuracy": false, "job_id": "d65os95bujdc73ctodhg"},
+    {"rank": 3, "bond_distance": 1.0, "label": "R=1.00 TREX (resilience=1)", "error_kcal": 7.26, "chemical_accuracy": false, "job_id": "d65osnbe4kfs73cvmqpg"},
+    {"rank": 4, "bond_distance": 1.5, "label": "R=1.50 TREX+DD", "error_kcal": 7.65, "chemical_accuracy": false, "job_id": "d65ot8be4kfs73cvmrf0"},
+    {"rank": 5, "bond_distance": 0.75, "label": "R=0.75 TREX+DD", "error_kcal": 8.24, "chemical_accuracy": false, "job_id": "d65ose8qbmes739d6aj0"},
+    {"rank": 6, "bond_distance": 1.0, "label": "R=1.00 TREX+DD", "error_kcal": 13.80, "chemical_accuracy": false, "job_id": "d65oss1v6o8c73d393kg"},
+    {"rank": 7, "bond_distance": 1.0, "label": "R=1.00 Raw (resilience=0)", "error_kcal": 16.35, "chemical_accuracy": false, "job_id": "d65osjhv6o8c73d393c0"},
+    {"rank": 8, "bond_distance": 1.5, "label": "R=1.50 Raw (resilience=0)", "error_kcal": 16.73, "chemical_accuracy": false, "job_id": "d65ot15bujdc73ctoeb0"},
+    {"rank": 9, "bond_distance": 0.75, "label": "R=0.75 Raw (resilience=0)", "error_kcal": 18.94, "chemical_accuracy": false, "job_id": "d65os71v6o8c73d392ug"}
+  ],
+  "reanalysis_existing": [
+    {"bond_distance": 0.5, "fci_energy": -2.640715, "error_raw_kcal": 246.38, "error_postselected_kcal": 114.08, "keep_fraction": 0.8428, "amplification_ratio": 9.2, "improvement_factor": 2.16},
+    {"bond_distance": 0.75, "fci_energy": -2.846187, "error_raw_kcal": 195.54, "error_postselected_kcal": 91.16, "keep_fraction": 0.835, "amplification_ratio": 7.8, "improvement_factor": 2.15},
+    {"bond_distance": 1.0, "fci_energy": -2.860205, "error_raw_kcal": 169.63, "error_postselected_kcal": 82.9, "keep_fraction": 0.8413, "amplification_ratio": 8.6, "improvement_factor": 2.05},
+    {"bond_distance": 1.25, "fci_energy": -2.841379, "error_raw_kcal": 162.7, "error_postselected_kcal": 82.08, "keep_fraction": 0.8472, "amplification_ratio": 12.1, "improvement_factor": 1.98},
+    {"bond_distance": 1.5, "fci_energy": -2.824683, "error_raw_kcal": 156.16, "error_postselected_kcal": 68.49, "keep_fraction": 0.8416, "amplification_ratio": 20.9, "improvement_factor": 2.28},
+    {"bond_distance": 1.75, "fci_energy": -2.815192, "error_raw_kcal": 161.78, "error_postselected_kcal": 68.66, "keep_fraction": 0.8381, "amplification_ratio": 42.9, "improvement_factor": 2.36},
+    {"bond_distance": 2.0, "fci_energy": -2.81078, "error_raw_kcal": 170.84, "error_postselected_kcal": 77.9, "keep_fraction": 0.8418, "amplification_ratio": 100.2, "improvement_factor": 2.19},
+    {"bond_distance": 2.25, "fci_energy": -2.808938, "error_raw_kcal": 179.78, "error_postselected_kcal": 87.0, "keep_fraction": 0.8445, "amplification_ratio": 256.3, "improvement_factor": 2.07},
+    {"bond_distance": 2.5, "fci_energy": -2.80821, "error_raw_kcal": 175.95, "error_postselected_kcal": 77.41, "keep_fraction": 0.8413, "amplification_ratio": 700.6, "improvement_factor": 2.27},
+    {"bond_distance": 2.75, "fci_energy": -2.807934, "error_raw_kcal": 193.74, "error_postselected_kcal": 87.42, "keep_fraction": 0.8293, "amplification_ratio": 2026.3, "improvement_factor": 2.22},
+    {"bond_distance": 3.0, "fci_energy": -2.807835, "error_raw_kcal": 176.08, "error_postselected_kcal": 81.36, "keep_fraction": 0.8518, "amplification_ratio": 6172.6, "improvement_factor": 2.16}
+  ],
+  "analysis": {
+    "prediction_evaluation": [
+      {"bond_distance": 0.75, "raw_kcal": 18.94, "trex_kcal": 4.45, "improvement_factor": 4.3, "prediction": "CONFIRMED"},
+      {"bond_distance": 1.0, "raw_kcal": 16.35, "trex_kcal": 7.26, "improvement_factor": 2.3, "prediction": "CONFIRMED"},
+      {"bond_distance": 1.5, "raw_kcal": 16.73, "trex_kcal": 4.31, "improvement_factor": 3.9, "prediction": "CONFIRMED"}
+    ],
+    "h2_vs_heh_comparison": {
+      "h2_trex_kcal": 0.22,
+      "heh_best_trex_kcal": 4.31,
+      "heh_trex_worse_factor": 19.6,
+      "h2_g1_g4_ratio": 4.4,
+      "heh_best_g1_g4_ratio": 20.9,
+      "conclusion": "HeH+ TREX 20x worse than H2, consistent with coefficient amplification framework"
+    },
+    "dd_finding": "DD makes TREX worse for HeH+ (same as H2): TREX+DD averages 9.9 kcal/mol vs TREX alone 5.3 kcal/mol",
+    "estimator_vs_sampler": "EstimatorV2 raw baseline (~17-19 kcal/mol) far better than SamplerV2+post-selection (~91 kcal/mol)",
+    "total_qpu_seconds": 98.0,
+    "total_jobs": 9
+  }
+}

@@ -223,6 +223,7 @@ export default function ReplicationsPage() {
           <div className="flex gap-6 text-xs font-mono text-gray-500">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>
+            <Link href="/sonification" className="hover:text-[#e879f9] transition-colors">Listen</Link>
             <Link href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</Link>
             <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
           </div>
@@ -299,7 +300,7 @@ export default function ReplicationsPage() {
                   { metric: 'GHZ-10', tuna9: 'n/a', iqm: '54.7%', ibm: '62.2%', best: 'ibm' },
                   { metric: 'Quantum Volume', tuna9: '8', iqm: '32', ibm: '32', best: 'both' },
                   { metric: 'RB gate fidelity', tuna9: '99.82%', iqm: '99.82%', ibm: '99.99%*', best: 'tuna9' },
-                  { metric: 'VQE H2 (kcal/mol)', tuna9: '3.04', iqm: '--', ibm: '1.66', best: 'ibm' },
+                  { metric: 'VQE H2 (kcal/mol)', tuna9: '0.92', iqm: '--', ibm: '0.22', best: 'ibm' },
                   { metric: 'Dominant noise', tuna9: 'Dephasing', iqm: 'Dephasing', ibm: 'Depolarizing', best: '' },
                 ].map(row => (
                   <tr key={row.metric} className="border-b border-white/5 hover:bg-white/[0.02]">
@@ -320,7 +321,7 @@ export default function ReplicationsPage() {
           </div>
           <p className="text-[10px] text-gray-600 font-mono mt-3">
             * IBM RB inflated by transpiler collapsing Clifford sequences. Tuna-9/IQM values are true gate fidelity.
-            Bold = best per metric. VQE uses Z-parity post-selection. -- = not yet tested.
+            Bold = best per metric. VQE: IBM uses TREX, Tuna-9 uses hybrid PS+REM. -- = not yet tested.
           </p>
         </div>
       </section>
@@ -349,10 +350,10 @@ export default function ReplicationsPage() {
               </thead>
               <tbody className="font-mono text-xs">
                 {[
-                  { paper: 'Sagastizabal 2019', emulator: 'pass', tuna9: 'partial', ibm: 'partial', iqm: null, type: 'VQE + EM', note: '4/4 claims' },
-                  { paper: 'Kandala 2017', emulator: 'pass', tuna9: 'partial', ibm: 'partial', iqm: null, type: 'VQE', note: '4/5 claims' },
-                  { paper: 'Peruzzo 2014', emulator: 'pass', tuna9: null, ibm: 'fail', iqm: null, type: 'VQE', note: '3/5 claims' },
-                  { paper: 'Cross 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: 'partial', type: 'QV + RB', note: '3/3 claims' },
+                  { paper: 'Sagastizabal 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: null, type: 'VQE + EM', note: '4/4 claims' },
+                  { paper: 'Kandala 2017', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: null, type: 'VQE', note: '5/5 claims' },
+                  { paper: 'Peruzzo 2014', emulator: 'pass', tuna9: 'partial', ibm: 'fail', iqm: null, type: 'VQE', note: '6/8 claims' },
+                  { paper: 'Cross 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: 'pass', type: 'QV + RB', note: '3/3 claims' },
                   { paper: 'Harrigan 2021', emulator: 'pass', tuna9: 'pass', ibm: null, iqm: null, type: 'QAOA', note: '4/4 claims' },
                 ].map(row => {
                   const cellStyle = (val: string | null) => {

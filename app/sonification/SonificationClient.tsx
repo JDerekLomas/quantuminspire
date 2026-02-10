@@ -2,9 +2,8 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
-import type { ExperimentResult, SweepPoint } from '@/lib/experiments'
-import { typeLabels, typeColors } from '@/lib/experiments'
-import { BackendBadge, isEmulator } from '@/components/experiment-viz'
+import type { ExperimentResult, SweepPoint } from '@/lib/experiment-constants'
+import { typeLabels, typeColors } from '@/lib/experiment-constants'
 import {
   SonificationEngine,
   countsToPartials,
@@ -16,6 +15,32 @@ import {
   type SonificationMode,
   type SonificationStep,
 } from '@/lib/sonification'
+
+function isEmulator(backend: string): boolean {
+  if (!backend) return false
+  const lower = backend.toLowerCase()
+  return lower.includes('emulator') || lower.includes('qxelarator')
+}
+
+function BackendBadge({ backend }: { backend: string }) {
+  const lower = (backend || '').toLowerCase()
+  const isHw = lower.includes('ibm') || lower.includes('tuna') || lower.includes('iqm') || lower.includes('garnet')
+  let label = backend
+  if (lower.includes('emulator') || lower.includes('qxelarator')) label = 'QI Emulator'
+  else if (lower.includes('tuna')) label = 'Tuna-9'
+  else if (lower.includes('ibm_torino')) label = 'IBM Torino'
+  else if (lower.includes('ibm')) label = 'IBM'
+
+  return (
+    <span className={`text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded border ${
+      isHw
+        ? 'bg-[#8b5cf6]/10 text-[#8b5cf6] border-[#8b5cf6]/30'
+        : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30'
+    }`}>
+      {label}
+    </span>
+  )
+}
 
 // ---------------------------------------------------------------------------
 // Types

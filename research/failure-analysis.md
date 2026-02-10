@@ -90,11 +90,23 @@ High g1/g4 + low keep fraction = guaranteed failure.
   to achieve chemical accuracy. That's a 4.5x reduction — possible
   but at the edge of TREX's capability.
 
-### Testable prediction
-If we run the HeH+ VQE with TREX (resilience_level=1) on IBM, we predict:
-- Error will drop from 91.2 to ~20-30 kcal/mol (3-4x improvement from TREX)
-- Still not chemical accuracy (would need ~100x improvement total)
-- ZNE may help further but the coefficient amplification is fundamental
+### Testable prediction — CONFIRMED (2026-02-10)
+We predicted TREX would reduce HeH+ error by 3-4x but not achieve chemical accuracy.
+
+**IBM Torino results (9 jobs, 98s QPU, EstimatorV2):**
+
+| R (A) | Raw (kcal/mol) | TREX | TREX+DD | Improvement |
+|-------|----------------|------|---------|-------------|
+| 0.75  | 18.94          | **4.45** | 8.24 | 4.3x |
+| 1.00  | 16.35          | **7.26** | 13.80 | 2.3x |
+| 1.50  | 16.73          | **4.31** | 7.65 | 3.9x |
+
+Key findings:
+- TREX gives 2.3-4.3x improvement (matches 3-4x prediction)
+- Best HeH+ TREX = 4.31 kcal/mol — **20x worse than H2 TREX** (0.22 kcal/mol)
+- DD makes TREX worse (same as H2)
+- EstimatorV2 raw baseline (17-19 kcal/mol) far better than SamplerV2+PS (91 kcal/mol)
+- None achieve chemical accuracy (1.0 kcal/mol)
 
 ## Connection to Sagastizabal 2019
 

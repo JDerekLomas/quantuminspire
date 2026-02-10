@@ -1,16 +1,16 @@
 {
-  "submitted": "2026-02-10T20:09:20Z",
+  "submitted": "2026-02-10T20:36:16Z",
   "jobs": {
-    "peruzzo_zbasis": 415632,
-    "peruzzo_xbasis": 415633,
-    "peruzzo_ybasis": 415634,
-    "h2_q68_zbasis": 415635,
-    "h2_q68_xbasis": 415636,
-    "h2_q68_ybasis": 415637,
-    "cal_q46_00": 415638,
-    "cal_q46_11": 415639,
-    "cal_q68_00": 415640,
-    "cal_q68_11": 415641
+    "peruzzo_zbasis": 415692,
+    "peruzzo_xbasis": 415693,
+    "peruzzo_ybasis": 415694,
+    "h2_q68_zbasis": 415696,
+    "h2_q68_xbasis": 415697,
+    "h2_q68_ybasis": 415698,
+    "cal_q46_00": 415699,
+    "cal_q46_11": 415700,
+    "cal_q68_00": 415701,
+    "cal_q68_11": 415702
   },
   "parameters": {
     "peruzzo": {
@@ -21,6 +21,7 @@
         4,
         6
       ],
+      "qubit_mapping": "q4\u2192Z0, q6\u2192Z1 (X on q6, Ry on q4)",
       "g0": -1.681277,
       "g1": -0.577585,
       "g2": 0.577585,
@@ -37,6 +38,7 @@
         6,
         8
       ],
+      "qubit_mapping": "q6\u2192Z0, q8\u2192Z1 (X on q6, Ry on q8)",
       "g0": -0.321124,
       "g1": 0.397937,
       "g2": -0.397937,

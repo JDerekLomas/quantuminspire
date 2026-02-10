@@ -1,0 +1,90 @@
+{
+  "timestamp": "2026-02-10T20:46:00Z",
+  "source": "tuna9-missing-raw.json",
+  "calibration": {
+    "q46": {
+      "errors": {
+        "q4_0to1": 0.0139,
+        "q4_1to0": 0.0225,
+        "q4_total": 0.0182,
+        "q6_0to1": 0.0107,
+        "q6_1to0": 0.0273,
+        "q6_total": 0.019
+      }
+    },
+    "q68": {
+      "errors": {
+        "q6_0to1": 0.011,
+        "q6_1to0": 0.0266,
+        "q6_total": 0.0188,
+        "q8_0to1": 0.0029,
+        "q8_1to0": 0.0542,
+        "q8_total": 0.0286
+      }
+    }
+  },
+  "heh_q46": {
+    "molecule": "HeH+",
+    "paper": "peruzzo2014",
+    "qubits": [
+      4,
+      6
+    ],
+    "fci": -2.846187,
+    "alpha": -0.1273,
+    "results": {
+      "raw": {
+        "energy": -2.790022,
+        "error_kcal": 35.24
+      },
+      "ps": {
+        "energy": -2.836798,
+        "error_kcal": 5.89
+      },
+      "rem": {
+        "energy": -2.831308,
+        "error_kcal": 9.34
+      },
+      "rem_ps": {
+        "energy": -2.839113,
+        "error_kcal": 4.44
+      },
+      "hybrid_ps_rem": {
+        "energy": -2.838043,
+        "error_kcal": 5.11
+      }
+    }
+  },
+  "h2_q68": {
+    "molecule": "H2",
+    "paper": "kandala2017",
+    "qubits": [
+      6,
+      8
+    ],
+    "fci": -1.137306,
+    "alpha": -0.2234,
+    "results": {
+      "raw": {
+        "energy": -1.10202,
+        "error_kcal": 22.14
+      },
+      "ps": {
+        "energy": -1.131562,
+        "error_kcal": 3.6
+      },
+      "rem": {
+        "energy": -1.126645,
+        "error_kcal": 6.69
+      },
+      "rem_ps": {
+        "energy": -1.134592,
+        "error_kcal": 1.7
+      },
+      "hybrid_ps_rem": {
+        "energy": -1.135202,
+        "error_kcal": 1.32
+      }
+    }
+  }
+}
