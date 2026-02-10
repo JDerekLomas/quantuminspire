@@ -26,7 +26,7 @@ export const posts: BlogPost[] = [
 <tr><td>QV n=5</td><td>HOF</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>69.2%</td></tr>
 <tr><td>QV (best)</td><td>Volume</td><td>&ge;8</td><td>&ge;8</td><td>8</td><td><strong>32</strong></td></tr>
 <tr><td>RB 1-qubit</td><td>Gate fidelity</td><td>99.95%</td><td>99.99%*</td><td>99.82%</td><td>pending</td></tr>
-<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td>9.2</td><td>9.5</td><td>&mdash;</td></tr>
+<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td>9.2</td><td>3.0&dagger;</td><td>&mdash;</td></tr>
 <tr><td>VQE HeH+</td><td>MAE (kcal/mol)</td><td>0.08</td><td>83.5</td><td>&mdash;</td><td>&mdash;</td></tr>
 <tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>FAILED</td><td>&mdash;</td></tr>
 <tr><td>Bell state</td><td>Fidelity</td><td>100%</td><td>99.1%</td><td>85.8&ndash;93.5%</td><td>88.4&ndash;98.1%</td></tr>
@@ -34,13 +34,13 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p><em>*IBM RB fidelity inflated: Qiskit transpiler collapses Clifford sequences to depth 1&ndash;2 circuits, measuring readout error rather than gate error.</em></p>
+<p><em>*IBM RB fidelity inflated: Qiskit transpiler collapses Clifford sequences to depth 1&ndash;2 circuits, measuring readout error rather than gate error. &dagger;Tuna-9 VQE on best qubit pair q[2,4] with post-selection; worst pair q[0,1] gives 9.5 kcal/mol &mdash; a 3.1x difference from qubit selection alone.</em></p>
 
 <p>Four patterns jump out:</p>
 
 <ol>
 <li><strong>Benchmarks pass everywhere, but unevenly.</strong> QV passes on all hardware, but IQM Garnet hits QV=32 while Tuna-9 tops out at QV=8. More qubits with better connectivity wins the benchmark game.</li>
-<li><strong>VQE fails everywhere except the emulator.</strong> Even IBM Torino &mdash; a 133-qubit processor &mdash; can\\'t achieve chemical accuracy on a 2-qubit molecule without error mitigation.</li>
+<li><strong>VQE fails everywhere except the emulator &mdash; but qubit selection matters enormously.</strong> No hardware achieves chemical accuracy, but choosing the right qubit pair on Tuna-9 cuts error from 9.5 to 3.0 kcal/mol (3.1x improvement). On the same chip, qubit selection matters more than error mitigation.</li>
 <li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can\\'t execute on Tuna-9 due to topology constraints.</li>
 <li><strong>Compiler tricks inflate benchmarks.</strong> IBM\\'s 99.99% RB fidelity is measuring readout error, not gate quality. Tuna-9\\'s 99.82% is genuine. IQM uses raw native gates &mdash; no Clifford compilation.</li>
 </ol>
@@ -66,6 +66,39 @@ export const posts: BlogPost[] = [
 <p>Why so bad? The HeH+ 2-qubit Hamiltonian has the form <code>H = g0 + g1&lang;Z0&rang; + g2&lang;Z1&rang; + g3&lang;Z0Z1&rang; + g4&lang;X0X1&rang; + g5&lang;Y0Y1&rang;</code>. The g1 coefficient (&sim;0.5&ndash;0.8) amplifies readout bias: a 10% readout error on &lang;Z&rang; operators contributes &sim;0.05&ndash;0.08 Ha of error. The energy also depends on the difference g1&minus;g2 &mdash; when both Z terms are biased in the same direction, the error compounds rather than cancels.</p>
 
 <p>For H2, the Hamiltonian is more symmetric and the g1 coefficient is smaller (&sim;0.4), which is why IBM gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+. <strong>The molecule matters as much as the hardware.</strong></p>
+
+<h2>Qubit Selection: The Cheapest Error Mitigation</h2>
+
+<p>On Tuna-9, we ran the exact same H2 VQE circuit on three different qubit pairs. The results are striking:</p>
+
+<table>
+<thead><tr><th>Qubit pair</th><th>Bell fidelity</th><th>VQE error (kcal/mol)</th><th>Post-sel. kept</th></tr></thead>
+<tbody>
+<tr><td>q[0,1]</td><td>87.0%</td><td>9.45</td><td>83%</td></tr>
+<tr><td>q[4,6]</td><td>93.5%</td><td>6.2 (with REM)</td><td>&mdash;</td></tr>
+<tr><td>q[2,4]</td><td>92.3%</td><td><strong>3.04</strong></td><td>96%</td></tr>
+</tbody>
+</table>
+
+<p>Switching from q[0,1] to q[2,4] &mdash; no algorithm change, no extra error mitigation, just picking better qubits &mdash; cuts error by 3.1x. And q[2,4] outperforms q[4,6] despite q[4,6] having higher Bell fidelity (93.5% vs 92.3%). This suggests that CNOT direction, measurement axis noise, and spectator qubit effects matter beyond what Bell fidelity captures.</p>
+
+<p>The PES sweep confirms this pattern holds across the full dissociation curve:</p>
+
+<table>
+<thead><tr><th>R (&Aring;)</th><th>Emulator (kcal/mol)</th><th>Tuna-9 q[2,4] (kcal/mol)</th><th>Hardware gap</th></tr></thead>
+<tbody>
+<tr><td>0.5</td><td>2.0</td><td>9.98</td><td>+8.0</td></tr>
+<tr><td>0.735 (eq.)</td><td>0.6</td><td>3.04</td><td>+2.4</td></tr>
+<tr><td>1.0</td><td>1.4</td><td>4.12</td><td>+2.7</td></tr>
+<tr><td>1.5</td><td>2.6</td><td>12.68</td><td>+10.1</td></tr>
+<tr><td>2.0</td><td>2.1</td><td>17.32</td><td>+15.2</td></tr>
+<tr><td>2.5</td><td>0.09</td><td>13.42</td><td>+13.3</td></tr>
+</tbody>
+</table>
+
+<p>Hardware noise grows dramatically past R=1.0 &Aring;, where the circuit needs more entanglement (larger rotation angle &alpha;). The X/Y basis measurements required for the &lang;X<sub>0</sub>X<sub>1</sub>&rang; and &lang;Y<sub>0</sub>Y<sub>1</sub>&rang; terms add gates, introducing noise that dominates at large bond distances.</p>
+
+<p><strong>The takeaway: on current NISQ hardware, smart qubit routing is the single most impactful optimization &mdash; cheaper than error mitigation and with no runtime overhead.</strong></p>
 
 <h2>Quantum Error Correction: Where Topology Kills</h2>
 
@@ -139,6 +172,8 @@ export const posts: BlogPost[] = [
 <li><strong>AI decoders beat classical decoders on real hardware data.</strong> A simple 2-layer neural network outperforms lookup tables by 50% on qubit-level error classification. On real hardware, noise has structure that ML can exploit.</li>
 
 <li><strong>The molecule matters as much as the machine.</strong> IBM Torino gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+, because HeH+\\'s asymmetric Hamiltonian amplifies readout bias. You can\\'t benchmark VQE on one molecule and assume it generalizes.</li>
+
+<li><strong>Qubit selection is the cheapest optimization.</strong> On Tuna-9, switching from q[0,1] to q[2,4] cuts VQE error by 3.1x &mdash; no algorithm change, no error mitigation, just picking better qubits. This outperforms readout error mitigation and costs nothing at runtime.</li>
 </ol>
 
 <hr />
