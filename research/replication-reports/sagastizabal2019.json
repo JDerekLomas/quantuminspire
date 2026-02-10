@@ -34,13 +34,21 @@
           "error_kcal_mol": 0.75
         },
         "tuna9": {
-          "measured_value": -1.00448,
-          "discrepancy": 0.13282,
+          "measured_value": -1.1274,
+          "discrepancy": 0.0099,
           "within_published_error": false,
-          "failure_mode": "noise_dominated",
-          "failure_description": "Hardware noise overwhelms the signal",
-          "severity": "high",
-          "error_kcal_mol": 83.35
+          "failure_mode": "partial_noise",
+          "failure_description": "q[4,6] with Z-parity post-selection + readout error mitigation. Significant improvement over previous q[0,1] result (-1.00448 Ha, 83.35 kcal/mol). New qubit pair and mitigation pipeline reduce error from 83.35 to 6.2 kcal/mol.",
+          "severity": "low",
+          "error_kcal_mol": 6.2,
+          "qubit_pair": [4, 6],
+          "mitigation": "Z-parity post-selection + readout error mitigation",
+          "previous_result": {
+            "measured_value": -1.00448,
+            "error_kcal_mol": 83.35,
+            "qubit_pair": [0, 1],
+            "note": "Original q[0,1] result without mitigation"
+          }
         },
         "ibm_torino": {
           "measured_value": -1.1226,
@@ -66,8 +74,17 @@
           "note": "Metric 'improvement_factor' not found in result"
         },
         "tuna9": {
-          "status": "no_data",
-          "note": "Metric 'improvement_factor' not found in result"
+          "measured_value": 3.6,
+          "discrepancy": -1.6,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Z-parity post-selection improved error from 22.2 kcal/mol (raw) to 7.2 kcal/mol (3.1x). Adding readout error mitigation further improved to 6.2 kcal/mol (3.6x total improvement). Published claims >2x; we observe 3.6x, which exceeds the published improvement factor. PASSES.",
+          "severity": "none",
+          "raw_error_kcal_mol": 22.2,
+          "zps_error_kcal_mol": 7.2,
+          "zps_plus_readout_error_kcal_mol": 6.2,
+          "improvement_factor_zps": 3.1,
+          "improvement_factor_total": 3.6
         }
       }
     },
@@ -108,17 +125,17 @@
   ],
   "summary": {
     "total_claims_tested": 4,
-    "successes": 2,
-    "success_rate": 0.5,
+    "successes": 3,
+    "success_rate": 0.75,
     "failure_mode_counts": {
-      "success": 2,
-      "noise_dominated": 1,
+      "success": 3,
       "partial_noise": 1
     },
     "backends_tested": [
       "emulator",
       "tuna9",
       "ibm_torino"
-    ]
+    ],
+    "notes": "Tuna-9 results updated 2026-02-10 with q[4,6] + Z-PS + readout mitigation. VQE energy improved from 83.35 to 6.2 kcal/mol. Symmetry verification claim now PASSES (3.6x improvement vs published >2x)."
   }
 }

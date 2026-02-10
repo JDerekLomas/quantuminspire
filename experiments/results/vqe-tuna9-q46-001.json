@@ -1,0 +1,79 @@
+{
+  "id": "vqe-tuna9-q46-001",
+  "type": "vqe_h2",
+  "backend": "tuna-9",
+  "status": "completed",
+  "timestamp": "2026-02-10T18:25:44Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "alpha": -0.2234,
+    "qubits": [4, 6],
+    "g0": -0.321124,
+    "g1": 0.397937,
+    "g2": -0.397937,
+    "g3": 0.0,
+    "g4": 0.090466,
+    "g5": 0.090466,
+    "fci_energy": -1.137306
+  },
+  "results": {
+    "raw_energy": -1.1020,
+    "z_parity_ps_energy": -1.1258,
+    "readout_mitigated_energy": -1.1216,
+    "z_ps_plus_rem_energy": -1.1274,
+    "error_raw_kcal": 22.2,
+    "error_zps_kcal": 7.2,
+    "error_rem_kcal": 9.9,
+    "error_zps_rem_kcal": 6.2,
+    "fci_energy": -1.137306,
+    "z_basis_counts": {
+      "q4q6_00": 71,
+      "q4q6_01": 68,
+      "q4q6_10": 3901,
+      "q4q6_11": 56
+    },
+    "x_basis_counts": {
+      "q4q6_00": 845,
+      "q4q6_01": 1181,
+      "q4q6_10": 1249,
+      "q4q6_11": 821
+    },
+    "y_basis_counts": {
+      "q4q6_00": 864,
+      "q4q6_01": 1260,
+      "q4q6_10": 1223,
+      "q4q6_11": 749
+    },
+    "expectation_values": {
+      "Z0_raw": -0.9321,
+      "Z1_raw": 0.9395,
+      "Z0Z1_raw": -0.9380,
+      "X0X1_raw": -0.1865,
+      "Y0Y1_raw": -0.2124,
+      "Z0_zps": -0.9657,
+      "Z1_zps": 0.9657,
+      "X0X1_rem": -0.1937,
+      "Y0Y1_rem": -0.2224
+    },
+    "readout_calibration": {
+      "fidelity_00": 0.975,
+      "fidelity_01": 0.962,
+      "fidelity_10": 0.975,
+      "fidelity_11": 0.951,
+      "average_fidelity": 0.966
+    },
+    "odd_parity_fraction": 0.969,
+    "bell_fidelity_q46": 0.935
+  },
+  "jobs": {
+    "z_basis": 415504,
+    "x_basis": 415505,
+    "y_basis": 415506,
+    "cal_00": 415507,
+    "cal_11": 415508,
+    "cal_01": 415509,
+    "cal_10": 415510
+  },
+  "analysis": "Best VQE result on Tuna-9. Z-PS + readout error mitigation gives 6.2 kcal/mol, 34% improvement over q[0,1]'s 9.45 kcal/mol. Remaining error dominated by X/Y correlator noise."
+}
