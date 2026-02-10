@@ -1,7 +1,7 @@
 {
   "id": "rb-1qubit-001",
   "type": "rb_1qubit",
-  "status": "running",
+  "status": "completed",
   "backend": "qxelarator",
   "created": "2026-02-10T16:17:31.570905+00:00",
   "parameters": {
