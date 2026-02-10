@@ -1,0 +1,13 @@
+{
+  "id": "bell-calibration-001",
+  "type": "bell_calibration",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T12:00:00Z",
+  "parameters": {
+    "shots": 1024,
+    "qubits": [0, 1]
+  },
+  "priority": 1,
+  "description": "Bell state (H + CNOT) on qubits 0,1. Measure fidelity vs ideal |Phi+> state."
+}

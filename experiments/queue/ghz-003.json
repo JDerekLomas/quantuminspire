@@ -1,0 +1,14 @@
+{
+  "id": "ghz-003",
+  "type": "ghz_state",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T12:00:00Z",
+  "parameters": {
+    "shots": 1024,
+    "num_qubits": 3,
+    "qubits": [0, 1, 2]
+  },
+  "priority": 2,
+  "description": "3-qubit GHZ state (H + CNOT chain). Measure parity distribution and fidelity."
+}

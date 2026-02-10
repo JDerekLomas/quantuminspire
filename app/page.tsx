@@ -186,6 +186,7 @@ const vizExhibits = [
   { href: '/measurement', title: 'Measurement Lab', desc: 'Watch quantum randomness converge to Born rule probabilities in real time.', color: '#00ff88', features: '6 circuits, live stats, adjustable shots' },
   { href: '/grovers', title: "Grover's Search", desc: 'Step through oracle and diffusion operators. See amplitude amplification happen.', color: '#ff8c42', features: '2-5 qubits, target selection, optimal iterations' },
   { href: '/entanglement', title: 'Entanglement Lab', desc: 'Density matrices, partial traces, Bell states. Concurrence and von Neumann entropy.', color: '#ff6b9d', features: '8 states, reduced density matrices, metrics' },
+  { href: '/teleportation', title: 'Quantum Teleportation', desc: 'Step through the teleportation protocol with animated circuit, amplitude bars, and Bloch sphere.', color: '#06b6d4', features: 'Bell pairs, measurement, classical channel, corrections' },
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Watch a qubit oscillate between |0\u27E9 and |1\u27E9 under a driving field. Detuning, damping, Bloch sphere trajectory.', color: '#eab308', features: 'Animated, detuning, T\u2082 dephasing, Bloch sphere' },
   { href: '/interference', title: 'Multi-Slit Interference', desc: 'N-slit diffraction patterns with adjustable geometry and wavelength. Photon-by-photon accumulation mode.', color: '#14b8a6', features: '1-8 slits, visible spectrum, photon mode' },
   { href: '/qsphere', title: 'Q-Sphere', desc: 'Multi-qubit states on a sphere. Basis states placed by Hamming weight, dot size = amplitude, color = phase.', color: '#e879f9', features: '2-4 qubits, Bell/GHZ/W states, gates, CNOT' },
@@ -236,6 +237,7 @@ function Nav() {
         <div className="flex gap-6 text-xs font-mono text-gray-500">
           <a href="#results" className="hover:text-[#00d4ff] transition-colors">Results</a>
           <a href="#experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
+          <a href="/experiments" className="hover:text-[#00ff88] transition-colors">Live Hardware</a>
           <a href="#viz" className="hover:text-[#8b5cf6] transition-colors">Viz Zoo</a>
           <a href="#agents" className="hover:text-[#ff8c42] transition-colors">Agents</a>
           <a href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</a>
