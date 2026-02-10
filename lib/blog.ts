@@ -514,6 +514,274 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
       { label: 'Semantic Scholar', url: 'https://www.semanticscholar.org/' },
     ],
   },
+  {
+    slug: 'ai-meets-quantum-papers',
+    title: 'AI Meets Quantum: The Papers Reshaping the Field',
+    subtitle: 'From neural QEC decoders to autonomous quantum agents, AI is becoming quantum computing\'s missing ingredient',
+    date: '2026-02-10',
+    author: 'AI x Quantum Research Team',
+    category: 'landscape',
+    tags: ['AlphaQubit', 'QUASAR', 'QEC', 'AI agents', 'circuit optimization', 'papers'],
+    heroImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80',
+    heroCaption: 'AI and quantum computing are converging — and the research papers tell the story.',
+    excerpt: 'A survey of the most important papers at the intersection of AI and quantum computing: neural decoders that outperform classical algorithms, agents that write quantum code, and ML systems that optimize circuits for real hardware.',
+    content: `
+<p>The intersection of AI and quantum computing is no longer speculative. A wave of papers from 2024-2026 demonstrates concrete, measurable results: AI systems that decode quantum errors faster than classical algorithms, write valid quantum circuits from natural-language descriptions, and optimize experiments on real hardware. Here's our guide to the papers that matter.</p>
+
+<h2>Neural Quantum Error Correction</h2>
+
+<p>Quantum error correction is the biggest engineering bottleneck in the field. Decoders must run in real-time — faster than errors accumulate — and scale to codes with thousands of physical qubits. Classical decoders struggle with this. AI offers a fundamentally different approach.</p>
+
+<h3>AlphaQubit (Google DeepMind, 2024)</h3>
+
+<p><strong>AlphaQubit</strong> is a transformer-based decoder for surface codes that learns correlated error patterns directly from syndrome data. Rather than assuming an error model (like minimum-weight perfect matching), it learns the actual noise characteristics of a specific quantum processor.</p>
+
+<p>Key results:</p>
+<ul>
+<li>Outperforms minimum-weight perfect matching (MWPM) and other conventional decoders on Google's Sycamore and Willow processors</li>
+<li>Handles correlated errors (leakage, crosstalk) that classical decoders miss</li>
+<li>Tested at distance-3 and distance-5 surface codes</li>
+<li>Training data requirements are a concern: scaling to distance-9+ may require 10<sup>13</sup>-10<sup>14</sup> training examples</li>
+</ul>
+
+<p><strong>Why it matters:</strong> Real quantum hardware has messy, correlated noise that doesn't match textbook error models. A decoder that learns the actual noise is fundamentally more powerful. The open question is whether AlphaQubit's approach can scale to the code distances (17+) needed for fault-tolerant quantum computing.</p>
+
+<h3>NVIDIA + QuEra: GPU-Accelerated QEC Decoding</h3>
+
+<p>NVIDIA's DGX Quantum platform achieves <strong>&lt;4 microsecond roundtrip latency</strong> for error correction decoding — roughly 1,000x faster than alternative approaches. This is crucial because decoding must happen faster than the quantum error correction cycle time (~1 microsecond for superconducting qubits).</p>
+
+<p>Their CUDA-Q QEC framework combines algorithmic decoders with AI inference enhancements, and they've partnered with QuEra to decode errors on neutral-atom quantum computers. The GPU approach is attractive because it can be updated as neural decoder architectures improve.</p>
+
+<h3>RIKEN: Boosting QEC with AI (2025)</h3>
+
+<p>Researchers at RIKEN demonstrated AI-enhanced error correction that improves decoder performance on real hardware noise profiles. Their approach uses machine learning to predict which error patterns are most likely given a specific device's calibration data, then biases the decoder accordingly.</p>
+
+<h2>AI for Quantum Code Generation</h2>
+
+<p>Can AI write quantum programs? Several systems have been tested, with surprisingly strong results.</p>
+
+<h3>QUASAR — RAG-Augmented Quantum Code</h3>
+
+<p><strong>QUASAR</strong> (Quantum Agentic Search and Retrieval) combines retrieval-augmented generation with a 4-billion-parameter language model fine-tuned on quantum computing documentation. The key insight: general-purpose LLMs know quantum concepts but generate code for outdated APIs. QUASAR solves this by injecting current documentation at inference time.</p>
+
+<p>Results:</p>
+<ul>
+<li><strong>99.31% circuit validity</strong> — nearly all generated circuits are syntactically and structurally correct</li>
+<li>Uses agentic RL (reinforcement learning from code execution feedback) to improve over multiple attempts</li>
+<li>Dramatically outperforms base models without retrieval</li>
+</ul>
+
+<p><strong>Comparison with our benchmark:</strong> Our Qiskit HumanEval tests measure <em>functional correctness</em> (does the code produce the right answer?), which is stricter than circuit validity. Our best result is 63.6% Pass@1 with Claude Opus 4.6. The gap between QUASAR's 99.31% validity and our 63.6% correctness suggests that validity is necessary but far from sufficient — the hard part is getting the quantum logic right, not just the syntax.</p>
+
+<h3>QCoder — Reasoning Models for Quantum</h3>
+
+<p><strong>QCoder</strong> tested OpenAI's o3 reasoning model on quantum programming tasks and achieved <strong>78% pass rate</strong> — compared to 40% for human experts on the same problems. This suggests that chain-of-thought reasoning (the approach behind o1/o3) is particularly well-suited to quantum programming, where each step requires careful mathematical reasoning.</p>
+
+<h3>QCopilot — 100x Speedup for Circuit Design</h3>
+
+<p><strong>QCopilot</strong> is an AI assistant for quantum circuit design that claims a <strong>100x speedup</strong> over manual circuit construction for common quantum algorithms. Unlike general-purpose code generation, QCopilot is trained specifically on the circuit design workflow: choosing gate decompositions, optimizing qubit routing, and handling hardware constraints.</p>
+
+<h3>Our Qiskit HumanEval Results</h3>
+
+<p>Our <a href="/blog/llms-write-quantum-code">benchmark of 151 quantum programming tasks</a> adds context to these results. We found that Claude Opus 4.6 (63.6%) and Gemini 3 Flash (62.25%) are remarkably close on quantum code generation. The dominant failure mode is API staleness — models generate correct quantum logic but call deprecated functions. This suggests that RAG (as QUASAR uses) could push general-purpose LLMs to 75-80% correctness.</p>
+
+<h2>AI for Circuit Optimization</h2>
+
+<h3>IBM's AI Transpiler</h3>
+
+<p>IBM's AI-powered transpiler passes achieve a <strong>42% reduction in two-qubit gate counts</strong> compared to standard Qiskit transpilation. Two-qubit gates are the dominant source of errors on real hardware, so this directly translates to higher-fidelity execution. The AI transpiler learns hardware-specific optimization strategies that hand-written heuristics miss.</p>
+
+<h3>AlphaEvolve (Google DeepMind)</h3>
+
+<p><strong>AlphaEvolve</strong> uses evolutionary search guided by large language models to discover novel algorithms. While originally demonstrated on classical algorithm discovery, the approach has clear applications to quantum computing: discovering new circuit decompositions, error correction codes, and compilation strategies. The evolutionary approach is attractive because it can optimize for multiple objectives simultaneously (gate count, depth, fidelity).</p>
+
+<h3>RL-Based Quantum Gate Synthesis</h3>
+
+<p>Reinforcement learning for Pauli network synthesis is an active research area. The idea: train an RL agent to decompose arbitrary quantum operations into hardware-native gates, optimizing for the specific connectivity and noise profile of a target processor. Early results show improvements over standard decomposition algorithms, particularly for circuits with irregular structure.</p>
+
+<h2>Autonomous Quantum Agents</h2>
+
+<h3>k-Agents on Superconducting Processors</h3>
+
+<p><strong>k-agents</strong> are AI agents deployed on superconducting quantum processors to autonomously run experiments, analyze results, and decide what to try next. This is the quantum equivalent of self-driving laboratories: the agent handles the entire experimental loop, from circuit design through data analysis.</p>
+
+<p>Key insight: quantum experiments are well-suited to autonomous agents because the entire workflow is digital — design a circuit, submit it, get measurement results. There's no physical sample preparation or wet-lab handling. An AI agent can iterate on quantum experiments at the speed of the hardware itself.</p>
+
+<h3>Agent-Q</h3>
+
+<p><strong>Agent-Q</strong> is an AI agent framework specifically designed for quantum computing research. It combines code generation, circuit optimization, and experimental analysis in a single agent loop. The system can propose experiments, generate the quantum code, submit circuits to simulators or hardware, analyze results, and propose follow-up experiments.</p>
+
+<h2>The Convergence: AI as Quantum Computing's Missing Ingredient</h2>
+
+<p>A December 2025 paper in <em>Nature Communications</em> — "<a href="https://www.nature.com/articles/s41467-025-65836-3">Artificial intelligence for quantum computing</a>" — argues that AI is emerging as quantum computing's "missing ingredient." The paper identifies three tiers of AI applications:</p>
+
+<ol>
+<li><strong>Currently feasible</strong>: Code generation, circuit optimization, decoder design, VQE optimization</li>
+<li><strong>Emerging</strong>: Automated experiment design, noise characterization, active space selection</li>
+<li><strong>Longer-term</strong>: Quantum code discovery, classical simulation acceleration, software verification</li>
+</ol>
+
+<p>Our project at TU Delft sits squarely in Tier 1, with the infrastructure to move into Tier 2 as we integrate with Quantum Inspire hardware. The landscape suggests a clear trajectory: the teams that combine AI capability with real quantum hardware access will produce the most impactful research.</p>
+
+<h2>What's Missing</h2>
+
+<p>Despite the progress, significant gaps remain:</p>
+
+<ul>
+<li><strong>Reproducibility</strong>: Many AI-for-quantum papers don't release code or data. Our benchmark harness is fully open source.</li>
+<li><strong>Hardware validation</strong>: Most results are simulation-only. Real hardware introduces noise, calibration drift, and connectivity constraints that simulation doesn't capture.</li>
+<li><strong>Scalability</strong>: AlphaQubit works at distance-5 but may not scale. QUASAR achieves high validity but functional correctness is harder. The gap between demos and production remains wide.</li>
+<li><strong>Integration</strong>: These techniques exist in isolation. Nobody has yet built an integrated system that combines neural decoding, AI circuit optimization, autonomous experimentation, and literature intelligence. That's what we're working toward.</li>
+</ul>
+`,
+    sources: [
+      { label: 'AlphaQubit — Google DeepMind', url: 'https://blog.google/technology/google-deepmind/alphaqubit-quantum-error-correction/' },
+      { label: 'AI for quantum computing (Nature Communications)', url: 'https://www.nature.com/articles/s41467-025-65836-3' },
+      { label: 'NVIDIA CUDA-Q QEC real-time decoding', url: 'https://developer.nvidia.com/blog/real-time-decoding-algorithmic-gpu-decoders-and-ai-inference-enhancements-in-nvidia-cuda-q-qec/' },
+      { label: 'NVIDIA + QuEra quantum error decoding', url: 'https://developer.nvidia.com/blog/nvidia-and-quera-decode-quantum-errors-with-ai/' },
+      { label: 'IBM AI transpiler passes', url: 'https://www.ibm.com/quantum/blog/ai-transpiler-passes' },
+      { label: 'RIKEN: Boosting QEC with AI', url: 'https://www.riken.jp/en/news_pubs/research_news/rr/20250509_2/index.html' },
+      { label: 'Our Qiskit HumanEval benchmark results', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
+    ],
+  },
+  {
+    slug: 'quantum-hardware-landscape-2026',
+    title: 'The Quantum Hardware Race: Where Things Actually Stand in 2026',
+    subtitle: 'Six hardware platforms, three breakthrough results, and one honest assessment of quantum advantage',
+    date: '2026-02-10',
+    author: 'AI x Quantum Research Team',
+    category: 'landscape',
+    tags: ['hardware', 'QEC', 'Google Willow', 'QuTech', 'spin qubits', 'landscape'],
+    heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80',
+    heroCaption: 'The quantum hardware landscape is more diverse — and more competitive — than ever.',
+    excerpt: 'A researcher\'s guide to the six quantum hardware platforms competing for dominance, the error correction breakthroughs that changed the game, and an honest assessment of where quantum advantage actually stands.',
+    content: `
+<p>The quantum computing hardware landscape in 2026 is defined by three things: error correction finally working, six hardware platforms racing for dominance, and an honest reckoning about what "quantum advantage" actually means. Here's the state of play.</p>
+
+<h2>The Year Error Correction Became Real</h2>
+
+<p>2024-2025 was the year quantum error correction (QEC) went from theoretical milestone to engineering reality. The numbers tell the story: 120 peer-reviewed QEC papers published by October 2025, up from 36 in all of 2024. Seven code families demonstrated on real hardware.</p>
+
+<h3>Google Willow (December 2024)</h3>
+
+<p>The headline result: Google's Willow processor achieved the first demonstration of <strong>exponential error suppression</strong> with increasing surface code distance. This is the fundamental requirement for scalable quantum computing — as you add more qubits for error correction, the logical error rate actually goes down.</p>
+
+<p>The specifics:</p>
+<ul>
+<li><strong>105 superconducting qubits</strong></li>
+<li>Distance-7 surface code on a ~101-qubit patch</li>
+<li>Logical error rate suppressed by factor &Lambda; = 2.14 &plusmn; 0.02 per code distance increase of 2</li>
+<li>0.143% error per correction cycle at distance-7</li>
+<li>Logical memory lifetime <strong>2.4x longer</strong> than the best physical qubit — beyond breakeven</li>
+<li>Real-time decoding at 63 microsecond average latency</li>
+<li>Physical qubit T<sub>1</sub> improved from ~20&mu;s (Sycamore) to 68&mu;s</li>
+</ul>
+
+<p>Willow also completed a random circuit sampling benchmark in ~5 minutes that would take an estimated 10<sup>25</sup> years classically. But — and this is important — random circuit sampling has no known practical application. The result proves the hardware is extraordinary; the question is whether it can be applied to useful problems.</p>
+
+<h3>IBM's Roadmap</h3>
+
+<p>IBM has laid out the most detailed public roadmap to fault-tolerant quantum computing:</p>
+
+<ul>
+<li><strong>2025 — Loon</strong>: Experimental processor demonstrating all key fault-tolerant components, with new c-couplers for LDPC code connectivity</li>
+<li><strong>2026 — Kookaburra</strong>: First QEC-enabled module with qLDPC memory and a Logical Processing Unit (LPU)</li>
+<li><strong>2029 — Starling</strong>: 200 logical qubits running 100 million gates</li>
+</ul>
+
+<p>IBM has achieved real-time qLDPC decoding at <strong>&lt;480 nanoseconds</strong> and their AI transpiler reduces two-qubit gate counts by 42%. Their bet on qLDPC codes (vs. surface codes) could prove transformative — qLDPC promises dramatically better physical-to-logical qubit ratios.</p>
+
+<h3>The Magic State Breakthrough</h3>
+
+<p>A major 2025 result: <strong>theoretically optimal scaling for magic state distillation</strong> has been achieved (scaling exponent &gamma; = 0). Magic states are required for the T gate — the non-Clifford gate needed for universal quantum computation. QuEra/Harvard/MIT demonstrated the first experimental logical-level magic state distillation on a neutral-atom computer. This resolves a longstanding theoretical bottleneck, though practical overhead remains enormous.</p>
+
+<h2>The Six Hardware Platforms</h2>
+
+<h3>1. Superconducting Qubits — Google, IBM, Rigetti, IQM</h3>
+<p><strong>Strengths:</strong> Fastest gate speeds, largest qubit counts, most mature fabrication.</p>
+<p><strong>State of the art:</strong> Google Willow (105 qubits, below-threshold QEC), IBM roadmap to 1,386 qubits, Fujitsu/RIKEN 256-qubit machine (1,000-qubit planned for 2026).</p>
+<p><strong>Challenge:</strong> Short coherence times (~68&mu;s), cryogenic cooling to 15 millikelvin, crosstalk. The classical control bottleneck — thousands of coaxial cables from room temperature to the cryostat — doesn't scale beyond a few hundred qubits.</p>
+
+<h3>2. Trapped Ions — Quantinuum, IonQ, Oxford Ionics</h3>
+<p><strong>Strengths:</strong> Highest gate fidelity, all-to-all connectivity, long coherence times.</p>
+<p><strong>State of the art:</strong> Quantinuum H2-1 (56 qubits, first "three 9s" — 99.9% two-qubit gate fidelity across all pairs), Helios (98-qubit with novel "X" junction), 99.9993% SPAM accuracy. Microsoft + Quantinuum demonstrated 12 logical qubits for chemistry simulation.</p>
+<p><strong>Challenge:</strong> Slower gate speeds, scaling beyond hundreds of ions, laser control complexity. Apollo (fully fault-tolerant, universal) planned for 2029.</p>
+
+<h3>3. Neutral Atoms — QuEra, Atom Computing/Microsoft, Pasqal</h3>
+<p><strong>Strengths:</strong> Massive parallelism, reconfigurable connectivity, natural scaling to thousands of qubits.</p>
+<p><strong>State of the art:</strong> QuEra achieved 3,000-qubit array operating continuously for 2+ hours, up to 96 logical qubits with below-threshold error rates. Their Algorithmic Fault Tolerance approach reduces error correction runtime cost by 10-100x. $230M+ raised in 2025.</p>
+<p><strong>Challenge:</strong> Atom loss during computation, slower gate speeds, readout fidelity.</p>
+
+<h3>4. Photonic — PsiQuantum, Xanadu, Photonic Inc.</h3>
+<p><strong>Strengths:</strong> Room-temperature operation, natural networking capability, speed.</p>
+<p><strong>State of the art:</strong> PsiQuantum raised $1B (September 2025). Photonic Inc. developed SHYPS qLDPC codes specifically for photonic architectures — 20x fewer physical qubits than surface codes.</p>
+<p><strong>Challenge:</strong> Photon loss, non-deterministic gates, lack of quantum memory.</p>
+
+<h3>5. Semiconductor Spin Qubits — QuTech/TU Delft, Intel</h3>
+<p><strong>Strengths:</strong> Smallest qubit footprint, compatible with CMOS fabrication, potentially billions of qubits on a chip.</p>
+<p><strong>State of the art:</strong> QuTech demonstrated a 10-qubit germanium processor with >99% single-qubit gate fidelities and 2D layout with 4-neighbor connectivity. Silicon spin qubits fabricated on 300mm industrial wafers with >99% fidelity (published in Nature 2025). Germanium substrates produce "quieter" qubits with longer coherence times.</p>
+<p><strong>Challenge:</strong> Very short coherence times (microseconds), two-qubit gate fidelity lags other platforms. But the CMOS compatibility argument is powerful: if a qubit looks like a transistor, you inherit 60 years of semiconductor manufacturing expertise.</p>
+
+<h3>6. Topological — Microsoft</h3>
+<p><strong>Strengths:</strong> Inherent error protection, potentially very low overhead for fault tolerance.</p>
+<p><strong>State of the art:</strong> Majorana 1 chip (February 2025) — 8 topological qubits using tetron architecture, demonstrated quantum error detection on 2 logical qubits. Claims 1,000-fold error rate reduction via topological protection.</p>
+<p><strong>Challenge:</strong> Only 8 qubits demonstrated — years behind other modalities in qubit count. Significant scientific controversy about whether the Majorana zero modes are truly topological.</p>
+
+<h2>Quantum Advantage: An Honest Assessment</h2>
+
+<p>Let's be direct about where things stand:</p>
+
+<p><strong>Demonstrated narrow quantum advantage:</strong></p>
+<ul>
+<li>Google's random circuit sampling (Willow): 5 minutes vs. 10<sup>25</sup> years classical. But RCS has no known practical use.</li>
+<li>Google's "quantum echoes" (October 2025): 13,000x speedup over Frontier supercomputer for molecular structure. Closer to useful, but a carefully chosen problem.</li>
+<li>Q-CTRL: First commercial quantum advantage in GPS-denied navigation using quantum sensors (50-100x outperformance). Note: quantum <em>sensing</em>, not computing.</li>
+</ul>
+
+<p><strong>The spoofing problem:</strong> RCS-based advantage claims remain contested. Tensor network methods can spoof the Linear Cross-Entropy Benchmark in milliseconds after learning the final circuit layer. This doesn't invalidate finite-size demonstrations but limits the paradigm for proving advantage.</p>
+
+<p><strong>The honest verdict:</strong> Useful quantum advantage — solving a problem someone actually cares about, faster or better than any classical method — has <strong>not</strong> been convincingly demonstrated for quantum computing as of early 2026. IBM predicts this will change by end of 2026. The transition will be gradual, not a single breakthrough moment.</p>
+
+<h2>Where Quantum Inspire Fits</h2>
+
+<p>Our project at TU Delft has a unique position in this landscape. <strong>Quantum Inspire 2.0</strong>, launched February 2025, offers:</p>
+
+<ul>
+<li><strong>Three hardware backends</strong>: Tuna-5 (superconducting, tunable couplers), Starmon-7 (superconducting), and Spin-2+ (semiconductor spin qubits)</li>
+<li><strong>Spin-2+ is the only semiconductor spin qubit processor publicly accessible online</strong></li>
+<li><strong>Open architecture</strong>: Modular and interoperable — unlike IBM/Google's closed ecosystems</li>
+<li><strong>Hybrid computing</strong>: Integration with SURF supercomputer node for quantum-classical workflows</li>
+<li><strong>Multiple framework support</strong>: Qiskit and PennyLane integration</li>
+</ul>
+
+<p>The Delft quantum ecosystem (HQ/2 collaboration) launched a full open-architecture quantum computer in May 2025 — the Tuna-5 system integrating hardware and software from QuTech, TNO, Qblox, Orange Quantum Systems, and QuantWare.</p>
+
+<p>QuTech's long bet on spin qubits is strategic: while superconducting and trapped-ion platforms dominate today's headlines, CMOS-compatible spin qubits may ultimately win the scaling race to millions of qubits. The ability to run experiments across both superconducting and spin qubit backends on a single platform makes Quantum Inspire uniquely valuable for comparative studies — exactly the kind of work AI agents can automate.</p>
+
+<h2>What We're Watching</h2>
+
+<ol>
+<li><strong>IBM Kookaburra (2026)</strong>: First qLDPC-based QEC module. If qLDPC codes work in practice, the surface code's ~1000:1 physical-to-logical ratio drops dramatically.</li>
+<li><strong>QuEra's 10,000-qubit machine</strong>: Neutral atoms continue to scale fastest. Their Algorithmic Fault Tolerance approach could make deep circuits practical sooner than expected.</li>
+<li><strong>Microsoft's topological bet</strong>: If Majorana 1 scales, topological qubits could leapfrog all other platforms on error rates. Big if.</li>
+<li><strong>China's QEC efforts</strong>: A distance-7 surface code using microwaves, with error-suppression factor of 1.4 — comparable to Google's early demonstrations.</li>
+<li><strong>The decoder race</strong>: AlphaQubit, NVIDIA's GPU decoders, and RIKEN's AI-enhanced decoders are competing to solve real-time QEC decoding at scale. This is where AI has its most direct impact on quantum hardware.</li>
+</ol>
+`,
+    sources: [
+      { label: 'Google Willow — below surface code threshold (Nature)', url: 'https://www.nature.com/articles/s41586-024-08449-y' },
+      { label: 'IBM path to fault-tolerant quantum computing', url: 'https://www.ibm.com/quantum/blog/large-scale-ftqc' },
+      { label: 'Microsoft Majorana 1 announcement', url: 'https://azure.microsoft.com/en-us/blog/quantum/2025/02/19/microsoft-unveils-majorana-1-the-worlds-first-quantum-processor-powered-by-topological-qubits/' },
+      { label: 'Quantinuum H-Series 56 qubits', url: 'https://www.quantinuum.com/blog/quantinuums-h-series-hits-56-physical-qubits-that-are-all-to-all-connected-and-departs-the-era-of-classical-simulation' },
+      { label: 'QuEra 2025 milestones', url: 'https://www.prnewswire.com/news-releases/quera-computing-marks-record-2025-as-the-year-of-fault-tolerance-and-over-230m-of-new-capital-to-accelerate-industrial-deployment-302635960.html' },
+      { label: 'Neutral atom quantum computing (IEEE Spectrum)', url: 'https://spectrum.ieee.org/neutral-atom-quantum-computing' },
+      { label: 'Silicon spin-qubit >99% fidelity (Nature)', url: 'https://www.nature.com/articles/s41586-025-09531-9' },
+      { label: 'Quantum Inspire 2.0 launch', url: 'https://qutech.nl/2025/02/25/quantum-inspire-2-0-is-live-with-updated-software-and-hardware/' },
+      { label: 'QuTech 10-spin qubit array in germanium', url: 'https://qutech.nl/2025/11/27/from-complexity-to-control-a-10-spin-qubit-array-in-germanium/' },
+      { label: 'Optimal magic state distillation scaling', url: 'https://phys.org/news/2025-11-optimal-scaling-magic-state-distillation.html' },
+      { label: 'Q-CTRL commercial quantum advantage', url: 'https://q-ctrl.com/blog/2025-year-in-review-realizing-true-commercial-quantum-advantage-in-the-international-year-of-quantum' },
+    ],
+  },
 ]
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
