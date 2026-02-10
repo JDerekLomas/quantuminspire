@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "qaoa-maxcut-001",
   "type": "qaoa_maxcut",
   "backend": "qxelarator",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T16:39:17.487956+00:00",
   "completed": "2026-02-10T16:39:17.488415+00:00",
   "parameters": {

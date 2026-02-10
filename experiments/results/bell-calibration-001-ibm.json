@@ -1,11 +1,12 @@
 {
+  "schema_version": "1.0",
   "id": "bell-calibration-001-ibm",
   "type": "bell_calibration",
   "backend": "ibm_marrakesh",
   "backend_qubits": 156,
+  "job_id": "d65kqpoqbmes739d1k2g",
   "submitted": "2026-02-10T15:24:38.100290+00:00",
   "completed": "2026-02-10T15:24:38.110292+00:00",
-  "job_id": "d65kqpoqbmes739d1k2g",
   "parameters": {
     "shots": 4096
   },

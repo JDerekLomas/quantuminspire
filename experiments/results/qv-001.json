@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "qv-001",
   "type": "quantum_volume",
   "backend": "qxelarator",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T16:19:06.107857+00:00",
   "completed": "2026-02-10T16:19:18.815072+00:00",
   "parameters": {

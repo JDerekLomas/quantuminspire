@@ -4,8 +4,6 @@ import dynamic from 'next/dynamic'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import ScrollReveal from '@/components/ScrollReveal'
-import Timeline from '@/components/Timeline'
-import StakeholderMap from '@/components/StakeholderMap'
 import VibecodingSection from '@/components/VibecodingSection'
 
 const QuantumField = dynamic(() => import('@/components/QuantumField'), {
@@ -66,11 +64,11 @@ export default function WP44Page() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6"
           >
-            <span className="text-white">Designing</span>
-            <br />
+            <span className="text-white">AI</span>
+            <span className="text-gray-500"> x </span>
             <span className="gradient-text">Quantum</span>
             <br />
-            <span className="text-white">for Everyone</span>
+            <span className="text-white">Design Research</span>
           </motion.h1>
 
           <motion.p
@@ -79,8 +77,7 @@ export default function WP44Page() {
             transition={{ duration: 0.8, delay: 0.7 }}
             className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
           >
-            Quantum computing is ready for its design moment. Through human-centered research
-            and new interaction paradigms, we&apos;re opening{' '}
+            How might generative AI and human-centered design open{' '}
             <a
               href="https://www.quantum-inspire.com"
               target="_blank"
@@ -89,7 +86,7 @@ export default function WP44Page() {
             >
               Quantum Inspire
             </a>{' '}
-            to the world.
+            to everyone? A design research program at TU Delft.
           </motion.p>
 
           <motion.div
@@ -131,21 +128,6 @@ export default function WP44Page() {
       </section>
 
       {/* ============================================ */}
-      {/* PARTNERS BAR */}
-      {/* ============================================ */}
-      <section className="relative py-12 border-y border-[#1e293b]/50">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-            {['TU Delft', 'QuTech', 'TNO', 'THUAS', 'Quantum Inspire'].map((name) => (
-              <span key={name} className="font-mono text-xs tracking-widest text-gray-500 uppercase">
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================ */}
       {/* THE OPPORTUNITY */}
       {/* ============================================ */}
       <section id="opportunity" className="py-24 md:py-32">
@@ -168,8 +150,8 @@ export default function WP44Page() {
                 </p>
                 <p className="text-gray-400 leading-relaxed">
                   Premier design venues — CHI, DIS, UIST — have barely engaged with quantum technologies.
-                  The field of quantum computing has evolved almost entirely without input from designers,
-                  UX researchers, or interaction specialists. This represents an enormous untapped opportunity.
+                  The field has evolved almost entirely without input from designers,
+                  UX researchers, or interaction specialists.
                 </p>
                 <p className="text-gray-400 leading-relaxed">
                   Research shows that people with computing backgrounds can grasp quantum concepts
@@ -181,7 +163,6 @@ export default function WP44Page() {
 
             <ScrollReveal delay={0.2}>
               <div className="space-y-6">
-                {/* Opportunity cards */}
                 {[
                   {
                     title: 'A new audience is waiting',
@@ -195,7 +176,7 @@ export default function WP44Page() {
                   },
                   {
                     title: 'AI changes everything',
-                    desc: 'Generative AI can now translate natural language into working quantum circuits — collapsing the expertise barrier entirely and opening quantum to anyone who can describe what they want to compute.',
+                    desc: 'Generative AI can now translate natural language into working quantum circuits — collapsing the expertise barrier and opening quantum to anyone who can describe what they want to compute.',
                     color: '#00ff88',
                   },
                 ].map((opp) => (
@@ -231,8 +212,6 @@ export default function WP44Page() {
             <p className="text-gray-400 text-lg max-w-2xl mb-12">
               PhD research at TU Delft proposes a shift: instead of teaching quantum through physics,
               ground it in computational thinking — the skills that developers already have.
-              This framework maps quantum concepts against computing practices to create
-              new learning pathways.
             </p>
           </ScrollReveal>
 
@@ -295,11 +274,10 @@ export default function WP44Page() {
 
               <div className="mt-6 p-4 rounded-lg bg-[#0a0a1a]/50 border border-[#1e293b]">
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  <span className="text-white font-medium">Key insight:</span> Educators suggested an
-                  inverse approach — start with <span className="text-[#ff6b9d]">higher-complexity</span> concepts
+                  <span className="text-white font-medium">Key insight:</span> Start with{' '}
+                  <span className="text-[#ff6b9d]">higher-complexity</span> concepts
                   like algorithms and gates that connect to existing computing knowledge, rather than the
-                  traditional physics-first approach starting from superposition. Meet learners where they
-                  already are.
+                  traditional physics-first approach starting from superposition.
                 </p>
               </div>
             </div>
@@ -311,8 +289,7 @@ export default function WP44Page() {
               <div className="p-6 rounded-xl border border-[#1e293b] bg-[#111827]/30 h-full">
                 <h3 className="text-white font-semibold mb-4">Metaphors that work</h3>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  The research developed a structured method for creating quantum metaphors that are
-                  grounded in computing, not physics. Each metaphor uses tangible features and actions
+                  Structured metaphors grounded in computing, not physics. Each uses tangible features
                   from everyday experience:
                 </p>
                 <div className="space-y-3">
@@ -338,10 +315,6 @@ export default function WP44Page() {
             <ScrollReveal delay={0.3}>
               <div className="p-6 rounded-xl border border-[#1e293b] bg-[#111827]/30 h-full">
                 <h3 className="text-white font-semibold mb-4">Six criteria for metaphor quality</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Not all metaphors are equal. The research established six criteria to evaluate
-                  whether a metaphor actually enables quantum understanding:
-                </p>
                 <div className="space-y-3">
                   {[
                     { label: 'Accurate', score: '3.58', desc: 'Faithfully conveys the target concept' },
@@ -376,9 +349,9 @@ export default function WP44Page() {
                 </div>
                 <div className="mt-4 p-3 rounded-lg bg-[#ff8c42]/5 border border-[#ff8c42]/20">
                   <p className="text-[#ff8c42] text-xs leading-relaxed">
-                    The actionability gap is the design opportunity: current metaphors help people
+                    The actionability gap is the design opportunity: metaphors help people
                     understand quantum, but don&apos;t show them what they can <em>do</em>.
-                    This is exactly what interface design can solve.
+                    This is what interface design can solve.
                   </p>
                 </div>
               </div>
@@ -395,15 +368,14 @@ export default function WP44Page() {
       <section className="py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal>
-            <SectionLabel color="#00ff88">Design&apos;s Quantum Moment</SectionLabel>
+            <SectionLabel color="#00ff88">The HCI Frontier</SectionLabel>
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              Every emerging technology<br />
-              <span className="gradient-text-green">needs its design revolution.</span>
+              Design has barely touched<br />
+              <span className="gradient-text-green">quantum computing.</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mb-12">
-              Personal computing had Xerox PARC. The web had its usability pioneers.
-              Mobile had responsive design. Quantum computing is waiting for designers
-              to step in — and the door is wide open.
+              Of 26 works citing the 2019 CHI call-to-action for HCI in quantum, only 5
+              were published at design venues. The field is wide open.
             </p>
           </ScrollReveal>
 
@@ -411,179 +383,31 @@ export default function WP44Page() {
             {[
               {
                 title: 'The vocabulary gap',
-                opportunity: 'Quantum scientists use "design" to mean engineering. Designers use it to mean human-centered experience. Bridging this vocabulary creates a powerful new collaboration space.',
+                desc: 'Quantum scientists use "design" to mean engineering. Designers use it to mean human-centered experience. Bridging this creates a powerful new collaboration space.',
                 color: '#00d4ff',
               },
               {
-                title: 'The HCI frontier',
-                opportunity: 'Of 26 works citing the 2019 CHI call-to-action for HCI in quantum, only 5 were published at design venues. The field is wide open for designers who show up.',
+                title: 'Interaction breakthrough needed',
+                desc: 'What made computing universal wasn\'t faster chips — it was GUIs, mice, and touchscreens. Quantum needs its equivalent interaction paradigm.',
                 color: '#8b5cf6',
               },
               {
-                title: 'Democratization through interaction',
-                opportunity: 'What made computing universal wasn\'t faster chips — it was GUIs, mice, and touchscreens. Quantum needs its equivalent interaction breakthrough.',
+                title: 'AI as the bridge',
+                desc: 'Generative AI collapses the expertise barrier. Natural language to quantum circuits means anyone can explore quantum computing — no physics degree required.',
                 color: '#00ff88',
               },
             ].map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 0.1}>
                 <div
-                  className="p-6 rounded-xl border bg-[#111827]/30 h-full"
+                  className="p-6 rounded-xl border bg-[#111827]/30 h-full relative"
                   style={{ borderColor: `${item.color}20` }}
                 >
-                  <div
-                    className="absolute top-0 left-0 right-0 h-px"
-                    style={{ background: `linear-gradient(90deg, transparent, ${item.color}40, transparent)` }}
-                  />
                   <h3 className="text-white font-semibold mb-3">{item.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{item.opportunity}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
           </div>
-
-          {/* Quote callout */}
-          <ScrollReveal delay={0.3}>
-            <blockquote className="mt-12 p-8 rounded-xl border border-[#00ff88]/20 bg-[#00ff88]/5 relative">
-              <div className="text-[#00ff88]/20 text-6xl font-serif absolute top-4 left-6">&ldquo;</div>
-              <p className="text-gray-300 text-lg leading-relaxed italic relative z-10 pl-8">
-                We have discussed multiple opportunities for design to contribute to the quantum ecosystem:
-                developing accessible framings of quantum concepts, creating new ways of interacting with
-                quantum computing systems, and thus supporting emerging audiences in engaging with quantum
-                computing.
-              </p>
-              <footer className="mt-4 pl-8 text-gray-500 text-sm font-mono">
-                — PhD thesis on Quantum Computational Thinking, TU Delft
-              </footer>
-            </blockquote>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* ============================================ */}
-      {/* STAKEHOLDERS */}
-      {/* ============================================ */}
-      <section className="py-24 md:py-32">
-        <div className="max-w-5xl mx-auto px-6">
-          <ScrollReveal>
-            <SectionLabel color="#ff8c42">Collaboration</SectionLabel>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              Designers, physicists, engineers.<br />
-              <span className="text-gray-500">Building together.</span>
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mb-16">
-              WP4.4 brings industrial design engineers, user experience designers, and quantum
-              physicists into iterative co-design with societal, educational, and industrial
-              stakeholders — using input from user needs research (WP5.1) and real use cases (WP5.2).
-            </p>
-          </ScrollReveal>
-
-          <StakeholderMap />
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* ============================================ */}
-      {/* DESIGN INSPIRATION */}
-      {/* ============================================ */}
-      <section className="py-24 md:py-32">
-        <div className="max-w-5xl mx-auto px-6">
-          <ScrollReveal>
-            <SectionLabel color="#ff6b9d">Design Inspiration</SectionLabel>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              Learning from the best.<br />
-              <span className="text-gray-500">Award-winning web design, 2022.</span>
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mb-12">
-              The redesign draws from cutting-edge web design recognized by Awwwards in 2022 —
-              immersive experiences, dark interfaces, bold typography, and motion-driven storytelling.
-            </p>
-          </ScrollReveal>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: 'KPRVerse by Resn',
-                award: 'Site of the Year 2022',
-                takeaway: 'Immersive storytelling with captivating animation. Balance of aesthetics and functionality through motion design.',
-                color: '#00d4ff',
-                url: 'https://www.awwwards.com/annual-awards-2022/site-of-the-year',
-              },
-              {
-                title: 'Synchronized Studio',
-                award: 'Studio of the Year 2022',
-                takeaway: 'Bold, type-driven visual identities. 7 Site of the Day awards with signature motion-driven design approach.',
-                color: '#8b5cf6',
-                url: 'https://www.awwwards.com/annual-awards-2022/studio-of-the-year',
-              },
-              {
-                title: 'De Voorhoede x QI',
-                award: 'Quantum Inspire Redesign',
-                takeaway: 'Vue.js-based quantum editor with real-time visualization. Progressive disclosure for non-expert users. Interactive docs.',
-                color: '#00ff88',
-                url: 'https://www.voorhoede.nl/en/cases/quantum-inspire/',
-              },
-            ].map((ref, i) => (
-              <ScrollReveal key={ref.title} delay={i * 0.1}>
-                <a
-                  href={ref.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group p-6 rounded-xl border border-[#1e293b] bg-[#111827]/30 hover:bg-[#111827]/60 transition-all duration-300 h-full"
-                >
-                  <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: ref.color }}>
-                    {ref.award}
-                  </span>
-                  <h3 className="text-white font-semibold mt-3 mb-3 group-hover:underline">{ref.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{ref.takeaway}</p>
-                </a>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          <ScrollReveal delay={0.3}>
-            <div className="mt-12 p-6 rounded-xl border border-[#1e293b] bg-[#111827]/20">
-              <h3 className="text-white font-semibold mb-3">Design principles applied</h3>
-              <div className="grid md:grid-cols-4 gap-4">
-                {[
-                  { label: 'Dark-first', desc: 'Reduces cognitive load for complex technical content' },
-                  { label: 'Motion design', desc: 'Guides attention and creates narrative through animation' },
-                  { label: 'Type hierarchy', desc: 'Bold headlines, mono technical text, clear information layers' },
-                  { label: 'Progressive reveal', desc: 'Show complexity gradually as users build understanding' },
-                ].map((p) => (
-                  <div key={p.label}>
-                    <span className="text-white text-sm font-medium">{p.label}</span>
-                    <p className="text-gray-500 text-xs mt-1">{p.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* ============================================ */}
-      {/* TIMELINE */}
-      {/* ============================================ */}
-      <section className="py-24 md:py-32">
-        <div className="max-w-5xl mx-auto px-6">
-          <ScrollReveal>
-            <SectionLabel color="#ff8c42">Expected Output</SectionLabel>
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
-              48-month roadmap.<br />
-              <span className="text-gray-500">From first prototype to PhD thesis.</span>
-            </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mb-16">
-              A structured research timeline spanning publications, software releases,
-              hardware upgrades, and interface iterations.
-            </p>
-          </ScrollReveal>
-
-          <Timeline />
         </div>
       </section>
 
@@ -604,7 +428,7 @@ export default function WP44Page() {
               The QCT thesis asked: how do we make quantum concepts actionable?
               Generative AI provides one answer: skip the syntax entirely. Describe what you
               want to compute in natural language, and AI translates it into working quantum
-              circuits running on real hardware through Quantum Inspire.
+              circuits running on real hardware.
             </p>
           </ScrollReveal>
 
@@ -618,10 +442,9 @@ export default function WP44Page() {
                     This site is the proof.
                   </h3>
                   <p className="text-gray-400 leading-relaxed">
-                    This entire website — 3D quantum visualization, scroll animations, responsive
-                    design — was built through vibecoding: human intent translated by AI into
-                    working code. The same paradigm now works for quantum circuits. Design is
-                    no longer the bottleneck. Imagination is the only limit.
+                    This entire website — interactive quantum visualizations, real hardware experiments,
+                    paper replications — was built through vibecoding: human intent translated by AI into
+                    working code. The same paradigm now works for quantum circuits.
                   </p>
                 </div>
                 <div className="flex-shrink-0">
@@ -648,65 +471,32 @@ export default function WP44Page() {
       {/* ============================================ */}
       <footer className="border-t border-[#1e293b]/50 py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8">
             <div>
               <span className="font-mono text-xs text-[#00d4ff] tracking-widest">WP4.4</span>
-              <p className="text-gray-500 text-sm mt-2 leading-relaxed">
+              <p className="text-gray-500 text-sm mt-2 leading-relaxed max-w-sm">
                 UX and UI redesign for society.
-                Part of the Quantum Inspire research program.
+                Part of the Quantum Inspire research program at TU Delft / QuTech.
               </p>
             </div>
-            <div>
-              <span className="font-mono text-xs text-gray-500 tracking-widest">PARTNERS</span>
-              <div className="mt-2 space-y-1">
-                {[
-                  { name: 'TU Delft — IDE', url: 'https://www.tudelft.nl' },
-                  { name: 'QuTech', url: 'https://qutech.nl' },
-                  { name: 'Quantum Inspire', url: 'https://www.quantum-inspire.com' },
-                  { name: 'THUAS', url: 'https://www.thuas.com' },
-                ].map((p) => (
-                  <a
-                    key={p.name}
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-gray-400 text-sm hover:text-[#00d4ff] transition-colors"
-                  >
-                    {p.name}
-                  </a>
-                ))}
-              </div>
+            <div className="flex gap-6">
+              {[
+                { name: 'TU Delft', url: 'https://www.tudelft.nl' },
+                { name: 'QuTech', url: 'https://qutech.nl' },
+                { name: 'Quantum Inspire', url: 'https://www.quantum-inspire.com' },
+                { name: 'Research Home', url: '/' },
+              ].map((p) => (
+                <a
+                  key={p.name}
+                  href={p.url}
+                  target={p.url.startsWith('http') ? '_blank' : undefined}
+                  rel={p.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="text-gray-400 text-sm hover:text-[#00d4ff] transition-colors"
+                >
+                  {p.name}
+                </a>
+              ))}
             </div>
-            <div>
-              <span className="font-mono text-xs text-gray-500 tracking-widest">REFERENCES</span>
-              <div className="mt-2 space-y-1">
-                {[
-                  { name: 'Awwwards 2022 Winners', url: 'https://www.awwwards.com/annual-awards-2022/' },
-                  { name: 'QI Interface Case Study', url: 'https://www.voorhoede.nl/en/cases/quantum-inspire/' },
-                  { name: 'IBM Quantum Design', url: 'https://www.ibm.com/design/impact/quantum/' },
-                  { name: 'IonQ Design Award', url: 'https://ifdesign.com/en/winner-ranking/project/the-ionq-quantum-computer/697911' },
-                ].map((r) => (
-                  <a
-                    key={r.name}
-                    href={r.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-gray-400 text-sm hover:text-[#00d4ff] transition-colors"
-                  >
-                    {r.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-[#1e293b]/30 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-600 text-xs font-mono">
-              Built with quantum vibecoding — AI + human collaboration
-            </p>
-            <p className="text-gray-600 text-xs font-mono">
-              TU Delft / QuTech / TNO / THUAS
-            </p>
           </div>
         </div>
       </footer>

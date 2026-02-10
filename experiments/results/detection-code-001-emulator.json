@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "detection-code-001-emulator",
   "type": "detection_code",
   "backend": "emulator",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T17:02:32Z",
   "completed": "2026-02-10T17:02:32Z",
   "parameters": {

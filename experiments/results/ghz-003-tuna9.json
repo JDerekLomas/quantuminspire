@@ -1,15 +1,20 @@
 {
+  "schema_version": "1.0",
   "id": "ghz-003-tuna9",
   "type": "ghz_state",
   "backend": "tuna-9",
   "backend_qubits": 9,
+  "job_id": 415122,
   "submitted": "2026-02-10T16:10:44.959468+00:00",
   "completed": "2026-02-10T16:10:48.000000+00:00",
-  "job_id": 415122,
   "parameters": {
     "shots": 4096,
     "num_qubits": 3,
-    "qubits": [0, 1, 2]
+    "qubits": [
+      0,
+      1,
+      2
+    ]
   },
   "raw_counts": {
     "000": 1983,
@@ -33,7 +38,7 @@
     },
     "total_shots": 4096,
     "num_qubits": 3,
-    "interpretation": "3-qubit GHZ fidelity: 86.6% on Tuna-9. Significant noise with 13.4% leakage into non-GHZ states. Asymmetry between |000⟩ (48.4%) and |111⟩ (38.2%) suggests qubit-dependent error rates."
+    "interpretation": "3-qubit GHZ fidelity: 86.6% on Tuna-9. Significant noise with 13.4% leakage into non-GHZ states. Asymmetry between |000\u27e9 (48.4%) and |111\u27e9 (38.2%) suggests qubit-dependent error rates."
   },
   "circuit_cqasm": "version 3.0\nqubit[3] q\nbit[3] b\n\nH q[0]\nCNOT q[0], q[1]\nCNOT q[0], q[2]\nb = measure q",
   "errors": null

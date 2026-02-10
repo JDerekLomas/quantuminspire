@@ -3,6 +3,7 @@ export interface ExperimentStudy {
   type: string
   title: string
   subtitle: string
+  abstract: string
   researchQuestion: string
   priorWork: string
   method: string
@@ -17,6 +18,7 @@ export const studies: ExperimentStudy[] = [
     type: 'bell_calibration',
     title: 'Bell State Calibration',
     subtitle: 'The simplest test of quantum entanglement across three platforms',
+    abstract: 'We prepare the simplest entangled quantum state -- a Bell pair -- on three different quantum processors and compare how faithfully each one creates it. The emulator is perfect, IBM Marrakesh hits 99%, and Tuna-9 reaches 87%, revealing how noise varies across platforms.',
     status: 'complete',
     researchQuestion:
       'How faithfully can current quantum processors prepare a maximally entangled two-qubit Bell state, and how does noise manifest differently across hardware architectures?',
@@ -60,6 +62,7 @@ export const studies: ExperimentStudy[] = [
     type: 'ghz_state',
     title: 'GHZ State Preparation',
     subtitle: 'Testing multi-qubit entanglement scaling with 3-qubit GHZ states',
+    abstract: 'We scale entanglement from two to three qubits using GHZ states and measure how noise worsens with circuit complexity. Adding one qubit drops IBM\'s fidelity from 99% to 98%, while Tuna-9 shows more significant degradation.',
     status: 'complete',
     researchQuestion:
       'How does entanglement fidelity degrade when scaling from 2-qubit Bell states to 3-qubit GHZ states, and what does parity leakage reveal about correlated errors?',
@@ -106,6 +109,7 @@ export const studies: ExperimentStudy[] = [
     type: 'vqe_h2',
     title: 'H\u2082 Ground State Energy via VQE',
     subtitle: 'Variational quantum chemistry on 2 qubits -- from simulation to hardware',
+    abstract: 'We calculate the ground state energy of a hydrogen molecule using a hybrid quantum-classical algorithm on two qubits. The emulator nails chemical accuracy across the full dissociation curve; real hardware shows how noise pushes energies away from the exact answer.',
     status: 'complete',
     researchQuestion:
       'Can a 2-qubit variational quantum eigensolver (VQE) calculate the ground state energy of molecular hydrogen within chemical accuracy (1.6 milliHartree), and how does hardware noise affect the result?',
@@ -153,6 +157,7 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
     type: 'qrng_certification',
     title: 'QRNG Certification',
     subtitle: 'Testing quantum random number quality with NIST statistical tests',
+    abstract: 'We test whether quantum hardware produces truly random numbers by running NIST statistical tests on raw and debiased output from Tuna-9. Raw output fails most tests due to measurement bias; von Neumann debiasing fixes everything at the cost of discarding 75% of bits.',
     status: 'hardware',
     researchQuestion:
       'Do quantum random numbers from real hardware pass standard statistical randomness tests, and does von Neumann debiasing fix measurable hardware bias?',
@@ -202,6 +207,7 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
     type: 'rb_1qubit',
     title: 'Randomized Benchmarking',
     subtitle: 'Measuring single-qubit gate fidelity through random Clifford sequences',
+    abstract: 'Randomized benchmarking measures how quickly quantum gate errors accumulate by running random sequences of increasing length. On the emulator, gate fidelity is effectively perfect -- hardware runs will reveal the actual error rate per gate.',
     status: 'simulation',
     researchQuestion:
       'What is the average error per single-qubit Clifford gate, and how does survival probability decay with circuit depth?',
@@ -231,6 +237,7 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
     type: 'qaoa_maxcut',
     title: 'QAOA MaxCut',
     subtitle: 'Variational optimization on a 3-node graph',
+    abstract: 'We use QAOA to solve a small graph-cutting problem on three qubits, sweeping parameters to find the best solution. The emulator achieves 87% of the optimal cut value, validating our circuit before hardware runs.',
     status: 'simulation',
     researchQuestion:
       'Can the Quantum Approximate Optimization Algorithm find the maximum cut of a small graph, and how does the approximation ratio vary across the parameter landscape?',
@@ -260,6 +267,7 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
     type: 'quantum_volume',
     title: 'Quantum Volume',
     subtitle: 'A holistic benchmark for quantum processor capability',
+    abstract: 'Quantum volume is a single-number benchmark for overall processor capability. Our emulator passes at all tested sizes (QV 8), establishing the protocol for hardware comparisons.',
     status: 'simulation',
     researchQuestion:
       'What quantum volume does the emulator achieve, and what does this metric reveal about the interplay between qubit count, gate fidelity, and connectivity?',

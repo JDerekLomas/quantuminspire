@@ -1,8 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "vqe-equilibrium-001-tuna9",
   "type": "vqe_h2",
   "backend": "tuna-9",
   "backend_qubits": 9,
+  "job_id": null,
   "submitted": "2026-02-10T16:02:08.787959+00:00",
   "completed": "2026-02-10T16:02:15.623438+00:00",
   "job_ids": {
@@ -14,7 +16,10 @@
     "shots": 4096,
     "bond_distance": 0.735,
     "theta": 0.1118,
-    "qubits": [0, 1]
+    "qubits": [
+      0,
+      1
+    ]
   },
   "raw_counts": {
     "z_basis": {
@@ -37,7 +42,7 @@
     }
   },
   "analysis": {
-    "energy_hartree": -1.004480,
+    "energy_hartree": -1.00448,
     "fci_energy": -1.137306,
     "error_hartree": 0.132826,
     "error_kcal_mol": 83.3,
@@ -51,11 +56,11 @@
       "g5": 0.090466
     },
     "bond_distance_angstrom": 0.735,
-    "interpretation": "VQE on Tuna-9 achieved -1.0045 Hartree for H2 at 0.735 Å. Error of 0.133 Ha (83.3 kcal/mol) reflects significant hardware noise — Tuna-9 Bell fidelity is 87.3% vs IBM's 99%. X/Y basis correlations are heavily degraded by noise.",
+    "interpretation": "VQE on Tuna-9 achieved -1.0045 Hartree for H2 at 0.735 \u00c5. Error of 0.133 Ha (83.3 kcal/mol) reflects significant hardware noise \u2014 Tuna-9 Bell fidelity is 87.3% vs IBM's 99%. X/Y basis correlations are heavily degraded by noise.",
     "expectation_values": {
       "Z0": -0.7227,
       "Z1": 0.9697,
-      "Z0Z1": -0.7090,
+      "Z0Z1": -0.709,
       "X0X1": -0.0605,
       "Y0Y1": -0.0488
     },

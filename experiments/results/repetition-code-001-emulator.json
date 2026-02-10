@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "repetition-code-001-emulator",
   "type": "repetition_code",
   "backend": "emulator",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T17:03:21Z",
   "completed": "2026-02-10T17:03:21Z",
   "parameters": {

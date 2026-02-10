@@ -1,11 +1,12 @@
 {
+  "schema_version": "1.0",
   "id": "bell-calibration-001-ibm-torino",
   "type": "bell_calibration",
   "backend": "ibm_torino",
   "backend_qubits": 133,
+  "job_id": "d65m6atbujdc73ctl8fg",
   "submitted": "2026-02-10T16:56:11.458201+00:00",
   "completed": "2026-02-10T16:56:16.866213+00:00",
-  "job_id": "d65m6atbujdc73ctl8fg",
   "parameters": {
     "shots": 4096,
     "method": "IBM MCP server (ibm_submit_circuit)"

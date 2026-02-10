@@ -10,13 +10,25 @@ export function isEmulator(backend: string): boolean {
   return lower.includes('emulator') || lower.includes('qxelarator')
 }
 
+const BACKEND_INFO: Record<string, { label: string; isHw: boolean }> = {
+  'ibm_marrakesh':        { label: 'IBM Marrakesh (156q)', isHw: true },
+  'ibm_torino':           { label: 'IBM Torino (133q)', isHw: true },
+  'ibm_fez':              { label: 'IBM Fez (156q)', isHw: true },
+  'tuna-9':               { label: 'QI Tuna-9 (9q)', isHw: true },
+  'qxelarator':           { label: 'QI Emulator', isHw: false },
+  'qxelarator (emulator)': { label: 'QI Emulator', isHw: false },
+}
+
 export function backendLabel(backend: string): { label: string; isHw: boolean } {
   if (!backend) return { label: 'Unknown', isHw: false }
-  if (backend.toLowerCase().includes('ibm')) return { label: 'IBM Hardware', isHw: true }
-  if (backend.toLowerCase().includes('emulator') || backend.toLowerCase().includes('qxelarator'))
-    return { label: 'QI Emulator', isHw: false }
-  if (backend.toLowerCase().includes('tuna')) return { label: 'QI Tuna-9', isHw: true }
-  if (backend.toLowerCase().includes('multi')) return { label: 'Multi-Source', isHw: false }
+  const exact = BACKEND_INFO[backend.toLowerCase()]
+  if (exact) return exact
+  // Fuzzy fallbacks for unknown backends
+  const lower = backend.toLowerCase()
+  if (lower.includes('ibm')) return { label: backend, isHw: true }
+  if (lower.includes('emulator') || lower.includes('qxelarator')) return { label: 'QI Emulator', isHw: false }
+  if (lower.includes('tuna')) return { label: 'QI Tuna-9 (9q)', isHw: true }
+  if (lower.includes('multi')) return { label: 'Multi-Source', isHw: false }
   return { label: backend, isHw: false }
 }
 

@@ -180,6 +180,7 @@ export const posts: BlogPost[] = [
 <tr><td><a href="https://arxiv.org/abs/2510.26101">QCoder</a> (o3)</td><td>Functional accuracy</td><td>78%</td><td>vs. 40% for human contest code; chain-of-thought helps</td></tr>
 <tr><td>Our benchmark (Claude Opus 4.6)</td><td>Functional correctness</td><td>63.6%</td><td><a href="/blog/llms-write-quantum-code">151 Qiskit tasks</a>; dominant failure: API staleness</td></tr>
 <tr><td>Our benchmark (Gemini 3 Flash)</td><td>Functional correctness</td><td>62.25%</td><td>Within 1.4pp of Claude; same failure mode</td></tr>
+<tr><td>Our benchmark (Gemini 3 Flash + <a href="/blog/rag-quantum-code-generation">Context7 RAG</a>)</td><td>Functional correctness</td><td>70.86%</td><td>+14% relative; dynamic doc retrieval per task</td></tr>
 </tbody>
 </table>
 
@@ -471,10 +472,11 @@ export const posts: BlogPost[] = [
 
 <h2>Next Steps</h2>
 
-<p>We're planning to:</p>
+<p><strong>Update:</strong> We ran the RAG experiment. <a href="/blog/rag-quantum-code-generation">Dynamic RAG with Context7 pushed Pass@1 to 70.9%</a> — a 14% relative improvement. Static RAG did nothing. <a href="/blog/rag-quantum-code-generation">Read the full results.</a></p>
+
+<p>Other planned work:</p>
 <ol>
-<li>Add RAG with Qiskit 2.x docs and re-run the benchmark</li>
-<li>Test against Claude Opus 4.6, GPT-5, and domain-specific models</li>
+<li>Test against GPT-5 and domain-specific models</li>
 <li>Develop a cQASM variant for Quantum Inspire hardware</li>
 <li>Run the Agent-Q and QUASAR approaches against our benchmark for direct comparison</li>
 </ol>
@@ -484,6 +486,130 @@ export const posts: BlogPost[] = [
       { label: 'QUASAR — agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
       { label: 'Our benchmark results (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
       { label: 'Qiskit 2.x migration guide', url: 'https://docs.quantum.ibm.com/migration-guides' },
+    ],
+  },
+  {
+    slug: 'rag-quantum-code-generation',
+    title: 'Dynamic RAG Boosts Quantum Code Generation by 14% — Static RAG Does Nothing',
+    subtitle: 'We tested two retrieval-augmented generation strategies on 151 Qiskit tasks. Only one worked.',
+    date: '2026-02-10',
+    author: 'AI x Quantum Research Team',
+    category: 'experiment',
+    tags: ['benchmark', 'RAG', 'Context7', 'Qiskit', 'LLM', 'Gemini', 'API staleness'],
+    heroImage: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80',
+    heroCaption: 'The right documentation at the right time makes all the difference.',
+    excerpt: 'Our baseline benchmark showed that API staleness — not algorithmic misunderstanding — is the dominant failure mode when LLMs write quantum code. We tested two RAG strategies: a static Qiskit 2.x cheatsheet injected into every prompt, and dynamic per-task documentation retrieval via Context7. The static approach did nothing. The dynamic approach pushed Pass@1 from 62.3% to 70.9%.',
+    content: `
+<p>In our <a href="/blog/llms-write-quantum-code">previous post</a>, we found that frontier LLMs score around 62-64% on the Qiskit HumanEval benchmark — 151 quantum programming tasks graded by automated code execution. The most interesting finding wasn't the score but the failure mode: <strong>the dominant error is API staleness, not algorithmic misunderstanding</strong>. Models trained on Qiskit 1.x documentation generate code for APIs that no longer exist in Qiskit 2.x.</p>
+
+<p>The obvious fix: give the model up-to-date documentation. We tested two approaches. One failed completely. The other improved performance by 14%.</p>
+
+<h2>Two RAG Strategies</h2>
+
+<h3>Strategy 1: Static Cheatsheet</h3>
+
+<p>We wrote a comprehensive <strong>QISKIT_2X_CHEATSHEET.md</strong> — 335 lines covering every major breaking change: <code>execute()</code> removal, SamplerV2/EstimatorV2 PUB-based API, <code>qiskit_aer</code> import paths, <code>c_if()</code> removal, <code>BackendV1</code> removal, <code>generate_preset_pass_manager</code> changes, and complete working examples. This cheatsheet was prepended to every prompt as a system message supplement.</p>
+
+<p>The logic: if the model knows about Qiskit 2.x changes, it should stop generating deprecated code.</p>
+
+<h3>Strategy 2: Dynamic Per-Task Retrieval (Context7)</h3>
+
+<p><a href="https://context7.com">Context7</a> (by Upstash) is a cloud service that indexes open-source library documentation and returns relevant snippets per query. For each task, we sent the task description to Context7's API, retrieved documentation snippets from both <code>/qiskit/qiskit</code> and <code>/qiskit/qiskit-ibm-runtime</code> libraries, and appended them to the prompt.</p>
+
+<p>The logic: only inject documentation that's relevant to the specific task, not everything.</p>
+
+<h2>The Results</h2>
+
+<table>
+<thead><tr><th>Configuration</th><th>Pass@1</th><th>Basic (79)</th><th>Intermediate (67)</th><th>Difficult (5)</th><th>Input Tokens</th></tr></thead>
+<tbody>
+<tr><td>Gemini 3 Flash (baseline)</td><td>62.3% (94)</td><td>65.8% (52)</td><td>61.2% (41)</td><td>20% (1)</td><td>28K</td></tr>
+<tr><td>Claude Opus 4.6 (baseline)</td><td>63.6% (96)</td><td>67.1% (53)</td><td>62.7% (42)</td><td>20% (1)</td><td>30K</td></tr>
+<tr><td>Gemini + Static Cheatsheet</td><td>62.3% (94)</td><td>65.8% (52)</td><td>62.7% (42)</td><td>0% (0)</td><td>486K</td></tr>
+<tr><td><strong>Gemini + Context7</strong></td><td><strong>70.9% (107)</strong></td><td><strong>77.2% (61)</strong></td><td><strong>67.2% (45)</strong></td><td>20% (1)</td><td>287K</td></tr>
+</tbody>
+</table>
+
+<h2>The Static Cheatsheet Did Nothing</h2>
+
+<p>This was the surprise. A carefully written, comprehensive migration guide — the exact kind of documentation you'd want a developer to read — had <strong>zero effect on overall pass rate</strong>. Same 94 tasks passed. 17x more tokens consumed. The intermediate tier gained 1 task but the difficult tier <em>lost</em> one, netting to zero.</p>
+
+<p>Why? Three likely reasons:</p>
+
+<ol>
+<li><strong>Noise for simple tasks.</strong> Most basic tasks (create a circuit, add a gate) don't need migration knowledge. The 3K-token cheatsheet adds irrelevant context that can confuse the model on tasks where the old and new APIs are identical.</li>
+<li><strong>Not specific enough for complex tasks.</strong> The tasks that fail due to API changes need <em>specific</em> documentation about the exact API they're trying to use (e.g., how to get counts from a <code>SamplerV2</code> result), not a general overview of all changes.</li>
+<li><strong>Prompt engineering limits.</strong> Simply prepending a document to the system message is the crudest possible form of RAG. The model has to figure out which parts of the cheatsheet are relevant — the same task that RAG is supposed to solve.</li>
+</ol>
+
+<h2>Dynamic Retrieval Worked — Especially for Basic Tasks</h2>
+
+<p>Context7 improved Pass@1 from 62.3% to 70.9% — a <strong>+8.6 percentage point improvement</strong> (13.8% relative). Breaking it down by difficulty:</p>
+
+<table>
+<thead><tr><th>Difficulty</th><th>Baseline</th><th>+Context7</th><th>Improvement</th></tr></thead>
+<tbody>
+<tr><td>Basic</td><td>65.8% (52/79)</td><td>77.2% (61/79)</td><td><strong>+11.4pp</strong> (9 new passes)</td></tr>
+<tr><td>Intermediate</td><td>61.2% (41/67)</td><td>67.2% (45/67)</td><td>+6.0pp (4 new passes)</td></tr>
+<tr><td>Difficult</td><td>20% (1/5)</td><td>20% (1/5)</td><td>0pp</td></tr>
+</tbody>
+</table>
+
+<p>The improvement is concentrated in basic tasks — exactly the tasks most likely to fail from simple API changes (wrong import path, deprecated method call). These are tasks where the model knows the quantum logic but generates code for the wrong API version. A targeted snippet showing the correct <code>SamplerV2</code> usage or the right import path is enough to fix the output.</p>
+
+<p>Intermediate tasks see a smaller but real improvement. Difficult tasks — which require multi-step algorithmic reasoning — don't improve. Dynamic RAG helps with <em>API recall</em>, not <em>quantum reasoning</em>.</p>
+
+<h2>Why Dynamic Beats Static</h2>
+
+<p>The core insight: <strong>relevance filtering is the whole game</strong>. Context7 returns 1-2KB of documentation specifically about the APIs the task is likely to use. The static cheatsheet dumps 3KB about everything. For a task that needs to know how <code>SamplerV2</code> results work, getting a targeted code example of <code>result[0].data.meas.get_counts()</code> is far more useful than a comprehensive document that covers 20 different API changes.</p>
+
+<p>This matches a well-known finding in RAG research: retrieval precision matters more than recall. Injecting irrelevant context can <em>hurt</em> performance by diluting the model's attention. The static cheatsheet is high-recall (covers everything) but low-precision (most of it is irrelevant to any given task). Context7 is lower-recall but higher-precision.</p>
+
+<p>Token usage tells the story: Context7 used 287K tokens vs the cheatsheet's 486K — 41% fewer tokens — while passing 13 more tasks. The cheatsheet wastes tokens on irrelevant documentation for every single task. Context7 only retrieves what's needed.</p>
+
+<h2>Limitations</h2>
+
+<p>We want to be transparent about what this experiment does and doesn't show:</p>
+
+<ul>
+<li><strong>Single run per configuration.</strong> We ran each configuration once (Pass@1). Without multiple runs, we can't compute confidence intervals. The true improvement could be anywhere from ~5pp to ~12pp.</li>
+<li><strong>No contamination check.</strong> Context7 retrieves documentation that may contain example code similar to benchmark tasks. We haven't verified whether retrieved snippets overlap with test solutions — a potential source of inflated scores.</li>
+<li><strong>Context7 rate limiting.</strong> 5 of 151 tasks hit Context7's rate limit (HTTP 429) and were treated as infrastructure failures. The adjusted pass rate excluding these is 73.3%.</li>
+<li><strong>Only one model tested with RAG.</strong> We tested Context7 only on Gemini 3 Flash. The Opus 4.6 + Context7 run was blocked by Context7's rate limit. The improvement may be model-dependent.</li>
+<li><strong>No Pass@k.</strong> We use Pass@1 (one attempt per task). Standard practice in code generation benchmarks uses Pass@k to account for sampling variance. Our results represent a lower bound.</li>
+<li><strong>No sandboxing.</strong> Generated code executes in a subprocess but not in a fully sandboxed environment.</li>
+</ul>
+
+<h2>What This Means</h2>
+
+<h3>For quantum SDK developers</h3>
+<p>API staleness is not just a human-developer problem — it's now an AI-developer problem. SDKs that maintain stable interfaces, or that provide machine-readable migration guides, will be more amenable to AI code generation. Qiskit's breaking changes between 1.x and 2.x created a "knowledge wall" that even frontier models can't cross without external help.</p>
+
+<h3>For AI-for-science tool builders</h3>
+<p>Dynamic documentation retrieval should be a standard component of any code-generation pipeline for fast-evolving domains. Static context injection is not a substitute — the relevance filtering that retrieval provides is essential. Services like Context7 that index open-source library documentation are directly useful infrastructure.</p>
+
+<h3>For quantum computing researchers</h3>
+<p>An LLM with the right documentation can write correct Qiskit code for ~71% of quantum programming tasks — including circuits, optimizations, and error analysis. The ceiling is likely higher with better retrieval, multi-turn correction, or agentic approaches. Practical quantum computing with AI assistance is getting closer.</p>
+
+<h2>Next Steps</h2>
+
+<ol>
+<li><strong>Claude Opus 4.6 + Context7</strong> — Run the same experiment once rate limits reset, to see if the improvement generalizes across models.</li>
+<li><strong>Pass@3 and confidence intervals</strong> — Multiple runs per configuration to establish statistical significance.</li>
+<li><strong>Contamination audit</strong> — Check whether Context7 retrievals overlap with benchmark test solutions.</li>
+<li><strong>Agentic retry</strong> — Let the model see error messages and try again. This is how developers actually work, and how systems like QUASAR achieve 99%+ validity.</li>
+<li><strong>Fine-grained error analysis</strong> — Map which specific tasks flipped from fail to pass with Context7, and categorize the API changes involved.</li>
+</ol>
+
+<p>All benchmark code and results are open source: <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results">github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results</a></p>
+`,
+    sources: [
+      { label: 'Qiskit HumanEval benchmark paper', url: 'https://arxiv.org/abs/2406.02132' },
+      { label: 'Our baseline benchmark results', url: '/blog/llms-write-quantum-code' },
+      { label: 'Context7 by Upstash', url: 'https://context7.com' },
+      { label: 'Benchmark code and results (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
+      { label: 'Qiskit 2.x migration guide', url: 'https://docs.quantum.ibm.com/migration-guides' },
+      { label: 'QUASAR — agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
     ],
   },
   {

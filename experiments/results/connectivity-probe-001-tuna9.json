@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "connectivity-probe-001-tuna9",
   "type": "connectivity_probe",
   "backend": "tuna-9",
+  "backend_qubits": 9,
+  "job_id": null,
   "submitted": "2026-02-10T16:49:37Z",
   "completed": "2026-02-10T16:53:26Z",
   "parameters": {
@@ -98,9 +101,32 @@
       "pair_0_1",
       0.8877
     ],
-    "recommended_5q_subgraph": [3, 1, 4, 2, 5],
-    "recommended_6q_subgraph": [0, 1, 2, 3, 4, 5],
-    "best_repetition_chain": {"qubits": [3, 1, 4, 2, 5], "avg_fidelity": 0.958, "mapping": "d0=3, s0=1, d1=4, s1=2, d2=5"},
+    "recommended_5q_subgraph": [
+      3,
+      1,
+      4,
+      2,
+      5
+    ],
+    "recommended_6q_subgraph": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "best_repetition_chain": {
+      "qubits": [
+        3,
+        1,
+        4,
+        2,
+        5
+      ],
+      "avg_fidelity": 0.958,
+      "mapping": "d0=3, s0=1, d1=4, s1=2, d2=5"
+    },
     "topology_notes": "Only 6/36 pairs connected. Max degree = 3. Chain topology: 5-2-0-1-3 with q4 branching from q1 and q2.",
     "interpretation": "Tuna-9 has sparse connectivity (6 connected pairs out of 36 tested). Best fidelity: q2-q4 at 96.3%. Worst: q0-q1 at 88.8%. Topology is roughly a tree with max degree 3."
   },

@@ -4,6 +4,7 @@ import {
   getAllStudies,
   getStudyBySlug,
   getResultsByType,
+  getResultGitHubUrl,
   getSweepEmulator,
   getSweepReference,
   typeLabels,
@@ -47,6 +48,22 @@ export function generateMetadata({ params }: { params: { id: string } }) {
 // ---------------------------------------------------------------------------
 // Status badge for research workflow stage
 // ---------------------------------------------------------------------------
+
+function RawDataLink({ resultId }: { resultId: string }) {
+  return (
+    <a
+      href={getResultGitHubUrl(resultId)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1.5 text-[11px] font-mono text-gray-500 hover:text-[#00d4ff] transition-colors mt-3"
+    >
+      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+      </svg>
+      View raw JSON
+    </a>
+  )
+}
 
 function WorkflowBadge({ status }: { status: 'simulation' | 'hardware' | 'complete' }) {
   const stages = ['simulation', 'hardware', 'complete'] as const
@@ -185,6 +202,7 @@ function BellResults({ results }: { results: ExperimentResult[] }) {
             )}
             {isEmulator(r.backend) && r.analysis.fidelity === 1.0 && <EmulatorNote />}
             {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+            <RawDataLink resultId={r.id} />
           </div>
         )
       })}
@@ -238,6 +256,7 @@ function GHZResults({ results }: { results: ExperimentResult[] }) {
             )}
             {isEmulator(r.backend) && r.analysis.fidelity === 1.0 && <EmulatorNote />}
             {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+            <RawDataLink resultId={r.id} />
           </div>
         )
       })}
@@ -320,6 +339,7 @@ function VQEResults({ results }: { results: ExperimentResult[] }) {
               <p className="text-xs text-gray-300 mt-3 leading-relaxed">{r.analysis.interpretation}</p>
             )}
             {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+            <RawDataLink resultId={r.id} />
           </div>
         )
       })}
@@ -366,6 +386,7 @@ function RBResults({ results }: { results: ExperimentResult[] }) {
           )}
           {isEmulator(r.backend) && <EmulatorNote />}
           {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+          <RawDataLink resultId={r.id} />
         </div>
       ))}
     </div>
@@ -418,6 +439,7 @@ function QAOAResults({ results }: { results: ExperimentResult[] }) {
           )}
           {isEmulator(r.backend) && <EmulatorNote />}
           {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+          <RawDataLink resultId={r.id} />
         </div>
       ))}
     </div>
@@ -487,6 +509,7 @@ function QVResults({ results }: { results: ExperimentResult[] }) {
           )}
           {isEmulator(r.backend) && <EmulatorNote />}
           {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+          <RawDataLink resultId={r.id} />
         </div>
       ))}
     </div>
@@ -594,6 +617,7 @@ function QRNGResults({ results }: { results: ExperimentResult[] }) {
             )}
 
             {r.circuit_cqasm && <CircuitBlock cqasm={r.circuit_cqasm} />}
+            <RawDataLink resultId={r.id} />
           </div>
         )
       })}
@@ -668,6 +692,10 @@ export default function ExperimentDetailPage({ params }: { params: { id: string 
               {study.title}
             </h1>
             <p className="text-lg text-gray-400 leading-relaxed">{study.subtitle}</p>
+
+            {study.abstract && (
+              <p className="mt-4 text-sm text-gray-300 leading-relaxed max-w-2xl">{study.abstract}</p>
+            )}
           </div>
 
           {/* Research Question */}

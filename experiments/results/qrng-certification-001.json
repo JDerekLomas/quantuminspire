@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "qrng-certification-001",
   "type": "qrng_certification",
   "backend": "multi-source",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T16:20:45.943464+00:00",
   "completed": "2026-02-10T16:22:30.000000+00:00",
   "parameters": {
@@ -37,14 +40,48 @@
         "total": 8,
         "pass_rate": 0.125,
         "tests": [
-          { "test": "Frequency (Monobit)", "p_value": 5.19e-08, "pass": false, "ones_fraction": 0.48075 },
-          { "test": "Block Frequency", "p_value": 0.00685, "pass": false },
-          { "test": "Runs", "p_value": 0.0, "pass": false, "note": "Pre-test failed: pi=0.4808" },
-          { "test": "Longest Run of Ones", "p_value": 6.06e-05, "pass": false },
-          { "test": "Spectral (DFT)", "p_value": 0.559, "pass": true },
-          { "test": "Serial", "p_value": 3.45e-07, "pass": false },
-          { "test": "Approximate Entropy", "p_value": 0.000708, "pass": false },
-          { "test": "Cumulative Sums", "p_value": 9.58e-08, "pass": false }
+          {
+            "test": "Frequency (Monobit)",
+            "p_value": 5.19e-08,
+            "pass": false,
+            "ones_fraction": 0.48075
+          },
+          {
+            "test": "Block Frequency",
+            "p_value": 0.00685,
+            "pass": false
+          },
+          {
+            "test": "Runs",
+            "p_value": 0.0,
+            "pass": false,
+            "note": "Pre-test failed: pi=0.4808"
+          },
+          {
+            "test": "Longest Run of Ones",
+            "p_value": 6.06e-05,
+            "pass": false
+          },
+          {
+            "test": "Spectral (DFT)",
+            "p_value": 0.559,
+            "pass": true
+          },
+          {
+            "test": "Serial",
+            "p_value": 3.45e-07,
+            "pass": false
+          },
+          {
+            "test": "Approximate Entropy",
+            "p_value": 0.000708,
+            "pass": false
+          },
+          {
+            "test": "Cumulative Sums",
+            "p_value": 9.58e-08,
+            "pass": false
+          }
         ]
       },
       "tuna9_debiased": {
@@ -61,14 +98,47 @@
         "total": 8,
         "pass_rate": 1.0,
         "tests": [
-          { "test": "Frequency (Monobit)", "p_value": 0.0924, "pass": true, "ones_fraction": 0.50595 },
-          { "test": "Block Frequency", "p_value": 0.967, "pass": true },
-          { "test": "Runs", "p_value": 0.521, "pass": true },
-          { "test": "Longest Run of Ones", "p_value": 0.739, "pass": true },
-          { "test": "Spectral (DFT)", "p_value": 0.243, "pass": true },
-          { "test": "Serial", "p_value": 0.200, "pass": true },
-          { "test": "Approximate Entropy", "p_value": 0.252, "pass": true },
-          { "test": "Cumulative Sums", "p_value": 0.157, "pass": true }
+          {
+            "test": "Frequency (Monobit)",
+            "p_value": 0.0924,
+            "pass": true,
+            "ones_fraction": 0.50595
+          },
+          {
+            "test": "Block Frequency",
+            "p_value": 0.967,
+            "pass": true
+          },
+          {
+            "test": "Runs",
+            "p_value": 0.521,
+            "pass": true
+          },
+          {
+            "test": "Longest Run of Ones",
+            "p_value": 0.739,
+            "pass": true
+          },
+          {
+            "test": "Spectral (DFT)",
+            "p_value": 0.243,
+            "pass": true
+          },
+          {
+            "test": "Serial",
+            "p_value": 0.2,
+            "pass": true
+          },
+          {
+            "test": "Approximate Entropy",
+            "p_value": 0.252,
+            "pass": true
+          },
+          {
+            "test": "Cumulative Sums",
+            "p_value": 0.157,
+            "pass": true
+          }
         ]
       },
       "emulator": {
@@ -82,19 +152,52 @@
         "total": 8,
         "pass_rate": 1.0,
         "tests": [
-          { "test": "Frequency (Monobit)", "p_value": 0.365, "pass": true, "ones_fraction": 0.5032 },
-          { "test": "Block Frequency", "p_value": 0.547, "pass": true },
-          { "test": "Runs", "p_value": 0.577, "pass": true },
-          { "test": "Longest Run of Ones", "p_value": 0.874, "pass": true },
-          { "test": "Spectral (DFT)", "p_value": 0.218, "pass": true },
-          { "test": "Serial", "p_value": 0.575, "pass": true },
-          { "test": "Approximate Entropy", "p_value": 0.981, "pass": true },
-          { "test": "Cumulative Sums", "p_value": 0.240, "pass": true }
+          {
+            "test": "Frequency (Monobit)",
+            "p_value": 0.365,
+            "pass": true,
+            "ones_fraction": 0.5032
+          },
+          {
+            "test": "Block Frequency",
+            "p_value": 0.547,
+            "pass": true
+          },
+          {
+            "test": "Runs",
+            "p_value": 0.577,
+            "pass": true
+          },
+          {
+            "test": "Longest Run of Ones",
+            "p_value": 0.874,
+            "pass": true
+          },
+          {
+            "test": "Spectral (DFT)",
+            "p_value": 0.218,
+            "pass": true
+          },
+          {
+            "test": "Serial",
+            "p_value": 0.575,
+            "pass": true
+          },
+          {
+            "test": "Approximate Entropy",
+            "p_value": 0.981,
+            "pass": true
+          },
+          {
+            "test": "Cumulative Sums",
+            "p_value": 0.24,
+            "pass": true
+          }
         ]
       }
     },
     "conclusion": "Raw Tuna-9 output shows significant hardware bias (48.1% ones vs 50% expected), failing 7/8 NIST tests. Von Neumann debiasing completely fixes this: debiased output passes all 8 tests, statistically indistinguishable from ideal randomness. The 75% bit discard rate is the expected cost of debiasing.",
     "key_finding": "Von Neumann debiasing transforms biased quantum hardware output into NIST-certified random numbers",
-    "interpretation": "Tuna-9's spin qubits have a measurable bias toward |0\u27E9 (48.1% ones vs 50%). Von Neumann pair extraction eliminates this first-order bias at a 75% bit cost, achieving 8/8 NIST SP 800-22 test passes. This validates our QRNG MCP server's debiasing pipeline for production use."
+    "interpretation": "Tuna-9's spin qubits have a measurable bias toward |0\u27e9 (48.1% ones vs 50%). Von Neumann pair extraction eliminates this first-order bias at a 75% bit cost, achieving 8/8 NIST SP 800-22 test passes. This validates our QRNG MCP server's debiasing pipeline for production use."
   }
 }

@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "rb-1qubit-001",
   "type": "rb_1qubit",
   "backend": "qxelarator",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T16:36:10.881848+00:00",
   "completed": "2026-02-10T16:36:10.882181+00:00",
   "parameters": {

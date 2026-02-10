@@ -1,11 +1,12 @@
 {
+  "schema_version": "1.0",
   "id": "vqe-equilibrium-002-ibm-torino",
   "type": "vqe_h2",
   "backend": "ibm_torino",
   "backend_qubits": 133,
+  "job_id": "d65lsrje4kfs73cvjb6g",
   "submitted": "2026-02-10T16:36:07.697770+00:00",
   "completed": "2026-02-10T16:36:07.706050+00:00",
-  "job_id": "d65lsrje4kfs73cvjb6g",
   "parameters": {
     "shots": 4096,
     "theta": 0.2286,

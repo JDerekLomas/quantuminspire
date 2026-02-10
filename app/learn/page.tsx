@@ -1,0 +1,476 @@
+import { Metadata } from 'next'
+import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Learn — Quantum Computing Glossary',
+  description: 'A practical glossary of quantum computing concepts with links to interactive visualizations.',
+}
+
+type GlossaryEntry = {
+  term: string
+  definition: string
+  category: string
+  vizLink?: { label: string; href: string }
+  related?: string[]
+}
+
+const CATEGORIES = [
+  { id: 'fundamentals', label: 'Fundamentals', color: '#00d4ff' },
+  { id: 'gates', label: 'Gates & Circuits', color: '#8b5cf6' },
+  { id: 'states', label: 'Quantum States', color: '#00ff88' },
+  { id: 'algorithms', label: 'Algorithms', color: '#ff8c42' },
+  { id: 'metrics', label: 'Metrics & Benchmarks', color: '#ff6b9d' },
+  { id: 'hardware', label: 'Hardware', color: '#94a3b8' },
+  { id: 'techniques', label: 'Techniques', color: '#f59e0b' },
+]
+
+const GLOSSARY: GlossaryEntry[] = [
+  // Fundamentals
+  {
+    term: 'Qubit',
+    definition: 'The basic unit of quantum information. Unlike a classical bit (0 or 1), a qubit can exist in a superposition of both states simultaneously. Physically realized as spin qubits (Tuna-9), superconducting circuits (IBM), trapped ions, or photons.',
+    category: 'fundamentals',
+    vizLink: { label: 'Bloch Sphere', href: '/bloch-sphere' },
+    related: ['Superposition', 'Bloch sphere'],
+  },
+  {
+    term: 'Superposition',
+    definition: 'A qubit in superposition is in a combination of |0> and |1> states, described by amplitudes alpha and beta where |alpha|^2 + |beta|^2 = 1. Measurement collapses the superposition to a definite state with probabilities given by the Born rule.',
+    category: 'fundamentals',
+    vizLink: { label: 'Bloch Sphere', href: '/bloch-sphere' },
+    related: ['Measurement', 'Born rule', 'Qubit'],
+  },
+  {
+    term: 'Entanglement',
+    definition: 'A quantum correlation between two or more qubits where the state of one cannot be described independently of the others. Measuring one instantly determines the other, regardless of distance. The resource behind quantum teleportation and many quantum algorithms.',
+    category: 'fundamentals',
+    vizLink: { label: 'Entanglement Lab', href: '/entanglement' },
+    related: ['Bell state', 'GHZ state', 'Concurrence'],
+  },
+  {
+    term: 'Measurement',
+    definition: 'Extracting classical information from a qubit. Measurement collapses the quantum state: a qubit in superposition becomes |0> or |1> with probabilities determined by its amplitudes (Born rule). Measurement in different bases (X, Y, Z) reveals different information.',
+    category: 'fundamentals',
+    vizLink: { label: 'Measurement Lab', href: '/measurement' },
+    related: ['Born rule', 'Superposition', 'Basis'],
+  },
+  {
+    term: 'Born rule',
+    definition: 'The probability of measuring a quantum state |psi> in state |x> is |<x|psi>|^2 — the squared magnitude of the amplitude. This connects the abstract quantum state to observable outcomes.',
+    category: 'fundamentals',
+    vizLink: { label: 'Measurement Lab', href: '/measurement' },
+  },
+  {
+    term: 'Bloch sphere',
+    definition: 'A geometric representation of a single qubit state as a point on a unit sphere. |0> is the north pole, |1> the south pole, and superposition states lie on the surface. Single-qubit gates are rotations on this sphere.',
+    category: 'fundamentals',
+    vizLink: { label: 'Bloch Sphere Explorer', href: '/bloch-sphere' },
+  },
+  {
+    term: 'Quantum state vector',
+    definition: 'The mathematical description of a quantum system. For n qubits, it is a vector of 2^n complex amplitudes. A 3-qubit system has 8 amplitudes. State vectors live in Hilbert space and evolve via unitary operations.',
+    category: 'fundamentals',
+    vizLink: { label: 'State Vector Explorer', href: '/state-vector' },
+  },
+  {
+    term: 'Density matrix',
+    definition: 'A more general representation of quantum states that can describe both pure states and mixed states (statistical ensembles). The diagonal elements give measurement probabilities; off-diagonal elements encode coherence and entanglement.',
+    category: 'fundamentals',
+    vizLink: { label: 'Entanglement Lab', href: '/entanglement' },
+    related: ['Partial trace', 'Decoherence'],
+  },
+
+  // Gates & Circuits
+  {
+    term: 'Quantum gate',
+    definition: 'A unitary operation that transforms qubit states. Single-qubit gates (X, Y, Z, H, S, T) rotate the Bloch sphere. Multi-qubit gates (CNOT, CZ, Toffoli) create entanglement. Any quantum computation can be decomposed into single-qubit gates plus CNOT.',
+    category: 'gates',
+    vizLink: { label: 'Bloch Sphere', href: '/bloch-sphere' },
+  },
+  {
+    term: 'Pauli gates (X, Y, Z)',
+    definition: 'The three fundamental single-qubit gates. X is a bit-flip (|0> <-> |1>). Z is a phase-flip (|1> -> -|1>). Y = iXZ combines both. They form the Pauli group and are the building blocks of error correction and Hamiltonian simulation.',
+    category: 'gates',
+    vizLink: { label: 'Bloch Sphere', href: '/bloch-sphere' },
+    related: ['Pauli group', 'Clifford gates'],
+  },
+  {
+    term: 'Hadamard gate (H)',
+    definition: 'Creates an equal superposition: H|0> = (|0>+|1>)/sqrt(2). The workhorse gate for creating superposition. H is its own inverse (applying it twice returns to the original state). Central to nearly every quantum algorithm.',
+    category: 'gates',
+    vizLink: { label: 'Bloch Sphere', href: '/bloch-sphere' },
+  },
+  {
+    term: 'CNOT (Controlled-NOT)',
+    definition: 'A two-qubit gate that flips the target qubit if and only if the control qubit is |1>. The standard entangling gate. Together with single-qubit rotations, CNOT forms a universal gate set — any quantum computation can be built from these.',
+    category: 'gates',
+    vizLink: { label: 'State Vector Explorer', href: '/state-vector' },
+    related: ['Entanglement', 'Universal gate set'],
+  },
+  {
+    term: 'Clifford gates',
+    definition: 'The group generated by H, S, and CNOT gates. Clifford circuits can be efficiently simulated classically (Gottesman-Knill theorem), which makes them important for error correction but insufficient for quantum advantage. Adding the T gate breaks out of the Clifford group.',
+    category: 'gates',
+    related: ['T gate', 'Gottesman-Knill theorem', 'Stabilizer states'],
+  },
+  {
+    term: 'T gate',
+    definition: 'A pi/8 phase gate that, combined with Clifford gates, forms a universal gate set. T gates are the expensive resource in fault-tolerant quantum computing — they require magic state distillation, making T-count a key metric for circuit cost.',
+    category: 'gates',
+    related: ['Clifford gates', 'Magic state distillation'],
+  },
+  {
+    term: 'Circuit depth',
+    definition: 'The number of sequential gate layers in a quantum circuit (gates that can run in parallel count as one layer). Deeper circuits accumulate more noise on real hardware. Reducing depth while preserving function is a key optimization challenge.',
+    category: 'gates',
+    related: ['Transpilation', 'Decoherence'],
+  },
+  {
+    term: 'Transpilation',
+    definition: 'Converting a quantum circuit into the native gate set of a specific hardware backend. Different processors support different gates (e.g., IBM uses CX+sqrt(X)+Rz). Transpilation also handles qubit routing when hardware connectivity is limited.',
+    category: 'gates',
+    related: ['Circuit depth', 'Native gate set'],
+  },
+
+  // Quantum States
+  {
+    term: 'Bell state',
+    definition: 'The four maximally entangled two-qubit states: |Phi+> = (|00>+|11>)/sqrt(2), |Phi-> = (|00>-|11>)/sqrt(2), |Psi+> = (|01>+|10>)/sqrt(2), |Psi-> = (|01>-|10>)/sqrt(2). The simplest entangled states, used in teleportation, superdense coding, and as calibration benchmarks.',
+    category: 'states',
+    vizLink: { label: 'Entanglement Lab', href: '/entanglement' },
+    related: ['Entanglement', 'Quantum teleportation'],
+  },
+  {
+    term: 'GHZ state',
+    definition: 'Greenberger-Horne-Zeilinger state: (|000...0> + |111...1>)/sqrt(2). A maximally entangled multi-qubit state where all qubits are correlated. Used for testing multipartite entanglement and as a benchmark for hardware quality.',
+    category: 'states',
+    vizLink: { label: 'Measurement Lab', href: '/measurement' },
+    related: ['Bell state', 'W state'],
+  },
+  {
+    term: 'W state',
+    definition: 'An entangled three-qubit state: (|001>+|010>+|100>)/sqrt(3). Unlike GHZ, W state entanglement is robust — tracing out one qubit leaves the remaining two still entangled. Represents a different class of multipartite entanglement.',
+    category: 'states',
+    vizLink: { label: 'Entanglement Lab', href: '/entanglement' },
+    related: ['GHZ state', 'Entanglement'],
+  },
+  {
+    term: 'Stabilizer states',
+    definition: 'States that can be created from |0...0> using only Clifford gates. Efficiently described by their stabilizer group rather than the full state vector. Include computational basis states, Bell states, and GHZ states. Can be classically simulated.',
+    category: 'states',
+    related: ['Clifford gates', 'Gottesman-Knill theorem'],
+  },
+
+  // Algorithms
+  {
+    term: 'VQE (Variational Quantum Eigensolver)',
+    definition: 'A hybrid quantum-classical algorithm for finding molecular ground state energies. A parameterized quantum circuit (ansatz) prepares a trial state, the quantum computer measures the energy, and a classical optimizer adjusts the parameters. Our H2 experiments use VQE.',
+    category: 'algorithms',
+    related: ['Ansatz', 'Hamiltonian', 'Chemical accuracy'],
+  },
+  {
+    term: 'QAOA (Quantum Approximate Optimization Algorithm)',
+    definition: 'A variational algorithm for combinatorial optimization problems like MaxCut. Alternates between a problem Hamiltonian and a mixer Hamiltonian with tunable parameters. Performance improves with more layers (depth p) but requires more optimization.',
+    category: 'algorithms',
+    related: ['VQE', 'MaxCut', 'Approximation ratio'],
+  },
+  {
+    term: "Grover's algorithm",
+    definition: 'A quantum search algorithm that finds a marked item in an unsorted database of N items using only O(sqrt(N)) queries — a quadratic speedup over classical search. Uses amplitude amplification: the oracle marks the target, and diffusion amplifies its amplitude.',
+    category: 'algorithms',
+    vizLink: { label: "Grover's Search", href: '/grovers' },
+    related: ['Amplitude amplification', 'Oracle'],
+  },
+  {
+    term: 'Quantum teleportation',
+    definition: 'A protocol that transfers a quantum state from one qubit to another using entanglement and classical communication. Does not transmit information faster than light — the classical bits are still needed. Demonstrates the power of entanglement as a resource.',
+    category: 'algorithms',
+    vizLink: { label: 'Teleportation Protocol', href: '/teleportation' },
+    related: ['Bell state', 'Entanglement'],
+  },
+  {
+    term: 'Ansatz',
+    definition: 'A parameterized quantum circuit used as a trial wavefunction in variational algorithms. The choice of ansatz determines what states are reachable and affects convergence. Common types: hardware-efficient, UCCSD (chemistry-inspired), and problem-specific.',
+    category: 'algorithms',
+    related: ['VQE', 'Variational circuit'],
+  },
+  {
+    term: 'Hamiltonian',
+    definition: 'The energy operator of a quantum system. In quantum chemistry, the molecular Hamiltonian encodes all electron-electron and electron-nucleus interactions. For quantum computing, it must be decomposed into Pauli strings (via Jordan-Wigner or Bravyi-Kitaev transforms).',
+    category: 'algorithms',
+    related: ['Jordan-Wigner transform', 'VQE', 'Pauli gates'],
+  },
+
+  // Metrics & Benchmarks
+  {
+    term: 'Fidelity',
+    definition: 'A measure of how close a quantum state or operation is to the ideal. State fidelity F = |<psi_ideal|psi_actual>|^2 ranges from 0 (orthogonal) to 1 (identical). Gate fidelity measures how well a physical gate matches its ideal unitary. Our Bell state experiments measure fidelity across backends.',
+    category: 'metrics',
+    related: ['Gate fidelity', 'Randomized benchmarking'],
+  },
+  {
+    term: 'Chemical accuracy',
+    definition: 'The threshold of 1 kcal/mol (0.0016 Ha / 1.6 mHa) — the accuracy needed for quantum chemistry results to be practically useful. Our emulator VQE achieves 0.75 kcal/mol (within chemical accuracy); IBM hardware gets 26 kcal/mol (far outside).',
+    category: 'metrics',
+    related: ['VQE', 'Hartree'],
+  },
+  {
+    term: 'Quantum volume',
+    definition: 'A single-number benchmark (IBM) that captures the largest random circuit a processor can execute reliably. QV = 2^n where n is the effective number of qubits that can maintain sufficient fidelity through n layers of random 2-qubit gates. Higher is better.',
+    category: 'metrics',
+    related: ['Circuit depth', 'Fidelity'],
+  },
+  {
+    term: 'Randomized benchmarking (RB)',
+    definition: 'A protocol for measuring average gate fidelity by running random sequences of Clifford gates of increasing length, followed by an inverting gate. The decay rate of the survival probability gives the error per Clifford. Robust against state preparation and measurement errors.',
+    category: 'metrics',
+    related: ['Clifford gates', 'Gate fidelity'],
+  },
+  {
+    term: 'Approximation ratio',
+    definition: 'For optimization algorithms like QAOA, the ratio of the algorithm\'s solution quality to the optimal. An approximation ratio of 0.7 means the algorithm achieves 70% of the best possible result. Our QAOA MaxCut emulator run achieves 68.5%.',
+    category: 'metrics',
+    related: ['QAOA', 'MaxCut'],
+  },
+
+  // Hardware
+  {
+    term: 'Spin qubit',
+    definition: 'A qubit encoded in the spin state of an electron confined in a semiconductor quantum dot. Used by QuTech/Quantum Inspire (Tuna-9 processor, 9 qubits). Advantages: small size, long coherence in silicon, compatibility with existing semiconductor fabrication.',
+    category: 'hardware',
+    related: ['T1', 'T2', 'Qubit'],
+  },
+  {
+    term: 'Superconducting qubit',
+    definition: 'A qubit made from a superconducting circuit with a Josephson junction, operated at ~15 millikelvin. Used by IBM (ibm_torino, ibm_fez, ibm_marrakesh — 133-156 qubits) and Google. Currently the most mature quantum computing platform.',
+    category: 'hardware',
+    related: ['T1', 'T2', 'Qubit'],
+  },
+  {
+    term: 'T1 (relaxation time)',
+    definition: 'The time constant for energy relaxation — how long before an excited qubit (|1>) decays to ground state (|0>). Limits the total computation time. Typical values: ~100us for superconducting qubits, variable for spin qubits.',
+    category: 'hardware',
+    related: ['T2', 'Decoherence'],
+  },
+  {
+    term: 'T2 (dephasing time)',
+    definition: 'The time constant for phase coherence — how long superposition states maintain their relative phase. Always T2 <= 2*T1. Limits the useful circuit depth. Dephasing turns pure quantum states into classical mixtures.',
+    category: 'hardware',
+    vizLink: { label: 'Rabi Oscillations', href: '/rabi' },
+    related: ['T1', 'Decoherence', 'Density matrix'],
+  },
+  {
+    term: 'Decoherence',
+    definition: 'The process by which quantum information is lost to the environment. Includes both energy relaxation (T1) and phase randomization (T2). The fundamental challenge for quantum computing — longer algorithms need better coherence or error correction.',
+    category: 'hardware',
+    vizLink: { label: 'Rabi Oscillations', href: '/rabi' },
+    related: ['T1', 'T2', 'Error correction'],
+  },
+  {
+    term: 'Readout error',
+    definition: 'The probability of incorrectly measuring a qubit state. A qubit in |0> might be read as 1 (and vice versa). Typical rates: 0.5-5% depending on hardware. Can be partially corrected with readout error mitigation (measuring calibration matrices).',
+    category: 'hardware',
+    related: ['Measurement', 'Error mitigation'],
+  },
+
+  // Techniques
+  {
+    term: 'Jordan-Wigner transform',
+    definition: 'A mapping from fermionic operators (electrons) to qubit operators (Pauli strings). Preserves the antisymmetry of fermions using strings of Z gates. Requires n qubits for n spin-orbitals. Our H2 VQE uses JW to get a 4-qubit Hamiltonian from the molecular problem.',
+    category: 'techniques',
+    related: ['Bravyi-Kitaev transform', 'Hamiltonian', 'VQE'],
+  },
+  {
+    term: 'Bravyi-Kitaev transform',
+    definition: 'An alternative fermion-to-qubit mapping that balances locality of occupation and parity information. Produces Pauli strings of length O(log n) instead of O(n) for Jordan-Wigner. Combined with tapering (symmetry reduction), can reduce qubit count — our H2 paper replication uses BK to get from 4 to 2 qubits.',
+    category: 'techniques',
+    related: ['Jordan-Wigner transform', 'Qubit tapering'],
+  },
+  {
+    term: 'Error mitigation',
+    definition: 'Classical post-processing techniques to reduce the effect of noise without full error correction. Includes zero-noise extrapolation (run at multiple noise levels, extrapolate to zero), probabilistic error cancellation, and readout error correction. Practical for near-term devices.',
+    category: 'techniques',
+    related: ['Error correction', 'Decoherence'],
+  },
+  {
+    term: 'Quantum error correction (QEC)',
+    definition: 'Encoding logical qubits across multiple physical qubits to detect and correct errors. The surface code is the leading approach, requiring ~1000 physical qubits per logical qubit. The threshold theorem guarantees reliability if physical error rates are below a threshold (~1%).',
+    category: 'techniques',
+    related: ['Surface code', 'Logical qubit', 'Error mitigation'],
+  },
+  {
+    term: 'Qubit tapering',
+    definition: 'A symmetry reduction technique that identifies conserved quantities (like electron number or spin parity) and uses them to eliminate qubits from the Hamiltonian. Our Sagastizabal replication uses BK + tapering to reduce H2 from 4 qubits to 2.',
+    category: 'techniques',
+    related: ['Bravyi-Kitaev transform', 'Hamiltonian'],
+  },
+  {
+    term: 'Rabi oscillation',
+    definition: 'The periodic oscillation of a qubit between |0> and |1> under a resonant driving field. The Rabi frequency depends on the drive amplitude. Observing clean Rabi oscillations is a basic calibration check for qubit control. Detuning and dephasing modify the oscillation pattern.',
+    category: 'techniques',
+    vizLink: { label: 'Rabi Oscillations', href: '/rabi' },
+    related: ['T2', 'Decoherence'],
+  },
+]
+
+function CategoryBadge({ category }: { category: string }) {
+  const cat = CATEGORIES.find(c => c.id === category)
+  if (!cat) return null
+  return (
+    <span
+      className="inline-block px-2 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider"
+      style={{ color: cat.color, backgroundColor: `${cat.color}15`, border: `1px solid ${cat.color}25` }}
+    >
+      {cat.label}
+    </span>
+  )
+}
+
+export default function LearnPage() {
+  const grouped = CATEGORIES.map(cat => ({
+    ...cat,
+    entries: GLOSSARY.filter(e => e.category === cat.id),
+  }))
+
+  return (
+    <div className="min-h-screen bg-[#0a0a1a] text-white">
+      <nav className="border-b border-white/5 bg-[#0a0a1a]/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+              <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
+              <span className="font-mono font-bold text-white tracking-wider text-sm">
+                AI x Quantum
+              </span>
+            </Link>
+            <span className="text-gray-600 font-mono text-xs">/</span>
+            <span className="text-gray-400 font-mono text-xs">Learn</span>
+          </div>
+          <div className="flex gap-6 text-xs font-mono text-gray-500">
+            <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>
+            <Link href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</Link>
+            <Link href="/gallery" className="hover:text-[#8b5cf6] transition-colors">Viz Gallery</Link>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-5xl mx-auto px-6 py-16">
+        {/* Header */}
+        <div className="mb-16">
+          <span className="font-mono text-xs text-[#8b5cf6] tracking-[0.2em] uppercase">Reference</span>
+          <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-4">Quantum Computing Glossary</h1>
+          <p className="text-gray-400 text-lg max-w-2xl">
+            A practical reference for the concepts, gates, algorithms, and metrics
+            used across our experiments. Terms link to interactive visualizations where available.
+          </p>
+        </div>
+
+        {/* Category jump links */}
+        <div className="flex flex-wrap gap-2 mb-12 pb-8 border-b border-[#1e293b]">
+          {CATEGORIES.map(cat => (
+            <a
+              key={cat.id}
+              href={`#${cat.id}`}
+              className="px-3 py-1.5 rounded-lg border text-xs font-mono transition-all hover:bg-white/5"
+              style={{ borderColor: `${cat.color}30`, color: cat.color }}
+            >
+              {cat.label}
+              <span className="text-gray-600 ml-1.5">
+                {GLOSSARY.filter(e => e.category === cat.id).length}
+              </span>
+            </a>
+          ))}
+        </div>
+
+        {/* Interactive tools callout */}
+        <div className="mb-12 p-6 rounded-xl border border-[#8b5cf6]/20 bg-[#8b5cf6]/5">
+          <h2 className="text-white font-semibold mb-3">Interactive Visualizations</h2>
+          <p className="text-gray-400 text-sm mb-4">
+            Many glossary entries link to hands-on tools where you can explore the concept directly:
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { name: 'Bloch Sphere', href: '/bloch-sphere', desc: 'Single-qubit states & gates' },
+              { name: 'State Vectors', href: '/state-vector', desc: 'Multi-qubit amplitudes' },
+              { name: 'Entanglement', href: '/entanglement', desc: 'Bell, GHZ, W states' },
+              { name: 'Measurement', href: '/measurement', desc: 'Born rule & statistics' },
+              { name: "Grover's Search", href: '/grovers', desc: 'Amplitude amplification' },
+              { name: 'Teleportation', href: '/teleportation', desc: 'Step-by-step protocol' },
+              { name: 'Rabi Oscillations', href: '/rabi', desc: 'Qubit dynamics & T2' },
+              { name: 'Interference', href: '/interference', desc: 'Wave-particle duality' },
+            ].map(tool => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="p-3 rounded-lg border border-[#1e293b] bg-[#111827]/30 hover:bg-[#111827]/60 transition-all group"
+              >
+                <span className="text-white text-sm font-medium group-hover:text-[#8b5cf6] transition-colors">
+                  {tool.name}
+                </span>
+                <span className="block text-gray-500 text-xs mt-0.5">{tool.desc}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Glossary entries by category */}
+        {grouped.map(cat => (
+          <section key={cat.id} id={cat.id} className="mb-16">
+            <div className="flex items-center gap-3 mb-6 sticky top-14 bg-[#0a0a1a] py-3 z-10">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: cat.color }} />
+              <h2 className="text-xl font-bold text-white">{cat.label}</h2>
+              <span className="text-gray-600 font-mono text-xs">{cat.entries.length} terms</span>
+            </div>
+
+            <div className="space-y-4">
+              {cat.entries.map(entry => (
+                <div
+                  key={entry.term}
+                  className="p-5 rounded-xl border border-[#1e293b] bg-[#111827]/20 hover:bg-[#111827]/40 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <h3 className="text-white font-semibold">{entry.term}</h3>
+                    {entry.vizLink && (
+                      <Link
+                        href={entry.vizLink.href}
+                        className="flex-shrink-0 px-2.5 py-1 rounded-md text-[10px] font-mono border transition-all hover:bg-[#8b5cf6]/10"
+                        style={{ borderColor: '#8b5cf640', color: '#8b5cf6' }}
+                      >
+                        Try it: {entry.vizLink.label}
+                      </Link>
+                    )}
+                  </div>
+                  <p className="text-gray-400 text-sm leading-relaxed">{entry.definition}</p>
+                  {entry.related && entry.related.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      <span className="text-gray-600 text-xs">Related:</span>
+                      {entry.related.map(r => (
+                        <span key={r} className="text-gray-500 text-xs px-1.5 py-0.5 rounded bg-white/5">
+                          {r}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <footer className="border-t border-[#1e293b]/50 py-12">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-600 text-xs font-mono">
+            AI x Quantum — TU Delft / QuTech / Quantum Inspire
+          </p>
+          <div className="flex gap-6 text-xs font-mono text-gray-500">
+            <Link href="/" className="hover:text-[#00d4ff] transition-colors">Home</Link>
+            <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>
+            <Link href="/gallery" className="hover:text-[#8b5cf6] transition-colors">Viz Gallery</Link>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}

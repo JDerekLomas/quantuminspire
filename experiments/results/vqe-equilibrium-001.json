@@ -1,19 +1,38 @@
 {
+  "schema_version": "1.0",
   "id": "vqe-equilibrium-001",
   "type": "vqe_h2",
   "backend": "qxelarator (emulator)",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T19:30:00.000000+00:00",
   "completed": "2026-02-10T19:30:05.000000+00:00",
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.735,
     "alpha": -0.2235,
-    "qubits": [0, 1]
+    "qubits": [
+      0,
+      1
+    ]
   },
   "raw_counts": {
-    "z_basis": {"01": 4041, "10": 55},
-    "x_basis": {"00": 754, "01": 1270, "10": 1295, "11": 777},
-    "y_basis": {"00": 792, "01": 1218, "10": 1278, "11": 808}
+    "z_basis": {
+      "01": 4041,
+      "10": 55
+    },
+    "x_basis": {
+      "00": 754,
+      "01": 1270,
+      "10": 1295,
+      "11": 777
+    },
+    "y_basis": {
+      "00": 792,
+      "01": 1218,
+      "10": 1278,
+      "11": 808
+    }
   },
   "analysis": {
     "energy_hartree": -1.1385,

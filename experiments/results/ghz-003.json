@@ -1,7 +1,10 @@
 {
+  "schema_version": "1.0",
   "id": "ghz-003",
   "type": "ghz_state",
   "backend": "qxelarator (emulator)",
+  "backend_qubits": null,
+  "job_id": null,
   "submitted": "2026-02-10T15:21:51.388220+00:00",
   "completed": "2026-02-10T15:21:52.744563+00:00",
   "parameters": {

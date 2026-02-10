@@ -125,6 +125,10 @@ export function getStudyBySlug(slug: string): ExperimentStudy | undefined {
   return studies.find(s => s.slug === slug)
 }
 
+export function getResultGitHubUrl(resultId: string): string {
+  return `https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/${resultId}.json`
+}
+
 // ---------------------------------------------------------------------------
 // VQE Sweep Data (bond-distance scan)
 // ---------------------------------------------------------------------------

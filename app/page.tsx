@@ -235,12 +235,9 @@ function Nav() {
           </span>
         </div>
         <div className="flex gap-6 text-xs font-mono text-gray-500">
-          <a href="#results" className="hover:text-[#00d4ff] transition-colors">Results</a>
-          <a href="#experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
-          <a href="/experiments" className="hover:text-[#00ff88] transition-colors">Live Hardware</a>
+          <a href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
           <a href="/replications" className="hover:text-[#ff8c42] transition-colors">Replications</a>
-          <a href="#viz" className="hover:text-[#8b5cf6] transition-colors">Viz Zoo</a>
-          <a href="#agents" className="hover:text-[#ff8c42] transition-colors">Agents</a>
+          <a href="/learn" className="hover:text-[#8b5cf6] transition-colors">Learn</a>
           <a href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</a>
           <a href="/wp44" className="hover:text-[#ff6b9d] transition-colors hidden sm:block">WP4.4</a>
           <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
@@ -281,8 +278,8 @@ function Hero() {
           {[
             { value: '62.25%', label: 'Pass@1 on Qiskit HumanEval', color: '#00ff88' },
             { value: '151', label: 'quantum coding tasks benchmarked', color: '#00d4ff' },
-            { value: '7', label: 'interactive quantum simulations', color: '#8b5cf6' },
-            { value: '1', label: 'paper simulated with AI', color: '#ff8c42' },
+            { value: '9', label: 'interactive quantum simulations', color: '#8b5cf6' },
+            { value: '3', label: 'papers replicated with AI', color: '#ff8c42' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-black font-mono" style={{ color: stat.color }}>
@@ -349,7 +346,7 @@ function BenchmarkResults() {
           </div>
 
           {/* Difficulty breakdown */}
-          <div className="lg:col-span-1 p-6 rounded-xl border border-white/5 bg-white/[0.02]">
+          <div className="lg:col-span-2 p-6 rounded-xl border border-white/5 bg-white/[0.02]">
             <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">By Difficulty</div>
             <div className="space-y-4">
               {d.byDifficulty.map((diff) => {
@@ -369,24 +366,6 @@ function BenchmarkResults() {
                   </div>
                 )
               })}
-            </div>
-          </div>
-
-          {/* Error analysis */}
-          <div className="lg:col-span-1 p-6 rounded-xl border border-white/5 bg-white/[0.02]">
-            <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
-              Failure Analysis ({d.totalTasks - d.passed} failures)
-            </div>
-            <div className="space-y-2">
-              {d.errorBreakdown.map((err) => (
-                <div key={err.type} className="flex items-center gap-2">
-                  <span className="text-xs font-mono text-gray-300 w-24 truncate" title={err.type}>{err.type}</span>
-                  <div className="flex-1">
-                    <BarChart value={err.count} max={13} color="#ff6b9d" />
-                  </div>
-                  <span className="text-[10px] font-mono text-gray-500 w-4 text-right">{err.count}</span>
-                </div>
-              ))}
             </div>
           </div>
         </div>
@@ -530,37 +509,14 @@ function VQEReplication() {
           </p>
         </div>
 
-        {/* Real hardware results */}
-        <div className="mt-6 grid md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl border border-[#00d4ff20] bg-[#00d4ff05]">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full bg-[#00d4ff]" />
-              <span className="text-xs font-mono text-[#00d4ff] uppercase tracking-widest">IBM Quantum &mdash; ibm_torino</span>
-            </div>
-            <div className="text-sm text-gray-300 mb-2">
-              <span className="text-white font-bold">133 qubits</span>, superconducting transmon
-            </div>
-            <div className="text-xs text-gray-400 space-y-1">
-              <div>6 circuits at optimal angles, 4096 shots each</div>
-              <div>Z-diagonal terms measured, ~90% even-parity retention</div>
-              <div className="text-[10px] font-mono text-gray-600">Job: d65hjrre4kfs73c474sg</div>
-            </div>
-          </div>
-
-          <div className="p-5 rounded-xl border border-[#8b5cf620] bg-[#8b5cf605]">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full bg-[#8b5cf6]" />
-              <span className="text-xs font-mono text-[#8b5cf6] uppercase tracking-widest">Quantum Inspire &mdash; Tuna-9</span>
-            </div>
-            <div className="text-sm text-gray-300 mb-2">
-              <span className="text-white font-bold">9 qubits</span>, superconducting transmon (TU Delft)
-            </div>
-            <div className="text-xs text-gray-400 space-y-1">
-              <div>At optimal &#x3B8;: |00&#x27E9;=142, |01&#x27E9;=129, |10&#x27E9;=520, |11&#x27E9;=3305</div>
-              <div>84% even-parity &mdash; 16% error leakage filtered by symmetry verification</div>
-              <div className="text-[10px] font-mono text-gray-600">Job: 414342</div>
-            </div>
-          </div>
+        {/* Link to full results */}
+        <div className="mt-6 flex items-center gap-4">
+          <Link href="/experiments" className="text-xs font-mono text-[#00d4ff] hover:underline">
+            Full hardware results (IBM, Tuna-9) &rarr;
+          </Link>
+          <Link href="/replications" className="text-xs font-mono text-[#ff8c42] hover:underline">
+            Paper replications (3 papers, 13 claims) &rarr;
+          </Link>
         </div>
       </div>
     </section>
@@ -570,57 +526,40 @@ function VQEReplication() {
 // ─── Visualization Zoo ───────────────────────────────────────────────────────
 
 function VisualizationZoo() {
+  const highlights = vizExhibits.slice(0, 5)
   return (
     <section id="viz" className="py-20 px-6 border-t border-white/5">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#8b5cf6] mb-3">
-          Quantum Visualization Zoo
-        </h2>
-        <p className="text-gray-400 text-sm mb-10 max-w-3xl">
-          Interactive exhibits powered by a{' '}
-          <span className="text-white">real state-vector quantum simulator</span> written in TypeScript.
-          Every number is computed &mdash; complex amplitudes, density matrices, entanglement entropy &mdash; nothing is mocked.
-          Built by AI in a single session.
-        </p>
+        <div className="flex items-baseline justify-between mb-6">
+          <div>
+            <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#8b5cf6] mb-3">
+              Quantum Visualization Zoo
+            </h2>
+            <p className="text-gray-400 text-sm max-w-2xl">
+              {vizExhibits.length} interactive exhibits powered by a real state-vector quantum simulator in TypeScript.
+              Every number is computed live &mdash; nothing mocked.
+            </p>
+          </div>
+          <Link href="/learn" className="text-xs font-mono text-[#8b5cf6] hover:underline whitespace-nowrap">
+            All {vizExhibits.length} exhibits + glossary &rarr;
+          </Link>
+        </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {vizExhibits.map((ex) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {highlights.map((ex) => (
             <Link
               key={ex.href}
               href={ex.href}
-              className="group p-5 rounded-xl border transition-all hover:scale-[1.02]"
+              className="group p-4 rounded-xl border transition-all hover:scale-[1.02]"
               style={{ borderColor: `${ex.color}20`, background: `${ex.color}05` }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: ex.color }} />
-                <h3 className="text-sm font-bold text-white group-hover:underline">{ex.title}</h3>
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ex.color }} />
+                <h3 className="text-xs font-bold text-white group-hover:underline">{ex.title}</h3>
               </div>
-              <p className="text-xs text-gray-400 leading-relaxed mb-3">{ex.desc}</p>
-              <div className="text-[10px] font-mono text-gray-500 mb-3">{ex.features}</div>
-              <div className="text-[10px] font-mono uppercase tracking-widest" style={{ color: ex.color }}>
-                Launch &rarr;
-              </div>
+              <p className="text-[10px] text-gray-400 leading-relaxed">{ex.desc}</p>
             </Link>
           ))}
-
-          {/* Quantum simulation engine card */}
-          <div className="p-5 rounded-xl border border-white/5 bg-white/[0.02]">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-2 h-2 rounded-full bg-gray-500" />
-              <h3 className="text-sm font-bold text-gray-400">Simulation Engine</h3>
-            </div>
-            <p className="text-xs text-gray-500 leading-relaxed mb-3">
-              TypeScript quantum library powering all visualizations.
-            </p>
-            <div className="text-[10px] font-mono text-gray-600 space-y-1">
-              <div>Complex arithmetic + gate matrices</div>
-              <div>Single-qubit &amp; CNOT gate application</div>
-              <div>Density matrices &amp; partial trace</div>
-              <div>Von Neumann entropy &amp; concurrence</div>
-              <div>Grover&apos;s oracle + diffusion operators</div>
-              <div>Bloch sphere coordinate mapping</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -628,46 +567,6 @@ function VisualizationZoo() {
 }
 
 // ─── Experiments ──────────────────────────────────────────────────────────────
-
-function ExperimentCard({ experiment }: { experiment: typeof experiments[0] }) {
-  return (
-    <div className="p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all">
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">{experiment.category}</span>
-          <StatusBadge status={experiment.status} />
-        </div>
-      </div>
-      <h3 className="text-base font-bold text-white mb-1">{experiment.title}</h3>
-      <p className="text-xs text-[#00d4ff] font-medium mb-2 italic">&ldquo;{experiment.question}&rdquo;</p>
-      <p className="text-xs text-gray-400 leading-relaxed mb-2">{experiment.description}</p>
-      {experiment.highlight && (
-        <div className="text-[10px] font-mono text-[#00ff88] mt-2">{experiment.highlight}</div>
-      )}
-    </div>
-  )
-}
-
-function ExperimentCatalog() {
-  return (
-    <section id="experiments" className="py-20 px-6 border-t border-white/5">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#00d4ff] mb-3">
-          Experiment Catalog
-        </h2>
-        <p className="text-gray-400 text-sm mb-8">
-          {experiments.filter(e => e.status === 'complete').length} complete, {' '}
-          {experiments.filter(e => e.status === 'planned').length} planned
-        </p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {experiments.map((exp) => (
-            <ExperimentCard key={exp.id} experiment={exp} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 // ─── Agent Architecture ──────────────────────────────────────────────────────
 
@@ -885,7 +784,6 @@ export default function Home() {
       <BenchmarkResults />
       <VQEReplication />
       <VisualizationZoo />
-      <ExperimentCatalog />
       <AgentInfrastructure />
       <ResearchContext />
       <Footer />

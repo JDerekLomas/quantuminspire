@@ -1,14 +1,18 @@
 {
+  "schema_version": "1.0",
   "id": "bell-calibration-001-tuna9",
   "type": "bell_calibration",
   "backend": "tuna-9",
   "backend_qubits": 9,
+  "job_id": 415103,
   "submitted": "2026-02-10T16:02:05.650974+00:00",
   "completed": "2026-02-10T16:02:08.698071+00:00",
-  "job_id": 415103,
   "parameters": {
     "shots": 4096,
-    "qubits": [0, 1]
+    "qubits": [
+      0,
+      1
+    ]
   },
   "raw_counts": {
     "00": 1947,
@@ -23,7 +27,7 @@
     "total_shots": 4096,
     "correct_parity": 3575,
     "wrong_parity": 521,
-    "interpretation": "Bell state fidelity: 87.3%. Significant noise on Tuna-9 hardware — 12.7% leakage into wrong parity states (|01⟩ and |10⟩)."
+    "interpretation": "Bell state fidelity: 87.3%. Significant noise on Tuna-9 hardware \u2014 12.7% leakage into wrong parity states (|01\u27e9 and |10\u27e9)."
   },
   "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\nH q[0]\nCNOT q[0], q[1]\nb = measure q",
   "errors": null

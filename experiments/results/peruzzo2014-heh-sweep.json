@@ -1,13 +1,16 @@
 {
+  "schema_version": "1.0",
   "id": "peruzzo2014-heh-sweep",
   "type": "vqe_heh_plus",
+  "backend": "pennylane (default.qubit + default.mixed)",
+  "backend_qubits": null,
+  "job_id": null,
   "paper": {
     "title": "A variational eigenvalue solver on a photonic quantum processor",
     "authors": "Peruzzo et al.",
     "arxiv": "1304.3061",
     "journal": "Nature Communications 5, 4213 (2014)"
   },
-  "backend": "pennylane (default.qubit + default.mixed)",
   "generated": "2026-02-10T16:43:30.231213+00:00",
   "molecule": "HeH+",
   "basis_set": "STO-3G",

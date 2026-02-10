@@ -1,11 +1,12 @@
 {
+  "schema_version": "1.0",
   "id": "ghz-003-ibm-torino",
   "type": "ghz_state",
   "backend": "ibm_torino",
   "backend_qubits": 133,
+  "job_id": "d65m6cgqbmes739d352g",
   "submitted": "2026-02-10T16:56:18.815492+00:00",
   "completed": "2026-02-10T16:56:24.252122+00:00",
-  "job_id": "d65m6cgqbmes739d352g",
   "parameters": {
     "shots": 4096,
     "num_qubits": 3,
