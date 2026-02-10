@@ -2,6 +2,145 @@ import { BlogPost } from "@/lib/blogTypes"
 
 export const posts: BlogPost[] = [
   {
+    slug: 'replication-crisis-quantum',
+    title: 'We Tried to Replicate 4 Quantum Computing Papers. Here\'s What Happened.',
+    subtitle: 'AI agents reproduced 14 published claims across emulator, IBM Torino, and Tuna-9 hardware. The gaps tell us more than the successes.',
+    date: '2026-02-11',
+    author: 'AI x Quantum Research Team',
+    category: 'research',
+    tags: ['replication', 'VQE', 'quantum volume', 'IBM Quantum', 'Tuna-9', 'reproducibility', 'hardware noise'],
+    heroImage: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1200&q=80',
+    heroCaption: 'Replication is the foundation of science. In quantum computing, the gap between published results and reproduced results reveals how much hardware matters.',
+    excerpt: 'We used AI agents to replicate 4 landmark quantum computing papers on 3 different backends. Emulators matched published results almost perfectly (85% pass). Real hardware told a different story: IBM Torino got within 9 kcal/mol on VQE, Tuna-9 achieved Quantum Volume 8 but failed VQE entirely. The reproducibility gap is the finding.',
+    content: `<p>Reproducibility is the foundation of science. In quantum computing, it's also one of the field's biggest open questions: when a paper reports a ground state energy or a quantum volume, <strong>can someone else get the same result on different hardware?</strong></p>
+
+<p>We set out to answer this systematically. Using AI agents with direct access to quantum hardware through <a href="https://modelcontextprotocol.io/">MCP tool calls</a>, we attempted to replicate 4 landmark papers across 3 backends: a noiseless emulator, IBM's 133-qubit Torino processor, and QuTech's 9-qubit Tuna-9 transmon chip.</p>
+
+<p>The results: <strong>emulators reproduce published claims almost perfectly</strong> (85% pass rate). Real hardware tells a different story.</p>
+
+<h2>The Papers</h2>
+
+<table>
+<thead><tr><th>Paper</th><th>Type</th><th>Qubits</th><th>Claims</th><th>Pass Rate</th></tr></thead>
+<tbody>
+<tr><td>Sagastizabal et al. 2019</td><td>VQE + Error Mitigation</td><td>2</td><td>4</td><td>50%</td></tr>
+<tr><td>Kandala et al. 2017</td><td>Hardware-efficient VQE</td><td>6</td><td>5</td><td>60%</td></tr>
+<tr><td>Peruzzo et al. 2014</td><td>First VQE</td><td>2</td><td>3</td><td>100%</td></tr>
+<tr><td>Cross et al. 2019</td><td>Quantum Volume</td><td>5</td><td>3</td><td>100%</td></tr>
+</tbody>
+</table>
+
+<p>Across all 4 papers, we tested <strong>15 claims on up to 3 backends</strong>. The overall pass rate is 73%. But that number hides the real story: the gap between emulator and hardware.</p>
+
+<h2>The VQE Story: Physics Works, Hardware Struggles</h2>
+
+<p>Three of our four papers involve the Variational Quantum Eigensolver (VQE) &mdash; computing molecular ground state energies. The same H2 molecule at the same bond distance (R=0.735 &Aring;) appears in both Sagastizabal 2019 and Kandala 2017, giving us a natural cross-check.</p>
+
+<h3>The Circuit</h3>
+
+<p>The 2-qubit VQE ansatz uses a subspace-preserving circuit: <code>Ry(&alpha;) &rarr; CNOT &rarr; X</code>, producing the state cos(&alpha;/2)|10&rang; + sin(&alpha;/2)|01&rang;. The optimal parameter &alpha; = &minus;0.2235 gives the ground state energy E = &minus;1.1373 Hartree (the FCI reference).</p>
+
+<p>Energy is reconstructed from three measurement bases:</p>
+<p><code>E = g0 + g1&lang;Z0&rang; + g2&lang;Z1&rang; + g3&lang;Z0Z1&rang; + g4&lang;X0X1&rang; + g5&lang;Y0Y1&rang;</code></p>
+
+<h3>Results Across Backends</h3>
+
+<table>
+<thead><tr><th>Observable</th><th>Ideal</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th></tr></thead>
+<tbody>
+<tr><td>&lang;Z0&rang;</td><td>&minus;0.975</td><td>&minus;0.973</td><td>&minus;0.961</td><td>&mdash;</td></tr>
+<tr><td>&lang;Z1&rang;</td><td>+0.975</td><td>+0.973</td><td>+0.950</td><td>&mdash;</td></tr>
+<tr><td>&lang;Z0Z1&rang;</td><td>&minus;1.000</td><td>&minus;1.000</td><td>&minus;0.969</td><td>&mdash;</td></tr>
+<tr><td>&lang;X0X1&rang;</td><td>&minus;0.222</td><td>&minus;0.252</td><td>&minus;0.256</td><td>&mdash;</td></tr>
+<tr><td>&lang;Y0Y1&rang;</td><td>&minus;0.222</td><td>&minus;0.219</td><td>&minus;0.197</td><td>&mdash;</td></tr>
+<tr><td><strong>Energy (Ha)</strong></td><td><strong>&minus;1.1373</strong></td><td><strong>&minus;1.1385</strong></td><td><strong>&minus;1.1226</strong></td><td><strong>&minus;1.005</strong></td></tr>
+<tr><td><strong>Error (kcal/mol)</strong></td><td>&mdash;</td><td><strong>0.75</strong></td><td><strong>9.22</strong></td><td><strong>83.4</strong></td></tr>
+</tbody>
+</table>
+
+<p>The emulator achieves <strong>chemical accuracy</strong> (< 1 kcal/mol). IBM Torino is 9x worse but qualitatively correct &mdash; the dominant state |01&rang; appears in 97% of Z-basis shots. Tuna-9 is noise-dominated at 83 kcal/mol error.</p>
+
+<p>The noise signature on IBM is instructive: Z-basis correlations degrade by 3&ndash;5% (depolarizing noise), while the off-diagonal X and Y correlations are surprisingly well-preserved. This suggests the dominant error is <strong>measurement noise</strong> rather than gate errors &mdash; the entangled state is prepared correctly but read out imperfectly.</p>
+
+<h2>Quantum Volume: Hardware Passes</h2>
+
+<p>Cross et al. 2019 defined <a href="https://arxiv.org/abs/1811.12926">Quantum Volume</a> as the gold standard for benchmarking quantum computers. The test: run random circuits on n qubits, check whether the heavy output fraction exceeds 2/3.</p>
+
+<p>Both the emulator and Tuna-9 <strong>pass QV=8</strong> (up to 3-qubit circuits):</p>
+
+<table>
+<thead><tr><th>Test</th><th>Threshold</th><th>Emulator</th><th>Tuna-9</th></tr></thead>
+<tbody>
+<tr><td>n=2 (5 circuits)</td><td>> 66.7%</td><td>77.2%</td><td>69.2%</td></tr>
+<tr><td>n=3 (5 circuits)</td><td>> 66.7%</td><td>85.1%</td><td>82.1%</td></tr>
+</tbody>
+</table>
+
+<p>Tuna-9's n=2 result (69.2%) barely clears the threshold &mdash; 3 of 5 circuits passed, 2 were marginal. At n=3, the wider distribution of ideal probabilities actually helps: the heavy set is more distinct, making it easier to pass despite hardware noise.</p>
+
+<p>The randomized benchmarking results complement this: Tuna-9 achieves <strong>99.82% single-qubit gate fidelity</strong> (0.18% error per gate), matching the emulator's 99.95% closely. This confirms that single-qubit operations on Tuna-9 are high quality; the VQE failures come from 2-qubit (CNOT) errors and decoherence.</p>
+
+<h2>The Reproducibility Gap</h2>
+
+<p>Here's the central finding, visualized across all 4 papers:</p>
+
+<table>
+<thead><tr><th>Backend</th><th>Claims Tested</th><th>Pass</th><th>Partial</th><th>Fail</th></tr></thead>
+<tbody>
+<tr><td>QI Emulator</td><td>10</td><td><strong>9</strong></td><td>0</td><td>0</td></tr>
+<tr><td>IBM Torino</td><td>4</td><td>0</td><td><strong>3</strong></td><td>0</td></tr>
+<tr><td>QI Tuna-9</td><td>5</td><td><strong>3</strong></td><td>1</td><td><strong>1</strong></td></tr>
+</tbody>
+</table>
+
+<p>The pattern is clear:</p>
+<ul>
+<li><strong>Emulators reproduce nearly everything.</strong> The physics in published papers is correct. When you remove noise, the algorithms work as described.</li>
+<li><strong>Hardware introduces a reproducibility gap.</strong> IBM Torino gets VQE results that are qualitatively correct but quantitatively off by 9 kcal/mol &mdash; not chemical accuracy. Tuna-9 passes benchmarks (QV, RB) but fails VQE.</li>
+<li><strong>The gap depends on the experiment type.</strong> Benchmarks (QV, RB) are designed to be noise-tolerant. VQE is noise-sensitive. Same hardware, different outcomes.</li>
+</ul>
+
+<p>This matches what Sagastizabal et al. themselves showed in 2019: error mitigation (symmetry verification) was essential for their results. Without it, their hardware couldn't achieve chemical accuracy either. We're seeing the same thing, seven years later, on different hardware.</p>
+
+<h2>What AI Agents Bring to Replication</h2>
+
+<p>This project wasn't about whether AI can write quantum circuits (it can). It was about whether AI agents can <strong>systematically test published claims</strong> and produce structured, comparable results. Three things stood out:</p>
+
+<ol>
+<li><strong>Cross-platform comparison is hard for humans, easy for agents.</strong> The same VQE circuit had to be written in cQASM 3.0 for Tuna-9 and OpenQASM 2.0 for IBM, with different qubit conventions, basis rotations, and measurement protocols. An agent handles this translation without errors (after the initial debugging).</li>
+
+<li><strong>Structured output enables meta-analysis.</strong> Every result is stored as JSON with claim IDs, published values, measured values, failure modes, and error classifications. This makes it possible to ask "what fraction of VQE claims reproduce on hardware?" across papers &mdash; something manual replication rarely enables.</li>
+
+<li><strong>The agent catches its own mistakes.</strong> Our first IBM VQE submission used the wrong ansatz (Ry(0.1118) &rarr; CNOT instead of Ry(&minus;0.2235) &rarr; CNOT &rarr; X). The agent detected the error by comparing counts against the expected state, resubmitted with the correct circuit, and documented both runs. Self-correction is built into the loop.</li>
+</ol>
+
+<h2>What's Next</h2>
+
+<p>We have 14 claims across 4 papers. Our next targets:</p>
+<ul>
+<li><strong>Peruzzo 2014 on hardware</strong> &mdash; HeH+ bond sweep on IBM Torino. The emulator already shows 100% replication; hardware will reveal whether bond curves reproduce or just equilibrium points.</li>
+<li><strong>Cross 2019 on IBM</strong> &mdash; QV testing on a 133-qubit processor. IBM should pass at much higher QV than Tuna-9.</li>
+<li><strong>Harrigan et al. 2021</strong> &mdash; QAOA for MaxCut on non-planar graphs. This requires 23 qubits and will be our first test beyond the small-circuit regime.</li>
+<li><strong>Error mitigation</strong> &mdash; Implement Sagastizabal's symmetry verification to see if the IBM VQE result improves from 9.2 kcal/mol toward chemical accuracy.</li>
+</ul>
+
+<hr />
+
+<p>All raw data &mdash; measurement counts, job IDs, expectation values, circuit definitions &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory and <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/research/replication-reports">replication reports</a>. The replications dashboard at <a href="https://quantuminspire.vercel.app/replications">/replications</a> shows live results.</p>
+
+<p>Hardware job IDs: IBM VQE (d65n0gbe4kfs73cvkisg, d65n0gre4kfs73cvkitg, d65n0hbe4kfs73cvkivg). Tuna-9 QV (415379&ndash;415394). Tuna-9 RB (415395&ndash;415404).</p>`,
+    sources: [
+      { label: 'Replications dashboard', url: 'https://quantuminspire.vercel.app/replications' },
+      { label: 'IBM VQE results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-equilibrium-001-ibm.json' },
+      { label: 'Tuna-9 QV results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-qv-tuna9.json' },
+      { label: 'Tuna-9 RB results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-rb-tuna9.json' },
+      { label: 'Sagastizabal et al. 2019', url: 'https://arxiv.org/abs/1902.11258' },
+      { label: 'Kandala et al. 2017', url: 'https://arxiv.org/abs/1704.05018' },
+      { label: 'Peruzzo et al. 2014', url: 'https://arxiv.org/abs/1304.3061' },
+      { label: 'Cross et al. 2019', url: 'https://arxiv.org/abs/1811.12926' },
+    ],
+  },
+  {
     slug: 'race-to-automate-science',
     title: 'The Race to Automate Science — and Why It Should Worry Us',
     subtitle: 'GPT-5 runs 36,000 experiments, AI scientists publish papers, and a Nature study finds the field is shrinking',

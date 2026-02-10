@@ -78,6 +78,23 @@ export function getReportById(paperId: string): ReplicationReport | undefined {
   }
 }
 
+export function getReportMarkdown(paperId: string): string | undefined {
+  const filepath = path.join(REPORTS_DIR, `${paperId}.md`)
+  if (!fs.existsSync(filepath)) return undefined
+  try {
+    return fs.readFileSync(filepath, 'utf-8')
+  } catch {
+    return undefined
+  }
+}
+
+export function getAllReportIds(): string[] {
+  if (!fs.existsSync(REPORTS_DIR)) return []
+  return fs.readdirSync(REPORTS_DIR)
+    .filter(f => f.endsWith('.json'))
+    .map(f => f.replace('.json', ''))
+}
+
 // Papers in the pipeline (including those without reports yet)
 export const PAPER_PIPELINE: Array<{
   id: string
@@ -128,5 +145,15 @@ export const PAPER_PIPELINE: Array<{
     status: 'completed',
     qubits: 5,
     type: 'Quantum Volume',
+  },
+  {
+    id: 'harrigan2021',
+    title: 'Quantum approximate optimization of non-planar graph problems on a planar superconducting processor',
+    authors: 'Harrigan et al.',
+    journal: 'Nature Physics 17, 332 (2021)',
+    arxiv: '2004.04197',
+    status: 'planned',
+    qubits: 23,
+    type: 'QAOA',
   },
 ]
