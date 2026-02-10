@@ -1,0 +1,26 @@
+{
+  "experiment": "bell-calibration",
+  "backend": "iqm-garnet",
+  "backend_provider": "IQM Resonance (Finland)",
+  "hardware": "20q superconducting transmon",
+  "qubits_used": [
+    "QB1",
+    "QB2"
+  ],
+  "shots": 1024,
+  "raw_counts": {
+    "11": 475,
+    "00": 521,
+    "01": 19,
+    "10": 9
+  },
+  "fidelity_percent": 97.27,
+  "job_id": "019c48cf-99f2-7e03-aea7-0f210e06a546",
+  "circuit_description": "Bell state: H(QB1), H(QB2), CZ(QB1,QB2), H(QB2), Measure",
+  "native_gates_used": [
+    "prx",
+    "cz",
+    "measure"
+  ],
+  "timestamp": "2026-02-10T19:28:16.049564"
+}
