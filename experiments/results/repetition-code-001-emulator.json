@@ -1,0 +1,111 @@
+{
+  "id": "repetition-code-001-emulator",
+  "type": "repetition_code",
+  "backend": "emulator",
+  "submitted": "2026-02-10T17:03:21Z",
+  "completed": "2026-02-10T17:03:21Z",
+  "parameters": {
+    "shots": 4096,
+    "qubit_mapping": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "raw_counts": {
+    "error_d0": {
+      "01001": 4096
+    },
+    "error_d1": {
+      "11010": 4096
+    },
+    "error_d2": {
+      "10100": 4096
+    },
+    "logical_1": {
+      "00111": 4096
+    },
+    "logical_plus": {
+      "00000": 518,
+      "00111": 524,
+      "01001": 495,
+      "01110": 499,
+      "10011": 510,
+      "10100": 521,
+      "11010": 508,
+      "11101": 521
+    },
+    "no_error": {
+      "00000": 4096
+    }
+  },
+  "analysis": {
+    "variant_results": {
+      "error_d0": {
+        "total_shots": 4096,
+        "syndrome_accuracy": 1.0,
+        "syndrome_distribution": {
+          "10": 4096
+        },
+        "logical_error_rate": 0.0,
+        "expected_syndrome": "10"
+      },
+      "error_d1": {
+        "total_shots": 4096,
+        "syndrome_accuracy": 1.0,
+        "syndrome_distribution": {
+          "11": 4096
+        },
+        "logical_error_rate": 0.0,
+        "expected_syndrome": "11"
+      },
+      "error_d2": {
+        "total_shots": 4096,
+        "syndrome_accuracy": 1.0,
+        "syndrome_distribution": {
+          "01": 4096
+        },
+        "logical_error_rate": 0.0,
+        "expected_syndrome": "01"
+      },
+      "logical_1": {
+        "total_shots": 4096,
+        "syndrome_accuracy": 1.0,
+        "syndrome_distribution": {
+          "00": 4096
+        },
+        "logical_error_rate": 0.0,
+        "expected_syndrome": "00"
+      },
+      "logical_plus": {
+        "note": "Mixed syndrome expected for |+> state"
+      },
+      "no_error": {
+        "total_shots": 4096,
+        "syndrome_accuracy": 1.0,
+        "syndrome_distribution": {
+          "00": 4096
+        },
+        "logical_error_rate": 0.0,
+        "expected_syndrome": "00"
+      }
+    },
+    "average_syndrome_accuracy": 1.0,
+    "average_logical_error_rate": 0.0,
+    "qubit_mapping": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "code_type": "3-qubit repetition",
+    "num_data_qubits": 3,
+    "num_syndrome_qubits": 2,
+    "interpretation": "3-qubit repetition code: avg syndrome accuracy 100.0%, logical error rate 0.0% (after majority-vote correction). Code is working \u2014 errors detected and corrected."
+  },
+  "circuit_cqasm": "6 repetition code variants (3 data + 2 syndrome qubits)",
+  "errors": null
+}
