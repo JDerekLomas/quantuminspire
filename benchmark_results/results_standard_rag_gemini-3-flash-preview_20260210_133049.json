@@ -1,0 +1,36 @@
+{
+  "model": "gemini-3-flash-preview",
+  "variant": "standard_rag",
+  "rag": true,
+  "timestamp": "20260210_133049",
+  "total_tasks": 1,
+  "passed": 1,
+  "pass_rate": 100.0,
+  "infrastructure_failures": 0,
+  "testable_tasks": 1,
+  "adjusted_pass_rate": 100.0,
+  "total_input_tokens": 3243,
+  "total_output_tokens": 130,
+  "by_difficulty": {
+    "basic": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 100.0
+    }
+  },
+  "results": [
+    {
+      "task_id": "qiskitHumanEval/1",
+      "difficulty": "basic",
+      "entry_point": "run_bell_state_simulator",
+      "passed": true,
+      "completion": "qc = QuantumCircuit(2)\nqc.h(0)\nqc.cx(0, 1)\nqc.measure_all()\n\nbackend = AerSimulator()\npm = generate_preset_pass_manager(optimization_level=1, backend=backend)\nisa_circuit = pm.run(qc)\n\nfrom qiskit.primitives import BackendSamplerV2\nsampler = BackendSamplerV2(backend=backend)\njob = sampler.run([isa_circuit])\nresult = job.result()\ncounts = result[0].data.meas.get_counts()\n\nreturn counts",
+      "stdout": "BENCHMARK_PASS\n",
+      "stderr": "",
+      "api_time": 45.69,
+      "exec_time": 8.77,
+      "input_tokens": 3243,
+      "output_tokens": 130
+    }
+  ]
+}

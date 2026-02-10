@@ -934,9 +934,17 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 
 <p>The AI doesn't just <em>write code that calls these APIs</em> — it <em>calls them directly as tools</em>, getting structured results back in real time.</p>
 
-<h2>Server 1: Quantum Random Numbers (ANU QRNG)</h2>
+<h2>Server 1: Quantum Random Numbers (with Tuna-9 Fallback)</h2>
 
-<p>Our first MCP server connects to the <strong>Australian National University's Quantum Random Number Generator</strong> — a real quantum optical system that measures vacuum fluctuations of the electromagnetic field to produce true random numbers.</p>
+<p>Our QRNG MCP server provides true quantum random numbers with <strong>automatic fallback across three quantum sources</strong>:</p>
+
+<ol>
+<li><strong>ANU QRNG</strong> (primary) — Measures vacuum fluctuations of the electromagnetic field at the Australian National University. Optical quantum source, ~200ms latency.</li>
+<li><strong>QI Tuna-9</strong> (fallback) — Applies Hadamard gates to electron spin qubits on real quantum hardware at TU Delft, then measures. Each measurement collapses a superposition into a truly random bit. ~3 second latency.</li>
+<li><strong>qxelarator</strong> (last resort) — Local quantum circuit emulator. Instant but pseudorandom.</li>
+</ol>
+
+<p>When the ANU API is unavailable (which happens — we observed intermittent 500 errors during testing), the server automatically submits an 8-qubit Hadamard circuit to Tuna-9. Each shot produces one random byte from real spin qubit measurements in a Dutch lab. This is a textbook quantum random number generator, just running on actual hardware instead of a classroom whiteboard.</p>
 
 <p>The server exposes five tools:</p>
 
@@ -944,16 +952,18 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 <thead><tr><th>Tool</th><th>Description</th></tr></thead>
 <tbody>
 <tr><td><code>quantum_random_int</code></td><td>Get quantum random integers (uint8 or uint16)</td></tr>
-<tr><td><code>quantum_coin_flip</code></td><td>Flip quantum coins (each derived from vacuum fluctuations)</td></tr>
+<tr><td><code>quantum_coin_flip</code></td><td>Flip quantum coins (each derived from true quantum measurement)</td></tr>
 <tr><td><code>quantum_random_hex</code></td><td>Generate quantum random hex strings (for tokens, UUIDs)</td></tr>
 <tr><td><code>quantum_dice_roll</code></td><td>Roll quantum dice with any number of sides</td></tr>
 <tr><td><code>quantum_random_float</code></td><td>Get quantum random floats between 0 and 1</td></tr>
 </tbody>
 </table>
 
-<p>This is a Node.js server using the official MCP TypeScript SDK. It's simple — the ANU API is a straightforward REST endpoint — but it establishes an important principle: <strong>the AI agent has access to a genuine quantum resource</strong>, not a pseudorandom generator.</p>
+<p>Every response includes a <code>source</code> field so you always know which quantum system generated your random numbers. In our testing, we compared all three sources on identical requests — the distributions are uniform across the board, but the Tuna-9 numbers come from actual electron spin measurements rather than photon detection.</p>
 
-<p>Why does this matter? For most applications, pseudorandom numbers are fine. But for quantum research — testing Bell inequality violations, generating cryptographic keys, or benchmarking randomness extraction protocols — you need the real thing. Having it available as a tool means Claude can use quantum randomness naturally in any research workflow.</p>
+<h3>Why two quantum sources?</h3>
+
+<p>The ANU QRNG and Tuna-9 use fundamentally different quantum phenomena: <strong>optical vacuum fluctuations</strong> vs. <strong>spin qubit superposition</strong>. Having both available means the QRNG server is resilient to outages on either platform, and researchers can compare randomness from different physical sources — which matters for foundations-of-physics experiments.</p>
 
 <h2>Server 2: Quantum Inspire Circuit Execution</h2>
 

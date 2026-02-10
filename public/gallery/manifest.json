@@ -1,0 +1,22 @@
+{
+  "Blochy (kherb.io)": "/gallery/blochy-kherb-io.png",
+  "unBLOCHed": "/gallery/unbloched.png",
+  "cduck/bloch_sphere": "/gallery/cduck-bloch-sphere.png",
+  "Quirk": "/gallery/quirk.png",
+  "Quirk-E": "/gallery/quirk-e.png",
+  "quantum-viz.js": "/gallery/quantum-viz-js.png",
+  "QCVIS": "/gallery/qcvis.png",
+  "BraKetVue": "/gallery/braketvue.png",
+  "animated-qubits": "/gallery/animated-qubits.png",
+  "Quantum Flytrap Virtual Lab": "/gallery/quantum-flytrap-virtual-lab.png",
+  "VENUS": "/gallery/venus.png",
+  "Visual QFT": "/gallery/visual-qft.png",
+  "ShorVis": "/gallery/shorvis.png",
+  "Black Opal": "/gallery/black-opal.png",
+  "Quantum Playground": "/gallery/quantum-playground.png",
+  "IBM Quantum Composer": "/gallery/ibm-quantum-composer.png",
+  "Qiskit Visualization Suite": "/gallery/qiskit-visualization-suite.png",
+  "QuTiP Visualization": "/gallery/qutip-visualization.png",
+  "Surface Code Interactive": "/gallery/surface-code-interactive.png",
+  "QML Playground": "/gallery/qml-playground.png"
+}
