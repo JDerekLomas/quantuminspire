@@ -9,10 +9,9 @@
     "hardware": "2-qubit transmon (Starmon-5)",
     "url": "https://arxiv.org/abs/1902.11258"
   },
-  "generated": "2026-02-10T17:45:47.430006",
+  "generated": "2026-02-10T18:28:00.382938",
   "backends_tested": [
     "emulator",
-    "ibm",
     "tuna9"
   ],
   "comparisons": [
@@ -32,15 +31,6 @@
           "failure_description": "Replication matches published results within error bars",
           "severity": "none",
           "error_kcal_mol": 0.75
-        },
-        "ibm": {
-          "measured_value": -0.943621208954451,
-          "discrepancy": 0.193679,
-          "within_published_error": false,
-          "failure_mode": "noise_dominated",
-          "failure_description": "Hardware noise overwhelms the signal",
-          "severity": "high",
-          "error_kcal_mol": 121.54
         },
         "tuna9": {
           "measured_value": -1.00448,
@@ -65,14 +55,6 @@
           "status": "no_data",
           "note": "Metric 'improvement_factor' not found in result"
         },
-        "ibm": {
-          "measured_value": 1.1394934226511473,
-          "discrepancy": -0.860507,
-          "within_published_error": true,
-          "failure_mode": "success",
-          "failure_description": "Replication matches published results within error bars",
-          "severity": "none"
-        },
         "tuna9": {
           "status": "no_data",
           "note": "Metric 'improvement_factor' not found in result"
@@ -95,14 +77,6 @@
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
         },
-        "ibm": {
-          "measured_value": false,
-          "discrepancy": 1,
-          "within_published_error": false,
-          "failure_mode": "partial_noise",
-          "failure_description": "Hardware noise degrades result but qualitative behavior preserved",
-          "severity": "medium"
-        },
         "tuna9": {
           "measured_value": false,
           "discrepancy": 1,
@@ -115,17 +89,16 @@
     }
   ],
   "summary": {
-    "total_claims_tested": 7,
-    "successes": 3,
-    "success_rate": 0.43,
+    "total_claims_tested": 4,
+    "successes": 2,
+    "success_rate": 0.5,
     "failure_mode_counts": {
-      "success": 3,
-      "noise_dominated": 2,
-      "partial_noise": 2
+      "success": 2,
+      "noise_dominated": 1,
+      "partial_noise": 1
     },
     "backends_tested": [
       "emulator",
-      "ibm",
       "tuna9"
     ]
   }

@@ -9,7 +9,7 @@
     "hardware": "Photonic quantum processor",
     "url": "https://arxiv.org/abs/1304.3061"
   },
-  "generated": "2026-02-10T17:45:49.892589",
+  "generated": "2026-02-10T18:28:00.386637",
   "backends_tested": [
     "emulator"
   ],

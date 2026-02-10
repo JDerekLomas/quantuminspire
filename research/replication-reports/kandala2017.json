@@ -1,0 +1,84 @@
+{
+  "paper_id": "kandala2017",
+  "paper": {
+    "title": "Hardware-efficient variational quantum eigensolver for small molecules and quantum magnets",
+    "authors": "Kandala et al.",
+    "journal": "Nature 549, 242-246 (2017)",
+    "arxiv": "1704.05018",
+    "institution": "IBM Research",
+    "hardware": "6-qubit superconducting transmon",
+    "url": "https://arxiv.org/abs/1704.05018"
+  },
+  "generated": "2026-02-10T18:28:00.385360",
+  "backends_tested": [
+    "emulator"
+  ],
+  "comparisons": [
+    {
+      "claim_id": "h2-equilibrium",
+      "description": "H2 ground state energy at equilibrium (R~0.7 A)",
+      "published_value": -1.1373,
+      "published_error": 0.005,
+      "unit": "Hartree",
+      "figure": "Fig. 3a",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": -1.1361894533348051,
+          "discrepancy": 0.001111,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none",
+          "error_kcal_mol": 0.7
+        }
+      }
+    },
+    {
+      "claim_id": "h2-curve-mae",
+      "description": "H2 potential energy curve tracks FCI (d=1 sufficient)",
+      "published_value": 0.0,
+      "published_error": 1.6,
+      "unit": "mHartree MAE",
+      "figure": "Fig. 3a",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": 1.5963292776532967e-05,
+          "discrepancy": 1.6e-05,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    },
+    {
+      "claim_id": "h2-chemical-accuracy",
+      "description": "H2 achieves chemical accuracy at d=1",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 3a / Supp.",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "total_claims_tested": 3,
+    "successes": 3,
+    "success_rate": 1.0,
+    "failure_mode_counts": {
+      "success": 3
+    },
+    "backends_tested": [
+      "emulator"
+    ]
+  }
+}

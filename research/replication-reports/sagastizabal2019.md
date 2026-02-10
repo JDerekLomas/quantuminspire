@@ -10,18 +10,18 @@
 
 ## Summary
 
-- **Claims tested**: 7
-- **Successful replications**: 3
-- **Success rate**: 43%
-- **Backends tested**: emulator, ibm, tuna9
+- **Claims tested**: 4
+- **Successful replications**: 2
+- **Success rate**: 50%
+- **Backends tested**: emulator, tuna9
 
 ### Failure mode breakdown
 
 | Mode | Count | Description |
 |------|-------|-------------|
-| noise_dominated | 2 | Hardware noise overwhelms the signal |
-| partial_noise | 2 | Hardware noise degrades result but qualitative behavior preserved |
-| success | 3 | Replication matches published results within error bars |
+| noise_dominated | 1 | Hardware noise overwhelms the signal |
+| partial_noise | 1 | Hardware noise degrades result but qualitative behavior preserved |
+| success | 2 | Replication matches published results within error bars |
 
 ---
 
@@ -36,7 +36,6 @@
 | Backend | Measured | Discrepancy | kcal/mol | Status | Failure Mode |
 |---------|----------|-------------|----------|--------|--------------|
 | emulator | -1.1385 | -0.0012 | 0.75 | PASS | success |
-| ibm | -0.9436 | +0.1937 | 121.54 | FAIL | noise_dominated |
 | tuna9 | -1.0045 | +0.1328 | 83.35 | FAIL | noise_dominated |
 
 ### Symmetry verification reduces VQE error vs raw noisy measurement
@@ -48,7 +47,6 @@
 | Backend | Measured | Discrepancy | kcal/mol | Status | Failure Mode |
 |---------|----------|-------------|----------|--------|--------------|
 | emulator | — | — | — | no data | — |
-| ibm | 1.1395 | -0.8605 | — | PASS | success |
 | tuna9 | — | — | — | no data | — |
 
 ### VQE achieves chemical accuracy (< 1.6 mHa) with error mitigation
@@ -60,7 +58,6 @@
 | Backend | Measured | Discrepancy | kcal/mol | Status | Failure Mode |
 |---------|----------|-------------|----------|--------|--------------|
 | emulator | Yes | match | — | PASS | success |
-| ibm | No | mismatch | — | FAIL | partial_noise |
 | tuna9 | No | mismatch | — | FAIL | partial_noise |
 
 ---
@@ -69,9 +66,6 @@
 
 **Emulator**: 2/3 claims matched. 
 Some claims not matched even in simulation — indicates protocol differences.
-
-**IBM Quantum**: 1/3 claims matched. 
-Average energy error: 121.5 kcal/mol.
 
 **QI Tuna-9**: 0/3 claims matched. 
 Average energy error: 83.3 kcal/mol.

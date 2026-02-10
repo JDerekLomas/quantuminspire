@@ -105,7 +105,7 @@ export const PAPER_PIPELINE: Array<{
     authors: 'Kandala et al.',
     journal: 'Nature 549, 242 (2017)',
     arxiv: '1704.05018',
-    status: 'planned',
+    status: 'completed',
     qubits: 6,
     type: 'VQE',
   },
