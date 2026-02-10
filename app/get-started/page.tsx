@@ -495,28 +495,181 @@ pip install qxelarator`}</CodeBlock>
         </div>
       </section>
 
-      {/* Example prompts */}
+      {/* Prompt archaeology */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-4">Example prompts to try</h2>
-          <p className="text-gray-400 text-sm mb-6">Copy-paste these into Claude Code once your MCP servers are configured.</p>
+          <h2 className="text-2xl font-bold text-white mb-2">Prompt archaeology: real prompts from this project</h2>
+          <p className="text-gray-400 text-sm mb-2">
+            We mined 349 prompts across 445 Claude Code sessions that produced this project.
+            Below are the actual patterns that emerged -- not hypothetical examples, but the prompts
+            that built 100+ experiments, 6 paper replications, and 20+ interactive visualizations.
+          </p>
+          <p className="text-gray-500 text-xs mb-8">
+            Prompts are organized by the workflow pattern they represent, roughly in the order you&apos;d
+            use them in a real project.
+          </p>
 
-          <div className="space-y-4">
-            {[
-              { level: 'Beginner', prompt: 'Create a Bell state circuit and run it on the local emulator with 1024 shots. Show me the measurement histogram and calculate the fidelity.', color: '#00ff88' },
-              { level: 'Beginner', prompt: 'Generate 10 quantum random numbers between 1 and 100.', color: '#00ff88' },
-              { level: 'Intermediate', prompt: 'Run a 3-qubit GHZ state on Tuna-9 using qubits 2, 4, and 6. Measure in Z, X, and Y bases. Calculate the fidelity and identify the dominant noise type from the correlator ratios.', color: '#f59e0b' },
-              { level: 'Intermediate', prompt: 'Submit an H2 VQE circuit at bond distance 0.735 angstroms to IBM Quantum. Use the 2-qubit sector-projected Hamiltonian with optimal theta=0.1118. Compare the measured energy to the exact FCI value of -1.1373 Ha.', color: '#f59e0b' },
-              { level: 'Advanced', prompt: 'Run a quantum volume protocol on the emulator for widths 2 through 5, with 5 random SU(4) circuits per width. Determine the QV using the 2/3 heavy output fraction threshold.', color: '#ef4444' },
-              { level: 'Advanced', prompt: 'Implement QAOA for MaxCut on a 4-node path graph. Sweep gamma and beta over a 5x5 grid. Run on the emulator first, then submit the best parameters to Tuna-9 on qubits [5,2,4,6]. Compare approximation ratios.', color: '#ef4444' },
-            ].map((item, i) => (
-              <div key={i} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded mb-2 inline-block" style={{ backgroundColor: item.color + '15', color: item.color }}>
-                  {item.level}
-                </span>
-                <p className="text-gray-200 text-sm font-mono leading-relaxed">{item.prompt}</p>
+          {/* Pattern 1: Exploration */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20">
+                Phase 1
+              </span>
+              <h3 className="text-lg font-bold text-white">Exploration &amp; setup</h3>
+            </div>
+            <p className="text-gray-400 text-sm mb-4">
+              The project started with open-ended questions. These prompts orient the agent to the domain
+              and get infrastructure running.
+            </p>
+            <div className="space-y-3">
+              {[
+                { prompt: 'how might i demonstrate the capacity of claude code on quantum computing? Is there an existing benchmark? Could I create one?', note: 'This prompt started the entire project. Led to discovering Qiskit HumanEval (151 tasks).' },
+                { prompt: 'can you look for skills and dev setup for programming quantum computers including at tu delft quantum?', note: 'Prompted discovery of MCP servers, QI SDK, and the Python 3.12 requirement.' },
+                { prompt: 'Is there a quantum random number generator based on a real quantum computer accessible via mcp?', note: 'Led to building the QRNG MCP server (ANU fallback chain).' },
+                { prompt: 'get me on github and start organizing this project as an exploration of accelerating science with generative ai, in the field of quantum inspire at TU Delft.', note: 'Set the research framing that carried through the entire project.' },
+                { prompt: 'Can you search for recent graduations at qtech at tu delft with leiven vandersplein and other quantum researchers? That will give us a sense for what research questions they value', note: 'Literature grounding -- connected our work to active research directions.' },
+              ].map((item, i) => (
+                <div key={i} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
+                  <p className="text-gray-200 text-sm font-mono leading-relaxed">{item.prompt}</p>
+                  <p className="text-gray-500 text-xs mt-2 italic">{item.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pattern 2: Building */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20">
+                Phase 2
+              </span>
+              <h3 className="text-lg font-bold text-white">Running experiments</h3>
+            </div>
+            <p className="text-gray-400 text-sm mb-4">
+              Once infrastructure was up, the prompts shifted to directing experiments. The key pattern:
+              start on emulator, validate, then move to hardware.
+            </p>
+            <div className="space-y-3">
+              {[
+                { prompt: 'what would be most impressive to add? e.g., if we had experiments that were running continuously and queuing up to use the qi hardware and outputting real data? That would "show" the ai science.', note: 'Led to building the experiment daemon (auto-queue, auto-submit, auto-analyze).' },
+                { prompt: 'I think there is probably a workflow where we first evaluate in simulation and then move to real hardware and validate...', note: 'Established the emulator-first validation pattern that caught most bugs.' },
+                { prompt: 'Queue them up and start gathering data. Be sure every experiment begins with a clear research question and purpose. After every experiment, reflect and adjust the queue to learn the most', note: 'Turned the agent from a tool-user into a scientist -- adaptive experimentation.' },
+                { prompt: 'save that reflection in md. then, what do you think is the next experiment you\'d like to run? Other hardware? Or something else?', note: 'Asking the agent to propose next steps produced better experiment design than prescribing them.' },
+                { prompt: 'Should we replicate our replications so we can see how reliable they are? Do we save the code along with the data?', note: 'Led to the reproducibility infrastructure (SHA256 checksums, environment snapshots, variance analysis).' },
+              ].map((item, i) => (
+                <div key={i} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
+                  <p className="text-gray-200 text-sm font-mono leading-relaxed">{item.prompt}</p>
+                  <p className="text-gray-500 text-xs mt-2 italic">{item.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pattern 3: Skepticism */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#ef4444]/10 text-[#ef4444] border border-[#ef4444]/20">
+                Phase 3
+              </span>
+              <h3 className="text-lg font-bold text-white">Critical review &amp; debugging</h3>
+            </div>
+            <p className="text-gray-400 text-sm mb-4">
+              The most valuable prompts were skeptical ones. Every major discovery came from asking
+              &quot;is this actually right?&quot;
+            </p>
+            <div className="space-y-3">
+              {[
+                { prompt: 'Act like a skeptical reviewer... can you poke holes in this? How do we know it\'s not AI hallucination? Trivial?', note: 'Found that the CNOT gate implementation in our math library was broken. Bell/GHZ states were all wrong.' },
+                { prompt: 'can you act like a critical reviewer and look through the site and the experiments and results and try to poke holes and find inconsistencies, misconceptions, inaccuracies and other problems?', note: 'Caught energy unit inconsistencies, stale backend names, and analysis pipeline bugs.' },
+                { prompt: 'yeah, actually AI did it all. I\'m just prompting here. but let\'s fix the energy bug? Really, you didn\'t find any LLM bs faked data or anything?', note: 'Honest acknowledgment that the human is directing, not coding. Important for framing.' },
+                { prompt: 'wait, it was that easy? Are you sure that is real?', note: 'Asked after QEC detection code "worked" on first try. Turned out the codespace prep was missing -- XXXX was giving random 50/50.' },
+                { prompt: 'The interesting cases are the failures. Why did Peruzzo give 83.5 kcal/mol on IBM? That\'s more publishable than the successes.', note: 'Reframing failures as findings. Led to the coefficient amplification discovery (|g1|/|g4| ratio predicts error).' },
+              ].map((item, i) => (
+                <div key={i} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
+                  <p className="text-gray-200 text-sm font-mono leading-relaxed">{item.prompt}</p>
+                  <p className="text-gray-500 text-xs mt-2 italic">{item.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pattern 4: Meaning-making */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#8b5cf6]/10 text-[#8b5cf6] border border-[#8b5cf6]/20">
+                Phase 4
+              </span>
+              <h3 className="text-lg font-bold text-white">Meaning-making &amp; communication</h3>
+            </div>
+            <p className="text-gray-400 text-sm mb-4">
+              The final pattern: turning raw results into understanding. Visualization, sonification,
+              narrative framing.
+            </p>
+            <div className="space-y-3">
+              {[
+                { prompt: 'coherence... with what? and the microwave frequency, how is that tuned? Is it cold because that way it is in the lowest energy level? Are these energy levels like atoms?', note: 'Genuine curiosity prompts produced the best educational content. The How Qubits Work series came from questions, not directives.' },
+                { prompt: 'I actually want to turn this into a resonance-based explanation of how quantum computers work. Like, we need animations of microwave pulses and the whole deal.', note: 'Led to the /how-it-works resonance explainer -- the most distinctive page on the site.' },
+                { prompt: 'lets make a set of smaller units that explore sonification in a different way. Can you brainstorm how we might sonify the data?', note: 'Led to quantum circuit sonification -- hearing the difference between clean emulator and noisy hardware.' },
+                { prompt: 'Think about it from a QDNL perspective again. I think the AI accelerated science hits. The AI as interface to quantum computing hits...', note: 'Stepping back to check alignment with stakeholders. Kept the project grounded.' },
+                { prompt: 'it\'s like AI is the interface between humans and quantum...', note: 'The one-sentence thesis that emerged from all of this. Sometimes the best prompt is a half-formed thought.' },
+              ].map((item, i) => (
+                <div key={i} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
+                  <p className="text-gray-200 text-sm font-mono leading-relaxed">{item.prompt}</p>
+                  <p className="text-gray-500 text-xs mt-2 italic">{item.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pattern 5: Operational */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] border border-[#f59e0b]/20">
+                Meta
+              </span>
+              <h3 className="text-lg font-bold text-white">Session management &amp; debugging Claude Code</h3>
+            </div>
+            <p className="text-gray-400 text-sm mb-4">
+              Honest prompts about when things went wrong. These are the prompts nobody shows in demos
+              but everyone types in real sessions.
+            </p>
+            <div className="space-y-3">
+              {[
+                { prompt: 'taking a really long time. i cant tell if you are working or not... how come? like i wish there was better status about what you are working on when it is taking so long', note: 'Led to adding run_in_background and better status feedback patterns to CLAUDE.md.' },
+                { prompt: 'why would it error and not let me know? it just hung up', note: 'Discovered pipe buffering issue. Fix: never pipe long-running commands. Now in our CLAUDE.md.' },
+                { prompt: 'its not about the content, its just -- 5 min for 1000 tokens? Something else is going on, maybe you can\'t see it. I need more visibility', note: 'When the agent is slow, the problem is usually infrastructure, not the LLM. Diagnose the pipeline.' },
+                { prompt: 'you are stuck.', note: 'Sometimes the best prompt is two words. The agent had been looping on a failed approach for several turns.' },
+                { prompt: 'I was working on something in this window but I can\'t see it anymore', note: 'Context window management is real. Led to session handoffs and /compact discipline.' },
+              ].map((item, i) => (
+                <div key={i} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
+                  <p className="text-gray-200 text-sm font-mono leading-relaxed">{item.prompt}</p>
+                  <p className="text-gray-500 text-xs mt-2 italic">{item.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 mt-8">
+            <h3 className="text-white font-bold mb-3">By the numbers</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold text-[#00d4ff]">445</div>
+                <div className="text-xs text-gray-500">Claude Code sessions</div>
               </div>
-            ))}
+              <div>
+                <div className="text-2xl font-bold text-[#00ff88]">349</div>
+                <div className="text-xs text-gray-500">substantive prompts</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-[#8b5cf6]">~48 hrs</div>
+                <div className="text-xs text-gray-500">wall-clock time</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-[#f59e0b]">1 human</div>
+                <div className="text-xs text-gray-500">zero lines of code written by hand</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
