@@ -159,21 +159,7 @@ def qi_get_results(job_id: int) -> str:
     try:
         backend = _get_remote()
 
-        # Try final results first (aggregated histogram)
-        final_results = backend.get_final_results(job_id)
-        if final_results is not None:
-            results_data = []
-            for fr in final_results:
-                entry = {}
-                for attr in ["calibration_point_index", "shots_requested", "shots_done"]:
-                    if hasattr(fr, attr):
-                        entry[attr] = getattr(fr, attr)
-                if hasattr(fr, "results"):
-                    entry["results"] = fr.results
-                results_data.append(entry)
-            return json.dumps({"job_id": job_id, "status": "COMPLETED", "final_results": results_data}, default=str)
-
-        # Fall back to raw results
+        # Use raw results API (get_final_results returns empty dicts due to pydantic issue)
         results = backend.get_results(job_id)
         if results is not None:
             results_data = []
