@@ -1416,7 +1416,12 @@ def submit_to_tuna9(circuit_cqasm, shots=1024, name="daemon_circuit"):
             elapsed += TUNA9_POLL_INTERVAL
 
             job = backend.get_job(job_id)
-            status = str(getattr(job, "status", "UNKNOWN"))
+            # status may be an enum (JobStatus.COMPLETED) — normalize to uppercase string
+            raw_status = getattr(job, "status", "UNKNOWN")
+            status = str(raw_status).upper()
+            # Handle enum names like "JobStatus.COMPLETED" → "COMPLETED"
+            if "." in status:
+                status = status.split(".")[-1]
             log(f"TUNA-9: Job {job_id} status={status} ({elapsed}s elapsed)")
 
             if status == "COMPLETED":
