@@ -1,0 +1,24 @@
+{
+  "id": "vqe-tuna9-zne-f5-002",
+  "type": "vqe_h2",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T19:10:00Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "alpha": -0.2234,
+    "qubits": [2, 4],
+    "cnot_folds": 5,
+    "g0": -0.321124,
+    "g1": 0.397937,
+    "g2": -0.397937,
+    "g3": 0.0,
+    "g4": 0.090466,
+    "g5": 0.090466,
+    "fci_energy": -1.137306
+  },
+  "priority": 1,
+  "research_question": "ZNE repetition 2/4 at noise level 5. With the f1/f3 pair, determines if noise is monotonic or has higher-order structure.",
+  "description": "VQE H2 ZNE rep 2, 5 CNOT folds."
+}
