@@ -238,6 +238,7 @@ function Nav() {
           <a href="#results" className="hover:text-[#00d4ff] transition-colors">Results</a>
           <a href="#experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
           <a href="/experiments" className="hover:text-[#00ff88] transition-colors">Live Hardware</a>
+          <a href="/replications" className="hover:text-[#ff8c42] transition-colors">Replications</a>
           <a href="#viz" className="hover:text-[#8b5cf6] transition-colors">Viz Zoo</a>
           <a href="#agents" className="hover:text-[#ff8c42] transition-colors">Agents</a>
           <a href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</a>

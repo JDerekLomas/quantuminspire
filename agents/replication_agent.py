@@ -3,15 +3,18 @@ Replication Agent
 
 Autonomous agent that replicates published quantum computing papers.
 Takes a paper reference and replication plan, generates simulation code,
-runs it, and compares results against published data.
+runs it, compares results against published data, and generates analysis reports.
 
 Current replications:
-  - Sagastizabal et al., Phys. Rev. A 100, 010302 (2019)
-    "Error Mitigation by Symmetry Verification on a VQE"
+  - Sagastizabal et al., Phys. Rev. A 100, 010302 (2019) [DONE]
+  - Kandala et al., Nature 549, 242 (2017) [PLANNED]
+  - Peruzzo et al., Nature Comms 5, 4213 (2014) [PLANNED]
+  - Cross et al., Phys. Rev. A 100, 032328 (2019) [PLANNED]
 
 Usage:
     python agents/replication_agent.py --list
     python agents/replication_agent.py --run sagastizabal2019
+    python agents/replication_agent.py --analyze sagastizabal2019
     python agents/replication_agent.py --status
 """
 
@@ -30,7 +33,7 @@ PAPER_REGISTRY = {
     "sagastizabal2019": {
         "title": "Error Mitigation by Symmetry Verification on a VQE",
         "authors": "Sagastizabal et al.",
-        "journal": "Phys. Rev. A 100, 010302 (2019)",
+        "journal": "Phys. Rev. A 100, 010302(R) (2019)",
         "arxiv": "1902.11258",
         "institution": "QuTech / TU Delft",
         "script": "replicate_sagastizabal.py",
@@ -46,18 +49,66 @@ PAPER_REGISTRY = {
             "Symmetry verification reduces noise-induced energy estimation errors",
             "Single-parameter ansatz sufficient for H2 in minimal basis",
         ],
+        "replication_status": {
+            "emulator": "pass",
+            "ibm": "fail (26.2 kcal/mol error)",
+            "tuna9": "fail (83.3 kcal/mol error)",
+        },
     },
-    # Future replications to add:
-    # "kandala2017": {
-    #     "title": "Hardware-efficient variational quantum eigensolver for small molecules and quantum magnets",
-    #     "arxiv": "1704.05018",
-    #     "status": "planned",
-    # },
-    # "peruzzo2014": {
-    #     "title": "A variational eigenvalue solver on a photonic quantum processor",
-    #     "arxiv": "1304.3061",
-    #     "status": "planned",
-    # },
+    "kandala2017": {
+        "title": "Hardware-efficient variational quantum eigensolver for small molecules and quantum magnets",
+        "authors": "Kandala et al.",
+        "journal": "Nature 549, 242-246 (2017)",
+        "arxiv": "1704.05018",
+        "institution": "IBM Research",
+        "script": "replicate_kandala.py",
+        "status": "planned",
+        "description": (
+            "Hardware-efficient VQE for H2, LiH, and BeH2 using a parity mapping "
+            "with 2-6 qubits. Single Ry-CNOT layer ansatz. First demonstration of "
+            "VQE beyond H2 on real quantum hardware."
+        ),
+        "key_results": [
+            "H2 ground state energy within 10 mHa (6.3 kcal/mol) of exact",
+            "LiH ground state energy curve qualitatively correct",
+            "Hardware-efficient ansatz with parity mapping reduces qubit count",
+        ],
+    },
+    "peruzzo2014": {
+        "title": "A variational eigenvalue solver on a photonic quantum processor",
+        "authors": "Peruzzo et al.",
+        "journal": "Nature Communications 5, 4213 (2014)",
+        "arxiv": "1304.3061",
+        "institution": "Various (Bristol, MIT, Google)",
+        "script": "replicate_peruzzo.py",
+        "status": "planned",
+        "description": (
+            "The original VQE paper. 2-qubit HeH+ ground state energy using a "
+            "photonic quantum processor. BK encoding with simple 1-parameter ansatz."
+        ),
+        "key_results": [
+            "HeH+ ground state energy within chemical accuracy",
+            "First experimental demonstration of VQE algorithm",
+            "Classical-quantum hybrid optimization loop",
+        ],
+    },
+    "cross2019": {
+        "title": "Validating quantum computers using randomized model circuits",
+        "authors": "Cross et al.",
+        "journal": "Phys. Rev. A 100, 032328 (2019)",
+        "arxiv": "1811.12926",
+        "institution": "IBM Research",
+        "script": None,  # Uses experiment_daemon QV circuits
+        "status": "planned",
+        "description": (
+            "Quantum Volume protocol: random SU(4) circuits to benchmark quantum "
+            "computers. Heavy output probability must exceed 2/3 threshold."
+        ),
+        "key_results": [
+            "Defines QV metric adopted industry-wide",
+            "Demonstrates QV=8 on 5-qubit IBM device",
+        ],
+    },
 }
 
 
@@ -125,10 +176,25 @@ def run_replication(paper_id):
     return result.returncode
 
 
+def analyze_replication(paper_id):
+    """Run the replication analyzer for a paper."""
+    analyzer_script = Path(__file__).parent / "replication_analyzer.py"
+    if not analyzer_script.exists():
+        print(f"Analyzer not found: {analyzer_script}")
+        return 1
+
+    result = subprocess.run(
+        [sys.executable, str(analyzer_script), "--paper", paper_id],
+        timeout=60,
+    )
+    return result.returncode
+
+
 def main():
     parser = argparse.ArgumentParser(description="Replication Agent")
     parser.add_argument("--list", action="store_true", help="List available papers")
     parser.add_argument("--run", type=str, help="Run replication by paper ID")
+    parser.add_argument("--analyze", type=str, help="Analyze replication results for a paper")
     parser.add_argument("--status", action="store_true", help="Show replication status")
     args = parser.parse_args()
 
@@ -138,11 +204,19 @@ def main():
 
     if args.run:
         exit_code = run_replication(args.run)
+        if exit_code == 0 and args.run in PAPER_REGISTRY:
+            print("\nRunning analysis...")
+            analyze_replication(args.run)
+        sys.exit(exit_code)
+
+    if args.analyze:
+        exit_code = analyze_replication(args.analyze)
         sys.exit(exit_code)
 
     # Default: list
     list_papers()
     print("Use --run <paper_id> to run a replication.")
+    print("Use --analyze <paper_id> to analyze results.")
 
 
 if __name__ == "__main__":

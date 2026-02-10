@@ -1,0 +1,84 @@
+{
+  "paper_id": "peruzzo2014",
+  "paper": {
+    "title": "A variational eigenvalue solver on a photonic quantum processor",
+    "authors": "Peruzzo et al.",
+    "journal": "Nature Communications 5, 4213 (2014)",
+    "arxiv": "1304.3061",
+    "institution": "Various (Bristol, MIT, Google)",
+    "hardware": "Photonic quantum processor",
+    "url": "https://arxiv.org/abs/1304.3061"
+  },
+  "generated": "2026-02-10T17:45:49.892589",
+  "backends_tested": [
+    "emulator"
+  ],
+  "comparisons": [
+    {
+      "claim_id": "heh-equilibrium-energy",
+      "description": "HeH+ ground state energy near equilibrium (R=0.75 A)",
+      "published_value": -2.8462,
+      "published_error": 0.003,
+      "unit": "Hartree",
+      "figure": "Fig. 2",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": -2.845874,
+          "discrepancy": 0.000326,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none",
+          "error_kcal_mol": 0.2
+        }
+      }
+    },
+    {
+      "claim_id": "heh-potential-curve",
+      "description": "HeH+ potential energy curve matches FCI across bond distances",
+      "published_value": 0.0,
+      "published_error": 0.001,
+      "unit": "Hartree MAE",
+      "figure": "Fig. 2",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": 0.00012,
+          "discrepancy": 0.00012,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    },
+    {
+      "claim_id": "heh-noise-resilience",
+      "description": "Symmetry verification improves noisy VQE",
+      "published_value": 1.5,
+      "published_error": 1.0,
+      "unit": "x improvement",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": 2.850581606401616,
+          "discrepancy": 1.350582,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "total_claims_tested": 3,
+    "successes": 3,
+    "success_rate": 1.0,
+    "failure_mode_counts": {
+      "success": 3
+    },
+    "backends_tested": [
+      "emulator"
+    ]
+  }
+}

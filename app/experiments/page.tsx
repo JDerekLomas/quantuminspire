@@ -1,143 +1,29 @@
 import Link from 'next/link'
-import { getAllResults, getQueue, getStats, typeLabels, typeColors, getSweepEmulator, getSweepReference, type ExperimentResult, type SweepPoint, type SweepReference } from '@/lib/experiments'
+import { getAllResults, getQueue, getStats, getAllStudies, typeLabels, typeColors, getSweepEmulator, getSweepReference, type ExperimentResult, type SweepPoint, type SweepReference } from '@/lib/experiments'
+import {
+  isEmulator,
+  backendLabel,
+  flatCounts,
+  hasMultiBasis,
+  totalFromCounts,
+  StatusPill,
+  BackendBadge,
+  FidelityBar,
+  CountsBar,
+  EmulatorNote,
+  CircuitBlock,
+  ComparisonRow,
+  EnergyLevelDiagram,
+  MultiBasisCounts,
+  DissociationCurve,
+  FidelityComparisonChart,
+  RBDecayCurve,
+  QAOAHeatmap,
+} from '@/components/experiment-viz'
 
 export const metadata = {
   title: 'Live Experiments — AI x Quantum',
   description: 'Real-time results from quantum experiments running on Quantum Inspire and IBM Quantum hardware.',
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function isEmulator(backend: string): boolean {
-  if (!backend) return false
-  const lower = backend.toLowerCase()
-  return lower.includes('emulator') || lower.includes('qxelarator')
-}
-
-function backendLabel(backend: string): { label: string; isHw: boolean } {
-  if (!backend) return { label: 'Unknown', isHw: false }
-  if (backend.toLowerCase().includes('ibm')) return { label: 'IBM Hardware', isHw: true }
-  if (backend.toLowerCase().includes('emulator') || backend.toLowerCase().includes('qxelarator'))
-    return { label: 'QI Emulator', isHw: false }
-  if (backend.toLowerCase().includes('tuna')) return { label: 'QI Tuna-9', isHw: true }
-  if (backend.toLowerCase().includes('multi')) return { label: 'Multi-Source', isHw: false }
-  return { label: backend, isHw: false }
-}
-
-function flatCounts(raw: Record<string, any>): Record<string, number> {
-  const first = Object.values(raw)[0]
-  if (typeof first === 'object' && first !== null) return first as Record<string, number>
-  return raw as Record<string, number>
-}
-
-function hasMultiBasis(raw: Record<string, any>): boolean {
-  return 'z_basis' in raw && 'x_basis' in raw && 'y_basis' in raw
-}
-
-function totalFromCounts(counts: Record<string, number>): number {
-  return Object.values(counts).reduce((a, b) => a + b, 0)
-}
-
-// ---------------------------------------------------------------------------
-// UI Components
-// ---------------------------------------------------------------------------
-
-function StatusPill({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    pending: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30',
-    running: 'bg-blue-500/10 text-blue-400 border-blue-500/30 animate-pulse',
-    completed: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
-    failed: 'bg-red-500/10 text-red-400 border-red-500/30',
-  }
-  return (
-    <span className={`text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded border ${styles[status] || styles.pending}`}>
-      {status}
-    </span>
-  )
-}
-
-function BackendBadge({ backend }: { backend: string }) {
-  const { label, isHw } = backendLabel(backend)
-  if (isHw) {
-    return (
-      <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded border bg-[#8b5cf6]/10 text-[#8b5cf6] border-[#8b5cf6]/30">
-        {label}
-      </span>
-    )
-  }
-  return (
-    <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded border bg-yellow-500/10 text-yellow-400 border-yellow-500/30">
-      {label}
-    </span>
-  )
-}
-
-function FidelityBar({ value, label }: { value: number; label: string }) {
-  const pct = Math.round(value * 100)
-  const color = pct > 95 ? '#00ff88' : pct > 85 ? '#00d4ff' : pct > 70 ? '#eab308' : '#ef4444'
-  return (
-    <div className="space-y-1">
-      <div className="flex justify-between text-xs font-mono">
-        <span className="text-gray-400">{label}</span>
-        <span style={{ color }}>{pct}%</span>
-      </div>
-      <div className="w-full h-2 rounded-full bg-white/5 overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${pct}%`, backgroundColor: color }}
-        />
-      </div>
-    </div>
-  )
-}
-
-function CountsBar({ counts, total, accentColor }: { counts: Record<string, number>; total: number; accentColor?: string }) {
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1])
-  const colors = ['#00d4ff', '#00ff88', '#8b5cf6', '#ff8c42', '#ff6b9d', '#eab308', '#14b8a6', '#ef4444']
-  return (
-    <div className="space-y-1">
-      {sorted.slice(0, 8).map(([bitstring, count], i) => {
-        const pct = (count / total) * 100
-        return (
-          <div key={bitstring} className="flex items-center gap-2 text-xs font-mono">
-            <span className="text-gray-500 w-14 text-right">|{bitstring}&#x27E9;</span>
-            <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
-              <div
-                className="h-full rounded-full"
-                style={{ width: `${pct}%`, backgroundColor: accentColor || colors[i % colors.length] }}
-              />
-            </div>
-            <span className="text-gray-300 w-20 text-right">{count} ({pct.toFixed(1)}%)</span>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function EmulatorNote() {
-  return (
-    <div className="mt-3 px-3 py-2 rounded bg-yellow-500/5 border border-yellow-500/10">
-      <p className="text-[11px] text-yellow-300 font-mono leading-relaxed">
-        This ran on a noiseless emulator. Hardware results will show real noise effects.
-      </p>
-    </div>
-  )
-}
-
-function CircuitBlock({ cqasm }: { cqasm: string }) {
-  return (
-    <details className="mt-4 group">
-      <summary className="text-[11px] font-mono text-gray-500 cursor-pointer hover:text-gray-300 transition-colors select-none">
-        <span className="ml-1">View cQASM circuit</span>
-      </summary>
-      <pre className="mt-2 p-3 rounded bg-black/40 border border-white/5 text-[11px] font-mono text-gray-400 overflow-x-auto leading-relaxed whitespace-pre">
-        {cqasm}
-      </pre>
-    </details>
-  )
 }
 
 // ---------------------------------------------------------------------------
@@ -185,504 +71,8 @@ function SummaryDashboard({ results }: { results: ExperimentResult[] }) {
 }
 
 // ---------------------------------------------------------------------------
-// VQE Energy Level Diagram (SVG)
-// ---------------------------------------------------------------------------
-
-function EnergyLevelDiagram({ result, comparisonResult }: { result: ExperimentResult; comparisonResult?: ExperimentResult }) {
-  const analysis = result.analysis
-  const measuredEnergy = analysis.energy_hartree as number
-  const fciEnergy = analysis.fci_energy as number
-
-  // Chemical accuracy threshold: 1.6 mHa = 0.0016 Ha
-  const chemAccThreshold = 0.0016
-
-  // Determine energy range for diagram
-  const allEnergies = [measuredEnergy, fciEnergy]
-  if (comparisonResult) allEnergies.push(comparisonResult.analysis.energy_hartree as number)
-
-  const minE = Math.min(...allEnergies) - 0.06
-  const maxE = Math.max(...allEnergies) + 0.02
-
-  // SVG dimensions
-  const svgW = 480
-  const svgH = 200
-  const padL = 80
-  const padR = 20
-  const padT = 20
-  const padB = 30
-  const chartW = svgW - padL - padR
-  const chartH = svgH - padT - padB
-
-  // Energy to Y coordinate (higher energy = lower on chart, so invert)
-  // Actually, more negative = lower energy = better. Show lower energy at bottom.
-  // But convention: y-axis goes down. So more negative (better) = bottom of chart = higher y.
-  const eToY = (e: number) => padT + ((e - maxE) / (minE - maxE)) * chartH
-
-  const fciY = eToY(fciEnergy)
-  const measuredY = eToY(measuredEnergy)
-  const chemAccTopY = eToY(fciEnergy + chemAccThreshold)
-  const chemAccBotY = eToY(fciEnergy - chemAccThreshold)
-
-  // Is measured energy within chemical accuracy?
-  const withinAcc = analysis.chemical_accuracy
-
-  return (
-    <div className="mt-4">
-      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Energy Level Diagram</p>
-      <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-lg" xmlns="http://www.w3.org/2000/svg">
-        {/* Background */}
-        <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="4" />
-
-        {/* Chemical accuracy zone */}
-        <rect
-          x={padL}
-          y={chemAccTopY}
-          width={chartW}
-          height={Math.abs(chemAccBotY - chemAccTopY)}
-          fill="rgba(0,255,136,0.06)"
-          stroke="rgba(0,255,136,0.15)"
-          strokeWidth="0.5"
-          strokeDasharray="4 2"
-          rx="2"
-        />
-        <text
-          x={padL + chartW - 4}
-          y={chemAccTopY - 4}
-          textAnchor="end"
-          className="text-[9px]"
-          fill="rgba(0,255,136,0.4)"
-          fontFamily="monospace"
-          fontSize="9"
-        >
-          chemical accuracy zone (&#177;1.6 mHa)
-        </text>
-
-        {/* FCI reference line */}
-        <line
-          x1={padL} y1={fciY}
-          x2={padL + chartW} y2={fciY}
-          stroke="#666" strokeWidth="1" strokeDasharray="6 3"
-        />
-        <text
-          x={padL - 6} y={fciY + 3}
-          textAnchor="end"
-          fill="#888"
-          fontFamily="monospace"
-          fontSize="10"
-        >
-          FCI {fciEnergy.toFixed(4)}
-        </text>
-
-        {/* Measured energy line (primary result) */}
-        <line
-          x1={padL + 10} y1={measuredY}
-          x2={padL + chartW * 0.45} y2={measuredY}
-          stroke={withinAcc ? '#00ff88' : '#eab308'}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        <circle cx={padL + 10} cy={measuredY} r="3" fill={withinAcc ? '#00ff88' : '#eab308'} />
-        <text
-          x={padL + chartW * 0.45 + 8} y={measuredY + 4}
-          fill={withinAcc ? '#00ff88' : '#eab308'}
-          fontFamily="monospace"
-          fontSize="10"
-          fontWeight="bold"
-        >
-          {measuredEnergy.toFixed(4)} Ha
-        </text>
-        <text
-          x={padL + chartW * 0.45 + 8} y={measuredY + 16}
-          fill="#888"
-          fontFamily="monospace"
-          fontSize="9"
-        >
-          {result.backend}
-        </text>
-
-        {/* Comparison result (if present) */}
-        {comparisonResult && (() => {
-          const cmpEnergy = comparisonResult.analysis.energy_hartree as number
-          const cmpY = eToY(cmpEnergy)
-          const cmpAcc = comparisonResult.analysis.chemical_accuracy
-          return (
-            <>
-              <line
-                x1={padL + 10} y1={cmpY}
-                x2={padL + chartW * 0.45} y2={cmpY}
-                stroke={cmpAcc ? '#00d4ff' : '#ff6b9d'}
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <circle cx={padL + 10} cy={cmpY} r="3" fill={cmpAcc ? '#00d4ff' : '#ff6b9d'} />
-              <text
-                x={padL + chartW * 0.45 + 8} y={cmpY + 4}
-                fill={cmpAcc ? '#00d4ff' : '#ff6b9d'}
-                fontFamily="monospace"
-                fontSize="10"
-                fontWeight="bold"
-              >
-                {cmpEnergy.toFixed(4)} Ha
-              </text>
-              <text
-                x={padL + chartW * 0.45 + 8} y={cmpY + 16}
-                fill="#888"
-                fontFamily="monospace"
-                fontSize="9"
-              >
-                {comparisonResult.backend}
-              </text>
-              {/* Error arrow */}
-              <line
-                x1={padL + chartW * 0.25}
-                y1={fciY}
-                x2={padL + chartW * 0.25}
-                y2={cmpY}
-                stroke="rgba(255,107,157,0.3)"
-                strokeWidth="1"
-                strokeDasharray="2 2"
-              />
-            </>
-          )
-        })()}
-
-        {/* Y-axis label */}
-        <text
-          x="12" y={padT + chartH / 2}
-          fill="#555"
-          fontFamily="monospace"
-          fontSize="10"
-          textAnchor="middle"
-          transform={`rotate(-90, 12, ${padT + chartH / 2})`}
-        >
-          Energy (Hartree)
-        </text>
-      </svg>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Multi-Basis Counts for VQE
-// ---------------------------------------------------------------------------
-
-function MultiBasisCounts({ rawCounts }: { rawCounts: Record<string, any> }) {
-  const bases = [
-    { key: 'z_basis', label: 'Z-basis', color: '#00d4ff', desc: 'Computational basis' },
-    { key: 'x_basis', label: 'X-basis', color: '#8b5cf6', desc: 'Hadamard rotated' },
-    { key: 'y_basis', label: 'Y-basis', color: '#ff6b9d', desc: 'S+H rotated' },
-  ]
-
-  return (
-    <div className="mt-4 space-y-4">
-      <p className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">Measurement Counts by Basis</p>
-      <div className="grid grid-cols-1 gap-3">
-        {bases.map(basis => {
-          const counts = rawCounts[basis.key]
-          if (!counts) return null
-          const total = totalFromCounts(counts)
-          return (
-            <div key={basis.key} className="bg-white/[0.01] rounded p-3 border border-white/[0.03]">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: basis.color }} />
-                <span className="text-xs font-mono font-bold" style={{ color: basis.color }}>{basis.label}</span>
-                <span className="text-[10px] font-mono text-gray-600">{basis.desc}</span>
-                <span className="text-[10px] font-mono text-gray-600 ml-auto">{total} shots</span>
-              </div>
-              <CountsBar counts={counts} total={total} accentColor={basis.color} />
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// H2 Dissociation Curve (SVG)
-// ---------------------------------------------------------------------------
-
-function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; reference: SweepReference[] }) {
-  if (sweep.length === 0 && reference.length === 0) return null
-
-  const svgW = 640
-  const svgH = 340
-  const padL = 70
-  const padR = 30
-  const padT = 25
-  const padB = 50
-  const chartW = svgW - padL - padR
-  const chartH = svgH - padT - padB
-
-  // Gather all energies to set Y range
-  const allEnergies = [
-    ...reference.map(r => r.fci_energy),
-    ...reference.map(r => r.hf_energy),
-    ...sweep.map(s => s.energy_measured),
-  ]
-  const minE = Math.min(...allEnergies) - 0.04
-  const maxE = Math.max(...allEnergies) + 0.04
-
-  // X range: bond distance
-  const allR = [...reference.map(r => r.bond_distance), ...sweep.map(s => s.bond_distance)]
-  const minR = Math.min(...allR) - 0.05
-  const maxR = Math.max(...allR) + 0.1
-
-  const xScale = (r: number) => padL + ((r - minR) / (maxR - minR)) * chartW
-  const yScale = (e: number) => padT + ((maxE - e) / (maxE - minE)) * chartH
-
-  // FCI line (reference)
-  const fciPath = reference.length > 1
-    ? reference.map((pt, i) =>
-        `${i === 0 ? 'M' : 'L'} ${xScale(pt.bond_distance).toFixed(1)} ${yScale(pt.fci_energy).toFixed(1)}`
-      ).join(' ')
-    : ''
-
-  // HF line (reference)
-  const hfPath = reference.length > 1
-    ? reference.map((pt, i) =>
-        `${i === 0 ? 'M' : 'L'} ${xScale(pt.bond_distance).toFixed(1)} ${yScale(pt.hf_energy).toFixed(1)}`
-      ).join(' ')
-    : ''
-
-  // Y-axis grid lines
-  const yTicks: number[] = []
-  const yStep = 0.1
-  for (let e = Math.ceil(minE / yStep) * yStep; e <= maxE; e += yStep) {
-    yTicks.push(Math.round(e * 100) / 100)
-  }
-
-  // X-axis ticks
-  const xTicks = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0].filter(r => r >= minR && r <= maxR)
-
-  // Chemical accuracy zone around FCI (too narrow to shade, show as label)
-  const eqPoint = reference.find(r => Math.abs(r.bond_distance - 0.735) < 0.01)
-  const eqSweep = sweep.find(s => Math.abs(s.bond_distance - 0.735) < 0.01)
-
-  return (
-    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
-      <div className="flex items-center gap-3 mb-1">
-        <h3 className="text-white font-bold">H&#8322; Dissociation Curve</h3>
-        <span className="text-[10px] font-mono text-gray-500">{sweep.length} points, 65k shots each</span>
-      </div>
-      <p className="text-xs text-gray-400 mb-4 max-w-xl leading-relaxed">
-        Energy vs. bond distance for molecular hydrogen. The VQE emulator matches the exact (FCI) curve
-        within chemical accuracy at all 14 distances -- from compressed (0.3 &#197;) through equilibrium (0.735 &#197;)
-        to fully dissociated (3.0 &#197;).
-      </p>
-      <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full" xmlns="http://www.w3.org/2000/svg">
-        {/* Chart background */}
-        <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="4" />
-
-        {/* Y-axis grid */}
-        {yTicks.map(e => (
-          <g key={e}>
-            <line x1={padL} y1={yScale(e)} x2={padL + chartW} y2={yScale(e)} stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-            <text x={padL - 6} y={yScale(e) + 3} textAnchor="end" fill="#555" fontFamily="monospace" fontSize="10">
-              {e.toFixed(1)}
-            </text>
-          </g>
-        ))}
-
-        {/* X-axis grid */}
-        {xTicks.map(r => (
-          <g key={r}>
-            <line x1={xScale(r)} y1={padT} x2={xScale(r)} y2={padT + chartH} stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-            <text x={xScale(r)} y={padT + chartH + 16} textAnchor="middle" fill="#555" fontFamily="monospace" fontSize="10">
-              {r.toFixed(1)}
-            </text>
-          </g>
-        ))}
-
-        {/* HF curve (dashed, dimmer) */}
-        {hfPath && (
-          <path d={hfPath} fill="none" stroke="#ff6b9d" strokeWidth="1.5" strokeDasharray="6 3" opacity="0.5" />
-        )}
-
-        {/* FCI curve (solid reference) */}
-        {fciPath && (
-          <path d={fciPath} fill="none" stroke="#888" strokeWidth="1.5" />
-        )}
-
-        {/* VQE emulator points */}
-        {sweep.map(pt => {
-          const withinAcc = pt.error_kcal < 1.0
-          return (
-            <circle
-              key={pt.bond_distance}
-              cx={xScale(pt.bond_distance)}
-              cy={yScale(pt.energy_measured)}
-              r="4"
-              fill={withinAcc ? '#00ff88' : '#eab308'}
-              stroke="rgba(0,0,0,0.5)"
-              strokeWidth="0.5"
-            />
-          )
-        })}
-
-        {/* Equilibrium marker */}
-        {eqPoint && (
-          <>
-            <line
-              x1={xScale(0.735)} y1={padT}
-              x2={xScale(0.735)} y2={padT + chartH}
-              stroke="rgba(139,92,246,0.3)" strokeWidth="1" strokeDasharray="3 3"
-            />
-            <text x={xScale(0.735)} y={padT - 6} textAnchor="middle" fill="#8b5cf6" fontFamily="monospace" fontSize="9">
-              R&#8337;=0.735 &#197;
-            </text>
-          </>
-        )}
-
-        {/* Legend */}
-        <g transform={`translate(${padL + 12}, ${padT + 14})`}>
-          <line x1="0" y1="0" x2="20" y2="0" stroke="#888" strokeWidth="1.5" />
-          <text x="26" y="3" fill="#888" fontFamily="monospace" fontSize="9">FCI (exact)</text>
-
-          <line x1="0" y1="16" x2="20" y2="16" stroke="#ff6b9d" strokeWidth="1.5" strokeDasharray="6 3" opacity="0.5" />
-          <text x="26" y="19" fill="#ff6b9d" fontFamily="monospace" fontSize="9" opacity="0.6">Hartree-Fock</text>
-
-          <circle cx="10" cy="32" r="4" fill="#00ff88" />
-          <text x="26" y="35" fill="#00ff88" fontFamily="monospace" fontSize="9">VQE Emulator</text>
-        </g>
-
-        {/* Axis labels */}
-        <text
-          x={padL + chartW / 2} y={svgH - 4}
-          textAnchor="middle" fill="#666" fontFamily="monospace" fontSize="11"
-        >
-          Bond Distance (&#197;)
-        </text>
-        <text
-          x="14" y={padT + chartH / 2}
-          textAnchor="middle" fill="#666" fontFamily="monospace" fontSize="11"
-          transform={`rotate(-90, 14, ${padT + chartH / 2})`}
-        >
-          Energy (Hartree)
-        </text>
-      </svg>
-
-      {/* Stats row */}
-      <div className="flex flex-wrap gap-4 mt-4 text-xs font-mono">
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Equilibrium energy: </span>
-          <span className="text-[#00ff88] font-bold">{eqSweep?.energy_measured?.toFixed(4) || '?'} Ha</span>
-        </div>
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Max error: </span>
-          <span className="text-white font-bold">{Math.max(...sweep.map(s => s.error_kcal)).toFixed(2)} kcal/mol</span>
-        </div>
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Points within chem. accuracy: </span>
-          <span className="text-[#00ff88] font-bold">{sweep.filter(s => s.error_kcal < 1.0).length}/{sweep.length}</span>
-        </div>
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Correlation energy captured: </span>
-          <span className="text-[#8b5cf6] font-bold">100%</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Fidelity Comparison (3-backend bar chart)
-// ---------------------------------------------------------------------------
-
-function FidelityComparisonChart({ results }: { results: ExperimentResult[] }) {
-  const experiments = ['bell_calibration', 'ghz_state'] as const
-  const expLabels: Record<string, string> = { bell_calibration: 'Bell State', ghz_state: 'GHZ (3q)' }
-
-  // Gather fidelities by type and backend
-  type FidelityRow = { type: string; label: string; backends: { name: string; fidelity: number; color: string }[] }
-  const rows: FidelityRow[] = []
-
-  for (const expType of experiments) {
-    const typeResults = results.filter(r => r.type === expType && r.analysis?.fidelity !== undefined)
-    if (typeResults.length === 0) continue
-
-    const backends = typeResults.map(r => {
-      const { label, isHw } = backendLabel(r.backend)
-      const fidelity = r.analysis.fidelity as number
-      const color = r.backend.toLowerCase().includes('ibm') ? '#8b5cf6'
-        : r.backend.toLowerCase().includes('tuna') ? '#ff8c42'
-        : '#00d4ff'
-      return { name: label, fidelity, color }
-    }).sort((a, b) => b.fidelity - a.fidelity)
-
-    rows.push({ type: expType, label: expLabels[expType] || expType, backends })
-  }
-
-  if (rows.length === 0) return null
-
-  const svgW = 500
-  const rowH = 60
-  const svgH = rows.length * rowH + 40
-  const padL = 80
-  const padR = 80
-  const barW = svgW - padL - padR
-
-  return (
-    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
-      <h3 className="text-white font-bold mb-1">Cross-Platform Fidelity</h3>
-      <p className="text-xs text-gray-400 mb-4">How do emulator, IBM, and Tuna-9 compare on the same experiments?</p>
-      <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-lg" xmlns="http://www.w3.org/2000/svg">
-        {rows.map((row, ri) => {
-          const groupY = ri * rowH + 10
-          return (
-            <g key={row.type}>
-              <text x={padL - 8} y={groupY + rowH / 2} textAnchor="end" fill="#aaa" fontFamily="monospace" fontSize="11" dominantBaseline="middle">
-                {row.label}
-              </text>
-              {row.backends.map((b, bi) => {
-                const barY = groupY + bi * 16 + 4
-                const barLen = (b.fidelity) * barW
-                const pct = (b.fidelity * 100).toFixed(1)
-                return (
-                  <g key={b.name}>
-                    {/* Background track */}
-                    <rect x={padL} y={barY} width={barW} height={12} rx="2" fill="rgba(255,255,255,0.03)" />
-                    {/* Fidelity bar */}
-                    <rect x={padL} y={barY} width={barLen} height={12} rx="2" fill={b.color} opacity="0.8" />
-                    {/* Label */}
-                    <text x={padL + barLen + 6} y={barY + 9} fill={b.color} fontFamily="monospace" fontSize="9" fontWeight="bold">
-                      {pct}%
-                    </text>
-                    <text x={svgW - 4} y={barY + 9} textAnchor="end" fill="#666" fontFamily="monospace" fontSize="8">
-                      {b.name}
-                    </text>
-                  </g>
-                )
-              })}
-              {/* Divider */}
-              {ri < rows.length - 1 && (
-                <line x1={padL} y1={groupY + rowH - 2} x2={padL + barW} y2={groupY + rowH - 2} stroke="rgba(255,255,255,0.05)" />
-              )}
-            </g>
-          )
-        })}
-      </svg>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
 // Experiment Cards
 // ---------------------------------------------------------------------------
-
-function ComparisonRow({ label, thisVal, otherVal, otherBackend, unit, better }: {
-  label: string; thisVal: string; otherVal: string; otherBackend: string; unit?: string; better?: 'higher' | 'lower'
-}) {
-  return (
-    <div className="flex items-center gap-3 text-xs font-mono bg-white/[0.01] rounded px-3 py-2 border border-white/[0.03]">
-      <span className="text-gray-500 w-28">{label}</span>
-      <span className="text-white font-bold">{thisVal}{unit ? ` ${unit}` : ''}</span>
-      <span className="text-gray-600">vs</span>
-      <span className="text-gray-400">{otherVal}{unit ? ` ${unit}` : ''}</span>
-      <span className="text-gray-600 text-[10px]">({otherBackend})</span>
-    </div>
-  )
-}
 
 function BellCard({ result, comparisonResult }: { result: ExperimentResult; comparisonResult?: ExperimentResult }) {
   const analysis = result.analysis
@@ -880,68 +270,6 @@ function VQECard({ result, comparisonResult }: { result: ExperimentResult; compa
   )
 }
 
-// ---------------------------------------------------------------------------
-// RB Card — Randomized Benchmarking
-// ---------------------------------------------------------------------------
-
-function RBDecayCurve({ survival, seqLengths }: { survival: Record<string, number>; seqLengths: number[] }) {
-  const svgW = 400
-  const svgH = 160
-  const padL = 50
-  const padR = 20
-  const padT = 15
-  const padB = 30
-  const chartW = svgW - padL - padR
-  const chartH = svgH - padT - padB
-
-  const maxM = Math.max(...seqLengths)
-  const xScale = (m: number) => padL + (m / maxM) * chartW
-  const yScale = (p: number) => padT + (1 - p) * chartH
-
-  const points = seqLengths
-    .filter(m => survival[String(m)] !== undefined)
-    .map(m => ({ m, p: survival[String(m)] }))
-
-  if (points.length < 2) return null
-
-  const pathD = points.map((pt, i) =>
-    `${i === 0 ? 'M' : 'L'} ${xScale(pt.m).toFixed(1)} ${yScale(pt.p).toFixed(1)}`
-  ).join(' ')
-
-  return (
-    <div className="mt-4">
-      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Survival Probability Decay</p>
-      <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-md" xmlns="http://www.w3.org/2000/svg">
-        <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="3" />
-        {/* Grid lines */}
-        {[0.5, 0.75, 1.0].map(p => (
-          <g key={p}>
-            <line x1={padL} y1={yScale(p)} x2={padL + chartW} y2={yScale(p)} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-            <text x={padL - 4} y={yScale(p) + 3} textAnchor="end" fill="#666" fontFamily="monospace" fontSize="9">
-              {(p * 100).toFixed(0)}%
-            </text>
-          </g>
-        ))}
-        {/* Decay curve */}
-        <path d={pathD} fill="none" stroke="#ff8c42" strokeWidth="2" strokeLinecap="round" />
-        {/* Data points */}
-        {points.map(pt => (
-          <circle key={pt.m} cx={xScale(pt.m)} cy={yScale(pt.p)} r="3" fill="#ff8c42" />
-        ))}
-        {/* X-axis labels */}
-        {seqLengths.filter(m => survival[String(m)] !== undefined).map(m => (
-          <text key={m} x={xScale(m)} y={svgH - 5} textAnchor="middle" fill="#666" fontFamily="monospace" fontSize="9">
-            {m}
-          </text>
-        ))}
-        <text x={padL + chartW / 2} y={svgH} textAnchor="middle" fill="#555" fontFamily="monospace" fontSize="9">
-          Sequence Length
-        </text>
-      </svg>
-    </div>
-  )
-}
-
 function RBCard({ result }: { result: ExperimentResult }) {
   const analysis = result.analysis
   const emu = isEmulator(result.backend)
@@ -992,70 +320,6 @@ function RBCard({ result }: { result: ExperimentResult }) {
       )}
       {emu && <EmulatorNote />}
       {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// QAOA Card — MaxCut
-// ---------------------------------------------------------------------------
-
-function QAOAHeatmap({ heatmap, gammaValues, betaValues }: {
-  heatmap: Record<string, { gamma: number; beta: number; approximation_ratio: number }>
-  gammaValues: number[]; betaValues: number[]
-}) {
-  const cellSize = 48
-
-  return (
-    <div className="mt-4">
-      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Approximation Ratio Heatmap</p>
-      <div className="inline-block">
-        <div className="flex items-end gap-1 mb-1">
-          <div style={{ width: 40 }} />
-          {betaValues.map((b, bi) => (
-            <div key={bi} className="text-[9px] font-mono text-gray-500 text-center" style={{ width: cellSize }}>
-              {b.toFixed(1)}
-            </div>
-          ))}
-        </div>
-        {gammaValues.map((g, gi) => (
-          <div key={gi} className="flex items-center gap-1 mb-1">
-            <div className="text-[9px] font-mono text-gray-500 text-right" style={{ width: 40 }}>
-              {g.toFixed(1)}
-            </div>
-            {betaValues.map((b, bi) => {
-              const key = `g${gi}_b${bi}`
-              const data = heatmap[key]
-              const ratio = data?.approximation_ratio || 0
-              const intensity = Math.min(ratio, 1)
-              const r = Math.round(255 * (1 - intensity))
-              const gv = Math.round(255 * intensity)
-              const color = `rgb(${r}, ${gv}, 100)`
-              return (
-                <div
-                  key={bi}
-                  className="rounded text-[10px] font-mono text-center flex items-center justify-center"
-                  style={{
-                    width: cellSize, height: cellSize,
-                    backgroundColor: `rgba(${Math.round(255 * intensity * 0.4)}, ${Math.round(255 * intensity)}, ${Math.round(100 * intensity)}, 0.3)`,
-                    border: `1px solid rgba(${Math.round(255 * intensity * 0.4)}, ${Math.round(255 * intensity)}, ${Math.round(100 * intensity)}, 0.2)`,
-                    color: intensity > 0.5 ? '#fff' : '#888',
-                  }}
-                >
-                  {(ratio * 100).toFixed(0)}%
-                </div>
-              )
-            })}
-          </div>
-        ))}
-        <div className="flex items-center gap-1 mt-1">
-          <div className="text-[9px] font-mono text-gray-500 text-right" style={{ width: 40 }} />
-          <div className="text-[9px] font-mono text-gray-500">beta &rarr;</div>
-        </div>
-        <div className="text-[9px] font-mono text-gray-500 -mt-1" style={{ marginLeft: -8, transform: 'rotate(-90deg) translateX(-30px)', transformOrigin: 'left' }}>
-          gamma
-        </div>
-      </div>
     </div>
   )
 }
@@ -1345,7 +609,7 @@ function QRNGCertCard({ result }: { result: ExperimentResult }) {
 // ---------------------------------------------------------------------------
 
 function ComparisonTable({ results }: { results: ExperimentResult[] }) {
-  const types = ['bell_calibration', 'ghz_state', 'vqe_h2', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume']
+  const types = ['bell_calibration', 'ghz_state', 'vqe_h2', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume', 'connectivity_probe', 'repetition_code', 'detection_code']
   const backendsSet = new Set(results.map(r => r.backend))
   const backends = Array.from(backendsSet).sort((a, b) => {
     // Emulators first, then hardware
@@ -1376,6 +640,18 @@ function ComparisonTable({ results }: { results: ExperimentResult[] }) {
     }
     if (a.quantum_volume !== undefined) {
       return { text: `QV ${a.quantum_volume}`, color: '#14b8a6' }
+    }
+    if (a.average_fidelity !== undefined) {
+      const pct = a.average_fidelity * 100
+      return { text: `${pct.toFixed(1)}%`, color: pct > 90 ? '#00ff88' : pct > 80 ? '#00d4ff' : '#eab308' }
+    }
+    if (a.average_syndrome_accuracy !== undefined) {
+      const pct = a.average_syndrome_accuracy * 100
+      return { text: `${pct.toFixed(1)}%`, color: pct > 90 ? '#00ff88' : pct > 70 ? '#eab308' : '#ff6b9d' }
+    }
+    if (a.overall_detection_rate !== undefined) {
+      const pct = a.overall_detection_rate * 100
+      return { text: `${pct.toFixed(1)}%`, color: pct > 90 ? '#00ff88' : pct > 70 ? '#eab308' : '#ff6b9d' }
     }
     return { text: '--', color: '#555' }
   }
@@ -1423,6 +699,378 @@ function ComparisonTable({ results }: { results: ExperimentResult[] }) {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Connectivity Probe Card — 9x9 Heatmap
+// ---------------------------------------------------------------------------
+
+function ConnectivityHeatmap({ heatmap, numQubits }: { heatmap: Record<string, number>; numQubits: number }) {
+  const cellSize = 36
+  const pad = 30
+
+  return (
+    <div className="mt-4">
+      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">CNOT Fidelity Heatmap</p>
+      <div className="inline-block overflow-x-auto">
+        <svg
+          viewBox={`0 0 ${pad + numQubits * cellSize + 10} ${pad + numQubits * cellSize + 10}`}
+          className="w-full max-w-md"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Column labels */}
+          {Array.from({ length: numQubits }, (_, j) => (
+            <text key={`col-${j}`} x={pad + j * cellSize + cellSize / 2} y={pad - 8} textAnchor="middle" fill="#666" fontFamily="monospace" fontSize="9">
+              q{j}
+            </text>
+          ))}
+          {/* Rows */}
+          {Array.from({ length: numQubits }, (_, i) => (
+            <g key={`row-${i}`}>
+              <text x={pad - 6} y={pad + i * cellSize + cellSize / 2 + 3} textAnchor="end" fill="#666" fontFamily="monospace" fontSize="9">
+                q{i}
+              </text>
+              {Array.from({ length: numQubits }, (_, j) => {
+                const fid = heatmap[`${i},${j}`]
+                const isDiag = i === j
+                if (fid === undefined && !isDiag) {
+                  return (
+                    <rect key={j} x={pad + j * cellSize} y={pad + i * cellSize} width={cellSize - 2} height={cellSize - 2} rx="2" fill="rgba(255,255,255,0.02)" />
+                  )
+                }
+                const val = isDiag ? 1.0 : fid
+                const intensity = Math.max(0, Math.min(1, (val - 0.5) / 0.5))
+                const r = Math.round(255 * (1 - intensity))
+                const g = Math.round(255 * intensity)
+                return (
+                  <g key={j}>
+                    <rect
+                      x={pad + j * cellSize} y={pad + i * cellSize}
+                      width={cellSize - 2} height={cellSize - 2} rx="2"
+                      fill={isDiag ? 'rgba(255,255,255,0.05)' : `rgba(${Math.round(r * 0.3)}, ${Math.round(g * 0.8)}, ${Math.round(100 * intensity)}, 0.4)`}
+                      stroke={isDiag ? 'transparent' : `rgba(${Math.round(r * 0.3)}, ${Math.round(g * 0.8)}, ${Math.round(100 * intensity)}, 0.2)`}
+                      strokeWidth="0.5"
+                    />
+                    {!isDiag && (
+                      <text
+                        x={pad + j * cellSize + (cellSize - 2) / 2}
+                        y={pad + i * cellSize + (cellSize - 2) / 2 + 3}
+                        textAnchor="middle" fill={intensity > 0.5 ? '#fff' : '#888'}
+                        fontFamily="monospace" fontSize="8"
+                      >
+                        {(val * 100).toFixed(0)}
+                      </text>
+                    )}
+                  </g>
+                )
+              })}
+            </g>
+          ))}
+        </svg>
+      </div>
+    </div>
+  )
+}
+
+function ConnectivityProbeCard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const emu = isEmulator(result.backend)
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#e879f9]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.connectivity_probe }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.connectivity_probe}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{result.backend} -- {new Date(result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={result.backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {analysis.average_fidelity !== undefined && (
+        <div className="space-y-3">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Avg Fidelity</p>
+              <p className="text-lg font-mono font-bold" style={{
+                color: analysis.average_fidelity > 0.9 ? '#00ff88' : analysis.average_fidelity > 0.8 ? '#00d4ff' : '#eab308'
+              }}>
+                {(analysis.average_fidelity * 100).toFixed(1)}%
+              </p>
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Pairs Tested</p>
+              <p className="text-lg font-mono text-white">{analysis.num_pairs}</p>
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Best 5q Subgraph</p>
+              <p className="text-sm font-mono text-[#e879f9]">
+                {analysis.recommended_5q_subgraph?.length > 0
+                  ? `[${analysis.recommended_5q_subgraph.join(', ')}]`
+                  : 'N/A'}
+              </p>
+            </div>
+          </div>
+
+          {/* Best/worst pairs */}
+          {analysis.best_pairs && (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Best Pairs</p>
+                {(analysis.best_pairs as Array<{pair: string; fidelity: number}>).slice(0, 5).map((p: {pair: string; fidelity: number}) => (
+                  <div key={p.pair} className="flex items-center justify-between text-xs font-mono py-0.5">
+                    <span className="text-gray-300">q{p.pair.replace('-', ' -- q')}</span>
+                    <span className="text-[#00ff88]">{(p.fidelity * 100).toFixed(1)}%</span>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Worst Pairs</p>
+                {(analysis.worst_pairs as Array<{pair: string; fidelity: number}>).map((p: {pair: string; fidelity: number}) => (
+                  <div key={p.pair} className="flex items-center justify-between text-xs font-mono py-0.5">
+                    <span className="text-gray-300">q{p.pair.replace('-', ' -- q')}</span>
+                    <span className="text-[#ff6b9d]">{(p.fidelity * 100).toFixed(1)}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Heatmap */}
+          {analysis.heatmap && (
+            <ConnectivityHeatmap heatmap={analysis.heatmap} numQubits={analysis.num_qubits || 9} />
+          )}
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+      {emu && <EmulatorNote />}
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Repetition Code Card
+// ---------------------------------------------------------------------------
+
+function RepetitionCodeCard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const emu = isEmulator(result.backend)
+  const variants = analysis.variant_results as Record<string, any> | undefined
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#22d3ee]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.repetition_code }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.repetition_code}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{result.backend} -- {new Date(result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={result.backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {analysis.average_syndrome_accuracy !== undefined && (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Syndrome Accuracy</p>
+              <FidelityBar value={analysis.average_syndrome_accuracy} label="Avg across variants" />
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Logical Error Rate</p>
+              <p className="text-lg font-mono font-bold" style={{
+                color: analysis.average_logical_error_rate < 0.05 ? '#00ff88' : analysis.average_logical_error_rate < 0.15 ? '#eab308' : '#ff6b9d'
+              }}>
+                {(analysis.average_logical_error_rate * 100).toFixed(1)}%
+              </p>
+              <p className="text-[10px] font-mono text-gray-500 mt-0.5">After majority-vote correction</p>
+            </div>
+          </div>
+
+          {/* Per-variant syndrome results */}
+          {variants && (
+            <div>
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Syndrome Results by Variant</p>
+              <div className="space-y-1">
+                {Object.entries(variants).map(([name, v]: [string, any]) => {
+                  if (v.note) return (
+                    <div key={name} className="flex items-center gap-3 text-xs font-mono bg-white/[0.01] rounded px-3 py-1.5 border border-white/[0.03]">
+                      <span className="text-gray-400 w-24">{name}</span>
+                      <span className="text-gray-500 italic">{v.note}</span>
+                    </div>
+                  )
+                  return (
+                    <div key={name} className="flex items-center gap-3 text-xs font-mono bg-white/[0.01] rounded px-3 py-1.5 border border-white/[0.03]">
+                      <span className="text-gray-300 w-24">{name}</span>
+                      {v.expected_syndrome && (
+                        <span className="text-gray-500">expected: <span className="text-gray-300">{v.expected_syndrome}</span></span>
+                      )}
+                      {v.syndrome_accuracy !== null && v.syndrome_accuracy !== undefined && (
+                        <span style={{ color: v.syndrome_accuracy > 0.9 ? '#00ff88' : v.syndrome_accuracy > 0.7 ? '#eab308' : '#ff6b9d' }}>
+                          {(v.syndrome_accuracy * 100).toFixed(1)}% correct
+                        </span>
+                      )}
+                      <span className="text-gray-500 ml-auto">
+                        logical err: <span className={v.logical_error_rate < 0.05 ? 'text-[#00ff88]' : 'text-[#eab308]'}>
+                          {(v.logical_error_rate * 100).toFixed(1)}%
+                        </span>
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+      {emu && <EmulatorNote />}
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Detection Code Card — [[4,2,2]]
+// ---------------------------------------------------------------------------
+
+function DetectionCodeCard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const emu = isEmulator(result.backend)
+  const variants = analysis.variant_results as Record<string, any> | undefined
+  const decoder = analysis.decoder_comparison as Record<string, any> | undefined
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#a78bfa]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.detection_code }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.detection_code}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{result.backend} -- {new Date(result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={result.backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {analysis.overall_detection_rate !== undefined && (
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Detection Rate</p>
+              <p className="text-lg font-mono font-bold" style={{
+                color: analysis.overall_detection_rate > 0.9 ? '#00ff88' : analysis.overall_detection_rate > 0.7 ? '#eab308' : '#ff6b9d'
+              }}>
+                {(analysis.overall_detection_rate * 100).toFixed(1)}%
+              </p>
+              <p className="text-[10px] font-mono text-gray-500 mt-0.5">Errors correctly flagged</p>
+            </div>
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">False Positive Rate</p>
+              <p className="text-lg font-mono font-bold" style={{
+                color: analysis.false_positive_rate < 0.05 ? '#00ff88' : analysis.false_positive_rate < 0.15 ? '#eab308' : '#ff6b9d'
+              }}>
+                {(analysis.false_positive_rate * 100).toFixed(1)}%
+              </p>
+              <p className="text-[10px] font-mono text-gray-500 mt-0.5">Clean shots flagged as error</p>
+            </div>
+          </div>
+
+          {/* Decoder comparison */}
+          {decoder && (
+            <div className="bg-white/[0.02] rounded p-4 border border-white/[0.03]">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-3">AI Decoder vs Lookup Table</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-mono text-gray-500 mb-1">NN Decoder (MLP)</p>
+                  <p className="text-xl font-mono font-bold text-[#a78bfa]">
+                    {((decoder.nn_accuracy || 0) * 100).toFixed(1)}%
+                  </p>
+                  <p className="text-[10px] font-mono text-gray-600">
+                    {decoder.n_folds}-fold CV, {decoder.n_samples} samples
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-gray-500 mb-1">Lookup Table</p>
+                  <p className="text-xl font-mono font-bold text-gray-300">
+                    {((decoder.lookup_detailed_accuracy || decoder.lookup_accuracy || 0) * 100).toFixed(1)}%
+                  </p>
+                  <p className="text-[10px] font-mono text-gray-600">
+                    Syndrome-based classification
+                  </p>
+                </div>
+              </div>
+              {/* Accuracy bar comparison */}
+              <div className="mt-3 space-y-1">
+                {[
+                  { label: 'NN', value: decoder.nn_accuracy || 0, color: '#a78bfa' },
+                  { label: 'Lookup', value: decoder.lookup_detailed_accuracy || decoder.lookup_accuracy || 0, color: '#666' },
+                ].map(d => (
+                  <div key={d.label} className="flex items-center gap-2 text-xs font-mono">
+                    <span className="text-gray-500 w-16">{d.label}</span>
+                    <div className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${d.value * 100}%`, backgroundColor: d.color }} />
+                    </div>
+                    <span style={{ color: d.color }}>{(d.value * 100).toFixed(1)}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Per-variant detection results */}
+          {variants && (
+            <div>
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Detection by Error Type</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {Object.entries(variants).map(([name, v]: [string, any]) => (
+                  <div key={name} className="bg-white/[0.01] rounded px-3 py-2 border border-white/[0.03]">
+                    <span className="text-[10px] font-mono text-gray-400">{name}</span>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className="text-sm font-mono font-bold" style={{
+                        color: v.detection_rate > 0.9 ? '#00ff88' : v.detection_rate > 0.7 ? '#eab308' : '#ff6b9d'
+                      }}>
+                        {(v.detection_rate * 100).toFixed(0)}%
+                      </span>
+                      <span className="text-[10px] font-mono text-gray-600">{v.total_shots} shots</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+      {emu && <EmulatorNote />}
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
 function ResultCard({ result, comparison }: { result: ExperimentResult; comparison?: ExperimentResult }) {
   switch (result.type) {
     case 'bell_calibration':
@@ -1439,6 +1087,12 @@ function ResultCard({ result, comparison }: { result: ExperimentResult; comparis
       return <QVCard result={result} />
     case 'qrng_certification':
       return <QRNGCertCard result={result} />
+    case 'connectivity_probe':
+      return <ConnectivityProbeCard result={result} />
+    case 'repetition_code':
+      return <RepetitionCodeCard result={result} />
+    case 'detection_code':
+      return <DetectionCodeCard result={result} />
     default:
       return (
         <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
@@ -1466,8 +1120,11 @@ export default function ExperimentsPage() {
 
   const pending = queue.filter(q => q.status === 'pending')
 
+  // Build study index for linking to detail pages
+  const studyIndex = Object.fromEntries(getAllStudies().map(s => [s.type, s.slug]))
+
   // Group by type
-  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume', 'qrng_certification']
+  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume', 'qrng_certification', 'connectivity_probe', 'repetition_code', 'detection_code']
   const vqeResults = results.filter(r => r.type === 'vqe_h2')
   const bellResults = results.filter(r => r.type === 'bell_calibration')
   const ghzResults = results.filter(r => r.type === 'ghz_state')
@@ -1475,6 +1132,9 @@ export default function ExperimentsPage() {
   const qaoaResults = results.filter(r => r.type === 'qaoa_maxcut')
   const qvResults = results.filter(r => r.type === 'quantum_volume')
   const qrngResults = results.filter(r => r.type === 'qrng_certification')
+  const connectivityResults = results.filter(r => r.type === 'connectivity_probe')
+  const repetitionResults = results.filter(r => r.type === 'repetition_code')
+  const detectionResults = results.filter(r => r.type === 'detection_code')
   const otherResults = results.filter(r => !knownTypes.includes(r.type))
 
   // Find emulator/hardware pairs for cross-platform comparison
@@ -1492,6 +1152,9 @@ export default function ExperimentsPage() {
     { type: 'qaoa_maxcut', label: 'QAOA MaxCut', results: qaoaResults, color: '#ff6b9d', description: 'Can a quantum algorithm beat random guessing at graph optimization? QAOA sweeps variational parameters to find the maximum cut of a triangle graph. The approximation ratio measures how close we get to the classical optimum.', wide: false },
     { type: 'quantum_volume', label: 'Quantum Volume', results: qvResults, color: '#14b8a6', description: 'A holistic benchmark combining gate fidelity, connectivity, and compiler quality into a single number. QV tests whether the device can reliably execute random circuits of depth = width. Higher is better.', wide: true },
     { type: 'qrng_certification', label: 'QRNG Certification -- Randomness Quality', results: qrngResults, color: '#f59e0b', description: 'Are quantum random numbers truly random? We run 8 NIST SP 800-22 statistical tests against raw hardware output, von Neumann debiased output, and emulator output. Raw Tuna-9 bits show measurable bias; debiasing fixes it completely.', wide: true },
+    { type: 'connectivity_probe', label: 'Connectivity Probe', results: connectivityResults, color: '#e879f9', description: 'Map CNOT fidelity across all 36 qubit pairs on Tuna-9. The heatmap reveals which physical qubits are best-connected -- essential for choosing where to place error correction codes.', wide: true },
+    { type: 'repetition_code', label: '3-Qubit Repetition Code', results: repetitionResults, color: '#22d3ee', description: 'The simplest quantum error correction code: 3 data qubits + 2 syndrome qubits detect and correct single bit-flip errors. Syndrome accuracy measures how well the hardware extracts error information.', wide: true },
+    { type: 'detection_code', label: '[[4,2,2]] Error Detection Code', results: detectionResults, color: '#a78bfa', description: 'Four data qubits with XXXX and ZZZZ stabilizers detect any single-qubit error (X, Z, or Y). A neural network decoder trained on hardware syndrome data outperforms simple lookup-table decoding -- AI x Quantum in action.', wide: true },
   ]
 
   if (otherResults.length > 0) {
@@ -1631,6 +1294,7 @@ export default function ExperimentsPage() {
       {/* Grouped Results */}
       {groups.map(group => {
         if (group.results.length === 0) return null
+        const studySlug = studyIndex[group.type]
 
         return (
           <section key={group.type} className="px-6 pb-12">
@@ -1639,6 +1303,15 @@ export default function ExperimentsPage() {
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: group.color }} />
                 <h2 className="text-xl font-bold text-white">{group.label}</h2>
                 <span className="text-xs font-mono text-gray-600">{group.results.length} result{group.results.length !== 1 ? 's' : ''}</span>
+                {studySlug && (
+                  <Link
+                    href={`/experiments/${studySlug}`}
+                    className="ml-auto text-xs font-mono hover:underline transition-colors"
+                    style={{ color: group.color }}
+                  >
+                    Read full study &rarr;
+                  </Link>
+                )}
               </div>
               {group.description && (
                 <p className="text-sm text-gray-300 mb-6 ml-5 max-w-3xl leading-relaxed">{group.description}</p>
@@ -1654,6 +1327,33 @@ export default function ExperimentsPage() {
           </section>
         )
       })}
+
+      {/* Methodology & Caveats */}
+      {results.length > 0 && (
+        <section className="px-6 pb-12">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-xl font-bold text-white mb-4">Methodology Notes</h2>
+            <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 space-y-4 text-sm text-gray-300 leading-relaxed">
+              <p>
+                <strong className="text-white">Statistical caveats.</strong>{' '}
+                These are preliminary results from a small number of circuits and shots. Randomized benchmarking uses 5 random sequences per depth (standard protocols recommend 30+). Quantum Volume tests use 5 circuits per qubit count (IBM&apos;s protocol specifies 100+, with a two-sigma confidence interval). QAOA results reflect a single QAOA layer; deeper circuits may find better solutions.
+              </p>
+              <p>
+                <strong className="text-white">Hardware variability.</strong>{' '}
+                Results on real hardware (IBM, QI Tuna-9) vary between runs due to fluctuating qubit coherence, calibration drift, and crosstalk. A single run does not capture this variance. Error bars and multi-run statistics are planned.
+              </p>
+              <p>
+                <strong className="text-white">Error mitigation.</strong>{' '}
+                VQE results use parity post-selection (discarding states outside the target symmetry sector) but no advanced techniques like zero-noise extrapolation or probabilistic error cancellation. IBM runs use dynamical decoupling (XpXm) and Pauli twirling when available.
+              </p>
+              <p>
+                <strong className="text-white">Emulator vs. hardware.</strong>{' '}
+                Emulator results (qxelarator) represent noiseless ideal execution. Perfect fidelity/accuracy on the emulator is expected and not indicative of hardware capability. The value of emulator runs is as a correctness baseline.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Queue */}
       {pending.length > 0 && (

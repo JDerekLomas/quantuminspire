@@ -1,0 +1,13 @@
+{
+  "id": "repetition-code-001",
+  "type": "repetition_code",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T20:00:00Z",
+  "parameters": {
+    "shots": 4096,
+    "qubit_mapping": [0, 1, 2, 3, 4]
+  },
+  "priority": 11,
+  "description": "3-qubit repetition code with 2 syndrome qubits. Tests syndrome extraction and majority-vote decoding. 6 variants: no error, X on each data qubit, logical |1>, logical |+>."
+}

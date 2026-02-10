@@ -2,489 +2,132 @@ import { BlogPost } from "@/lib/blogTypes"
 
 export const posts: BlogPost[] = [
   {
-    slug: 'ai-for-science-landscape-2026',
-    title: 'The AI-for-Science Landscape in 2026',
-    subtitle: 'From focused research organizations to billion-dollar startups, the field is exploding',
+    slug: 'race-to-automate-science',
+    title: 'The Race to Automate Science — and Why It Should Worry Us',
+    subtitle: 'GPT-5 runs 36,000 experiments, AI scientists publish papers, and a Nature study finds the field is shrinking',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
-    category: 'landscape',
-    tags: ['AI for science', 'FROs', 'Schmidt Futures', 'landscape'],
-    heroImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80',
-    heroCaption: 'The convergence of AI and scientific discovery is reshaping how research gets done.',
-    excerpt: 'A comprehensive look at the organizations, startups, and government initiatives accelerating scientific discovery with AI — from Eric Schmidt\'s Focused Research Organizations to billion-dollar autonomous lab startups.',
+    category: 'opinion',
+    tags: ['automating science', 'self-driving labs', 'Andrew White', 'Nature', 'OpenAI Prism', 'Ginkgo'],
+    heroImage: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80',
+    heroCaption: 'The automation of scientific discovery is accelerating — but at what cost to scientific diversity?',
+    excerpt: 'GPT-5 just ran 36,000 protein experiments autonomously. OpenAI launched a free science workspace. And a Nature study found that AI is making scientists more productive while shrinking the scope of science itself. Here\'s what it means.',
     content: `
-<p>Something remarkable happened in 2025: the idea that AI could <em>do science</em> — not just assist scientists — went from speculative to operational. Google DeepMind opened a fully automated research lab in the UK. A startup called Lila Sciences raised $550M to build an "AI-native" drug discovery platform. The US government launched a $320M program to deploy AI across 17 national labs.</p>
+<p>In a single week in early 2026, three things happened that capture the state of automated science: OpenAI launched <strong>Prism</strong>, a free AI workspace for scientists. Ginkgo Bioworks announced that <strong>GPT-5 autonomously ran 36,000 experiments</strong> in their cloud lab. And a study in <em>Nature</em> found that AI tools are <strong>shrinking the scope of science</strong> even as they make individual scientists more productive.</p>
 
-<p>For our project at TU Delft — where we're exploring how AI might accelerate quantum computing specifically — understanding this broader landscape is essential. Here's what we found.</p>
+<p>These three developments — the tools, the results, and the warning — define the moment we're in.</p>
 
-<h2>The "Missing Middle": Focused Research Organizations</h2>
+<h2>The Experiments: GPT-5 in the Lab</h2>
 
-<p>One of the most interesting structural innovations is the <strong>Focused Research Organization (FRO)</strong> — a concept championed by <strong>Sam Rodriques</strong> and <strong>Adam Marblestone</strong> and backed by <strong>Eric Schmidt</strong> through Schmidt Sciences.</p>
+<p>On February 5, 2026, <a href="https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/">Ginkgo Bioworks and OpenAI announced</a> the results of a fully autonomous laboratory experiment. GPT-5 designed experiments for cell-free protein synthesis, a Pydantic-based validation system checked scientific soundness, and Ginkgo's robotic lab in Boston executed them.</p>
 
-<p>The idea addresses a real gap: some scientific problems need 5-7 years and $20-50M, require engineering talent alongside scientists, and produce public goods rather than products. Traditional academia can't sustain projects of this size and focus. Startups need a commercial path. Government labs are slow. FROs fill this "missing middle."</p>
-
-<p><strong>Convergent Research</strong> serves as the FRO incubator, having launched 10 organizations including:</p>
-<ul>
-<li><strong>E11 Bio</strong> — Large-scale connectomics (brain wiring maps)</li>
-<li><strong>Cultivarium</strong> — Engineering photosynthetic organisms</li>
-<li><strong>[C]Worthy</strong> — Ocean carbon removal verification</li>
-<li><strong>Lean FRO</strong> — Mathematical theorem formalization (won 2025 ACM SIGPLAN award, 210,000+ theorems in Mathlib)</li>
-<li><strong>Bind</strong>, <strong>EvE Bio</strong>, <strong>Forest Neurotech</strong>, <strong>Imprint</strong>, and others</li>
-</ul>
-<p>The UK's <strong>ARIA</strong> (Advanced Research + Invention Agency) has partnered with Convergent to launch "FROST UK" — bringing the FRO model to the UK. ARIA also funds 12 "AI Scientist" projects ($6M each, selected from 245 proposals), including partnerships with Lila Sciences/MIT, UCL, and the University of Liverpool.</p>
-
-<p>While none of the current FROs directly target quantum computing, the <em>model</em> is relevant. A "Quantum FRO" focused on AI-accelerated error correction or autonomous quantum experiment design would be well-suited to this structure.</p>
-
-<h2>Schmidt Sciences and AI2050</h2>
-
-<p><strong>Schmidt Sciences</strong> (formerly Schmidt Futures) has become one of the most significant funders of AI-for-science work. Their <strong>AI2050</strong> program ($125M across 99 fellows at 42 institutions) invests in researchers working on "hard problems in AI" including scientific applications. They've also funded the <strong>Virtual Institute for Scientific Software (VISS)</strong> and an AI in Science postdoc program, recognizing that much of science bottlenecks on software quality.</p>
-
-<p>Eric Schmidt has been vocal about his thesis: AI will compress the timeline of scientific discovery by orders of magnitude. In a December 2025 Harvard talk, he predicted AI mathematicians within a year and recursive self-improvement by 2030. He frames the US-China competition partly through AI adoption: 60% of Chinese employees use AI weekly vs 37% of Americans.</p>
-
-<h2>The Big Labs</h2>
-
-<h3>Google DeepMind</h3>
-<p>The most active player in AI-for-science, with multiple programs directly relevant to quantum:</p>
-<ul>
-<li><strong>AlphaQubit</strong> — A transformer-based quantum error correction decoder that outperforms traditional minimum-weight perfect matching (MWPM) decoders. It learns correlated error patterns from syndrome data, showing that neural networks can handle the real-time decoding challenge.</li>
-<li><strong>AlphaEvolve</strong> — Evolutionary AI for algorithm discovery, with potential applications in circuit optimization.</li>
-<li><strong>AI co-scientist</strong> — Announced in early 2026, a system designed to generate and test scientific hypotheses.</li>
-<li><strong>Automated UK lab</strong> — A fully AI-driven research facility that plans, executes, and analyzes experiments.</li>
-</ul>
-
-<h3>Microsoft</h3>
-<ul>
-<li><strong>Kosmos</strong> — Autonomous AI scientist platform for experimental design and execution.</li>
-<li><strong>MatterGen</strong> — Generative AI for novel materials discovery.</li>
-<li><strong>Azure Quantum</strong> — Cloud quantum + classical AI integration.</li>
-</ul>
-
-<h3>Meta FAIR</h3>
-<p>Open-source AI models for science, contributing to protein structure prediction and materials science.</p>
-
-<h2>The Startup Explosion</h2>
-
-<p>The funding numbers tell the story:</p>
-
+<p>The numbers:</p>
 <table>
-<thead><tr><th>Company</th><th>Funding</th><th>Focus</th><th>Key Approach</th></tr></thead>
+<thead><tr><th>Metric</th><th>Result</th></tr></thead>
 <tbody>
-<tr><td><strong>Lila Sciences</strong></td><td>$550M</td><td>Drug discovery</td><td>"AI Science Factories" — 235,500 sq ft Cambridge lab. George Church as CSO.</td></tr>
-<tr><td><strong>Periodic Labs</strong></td><td>$300M seed</td><td>Materials & chemistry</td><td>Largest AI-for-science seed round. Founded by Liam Fedus (ex-OpenAI VP) and Ekin Cubuk (ex-DeepMind). Angels: Bezos, Schmidt, Jeff Dean.</td></tr>
-<tr><td><strong>Xaira Therapeutics</strong></td><td>$1.3B</td><td>Drug design</td><td>Co-founded by David Baker (2024 Nobel). First drug entering human testing 2026.</td></tr>
-<tr><td><strong>CuspAI</strong></td><td>$100M</td><td>Materials design</td><td>AI-guided materials discovery</td></tr>
-<tr><td><strong>Isomorphic Labs</strong></td><td>$600M raised</td><td>Drug discovery</td><td>DeepMind spinoff. Novartis + Eli Lilly partnerships (~$3B). Clinical trials expected late 2026.</td></tr>
-<tr><td><strong>Recursion</strong></td><td>Public ($RXRX)</td><td>Drug discovery</td><td>Acquired Exscientia ($688M). REC-4881 showed 43% polyp reduction in Phase 1b/2.</td></tr>
-<tr><td><strong>Insilico Medicine</strong></td><td>$400M+, IPO'd</td><td>Drug discovery</td><td>First AI-discovered drug (rentosertib) in Phase II. Published results in Nature Medicine. Hong Kong IPO ($293M).</td></tr>
-<tr><td><strong>Arcadia Science</strong></td><td>$500M</td><td>Open biology</td><td>Funded by Jed McCaleb + Sam Altman. Studies understudied organisms.</td></tr>
+<tr><td>Experimental conditions tested</td><td><strong>36,000</strong> across 6 iterative cycles</td></tr>
+<tr><td>Cost per gram of protein</td><td><strong>$422/gram</strong> (40% reduction over state-of-the-art)</td></tr>
+<tr><td>Reagent cost reduction</td><td><strong>57%</strong> ($60 to $26 per gram)</td></tr>
 </tbody>
 </table>
 
-<h3>Sakana AI — The AI Scientist v2</h3>
-<p><strong>Sakana AI</strong> ($2.65B valuation), founded by Llion Jones (co-author of "Attention Is All You Need"), published "The AI Scientist v2" — accepted at an ICLR 2025 workshop, making it the first fully AI-generated peer-reviewed scientific paper. The system autonomously generates research ideas, writes code, runs experiments, and produces full papers. Their approach is directly parallel to what we're building at TU Delft for quantum computing.</p>
+<p>This is a closed-loop system: AI designs the experiment, robots execute it, results flow back to the AI, which designs the next round. No human in the loop for the experimental design. Ginkgo is already selling the optimized reaction mix through their reagents store.</p>
 
-<h3>FutureHouse and Edison Scientific</h3>
-<p><strong>FutureHouse</strong> focuses on AI for scientific literature. Their "Robin" agent identified ripasudil as a potential treatment for dry age-related macular degeneration — a genuine drug repurposing discovery. This was significant enough that <strong>Edison Scientific</strong> spun out with a $70M seed round at $250M valuation to pursue it commercially. Their companion system "Kosmos" reportedly compresses months of literature research into a single day.</p>
+<p>For quantum computing, this is a preview. Quantum experiments are even more amenable to automation — the entire workflow is digital. Our own agent infrastructure is a rudimentary version of what Ginkgo built, but for quantum circuits instead of protein synthesis.</p>
 
-<h3>EvolutionaryScale → CZI</h3>
-<p><strong>EvolutionaryScale</strong> (the team behind ESM protein language models) was acquired by the Chan Zuckerberg Initiative in November 2025. Their ESM3 protein foundation model was published in Science (January 2025). Alex Rives, the founder, is now Head of Science at CZI. CZI has committed $10B over the next decade to AI-for-biology — the largest single commitment in the field.</p>
+<h2>The Tools: OpenAI Prism and the Platform War</h2>
 
-<h2>Government Initiatives</h2>
-
+<p><strong>OpenAI Prism</strong>, launched January 27, 2026, is a free, AI-native, LaTeX-native workspace for scientists. It's powered by GPT-5.2 and can:</p>
 <ul>
-<li><strong>US Genesis Mission</strong> ($320M+) — 17 DOE national labs + 24 industry partners (Anthropic, AWS, Google, Microsoft, NVIDIA, OpenAI, xAI). Led by Under Secretary Dario Gil. Google's AI co-scientist replicated a 10-year hypothesis in 2 days at Imperial College London and is being deployed across all 17 DOE labs.</li>
-<li><strong>UK AI for Science</strong> (£137M) — Multiple research councils funding AI integration across disciplines.</li>
-<li><strong>Japan</strong> ($135B) — Combined quantum + AI national strategy, one of the largest commitments globally.</li>
-<li><strong>EU Quantum Act</strong> — Major funding framework where TU Delft / QuTech is centrally positioned.</li>
+<li>Draft and revise scientific text</li>
+<li>Reason through equations</li>
+<li>Suggest related papers from arXiv</li>
+<li>Convert photos of handwritten formulas into LaTeX</li>
+<li>Support unlimited projects and collaborators</li>
 </ul>
 
-<h2>What This Means for Quantum</h2>
+<p>MIT Technology Review described it as letting scientists "vibe code science." It's free to anyone with a ChatGPT account — a clear move to make OpenAI the default platform for scientific writing.</p>
 
-<p>Most of the AI-for-science action is in biology and chemistry. Quantum computing is a frontier where AI techniques are just beginning to be applied seriously. This presents an opportunity:</p>
+<p>They're not alone. <strong>Anthropic</strong> launched Claude for Life Sciences in October 2025 with integrations for Benchling, PubMed, and 10x Genomics. In January 2026, they expanded into healthcare with HIPAA-ready products. Anthropic also committed Claude and dedicated engineering teams to all 17 DOE national labs as part of the <strong>Genesis Mission</strong>.</p>
 
-<ol>
-<li><strong>The methods are transferable</strong> — Autonomous experiment design, foundation models, and agent-based research pipelines developed for biology can be adapted for quantum.</li>
-<li><strong>Hardware access is the bottleneck</strong> — Unlike drug discovery, quantum computing experiments can often be simulated. This means AI agents can iterate faster.</li>
-<li><strong>The field is small enough to matter</strong> — A well-designed AI research system could produce a meaningful fraction of quantum computing research output.</li>
-</ol>
+<p>The platform competition matters because whoever becomes the default AI for scientists shapes what questions get asked — and how.</p>
 
-<p>Our project at TU Delft sits at this intersection: real quantum hardware (through Quantum Inspire), frontier AI models, and an agent-based infrastructure designed for continuous operation. The landscape analysis suggests we're early — but not too early.</p>
-`,
-    sources: [
-      { label: 'Convergent Research (FRO incubator)', url: 'https://www.convergentresearch.org/' },
-      { label: 'Schmidt Sciences', url: 'https://www.schmidtsciences.org/' },
-      { label: 'Sakana AI — "The AI Scientist"', url: 'https://sakana.ai/ai-scientist/' },
-      { label: 'FutureHouse', url: 'https://www.futurehouse.org/' },
-      { label: 'AlphaQubit — DeepMind', url: 'https://deepmind.google/discover/blog/alphaqubit-a-machine-learning-decoder-for-quantum-error-correction/' },
-      { label: 'EvolutionaryScale', url: 'https://www.evolutionaryscale.ai/' },
-      { label: 'Lila Sciences — $550M raise', url: 'https://www.lila.sciences/' },
-      { label: 'US Genesis Mission announcement', url: 'https://www.energy.gov/science/genesis' },
-    ],
-  },
-  {
-    slug: 'llms-write-quantum-code',
-    title: 'Can LLMs Write Quantum Code? We Tested 151 Tasks',
-    subtitle: 'Gemini 3 Flash scores 62.25% and Claude Opus 4.6 scores 63.6% — but the failures are more interesting than the passes',
-    date: '2026-02-09',
-    author: 'AI x Quantum Research Team',
-    category: 'experiment',
-    tags: ['benchmark', 'Qiskit', 'LLM', 'Gemini', 'quantum coding'],
-    heroImage: 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=1200&q=80',
-    heroCaption: 'Testing whether AI models can bridge the gap between quantum theory and working code.',
-    excerpt: 'We ran the full Qiskit HumanEval benchmark against Gemini 3 Flash and Claude Opus 4.6 — 151 quantum programming tasks graded by automated code execution. The results reveal that LLMs understand quantum algorithms but struggle with rapidly evolving APIs.',
-    content: `
-<p>Can a large language model write a working quantum circuit from a natural-language description? We tested this by running the complete <a href="https://arxiv.org/abs/2406.02132">Qiskit HumanEval</a> benchmark — 151 quantum programming tasks across three difficulty levels.</p>
+<h2>The Warning: AI Expands Impact, Contracts Focus</h2>
 
-<h2>The Setup</h2>
-
-<p>Each task provides a function signature and docstring. The model must produce the function body. The generated code is executed in a sandboxed subprocess with unit tests — no partial credit, no manual review. Pass or fail.</p>
-
-<p>We tested two frontier models: <strong>Gemini 3 Flash</strong> (via Google's GenAI API) and <strong>Claude Opus 4.6</strong> (via Anthropic's API). The benchmark harness sends each prompt independently — no multi-turn dialogue, no chain-of-thought, no retrieval augmentation. Just the raw prompt and one shot at the answer.</p>
-
-<h2>The Results</h2>
+<p>This brings us to the most important paper of the year. In January 2026, <em>Nature</em> published "<a href="https://www.nature.com/articles/s41586-025-09922-y">Artificial intelligence tools expand scientists' impact but contract science's focus</a>" (Hao, Xu, Li & Evans). The findings, based on <strong>41.3 million research papers</strong>:</p>
 
 <table>
-<thead><tr><th>Model</th><th>Pass@1</th><th>Basic</th><th>Intermediate</th><th>Difficult</th></tr></thead>
+<thead><tr><th>Metric</th><th>Effect of AI Tool Adoption</th></tr></thead>
 <tbody>
-<tr><td><strong>Claude Opus 4.6</strong></td><td><strong>63.6%</strong> (96/151)</td><td>67.1% (53/79)</td><td>62.7% (42/67)</td><td>20.0% (1/5)</td></tr>
-<tr><td><strong>Gemini 3 Flash</strong></td><td>62.25% (94/151)</td><td>65.82% (52/79)</td><td>61.19% (41/67)</td><td>20.0% (1/5)</td></tr>
+<tr><td>Papers published</td><td><strong>3.02x</strong> more than non-AI peers</td></tr>
+<tr><td>Citations received</td><td><strong>4.84x</strong> more</td></tr>
+<tr><td>Time to become project leader</td><td><strong>1.37 years</strong> earlier</td></tr>
+<tr><td>Volume of scientific topics studied</td><td><strong>Shrinks by 4.63%</strong></td></tr>
+<tr><td>Engagement between scientists</td><td><strong>Decreases by 22%</strong></td></tr>
 </tbody>
 </table>
 
-<p>Both models are remarkably close — within 1.4 percentage points. Claude edges ahead slightly, particularly on basic and intermediate tasks. Both models solve exactly 1 of 5 difficult tasks. The basic-to-intermediate drop is surprisingly small for both — the models don't just know simple gate sequences; they can construct meaningful quantum algorithms. The cliff happens at "difficult" tasks that require multi-step reasoning with precise API calls.</p>
+<p>The mechanism is straightforward: scientists using AI migrate toward areas with abundant data where AI tools demonstrate measurable advances on legible benchmarks. AI automates established fields rather than supporting exploration of new ones. The result is a less interconnected scientific literature — more papers, but about fewer things.</p>
 
-<p>For context, the <strong>QUASAR</strong> system (which uses agentic RL and retrieval-augmented generation with a 4B parameter model) achieved 99.31% <em>circuit validity</em> — though that's a less strict metric than our functional correctness measure. <strong>QCoder</strong> with o3 reached 78% on a related benchmark, vs 40% for human experts.</p>
+<p>This is the Jevons Paradox applied to science: making research more efficient doesn't expand the frontier proportionally. It concentrates effort where efficiency gains are largest.</p>
 
-<h2>The Error Analysis</h2>
+<h2>Andrew White and the "Scientific Taste" Problem</h2>
 
-<p>This is where it gets interesting. Of the 57 failures:</p>
+<p>Andrew White — computational chemist at the University of Washington who led the ChemCrow project (the first chemistry LLM agent, which triggered a <em>White House briefing</em> on AI biosecurity), co-founder of <strong>Future House</strong> and <strong>Edison Scientific</strong> — addressed this problem directly on the <a href="https://www.latent.space/p/automating-science-world-models-scientific">Latent Space podcast</a>.</p>
 
-<table>
-<thead><tr><th>Error Type</th><th>Count</th><th>What It Means</th></tr></thead>
-<tbody>
-<tr><td>Wrong answer</td><td>13</td><td>Code runs but produces incorrect output</td></tr>
-<tr><td>Syntax error</td><td>11</td><td>Malformed Python — indentation, missing colons</td></tr>
-<tr><td>SamplerV2 API</td><td>9</td><td>Using deprecated Qiskit 1.x sampling API</td></tr>
-<tr><td>Account/runtime</td><td>6</td><td>Trying to use IBM Runtime (requires auth)</td></tr>
-<tr><td>Attribute error</td><td>5</td><td>Wrong method/property names</td></tr>
-<tr><td>Type error</td><td>4</td><td>Incorrect argument types</td></tr>
-<tr><td>Other</td><td>9</td><td>Misc runtime failures</td></tr>
-</tbody>
-</table>
+<p>His autonomous research system <strong>Kosmos</strong> runs up to 12 hours per session, performing ~200 agent rollouts, executing ~42,000 lines of code, and reading ~1,500 papers per run. Independent scientists found 79.4% of statements in Kosmos reports to be accurate. Collaborators reported a single 20-cycle run performed the equivalent of 6 months of their own research.</p>
 
-<h3>The key insight: API staleness, not algorithmic failure</h3>
+<p>But White identified the core problem: <strong>"scientific taste"</strong> — the ability to judge which questions are worth asking — is the real frontier. Traditional RLHF on hypothesis quality failed because human evaluators judge based on "tone, actionability, and specific facts" rather than theoretical importance. His solution: end-to-end feedback loops where actual research outcomes (downloads, citations, experimental validations) signal discovery quality.</p>
 
-<p>Only 13 of 57 failures (23%) are genuine algorithmic mistakes where the model produced incorrect quantum logic. The dominant failure mode is <strong>API version mismatch</strong>: 9 failures from Qiskit 2.x's <code>SamplerV2</code> breaking changes, 6 from trying to access IBM Runtime services that require authentication, and 5 from using wrong method names.</p>
+<p>He also warned about reward hacking: a trained molecule generation model generated compounds exploiting chemical loopholes (six-nitrogen structures, acid-base chemistry exploits) that scored well on benchmarks but were scientifically meaningless.</p>
 
-<p>The model was trained on Qiskit 1.x documentation and code. Qiskit 2.x introduced significant breaking changes (the V2 primitives). The model <em>understands the quantum computing concepts</em> but generates code for an API that no longer exists.</p>
+<h2>The Self-Driving Lab Landscape</h2>
 
-<h2>Implications</h2>
+<p>The Ginkgo result is part of a broader movement:</p>
 
-<h3>1. RAG could dramatically improve performance</h3>
-<p>If the dominant failure mode is stale API knowledge, then <strong>retrieval-augmented generation</strong> with current Qiskit 2.x documentation should push Pass@1 significantly higher. We estimate 75-80% is achievable by simply injecting up-to-date API signatures into the prompt.</p>
-
-<h3>2. The QUASAR result is relevant</h3>
-<p>The <strong>QUASAR</strong> system, which uses RAG with quantum documentation, achieved 99.31% circuit validity — suggesting that the documentation-injection approach works. Our benchmark measures functional correctness (stricter than validity), but the principle holds.</p>
-
-<h3>3. Quantum SDK design matters for AI</h3>
-<p>Frequent breaking changes in quantum SDKs create a compounding problem for AI code generation. SDKs designed with AI agents in mind — stable interfaces, versioned examples, machine-readable changelogs — would dramatically improve AI-assisted quantum development.</p>
-
-<h3>4. This benchmark should be run continuously</h3>
-<p>As new models release and quantum SDKs evolve, the intersection of model capability and API coverage shifts. Our <a href="/#agents">agent infrastructure</a> is designed to run this benchmark automatically against new model releases.</p>
-
-<h2>Next Steps</h2>
-
-<p>We're planning to:</p>
-<ol>
-<li>Add RAG with Qiskit 2.x docs and re-run the benchmark</li>
-<li>Test against Claude Opus 4.6, GPT-5, and domain-specific models</li>
-<li>Develop a cQASM variant for Quantum Inspire hardware</li>
-<li>Run the Agent-Q and QUASAR approaches against our benchmark for direct comparison</li>
-</ol>
-`,
-    sources: [
-      { label: 'Qiskit HumanEval benchmark paper', url: 'https://arxiv.org/abs/2406.02132' },
-      { label: 'QUASAR — agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
-      { label: 'Our benchmark results (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
-      { label: 'Qiskit 2.x migration guide', url: 'https://docs.quantum.ibm.com/migration-guides' },
-    ],
-  },
-  {
-    slug: 'autonomous-research-agents',
-    title: 'Building Autonomous Research Agents for Quantum Computing',
-    subtitle: 'What we learned designing an agent pipeline that runs experiments continuously',
-    date: '2026-02-10',
-    author: 'AI x Quantum Research Team',
-    category: 'technical',
-    tags: ['agents', 'infrastructure', 'orchestrator', 'automation'],
-    heroImage: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80',
-    heroCaption: 'Autonomous agents that plan, execute, and analyze quantum experiments around the clock.',
-    excerpt: 'We designed and implemented an agent-based research infrastructure that can continuously benchmark LLMs on quantum tasks, replicate published papers, and generate reports. Here\'s the architecture and what we\'ve learned.',
-    content: `
-<p>The promise of AI-for-science isn't just one-off experiments — it's <em>continuous, autonomous research</em>. We built an agent infrastructure that benchmarks, replicates, and reports on quantum computing research around the clock. Here's how it works and what we learned.</p>
-
-<h2>The Architecture</h2>
-
-<p>Our system has five agents, three currently operational:</p>
-
-<h3>Orchestrator (Implemented)</h3>
-<p>The central coordinator. It schedules experiments, tracks state across runs, and decides what to execute next. It supports multiple operating modes:</p>
 <ul>
-<li><strong>--once</strong>: Run the full pipeline (benchmark + replication + report) a single time</li>
-<li><strong>--daemon</strong>: Run continuously with configurable intervals (default: 1 hour)</li>
-<li><strong>--run-benchmarks</strong>: Just the benchmark sweep</li>
-<li><strong>--run-replication</strong>: Just paper replication</li>
-</ul>
-<p>The daemon mode uses graceful signal handling — SIGINT/SIGTERM trigger a clean shutdown after the current experiment completes. State is persisted to JSON between runs.</p>
-
-<h3>Benchmark Runner (Implemented)</h3>
-<p>Wraps our Qiskit HumanEval harness with model selection, result formatting, and cross-model comparison. Currently configured for Gemini 3 Flash, with plans to add Claude Opus 4.6 and GPT-5.</p>
-
-<h3>Replication Agent (Implemented)</h3>
-<p>Takes a paper ID from our registry, runs the corresponding simulation code, and logs results. Currently has one paper (Sagastizabal et al. 2019 VQE) with infrastructure to add more.</p>
-
-<h3>Literature Scout (Planned)</h3>
-<p>Will monitor arxiv quant-ph for papers with reproducible results, extract methodology, and generate structured replication plans.</p>
-
-<h3>Circuit Optimizer (Planned)</h3>
-<p>Will optimize circuits for Quantum Inspire hardware topologies, comparing AI-optimized results against Qiskit's transpiler.</p>
-
-<h2>Design Decisions</h2>
-
-<h3>Why subprocess isolation?</h3>
-<p>Each agent runs as a separate Python subprocess called by the orchestrator. This isn't the most elegant architecture, but it provides crucial benefits:</p>
-<ul>
-<li><strong>Crash isolation</strong>: A failing benchmark doesn't take down the orchestrator</li>
-<li><strong>Timeout enforcement</strong>: We can kill runaway experiments (2h limit for benchmarks)</li>
-<li><strong>Clean state</strong>: Each run gets a fresh Python environment — no leaked state from previous runs</li>
-<li><strong>Resource limits</strong>: Subprocess resource usage can be monitored independently</li>
+<li><strong>Google DeepMind</strong> is opening a fully automated materials science lab in the UK in 2026 — integrated with Gemini from the ground up, synthesizing and characterizing hundreds of materials per day.</li>
+<li><strong>Carnegie Mellon</strong> built a $40M cloud lab with Emerald Cloud Lab (200+ automated instruments). Their <strong>Coscientist</strong> system autonomously designs and executes chemistry experiments using GPT-4.</li>
+<li><strong>US legislation</strong>: In December 2025, Senators Fetterman and Budd announced legislation to create the first national system of programmable cloud laboratories.</li>
+<li>For quantum computing: the <strong>k-agents</strong> framework and <strong>Q-CTRL's autonomous calibration</strong> are making quantum processors self-driving — AI agents that calibrate gates and characterize devices without human intervention.</li>
 </ul>
 
-<h3>Why JSON state, not a database?</h3>
-<p>For our scale (tens of runs, not millions), a JSON file is simpler and more debuggable than a database. The state file is human-readable, version-controllable, and trivially recoverable. If we scale to thousands of runs, we'll migrate to SQLite.</p>
+<h2>The DOE Genesis Mission</h2>
 
-<h3>Why daemon mode instead of cron?</h3>
-<p>A long-running daemon maintains context between runs — it can make decisions based on the previous run's results. A cron job would need to reload and re-analyze state each time. The daemon also handles graceful shutdown, which matters when experiments take 30+ minutes.</p>
+<p>The scale of government commitment is unprecedented. The <strong>Genesis Mission</strong>, launched by Executive Order in November 2025, aims to "double the productivity and impact of American science within a decade." The American Science and Security Platform will connect all 17 DOE national laboratories with AI systems, creating what officials describe as "the world's most complex and powerful scientific instrument ever built."</p>
 
-<h2>Lessons from Sakana AI's "AI Scientist"</h2>
-
-<p>Sakana AI published "The AI Scientist" in 2024, demonstrating end-to-end autonomous research: idea generation, code writing, experiment execution, and paper drafting. Comparing their approach to ours:</p>
-
-<table>
-<thead><tr><th>Aspect</th><th>AI Scientist (Sakana)</th><th>Our System</th></tr></thead>
-<tbody>
-<tr><td>Scope</td><td>General ML research</td><td>Quantum computing specifically</td></tr>
-<tr><td>Idea generation</td><td>LLM brainstorming</td><td>Literature-guided (planned)</td></tr>
-<tr><td>Execution</td><td>Code gen + run</td><td>Structured pipeline with validation</td></tr>
-<tr><td>Hardware</td><td>Simulation only</td><td>QI hardware access planned</td></tr>
-<tr><td>Continuous operation</td><td>One-shot</td><td>Daemon mode, scheduled runs</td></tr>
-<tr><td>Quality control</td><td>LLM self-review</td><td>Automated test suites</td></tr>
-</tbody>
-</table>
-
-<p>The key difference: we prioritize <strong>reproducibility and rigor</strong> over <strong>novelty generation</strong>. Our benchmark harness has automated test suites. Our replication agent compares against published data. The system is designed to produce verified results, not impressive-sounding papers.</p>
-
-<h2>What's Next</h2>
-
-<p>The immediate roadmap:</p>
-<ol>
-<li><strong>Multi-model benchmarking</strong>: Automated sweeps across Claude, GPT-5, and Gemini for each benchmark run</li>
-<li><strong>Literature Scout</strong>: arxiv monitoring with automated replication plan generation</li>
-<li><strong>Hardware integration</strong>: Run circuits on actual Quantum Inspire devices (Starmon-7, Tuna-5/9)</li>
-<li><strong>Web dashboard</strong>: Real-time pipeline status on our research website</li>
-</ol>
-
-<p>The broader vision: a research system that discovers, replicates, and extends quantum computing papers while humans focus on the creative and strategic work. We're early, but the infrastructure is running.</p>
-`,
-    sources: [
-      { label: 'Sakana AI — "The AI Scientist"', url: 'https://sakana.ai/ai-scientist/' },
-      { label: 'Our agent code (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/agents' },
-      { label: 'Google AI co-scientist', url: 'https://research.google/blog/accelerating-scientific-breakthroughs-with-an-ai-co-scientist/' },
-      { label: 'Quantum Inspire platform', url: 'https://www.quantum-inspire.com/' },
-    ],
-  },
-  {
-    slug: 'ai-replicates-qutech-paper',
-    title: 'An AI Agent Replicated a QuTech Quantum Paper',
-    subtitle: 'Claude Opus 4.6 wrote 300 lines of VQE simulation code from a paper reference alone',
-    date: '2026-02-09',
-    author: 'AI x Quantum Research Team',
-    category: 'experiment',
-    tags: ['VQE', 'replication', 'Claude', 'QuTech', 'paper replication'],
-    heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
-    heroCaption: 'From published paper to working simulation — autonomously.',
-    excerpt: 'We gave Claude Opus 4.6 a reference to Sagastizabal et al. (2019) — a QuTech paper on symmetry-verified VQE for H2 — and asked it to replicate the experiment. It wrote the Hamiltonian, ansatz, noise model, and error mitigation from scratch.',
-    content: `
-<p>One of the most powerful tests of AI scientific capability is <strong>paper replication</strong>: given a published paper, can an AI agent reproduce the experiment from scratch? We tested this with a quantum computing paper from our own institution.</p>
-
-<h2>The Paper</h2>
-
-<p><strong>"Error Mitigation by Symmetry Verification on a Variational Quantum Eigensolver"</strong><br/>
-Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
-<a href="https://arxiv.org/abs/1902.11258">arxiv:1902.11258</a></p>
-
-<p>This paper from QuTech / TU Delft demonstrates a key technique: using physical symmetries to detect and mitigate errors in variational quantum eigensolvers (VQE). They find the ground-state energy of H&#8322; — the hydrogen molecule — using a 2-qubit circuit with Z-parity symmetry verification.</p>
-
-<h2>What the AI Built</h2>
-
-<p>Claude Opus 4.6 produced ~300 lines of production Qiskit code covering:</p>
-
-<h3>1. Hamiltonian Construction</h3>
-<p>The H&#8322; molecular Hamiltonian in the STO-3G basis, transformed via Bravyi-Kitaev reduction to a 2-qubit operator:</p>
-<p><code>H = g₀II + g₁ZI + g₂IZ + g₃ZZ + g₄XX + g₅YY</code></p>
-<p>The agent correctly identified that the coefficients (g₀ through g₅) are functions of the bond distance, and tabulated them from the O'Malley et al. reference data for 29 bond distances from 0.2 to 3.0 Angstroms.</p>
-
-<h3>2. Ansatz Circuit</h3>
-<p>A single-parameter exchange rotation in the {|01⟩, |10⟩} subspace — a parity-preserving ansatz that keeps the state within the correct symmetry sector. The agent decomposed this into RXX(θ) and RYY(θ) rotations, matching the paper's approach.</p>
-
-<h3>3. Noise Model</h3>
-<p>Realistic noise parameters matching the paper's device characterization:</p>
+<p>24 partner organizations signed agreements in December 2025:</p>
 <ul>
-<li>T₁ = 30μs, T₂ = 60μs (thermal relaxation)</li>
-<li>Depolarizing noise on single-qubit gates (0.1%) and two-qubit gates (1%)</li>
-<li>Measurement error (1%)</li>
+<li><strong>Google DeepMind</strong>: AI co-scientist deployed across all 17 labs</li>
+<li><strong>Anthropic</strong>: Claude + dedicated team building AI agents and MCP servers for lab workflows</li>
+<li><strong>NVIDIA</strong>: Open AI science models, autonomous labs, quantum computing research</li>
+<li><strong>OpenAI, Microsoft, IBM, AWS, Intel, Oracle, Palantir, xAI</strong>, and others</li>
 </ul>
 
-<h3>4. Symmetry Verification</h3>
-<p>The key innovation of the paper: post-selecting measurement results on states where the qubit parity matches the ground-state sector (even parity for H₂). This filters out a significant fraction of errors without additional circuit overhead.</p>
+<h2>What This Means for Us</h2>
 
-<h3>5. Measurement Protocol</h3>
-<p>Three measurement bases (Z, X, Y) with 8192 shots each. The XX expectation value requires Hadamard-rotated measurements; YY requires Sdg-Hadamard-rotated measurements. The agent correctly implemented all three basis rotations.</p>
-
-<h2>What This Demonstrates</h2>
-
-<p>This experiment shows that AI agents can:</p>
-<ol>
-<li><strong>Read and understand quantum physics papers</strong> — extracting the Hamiltonian, ansatz structure, noise parameters, and measurement protocol</li>
-<li><strong>Translate physics to code</strong> — implementing the Bravyi-Kitaev transformation, noise channels, and symmetry verification in Qiskit</li>
-<li><strong>Handle domain-specific details</strong> — correctly managing complex numbers, basis rotations, and expectation value calculations</li>
-</ol>
-
-<p>The entire replication was done in a single session with Claude Opus 4.6 acting as a coding agent through Claude Code. The human role was to provide the paper reference and review the output — the agent handled the physics, mathematics, and implementation.</p>
-
-<h2>Limitations</h2>
-
-<p>To be clear about what this doesn't show:</p>
-<ul>
-<li>We haven't yet run this on actual quantum hardware (only Qiskit Aer simulation)</li>
-<li>We haven't done a quantitative comparison of our curves against the paper's published figures</li>
-<li>The noise model is approximate — real device noise is more complex</li>
-<li>A human physicist reviewed the code, which matters for trust</li>
-</ul>
-
-<p>These are next steps, not fundamental limitations. The point is that the AI produced a reasonable starting point — 300 lines of domain-specific simulation code — from a paper reference alone.</p>
-`,
-    sources: [
-      { label: 'Sagastizabal et al. (2019) — original paper', url: 'https://arxiv.org/abs/1902.11258' },
-      { label: 'Our replication code (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_sagastizabal.py' },
-      { label: 'O\'Malley et al. — H2 coefficient data', url: 'https://arxiv.org/abs/1512.06860' },
-      { label: 'Bravyi-Kitaev transformation', url: 'https://arxiv.org/abs/1208.5986' },
-    ],
-  },
-  {
-    slug: 'methods-of-ai-science',
-    title: 'Five Methods Driving AI-Accelerated Science',
-    subtitle: 'Foundation models, autonomous agents, robotic labs, and more — a taxonomy of approaches',
-    date: '2026-02-10',
-    author: 'AI x Quantum Research Team',
-    category: 'landscape',
-    tags: ['methods', 'foundation models', 'autonomous labs', 'agents', 'taxonomy'],
-    heroImage: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=1200&q=80',
-    heroCaption: 'The tools and techniques that are reshaping scientific discovery.',
-    excerpt: 'Across the AI-for-science landscape, five distinct methodological approaches have emerged. Understanding them helps identify where quantum computing fits — and where the biggest opportunities lie.',
-    content: `
-<p>As we surveyed the AI-for-science landscape, we noticed that despite the diversity of organizations and applications, the field converges on a handful of core methods. Here's our taxonomy.</p>
-
-<h2>1. Foundation Models for Scientific Domains</h2>
-
-<p>The most mature approach: train large models on domain-specific data to learn the "language" of a scientific field.</p>
-
-<p><strong>Examples:</strong></p>
-<ul>
-<li><strong>AlphaFold / ESM</strong> (protein structure) — Arguably the most impactful AI-for-science result to date</li>
-<li><strong>MatterGen</strong> (Microsoft, materials) — Generates novel materials with desired properties</li>
-<li><strong>GNoME</strong> (DeepMind, materials) — Discovered 2.2 million new crystal structures</li>
-<li><strong>Agent-Q / QUASAR</strong> (quantum circuits) — Domain-specific models for quantum code generation</li>
-</ul>
-
-<p><strong>For quantum computing:</strong> This is where our Qiskit HumanEval benchmark fits. We're measuring how well general-purpose LLMs perform on quantum tasks, but the field is moving toward purpose-built quantum foundation models. Training on quantum circuit data, simulation results, and papers could produce models that "think in qubits."</p>
-
-<h2>2. Autonomous Research Agents</h2>
-
-<p>AI systems that plan, execute, and analyze experiments with minimal human oversight.</p>
-
-<p><strong>Examples:</strong></p>
-<ul>
-<li><strong>Sakana AI's "AI Scientist"</strong> — Generates ideas, writes code, runs experiments, drafts papers</li>
-<li><strong>Google's AI co-scientist</strong> — Hypothesis generation and experimental design</li>
-<li><strong>FutureHouse</strong> — Literature mining and hypothesis generation</li>
-<li><strong>Our system</strong> — Orchestrator + benchmark runner + replication agent for quantum research</li>
-</ul>
-
-<p><strong>For quantum computing:</strong> This is our primary approach. Agent-based systems can continuously run benchmarks, replicate papers, and optimize circuits. The key challenge is quality control — how do you ensure an agent's quantum experiment is physically meaningful?</p>
-
-<h2>3. Self-Driving / Robotic Laboratories</h2>
-
-<p>Physical labs where robots execute experiments designed by AI systems.</p>
-
-<p><strong>Examples:</strong></p>
-<ul>
-<li><strong>DeepMind's automated UK lab</strong> — Fully AI-driven experimental facility</li>
-<li><strong>Emerald Cloud Lab / Strateos</strong> — Cloud-accessible robotic lab platforms</li>
-<li><strong>Recursion Pharmaceuticals</strong> — Massive robotic drug screening operation</li>
-<li><strong>Carnegie Mellon's Clio</strong> — Self-driving lab for materials science</li>
-</ul>
-
-<p><strong>For quantum computing:</strong> Quantum devices <em>are</em> essentially robotic labs — programmable hardware controlled through software APIs. Quantum Inspire already provides cloud access to real quantum processors. An AI agent that can design and submit circuits to QI hardware is effectively running a self-driving quantum lab.</p>
-
-<h2>4. ML-Guided Experimental Design</h2>
-
-<p>Using machine learning to decide <em>which</em> experiments to run, optimizing over the space of possible measurements.</p>
-
-<p><strong>Examples:</strong></p>
-<ul>
-<li><strong>Bayesian optimization</strong> for drug screening (widespread)</li>
-<li><strong>Active learning</strong> for materials discovery (CuspAI, Periodic Labs)</li>
-<li><strong>RL for quantum control</strong> — Learning pulse sequences for quantum gates</li>
-<li><strong>Neural architecture search</strong> adapted for quantum circuit design</li>
-</ul>
-
-<p><strong>For quantum computing:</strong> Hugely relevant. VQE parameter optimization, circuit architecture search, error mitigation strategy selection, and hardware calibration can all be framed as ML-guided design problems. Our replication agent could be extended with active learning to efficiently explore the space of experimental parameters.</p>
-
-<h2>5. Scientific Literature Intelligence</h2>
-
-<p>Systems that read, synthesize, and reason over the scientific corpus.</p>
-
-<p><strong>Examples:</strong></p>
-<ul>
-<li><strong>FutureHouse</strong> — Automated literature review and hypothesis generation</li>
-<li><strong>Semantic Scholar / Elicit</strong> — AI-powered research tools</li>
-<li><strong>Consensus</strong> — AI that answers questions from the scientific literature</li>
-</ul>
-
-<p><strong>For quantum computing:</strong> This is our planned Literature Scout agent. Quantum computing publishes ~50 papers per day on arxiv. An AI system that identifies reproducible experiments, extracts methodologies, and generates replication plans could accelerate the field significantly.</p>
-
-<h2>The Convergence</h2>
-
-<p>The most exciting development isn't any single method — it's their <strong>convergence</strong>. The next generation of AI-for-science systems will combine all five:</p>
+<p>Our project at TU Delft operates at a much smaller scale than Ginkgo or DeepMind. But the principles are the same:</p>
 
 <ol>
-<li>Foundation models provide domain expertise</li>
-<li>Agents plan and coordinate research</li>
-<li>Robotic labs (or quantum hardware) execute experiments</li>
-<li>ML-guided design optimizes what to try next</li>
-<li>Literature intelligence connects to existing knowledge</li>
+<li><strong>The automation works.</strong> AI agents can design experiments, execute them, and learn from results. Our benchmark runner and replication agent prove this for quantum computing tasks.</li>
+<li><strong>The narrowing effect is real.</strong> If we only benchmark what's easy to benchmark, we'll miss the most important questions. Our choice to replicate diverse papers (not just optimize one metric) is deliberate.</li>
+<li><strong>Scientific taste can't be automated yet.</strong> The human role is shifting from "do the experiment" to "choose which experiments matter." That's a harder problem — and a more important one.</li>
+<li><strong>Quantum computing may be different.</strong> The Nature study found narrowing in fields with abundant data. Quantum computing has <em>limited</em> data and <em>many</em> open questions. AI agents in quantum might explore more broadly precisely because the field is young.</li>
 </ol>
 
-<p>This is exactly the architecture we're building for quantum computing. The research question isn't whether AI will accelerate science — it's how fast the acceleration will be, and whether quantum computing, with its unique combination of theoretical depth and experimental accessibility, might be where it happens first.</p>
+<p>The race to automate science is accelerating. The question isn't whether to participate — it's whether we can do it in a way that expands rather than contracts the frontier of knowledge.</p>
 `,
     sources: [
-      { label: 'AlphaFold — DeepMind', url: 'https://deepmind.google/technologies/alphafold/' },
-      { label: 'GNoME — 2.2M new materials', url: 'https://deepmind.google/discover/blog/millions-of-new-materials-discovered-with-deep-learning/' },
-      { label: 'Sakana AI — "The AI Scientist"', url: 'https://sakana.ai/ai-scientist/' },
-      { label: 'Emerald Cloud Lab', url: 'https://www.emeraldcloudlab.com/' },
-      { label: 'FutureHouse', url: 'https://www.futurehouse.org/' },
-      { label: 'Semantic Scholar', url: 'https://www.semanticscholar.org/' },
+      { label: 'Ginkgo + OpenAI autonomous lab results', url: 'https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/' },
+      { label: 'OpenAI Prism announcement', url: 'https://openai.com/index/introducing-prism/' },
+      { label: 'AI expands impact, contracts focus (Nature)', url: 'https://www.nature.com/articles/s41586-025-09922-y' },
+      { label: 'Andrew White on Latent Space podcast', url: 'https://www.latent.space/p/automating-science-world-models-scientific' },
+      { label: 'Edison Scientific / Kosmos', url: 'https://edisonscientific.com/articles/announcing-kosmos' },
+      { label: 'Anthropic Claude for Life Sciences', url: 'https://www.anthropic.com/news/claude-for-life-sciences' },
+      { label: 'DOE Genesis Mission — 24 partners', url: 'https://www.energy.gov/articles/energy-department-announces-collaboration-agreements-24-organizations-advance-genesis' },
+      { label: 'DeepMind automated UK lab', url: 'https://deepmind.google/blog/strengthening-our-partnership-with-the-uk-government-to-support-prosperity-and-security-in-the-ai-era/' },
+      { label: 'CMU Coscientist (Nature)', url: 'https://www.cmu.edu/news/stories/archives/2023/december/cmu-designed-artificially-intelligent-coscientist-automates-scientific-discovery' },
+      { label: 'k-agents for quantum labs', url: 'https://arxiv.org/abs/2412.07978' },
     ],
   },
   {
@@ -620,271 +263,305 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
     ],
   },
   {
-    slug: 'quantum-hardware-landscape-2026',
-    title: 'The Quantum Hardware Race: Where Things Actually Stand in 2026',
-    subtitle: 'Six hardware platforms, three breakthrough results, and one honest assessment of quantum advantage',
+    slug: 'ai-quantum-reference',
+    title: 'AI x Quantum: The Data Behind the Hype',
+    subtitle: 'Funding tables, government programs, and a curated reading list for researchers',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'landscape',
-    tags: ['hardware', 'QEC', 'Google Willow', 'QuTech', 'spin qubits', 'landscape'],
-    heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80',
-    heroCaption: 'The quantum hardware landscape is more diverse — and more competitive — than ever.',
-    excerpt: 'A researcher\'s guide to the six quantum hardware platforms competing for dominance, the error correction breakthroughs that changed the game, and an honest assessment of where quantum advantage actually stands.',
+    tags: ['reference', 'funding', 'FROs', 'government', 'reading list', 'data'],
+    heroImage: 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=1200&q=80',
+    heroCaption: 'The numbers behind the AI-for-science movement.',
+    excerpt: 'A reference companion to our research posts: who is funding AI-for-science, what governments are doing, and which papers to read at the intersection of AI and quantum computing.',
     content: `
-<p>The quantum computing hardware landscape in 2026 is defined by three things: error correction finally working, six hardware platforms racing for dominance, and an honest reckoning about what "quantum advantage" actually means. Here's the state of play.</p>
+<p>This post is a living reference — the data tables and reading lists behind our <a href="/blog/race-to-automate-science">analysis</a> of AI-accelerated science and <a href="/blog/ai-meets-quantum">the AI x quantum intersection</a>. Bookmark it.</p>
 
-<h2>The Year Error Correction Became Real</h2>
+<h2>AI-for-Science Startup Funding</h2>
 
-<p>2024-2025 was the year quantum error correction (QEC) went from theoretical milestone to engineering reality. The numbers tell the story: 120 peer-reviewed QEC papers published by October 2025, up from 36 in all of 2024. Seven code families demonstrated on real hardware.</p>
+<p>The scale of investment tells the story of a field that went from speculative to operational in 2025.</p>
 
-<h3>Google Willow (December 2024)</h3>
+<table>
+<thead><tr><th>Company</th><th>Funding</th><th>Focus</th><th>Key Detail</th></tr></thead>
+<tbody>
+<tr><td><strong>Xaira Therapeutics</strong></td><td>$1.3B</td><td>Drug design</td><td>Co-founded by David Baker (2024 Nobel). First drug entering human testing 2026.</td></tr>
+<tr><td><strong>PsiQuantum</strong></td><td>$1B+</td><td>Photonic quantum</td><td>Largest quantum hardware raise. Partnership with GlobalFoundries.</td></tr>
+<tr><td><strong>Isomorphic Labs</strong></td><td>$600M</td><td>Drug discovery</td><td>DeepMind spinoff. Novartis + Eli Lilly partnerships (~$3B). Clinical trials late 2026.</td></tr>
+<tr><td><strong>Lila Sciences</strong></td><td>$550M</td><td>Drug discovery</td><td>"AI Science Factories" — 235,500 sq ft Cambridge lab. George Church as Chief Scientist.</td></tr>
+<tr><td><strong>Arcadia Science</strong></td><td>$500M</td><td>Open biology</td><td>Funded by Jed McCaleb + Sam Altman. Studies understudied organisms.</td></tr>
+<tr><td><strong>Insilico Medicine</strong></td><td>$400M+, IPO'd</td><td>Drug discovery</td><td>First AI-discovered drug (rentosertib) in Phase II. Hong Kong IPO ($293M).</td></tr>
+<tr><td><strong>Periodic Labs</strong></td><td>$300M seed</td><td>Materials & chemistry</td><td>Largest AI-for-science seed. Founded by Liam Fedus (ex-OpenAI VP) + Ekin Cubuk (ex-DeepMind).</td></tr>
+<tr><td><strong>Sakana AI</strong></td><td>$2.65B valuation</td><td>AI research agents</td><td>Founded by Llion Jones (Transformer co-author). "AI Scientist v2" accepted at ICLR workshop.</td></tr>
+<tr><td><strong>CuspAI</strong></td><td>$100M</td><td>Materials design</td><td>AI-guided materials discovery.</td></tr>
+<tr><td><strong>Edison Scientific</strong></td><td>$70M seed</td><td>Drug repurposing</td><td>Spun out of FutureHouse. Robin agent identified ripasudil for macular degeneration.</td></tr>
+</tbody>
+</table>
 
-<p>The headline result: Google's Willow processor achieved the first demonstration of <strong>exponential error suppression</strong> with increasing surface code distance. This is the fundamental requirement for scalable quantum computing — as you add more qubits for error correction, the logical error rate actually goes down.</p>
+<p><strong>CZI</strong> (Chan Zuckerberg Initiative) committed $10B over the next decade to AI-for-biology, absorbing the EvolutionaryScale team (ESM protein language models). This is the single largest commitment in the field.</p>
 
-<p>The specifics:</p>
+<h2>Focused Research Organizations (FROs)</h2>
+
+<p>The FRO model — championed by Sam Rodriques, Adam Marblestone, and Eric Schmidt through Schmidt Sciences — addresses a gap: scientific problems that need $20-50M over 5-7 years and produce public goods rather than products. <strong>Convergent Research</strong> has incubated 10 FROs:</p>
+
+<table>
+<thead><tr><th>FRO</th><th>Focus</th><th>Notable Result</th></tr></thead>
+<tbody>
+<tr><td><strong>E11 Bio</strong></td><td>Large-scale connectomics</td><td>Brain wiring maps at industrial scale</td></tr>
+<tr><td><strong>Lean FRO</strong></td><td>Math theorem formalization</td><td>210,000+ theorems in Mathlib; 2025 ACM SIGPLAN award</td></tr>
+<tr><td><strong>Cultivarium</strong></td><td>Photosynthetic organisms</td><td>Engineering novel photosynthetic pathways</td></tr>
+<tr><td><strong>[C]Worthy</strong></td><td>Ocean carbon</td><td>Carbon removal verification systems</td></tr>
+<tr><td><strong>Bind, EvE Bio, Forest Neurotech, Imprint</strong></td><td>Various</td><td>Neurotechnology, bioengineering</td></tr>
+</tbody>
+</table>
+
+<p>No FRO currently targets quantum computing, but the model fits: AI-accelerated QEC or autonomous quantum experiment design needs multi-year, multi-million-dollar focused effort that's too big for a single lab and too "public good" for a startup.</p>
+
+<h2>Government Initiatives</h2>
+
+<table>
+<thead><tr><th>Program</th><th>Country</th><th>Investment</th><th>Key Detail</th></tr></thead>
+<tbody>
+<tr><td><strong>Genesis Mission</strong></td><td>US</td><td>$320M+</td><td>17 DOE labs + 24 industry partners. Google AI co-scientist across all labs.</td></tr>
+<tr><td><strong>AI for Science</strong></td><td>UK</td><td>\u00a3137M</td><td>Multiple research councils funding AI integration.</td></tr>
+<tr><td><strong>ARIA "AI Scientist"</strong></td><td>UK</td><td>\u00a36M total</td><td>12 projects at ~\u00a3500K each, selected from 245 proposals. Partners: Lila Sciences/MIT, UCL, Liverpool.</td></tr>
+<tr><td><strong>FROST UK</strong></td><td>UK</td><td>TBD</td><td>ARIA + Convergent Research bringing FRO model to UK.</td></tr>
+<tr><td><strong>Quantum + AI Strategy</strong></td><td>Japan</td><td>$135B</td><td>Combined quantum + AI national strategy, one of the largest globally.</td></tr>
+<tr><td><strong>EU Quantum Act</strong></td><td>EU</td><td>Multi-billion</td><td>Major funding framework. TU Delft / QuTech centrally positioned.</td></tr>
+<tr><td><strong>Schmidt Sciences AI2050</strong></td><td>Global</td><td>$125M</td><td>99 fellows at 42 institutions working on hard AI problems.</td></tr>
+</tbody>
+</table>
+
+<h2>Five Methods of AI-Accelerated Science</h2>
+
+<p>Across the landscape, five distinct approaches have emerged:</p>
+
+<table>
+<thead><tr><th>Method</th><th>How It Works</th><th>Best Example</th><th>Quantum Application</th></tr></thead>
+<tbody>
+<tr><td><strong>Foundation Models</strong></td><td>Train large models on domain data to learn a field's "language"</td><td>AlphaFold (protein), GNoME (materials, 2.2M crystals)</td><td>QUASAR (quantum circuits), domain-specific quantum models</td></tr>
+<tr><td><strong>Autonomous Agents</strong></td><td>AI plans, executes, and analyzes experiments</td><td>Sakana AI Scientist, Google AI co-scientist, FutureHouse Kosmos</td><td>k-agents (superconducting calibration), our MCP pipeline</td></tr>
+<tr><td><strong>Self-Driving Labs</strong></td><td>Closed-loop: AI + robotic execution + feedback</td><td>Ginkgo/GPT-5 (36,000 experiments), DeepMind UK materials lab</td><td>Quantum processors are already digital — no robot needed</td></tr>
+<tr><td><strong>LLM Code Generation</strong></td><td>Generate working scientific code from descriptions</td><td>QCoder (78%), our benchmark (63.6%)</td><td>Circuit synthesis, SDK translation, error analysis</td></tr>
+<tr><td><strong>AI-Guided Search</strong></td><td>RL/evolutionary methods for combinatorial optimization</td><td>AlphaTensor-Quantum (halved T-gates), AlphaEvolve</td><td>Circuit optimization, error code discovery</td></tr>
+</tbody>
+</table>
+
+<h2>Reading List: AI x Quantum Papers</h2>
+
+<h3>Neural Error Correction</h3>
 <ul>
-<li><strong>105 superconducting qubits</strong></li>
-<li>Distance-7 surface code on a ~101-qubit patch</li>
-<li>Logical error rate suppressed by factor &Lambda; = 2.14 &plusmn; 0.02 per code distance increase of 2</li>
-<li>0.143% error per correction cycle at distance-7</li>
-<li>Logical memory lifetime <strong>2.4x longer</strong> than the best physical qubit — beyond breakeven</li>
-<li>Real-time decoding at 63 microsecond average latency</li>
-<li>Physical qubit T<sub>1</sub> improved from ~20&mu;s (Sycamore) to 68&mu;s</li>
+<li><a href="https://www.nature.com/articles/s41586-024-08148-8">AlphaQubit</a> — Transformer QEC decoder, Nature 2024</li>
+<li><a href="https://arxiv.org/abs/2510.22724">Mamba-based QEC decoder</a> — O(d\u00b2) scaling follow-up</li>
+<li><a href="https://developer.nvidia.com/blog/real-time-decoding-algorithmic-gpu-decoders-and-ai-inference-enhancements-in-nvidia-cuda-q-qec/">NVIDIA CUDA-Q QEC</a> — &lt;4\u03bcs GPU decoding</li>
 </ul>
 
-<p>Willow also completed a random circuit sampling benchmark in ~5 minutes that would take an estimated 10<sup>25</sup> years classically. But — and this is important — random circuit sampling has no known practical application. The result proves the hardware is extraordinary; the question is whether it can be applied to useful problems.</p>
-
-<h3>IBM's Roadmap</h3>
-
-<p>IBM has laid out the most detailed public roadmap to fault-tolerant quantum computing:</p>
-
+<h3>AI Code Generation for Quantum</h3>
 <ul>
-<li><strong>2025 — Loon</strong>: Experimental processor demonstrating all key fault-tolerant components, with new c-couplers for LDPC code connectivity</li>
-<li><strong>2026 — Kookaburra</strong>: First QEC-enabled module with qLDPC memory and a Logical Processing Unit (LPU)</li>
-<li><strong>2029 — Starling</strong>: 200 logical qubits running 100 million gates</li>
+<li><a href="https://arxiv.org/abs/2510.00967">QUASAR</a> — 99.31% circuit validity via agentic RL</li>
+<li><a href="https://arxiv.org/abs/2510.26101">QCoder</a> — 78% functional accuracy with o3</li>
+<li><a href="https://arxiv.org/abs/2406.02132">Qiskit HumanEval</a> — The benchmark we used</li>
 </ul>
 
-<p>IBM has achieved real-time qLDPC decoding at <strong>&lt;480 nanoseconds</strong> and their AI transpiler reduces two-qubit gate counts by 42%. Their bet on qLDPC codes (vs. surface codes) could prove transformative — qLDPC promises dramatically better physical-to-logical qubit ratios.</p>
-
-<h3>The Magic State Breakthrough</h3>
-
-<p>A major 2025 result: <strong>theoretically optimal scaling for magic state distillation</strong> has been achieved (scaling exponent &gamma; = 0). Magic states are required for the T gate — the non-Clifford gate needed for universal quantum computation. QuEra/Harvard/MIT demonstrated the first experimental logical-level magic state distillation on a neutral-atom computer. This resolves a longstanding theoretical bottleneck, though practical overhead remains enormous.</p>
-
-<h2>The Six Hardware Platforms</h2>
-
-<h3>1. Superconducting Qubits — Google, IBM, Rigetti, IQM</h3>
-<p><strong>Strengths:</strong> Fastest gate speeds, largest qubit counts, most mature fabrication.</p>
-<p><strong>State of the art:</strong> Google Willow (105 qubits, below-threshold QEC), IBM roadmap to 1,386 qubits, Fujitsu/RIKEN 256-qubit machine (1,000-qubit planned for 2026).</p>
-<p><strong>Challenge:</strong> Short coherence times (~68&mu;s), cryogenic cooling to 15 millikelvin, crosstalk. The classical control bottleneck — thousands of coaxial cables from room temperature to the cryostat — doesn't scale beyond a few hundred qubits.</p>
-
-<h3>2. Trapped Ions — Quantinuum, IonQ, Oxford Ionics</h3>
-<p><strong>Strengths:</strong> Highest gate fidelity, all-to-all connectivity, long coherence times.</p>
-<p><strong>State of the art:</strong> Quantinuum H2-1 (56 qubits, first "three 9s" — 99.9% two-qubit gate fidelity across all pairs), Helios (98-qubit with novel "X" junction), 99.9993% SPAM accuracy. Microsoft + Quantinuum demonstrated 12 logical qubits for chemistry simulation.</p>
-<p><strong>Challenge:</strong> Slower gate speeds, scaling beyond hundreds of ions, laser control complexity. Apollo (fully fault-tolerant, universal) planned for 2029.</p>
-
-<h3>3. Neutral Atoms — QuEra, Atom Computing/Microsoft, Pasqal</h3>
-<p><strong>Strengths:</strong> Massive parallelism, reconfigurable connectivity, natural scaling to thousands of qubits.</p>
-<p><strong>State of the art:</strong> QuEra achieved 3,000-qubit array operating continuously for 2+ hours, up to 96 logical qubits with below-threshold error rates. Their Algorithmic Fault Tolerance approach reduces error correction runtime cost by 10-100x. $230M+ raised in 2025.</p>
-<p><strong>Challenge:</strong> Atom loss during computation, slower gate speeds, readout fidelity.</p>
-
-<h3>4. Photonic — PsiQuantum, Xanadu, Photonic Inc.</h3>
-<p><strong>Strengths:</strong> Room-temperature operation, natural networking capability, speed.</p>
-<p><strong>State of the art:</strong> PsiQuantum raised $1B (September 2025). Photonic Inc. developed SHYPS qLDPC codes specifically for photonic architectures — 20x fewer physical qubits than surface codes.</p>
-<p><strong>Challenge:</strong> Photon loss, non-deterministic gates, lack of quantum memory.</p>
-
-<h3>5. Semiconductor Spin Qubits — QuTech/TU Delft, Intel</h3>
-<p><strong>Strengths:</strong> Smallest qubit footprint, compatible with CMOS fabrication, potentially billions of qubits on a chip.</p>
-<p><strong>State of the art:</strong> QuTech demonstrated a 10-qubit germanium processor with >99% single-qubit gate fidelities and 2D layout with 4-neighbor connectivity. Silicon spin qubits fabricated on 300mm industrial wafers with >99% fidelity (published in Nature 2025). Germanium substrates produce "quieter" qubits with longer coherence times.</p>
-<p><strong>Challenge:</strong> Very short coherence times (microseconds), two-qubit gate fidelity lags other platforms. But the CMOS compatibility argument is powerful: if a qubit looks like a transistor, you inherit 60 years of semiconductor manufacturing expertise.</p>
-
-<h3>6. Topological — Microsoft</h3>
-<p><strong>Strengths:</strong> Inherent error protection, potentially very low overhead for fault tolerance.</p>
-<p><strong>State of the art:</strong> Majorana 1 chip (February 2025) — 8 topological qubits using tetron architecture, demonstrated quantum error detection on 2 logical qubits. Claims 1,000-fold error rate reduction via topological protection.</p>
-<p><strong>Challenge:</strong> Only 8 qubits demonstrated — years behind other modalities in qubit count. Significant scientific controversy about whether the Majorana zero modes are truly topological.</p>
-
-<h2>Quantum Advantage: An Honest Assessment</h2>
-
-<p>Let's be direct about where things stand:</p>
-
-<p><strong>Demonstrated narrow quantum advantage:</strong></p>
+<h3>Autonomous Quantum Agents</h3>
 <ul>
-<li>Google's random circuit sampling (Willow): 5 minutes vs. 10<sup>25</sup> years classical. But RCS has no known practical use.</li>
-<li>Google's "quantum echoes" (October 2025): 13,000x speedup over Frontier supercomputer for molecular structure. Closer to useful, but a carefully chosen problem.</li>
-<li>Q-CTRL: First commercial quantum advantage in GPS-denied navigation using quantum sensors (50-100x outperformance). Note: quantum <em>sensing</em>, not computing.</li>
+<li><a href="https://arxiv.org/abs/2412.07978">k-agents</a> — Self-driving quantum lab, Patterns 2025</li>
+<li><a href="https://arxiv.org/abs/2508.05421">QCopilot</a> — Autonomous atom cooling, 100x speedup</li>
+<li><a href="https://arxiv.org/abs/2402.14396">AlphaTensor-Quantum</a> — RL circuit optimization, Nature Machine Intelligence 2025</li>
 </ul>
 
-<p><strong>The spoofing problem:</strong> RCS-based advantage claims remain contested. Tensor network methods can spoof the Linear Cross-Entropy Benchmark in milliseconds after learning the final circuit layer. This doesn't invalidate finite-size demonstrations but limits the paradigm for proving advantage.</p>
-
-<p><strong>The honest verdict:</strong> Useful quantum advantage — solving a problem someone actually cares about, faster or better than any classical method — has <strong>not</strong> been convincingly demonstrated for quantum computing as of early 2026. IBM predicts this will change by end of 2026. The transition will be gradual, not a single breakthrough moment.</p>
-
-<h2>Where Quantum Inspire Fits</h2>
-
-<p>Our project at TU Delft has a unique position in this landscape. <strong>Quantum Inspire 2.0</strong>, launched February 2025, offers:</p>
-
+<h3>Circuit Optimization</h3>
 <ul>
-<li><strong>Three active superconducting backends</strong>: Starmon-7 (7 qubits, 8 fixed-frequency couplers), Tuna-5 (5 qubits, starfish layout with 4 flux-tunable couplers), and Tuna-9 (9 qubits, diamond layout with 12 flux-tunable couplers)</li>
-<li><strong>Spin-2+ (currently offline)</strong>: 2 data qubits + 1 ancilla electron spin qubits in silicon — was the only semiconductor spin qubit processor publicly accessible online. Offline for development of next-gen spin processors.</li>
-<li><strong>Emulators</strong>: QX-Emulator (up to 26 qubits) and a Rydberg neutral atom emulator (TU Eindhoven)</li>
-<li><strong>Open architecture</strong>: Modular and interoperable — unlike IBM/Google's closed ecosystems</li>
-<li><strong>Hybrid computing</strong>: Integration with SURF supercomputer node for quantum-classical workflows</li>
-<li><strong>Multiple framework support</strong>: Qiskit and PennyLane integration</li>
+<li><a href="https://www.ibm.com/quantum/blog/ai-transpiler-passes">IBM AI transpiler</a> — 42% two-qubit gate reduction</li>
+<li><a href="https://arxiv.org/abs/2506.13131">AlphaEvolve</a> — Evolutionary algorithm discovery</li>
 </ul>
 
-<p>The Delft quantum ecosystem (HQ/2 collaboration) launched a full open-architecture quantum computer in May 2025 — the Tuna-5 system integrating hardware and software from QuTech, TNO, Qblox, Orange Quantum Systems, and QuantWare.</p>
+<h3>AI + Science Landscape</h3>
+<ul>
+<li><a href="https://www.nature.com/articles/s41467-025-65836-3">AI for quantum computing</a> — Nature Communications survey, 3 tiers</li>
+<li><a href="https://www.nature.com/articles/s41586-025-09922-y">AI expands impact, contracts focus</a> — Nature 2026, 41.3M papers analyzed</li>
+<li><a href="https://www.latent.space/p/automating-science-world-models-scientific">Andrew White on Latent Space</a> — Scientific taste, Kosmos system</li>
+</ul>
 
-<p>QuTech's long bet on spin qubits is strategic: while superconducting and trapped-ion platforms dominate today's headlines, CMOS-compatible spin qubits may ultimately win the scaling race to millions of qubits. The ability to run experiments across both superconducting and spin qubit backends on a single platform makes Quantum Inspire uniquely valuable for comparative studies — exactly the kind of work AI agents can automate.</p>
-
-<h2>What We're Watching</h2>
-
-<ol>
-<li><strong>IBM Kookaburra (2026)</strong>: First qLDPC-based QEC module. If qLDPC codes work in practice, the surface code's ~1000:1 physical-to-logical ratio drops dramatically.</li>
-<li><strong>QuEra's 10,000-qubit machine</strong>: Neutral atoms continue to scale fastest. Their Algorithmic Fault Tolerance approach could make deep circuits practical sooner than expected.</li>
-<li><strong>Microsoft's topological bet</strong>: If Majorana 1 scales, topological qubits could leapfrog all other platforms on error rates. Big if.</li>
-<li><strong>China's QEC efforts</strong>: A distance-7 surface code using microwaves, with error-suppression factor of 1.4 — comparable to Google's early demonstrations.</li>
-<li><strong>The decoder race</strong>: AlphaQubit, NVIDIA's GPU decoders, and RIKEN's AI-enhanced decoders are competing to solve real-time QEC decoding at scale. This is where AI has its most direct impact on quantum hardware.</li>
-</ol>
+<h3>Hardware Milestones</h3>
+<ul>
+<li><a href="https://www.nature.com/articles/s41586-024-08449-y">Google Willow</a> — 105q, exponential error suppression, Nature 2024</li>
+<li><a href="https://qutech.nl/2025/11/27/from-complexity-to-control-a-10-spin-qubit-array-in-germanium/">QuTech 10-spin germanium array</a> — >99% fidelity</li>
+<li><a href="https://www.nature.com/articles/s41586-025-09531-9">300mm silicon spin qubits</a> — Industrial wafers, >99% fidelity (Diraq/imec, Nature 2025)</li>
+</ul>
 `,
     sources: [
-      { label: 'Google Willow — below surface code threshold (Nature)', url: 'https://www.nature.com/articles/s41586-024-08449-y' },
-      { label: 'IBM path to fault-tolerant quantum computing', url: 'https://www.ibm.com/quantum/blog/large-scale-ftqc' },
-      { label: 'Microsoft Majorana 1 announcement', url: 'https://azure.microsoft.com/en-us/blog/quantum/2025/02/19/microsoft-unveils-majorana-1-the-worlds-first-quantum-processor-powered-by-topological-qubits/' },
-      { label: 'Quantinuum H-Series 56 qubits', url: 'https://www.quantinuum.com/blog/quantinuums-h-series-hits-56-physical-qubits-that-are-all-to-all-connected-and-departs-the-era-of-classical-simulation' },
-      { label: 'QuEra 2025 milestones', url: 'https://www.prnewswire.com/news-releases/quera-computing-marks-record-2025-as-the-year-of-fault-tolerance-and-over-230m-of-new-capital-to-accelerate-industrial-deployment-302635960.html' },
-      { label: 'Neutral atom quantum computing (IEEE Spectrum)', url: 'https://spectrum.ieee.org/neutral-atom-quantum-computing' },
-      { label: 'Silicon spin-qubit >99% fidelity (Nature)', url: 'https://www.nature.com/articles/s41586-025-09531-9' },
-      { label: 'Quantum Inspire 2.0 launch', url: 'https://qutech.nl/2025/02/25/quantum-inspire-2-0-is-live-with-updated-software-and-hardware/' },
-      { label: 'QuTech 10-spin qubit array in germanium', url: 'https://qutech.nl/2025/11/27/from-complexity-to-control-a-10-spin-qubit-array-in-germanium/' },
-      { label: 'Optimal magic state distillation scaling', url: 'https://phys.org/news/2025-11-optimal-scaling-magic-state-distillation.html' },
-      { label: 'Q-CTRL commercial quantum advantage', url: 'https://q-ctrl.com/blog/2025-year-in-review-realizing-true-commercial-quantum-advantage-in-the-international-year-of-quantum' },
+      { label: 'Convergent Research (FRO incubator)', url: 'https://www.convergentresearch.org/' },
+      { label: 'Schmidt Sciences', url: 'https://www.schmidtsciences.org/' },
+      { label: 'DOE Genesis Mission', url: 'https://www.energy.gov/articles/energy-department-announces-collaboration-agreements-24-organizations-advance-genesis' },
+      { label: 'ARIA AI Scientist programme', url: 'https://www.aria.org.uk/' },
+      { label: 'AlphaQubit (Nature)', url: 'https://www.nature.com/articles/s41586-024-08148-8' },
+      { label: 'AI for quantum computing (Nature Communications)', url: 'https://www.nature.com/articles/s41467-025-65836-3' },
+      { label: 'AI contracts science focus (Nature)', url: 'https://www.nature.com/articles/s41586-025-09922-y' },
     ],
   },
   {
-    slug: 'race-to-automate-science',
-    title: 'The Race to Automate Science — and Why It Should Worry Us',
-    subtitle: 'GPT-5 runs 36,000 experiments, AI scientists publish papers, and a Nature study finds the field is shrinking',
-    date: '2026-02-10',
+    slug: 'llms-write-quantum-code',
+    title: 'Can LLMs Write Quantum Code? We Tested 151 Tasks',
+    subtitle: 'Gemini 3 Flash scores 62.25% and Claude Opus 4.6 scores 63.6% — but the failures are more interesting than the passes',
+    date: '2026-02-09',
     author: 'AI x Quantum Research Team',
-    category: 'opinion',
-    tags: ['automating science', 'self-driving labs', 'Andrew White', 'Nature', 'OpenAI Prism', 'Ginkgo'],
-    heroImage: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80',
-    heroCaption: 'The automation of scientific discovery is accelerating — but at what cost to scientific diversity?',
-    excerpt: 'GPT-5 just ran 36,000 protein experiments autonomously. OpenAI launched a free science workspace. And a Nature study found that AI is making scientists more productive while shrinking the scope of science itself. Here\'s what it means.',
+    category: 'experiment',
+    tags: ['benchmark', 'Qiskit', 'LLM', 'Gemini', 'quantum coding'],
+    heroImage: 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=1200&q=80',
+    heroCaption: 'Testing whether AI models can bridge the gap between quantum theory and working code.',
+    excerpt: 'We ran the full Qiskit HumanEval benchmark against Gemini 3 Flash and Claude Opus 4.6 — 151 quantum programming tasks graded by automated code execution. The results reveal that LLMs understand quantum algorithms but struggle with rapidly evolving APIs.',
     content: `
-<p>In a single week in early 2026, three things happened that capture the state of automated science: OpenAI launched <strong>Prism</strong>, a free AI workspace for scientists. Ginkgo Bioworks announced that <strong>GPT-5 autonomously ran 36,000 experiments</strong> in their cloud lab. And a study in <em>Nature</em> found that AI tools are <strong>shrinking the scope of science</strong> even as they make individual scientists more productive.</p>
+<p>Can a large language model write a working quantum circuit from a natural-language description? We tested this by running the complete <a href="https://arxiv.org/abs/2406.02132">Qiskit HumanEval</a> benchmark — 151 quantum programming tasks across three difficulty levels.</p>
 
-<p>These three developments — the tools, the results, and the warning — define the moment we're in.</p>
+<h2>The Setup</h2>
 
-<h2>The Experiments: GPT-5 in the Lab</h2>
+<p>Each task provides a function signature and docstring. The model must produce the function body. The generated code is executed in a sandboxed subprocess with unit tests — no partial credit, no manual review. Pass or fail.</p>
 
-<p>On February 5, 2026, <a href="https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/">Ginkgo Bioworks and OpenAI announced</a> the results of a fully autonomous laboratory experiment. GPT-5 designed experiments for cell-free protein synthesis, a Pydantic-based validation system checked scientific soundness, and Ginkgo's robotic lab in Boston executed them.</p>
+<p>We tested two frontier models: <strong>Gemini 3 Flash</strong> (via Google's GenAI API) and <strong>Claude Opus 4.6</strong> (via Anthropic's API). The benchmark harness sends each prompt independently — no multi-turn dialogue, no chain-of-thought, no retrieval augmentation. Just the raw prompt and one shot at the answer.</p>
 
-<p>The numbers:</p>
+<h2>The Results</h2>
+
 <table>
-<thead><tr><th>Metric</th><th>Result</th></tr></thead>
+<thead><tr><th>Model</th><th>Pass@1</th><th>Basic</th><th>Intermediate</th><th>Difficult</th></tr></thead>
 <tbody>
-<tr><td>Experimental conditions tested</td><td><strong>36,000</strong> across 6 iterative cycles</td></tr>
-<tr><td>Cost per gram of protein</td><td><strong>$422/gram</strong> (40% reduction over state-of-the-art)</td></tr>
-<tr><td>Reagent cost reduction</td><td><strong>57%</strong> ($60 to $26 per gram)</td></tr>
+<tr><td><strong>Claude Opus 4.6</strong></td><td><strong>63.6%</strong> (96/151)</td><td>67.1% (53/79)</td><td>62.7% (42/67)</td><td>20.0% (1/5)</td></tr>
+<tr><td><strong>Gemini 3 Flash</strong></td><td>62.25% (94/151)</td><td>65.82% (52/79)</td><td>61.19% (41/67)</td><td>20.0% (1/5)</td></tr>
 </tbody>
 </table>
 
-<p>This is a closed-loop system: AI designs the experiment, robots execute it, results flow back to the AI, which designs the next round. No human in the loop for the experimental design. Ginkgo is already selling the optimized reaction mix through their reagents store.</p>
+<p>Both models are remarkably close — within 1.4 percentage points. Claude edges ahead slightly, particularly on basic and intermediate tasks. Both models solve exactly 1 of 5 difficult tasks. The basic-to-intermediate drop is surprisingly small for both — the models don't just know simple gate sequences; they can construct meaningful quantum algorithms. The cliff happens at "difficult" tasks that require multi-step reasoning with precise API calls.</p>
 
-<p>For quantum computing, this is a preview. Quantum experiments are even more amenable to automation — the entire workflow is digital. Our own agent infrastructure is a rudimentary version of what Ginkgo built, but for quantum circuits instead of protein synthesis.</p>
+<p>For context, the <strong>QUASAR</strong> system (which uses agentic RL and retrieval-augmented generation with a 4B parameter model) achieved 99.31% <em>circuit validity</em> — though that's a less strict metric than our functional correctness measure. <strong>QCoder</strong> with o3 reached 78% on a related benchmark, vs 40% for human experts.</p>
 
-<h2>The Tools: OpenAI Prism and the Platform War</h2>
+<h2>The Error Analysis</h2>
 
-<p><strong>OpenAI Prism</strong>, launched January 27, 2026, is a free, AI-native, LaTeX-native workspace for scientists. It's powered by GPT-5.2 and can:</p>
-<ul>
-<li>Draft and revise scientific text</li>
-<li>Reason through equations</li>
-<li>Suggest related papers from arXiv</li>
-<li>Convert photos of handwritten formulas into LaTeX</li>
-<li>Support unlimited projects and collaborators</li>
-</ul>
-
-<p>MIT Technology Review described it as letting scientists "vibe code science." It's free to anyone with a ChatGPT account — a clear move to make OpenAI the default platform for scientific writing.</p>
-
-<p>They're not alone. <strong>Anthropic</strong> launched Claude for Life Sciences in October 2025 with integrations for Benchling, PubMed, and 10x Genomics. In January 2026, they expanded into healthcare with HIPAA-ready products. Anthropic also committed Claude and dedicated engineering teams to all 17 DOE national labs as part of the <strong>Genesis Mission</strong>.</p>
-
-<p>The platform competition matters because whoever becomes the default AI for scientists shapes what questions get asked — and how.</p>
-
-<h2>The Warning: AI Expands Impact, Contracts Focus</h2>
-
-<p>This brings us to the most important paper of the year. In January 2026, <em>Nature</em> published "<a href="https://www.nature.com/articles/s41586-025-09922-y">Artificial intelligence tools expand scientists' impact but contract science's focus</a>" (Hao, Xu, Li & Evans). The findings, based on <strong>41.3 million research papers</strong>:</p>
+<p>This is where it gets interesting. Of the 57 failures:</p>
 
 <table>
-<thead><tr><th>Metric</th><th>Effect of AI Tool Adoption</th></tr></thead>
+<thead><tr><th>Error Type</th><th>Count</th><th>What It Means</th></tr></thead>
 <tbody>
-<tr><td>Papers published</td><td><strong>3.02x</strong> more than non-AI peers</td></tr>
-<tr><td>Citations received</td><td><strong>4.84x</strong> more</td></tr>
-<tr><td>Time to become project leader</td><td><strong>1.37 years</strong> earlier</td></tr>
-<tr><td>Volume of scientific topics studied</td><td><strong>Shrinks by 4.63%</strong></td></tr>
-<tr><td>Engagement between scientists</td><td><strong>Decreases by 22%</strong></td></tr>
+<tr><td>Wrong answer</td><td>13</td><td>Code runs but produces incorrect output</td></tr>
+<tr><td>Syntax error</td><td>11</td><td>Malformed Python — indentation, missing colons</td></tr>
+<tr><td>SamplerV2 API</td><td>9</td><td>Using deprecated Qiskit 1.x sampling API</td></tr>
+<tr><td>Account/runtime</td><td>6</td><td>Trying to use IBM Runtime (requires auth)</td></tr>
+<tr><td>Attribute error</td><td>5</td><td>Wrong method/property names</td></tr>
+<tr><td>Type error</td><td>4</td><td>Incorrect argument types</td></tr>
+<tr><td>Other</td><td>9</td><td>Misc runtime failures</td></tr>
 </tbody>
 </table>
 
-<p>The mechanism is straightforward: scientists using AI migrate toward areas with abundant data where AI tools demonstrate measurable advances on legible benchmarks. AI automates established fields rather than supporting exploration of new ones. The result is a less interconnected scientific literature — more papers, but about fewer things.</p>
+<h3>The key insight: API staleness, not algorithmic failure</h3>
 
-<p>This is the Jevons Paradox applied to science: making research more efficient doesn't expand the frontier proportionally. It concentrates effort where efficiency gains are largest.</p>
+<p>Only 13 of 57 failures (23%) are genuine algorithmic mistakes where the model produced incorrect quantum logic. The dominant failure mode is <strong>API version mismatch</strong>: 9 failures from Qiskit 2.x's <code>SamplerV2</code> breaking changes, 6 from trying to access IBM Runtime services that require authentication, and 5 from using wrong method names.</p>
 
-<h2>Andrew White and the "Scientific Taste" Problem</h2>
+<p>The model was trained on Qiskit 1.x documentation and code. Qiskit 2.x introduced significant breaking changes (the V2 primitives). The model <em>understands the quantum computing concepts</em> but generates code for an API that no longer exists.</p>
 
-<p>Andrew White — computational chemist at the University of Washington who led the ChemCrow project (the first chemistry LLM agent, which triggered a <em>White House briefing</em> on AI biosecurity), co-founder of <strong>Future House</strong> and <strong>Edison Scientific</strong> — addressed this problem directly on the <a href="https://www.latent.space/p/automating-science-world-models-scientific">Latent Space podcast</a>.</p>
+<h2>Implications</h2>
 
-<p>His autonomous research system <strong>Kosmos</strong> runs up to 12 hours per session, performing ~200 agent rollouts, executing ~42,000 lines of code, and reading ~1,500 papers per run. Independent scientists found 79.4% of statements in Kosmos reports to be accurate. Collaborators reported a single 20-cycle run performed the equivalent of 6 months of their own research.</p>
+<h3>1. RAG could dramatically improve performance</h3>
+<p>If the dominant failure mode is stale API knowledge, then <strong>retrieval-augmented generation</strong> with current Qiskit 2.x documentation should push Pass@1 significantly higher. We estimate 75-80% is achievable by simply injecting up-to-date API signatures into the prompt.</p>
 
-<p>But White identified the core problem: <strong>"scientific taste"</strong> — the ability to judge which questions are worth asking — is the real frontier. Traditional RLHF on hypothesis quality failed because human evaluators judge based on "tone, actionability, and specific facts" rather than theoretical importance. His solution: end-to-end feedback loops where actual research outcomes (downloads, citations, experimental validations) signal discovery quality.</p>
+<h3>2. The QUASAR result is relevant</h3>
+<p>The <strong>QUASAR</strong> system, which uses RAG with quantum documentation, achieved 99.31% circuit validity — suggesting that the documentation-injection approach works. Our benchmark measures functional correctness (stricter than validity), but the principle holds.</p>
 
-<p>He also warned about reward hacking: a trained molecule generation model generated compounds exploiting chemical loopholes (six-nitrogen structures, acid-base chemistry exploits) that scored well on benchmarks but were scientifically meaningless.</p>
+<h3>3. Quantum SDK design matters for AI</h3>
+<p>Frequent breaking changes in quantum SDKs create a compounding problem for AI code generation. SDKs designed with AI agents in mind — stable interfaces, versioned examples, machine-readable changelogs — would dramatically improve AI-assisted quantum development.</p>
 
-<h2>The Self-Driving Lab Landscape</h2>
+<h3>4. This benchmark should be run continuously</h3>
+<p>As new models release and quantum SDKs evolve, the intersection of model capability and API coverage shifts. Our <a href="/#agents">agent infrastructure</a> is designed to run this benchmark automatically against new model releases.</p>
 
-<p>The Ginkgo result is part of a broader movement:</p>
+<h2>Next Steps</h2>
 
-<ul>
-<li><strong>Google DeepMind</strong> is opening a fully automated materials science lab in the UK in 2026 — integrated with Gemini from the ground up, synthesizing and characterizing hundreds of materials per day.</li>
-<li><strong>Carnegie Mellon</strong> built a $40M cloud lab with Emerald Cloud Lab (200+ automated instruments). Their <strong>Coscientist</strong> system autonomously designs and executes chemistry experiments using GPT-4.</li>
-<li><strong>US legislation</strong>: In December 2025, Senators Fetterman and Budd announced legislation to create the first national system of programmable cloud laboratories.</li>
-<li>For quantum computing: the <strong>k-agents</strong> framework and <strong>Q-CTRL's autonomous calibration</strong> are making quantum processors self-driving — AI agents that calibrate gates and characterize devices without human intervention.</li>
-</ul>
-
-<h2>The DOE Genesis Mission</h2>
-
-<p>The scale of government commitment is unprecedented. The <strong>Genesis Mission</strong>, launched by Executive Order in November 2025, aims to "double the productivity and impact of American science within a decade." The American Science and Security Platform will connect all 17 DOE national laboratories with AI systems, creating what officials describe as "the world's most complex and powerful scientific instrument ever built."</p>
-
-<p>24 partner organizations signed agreements in December 2025:</p>
-<ul>
-<li><strong>Google DeepMind</strong>: AI co-scientist deployed across all 17 labs</li>
-<li><strong>Anthropic</strong>: Claude + dedicated team building AI agents and MCP servers for lab workflows</li>
-<li><strong>NVIDIA</strong>: Open AI science models, autonomous labs, quantum computing research</li>
-<li><strong>OpenAI, Microsoft, IBM, AWS, Intel, Oracle, Palantir, xAI</strong>, and others</li>
-</ul>
-
-<h2>What This Means for Us</h2>
-
-<p>Our project at TU Delft operates at a much smaller scale than Ginkgo or DeepMind. But the principles are the same:</p>
-
+<p>We're planning to:</p>
 <ol>
-<li><strong>The automation works.</strong> AI agents can design experiments, execute them, and learn from results. Our benchmark runner and replication agent prove this for quantum computing tasks.</li>
-<li><strong>The narrowing effect is real.</strong> If we only benchmark what's easy to benchmark, we'll miss the most important questions. Our choice to replicate diverse papers (not just optimize one metric) is deliberate.</li>
-<li><strong>Scientific taste can't be automated yet.</strong> The human role is shifting from "do the experiment" to "choose which experiments matter." That's a harder problem — and a more important one.</li>
-<li><strong>Quantum computing may be different.</strong> The Nature study found narrowing in fields with abundant data. Quantum computing has <em>limited</em> data and <em>many</em> open questions. AI agents in quantum might explore more broadly precisely because the field is young.</li>
+<li>Add RAG with Qiskit 2.x docs and re-run the benchmark</li>
+<li>Test against Claude Opus 4.6, GPT-5, and domain-specific models</li>
+<li>Develop a cQASM variant for Quantum Inspire hardware</li>
+<li>Run the Agent-Q and QUASAR approaches against our benchmark for direct comparison</li>
 </ol>
-
-<p>The race to automate science is accelerating. The question isn't whether to participate — it's whether we can do it in a way that expands rather than contracts the frontier of knowledge.</p>
 `,
     sources: [
-      { label: 'Ginkgo + OpenAI autonomous lab results', url: 'https://openai.com/index/gpt-5-lowers-protein-synthesis-cost/' },
-      { label: 'OpenAI Prism announcement', url: 'https://openai.com/index/introducing-prism/' },
-      { label: 'AI expands impact, contracts focus (Nature)', url: 'https://www.nature.com/articles/s41586-025-09922-y' },
-      { label: 'Andrew White on Latent Space podcast', url: 'https://www.latent.space/p/automating-science-world-models-scientific' },
-      { label: 'Edison Scientific / Kosmos', url: 'https://edisonscientific.com/articles/announcing-kosmos' },
-      { label: 'Anthropic Claude for Life Sciences', url: 'https://www.anthropic.com/news/claude-for-life-sciences' },
-      { label: 'DOE Genesis Mission — 24 partners', url: 'https://www.energy.gov/articles/energy-department-announces-collaboration-agreements-24-organizations-advance-genesis' },
-      { label: 'DeepMind automated UK lab', url: 'https://deepmind.google/blog/strengthening-our-partnership-with-the-uk-government-to-support-prosperity-and-security-in-the-ai-era/' },
-      { label: 'CMU Coscientist (Nature)', url: 'https://www.cmu.edu/news/stories/archives/2023/december/cmu-designed-artificially-intelligent-coscientist-automates-scientific-discovery' },
-      { label: 'k-agents for quantum labs', url: 'https://arxiv.org/abs/2412.07978' },
+      { label: 'Qiskit HumanEval benchmark paper', url: 'https://arxiv.org/abs/2406.02132' },
+      { label: 'QUASAR — agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
+      { label: 'Our benchmark results (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
+      { label: 'Qiskit 2.x migration guide', url: 'https://docs.quantum.ibm.com/migration-guides' },
+    ],
+  },
+  {
+    slug: 'ai-replicates-qutech-paper',
+    title: 'An AI Agent Replicated a QuTech Quantum Paper',
+    subtitle: 'Claude Opus 4.6 wrote 300 lines of VQE simulation code from a paper reference alone',
+    date: '2026-02-09',
+    author: 'AI x Quantum Research Team',
+    category: 'experiment',
+    tags: ['VQE', 'replication', 'Claude', 'QuTech', 'paper replication'],
+    heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
+    heroCaption: 'From published paper to working simulation — autonomously.',
+    excerpt: 'We gave Claude Opus 4.6 a reference to Sagastizabal et al. (2019) — a QuTech paper on symmetry-verified VQE for H2 — and asked it to replicate the experiment. It wrote the Hamiltonian, ansatz, noise model, and error mitigation from scratch.',
+    content: `
+<p>One of the most powerful tests of AI scientific capability is <strong>paper replication</strong>: given a published paper, can an AI agent reproduce the experiment from scratch? We tested this with a quantum computing paper from our own institution.</p>
+
+<h2>The Paper</h2>
+
+<p><strong>"Error Mitigation by Symmetry Verification on a Variational Quantum Eigensolver"</strong><br/>
+Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
+<a href="https://arxiv.org/abs/1902.11258">arxiv:1902.11258</a></p>
+
+<p>This paper from QuTech / TU Delft demonstrates a key technique: using physical symmetries to detect and mitigate errors in variational quantum eigensolvers (VQE). They find the ground-state energy of H&#8322; — the hydrogen molecule — using a 2-qubit circuit with Z-parity symmetry verification.</p>
+
+<h2>What the AI Built</h2>
+
+<p>Claude Opus 4.6 produced ~300 lines of production Qiskit code covering:</p>
+
+<h3>1. Hamiltonian Construction</h3>
+<p>The H&#8322; molecular Hamiltonian in the STO-3G basis, transformed via Bravyi-Kitaev reduction to a 2-qubit operator:</p>
+<p><code>H = g&#8320;II + g&#8321;ZI + g&#8322;IZ + g&#8323;ZZ + g&#8324;XX + g&#8325;YY</code></p>
+<p>The agent correctly identified that the coefficients (g&#8320; through g&#8325;) are functions of the bond distance, and tabulated them from the O'Malley et al. reference data for 29 bond distances from 0.2 to 3.0 Angstroms.</p>
+
+<h3>2. Ansatz Circuit</h3>
+<p>A single-parameter exchange rotation in the {|01&#10217;, |10&#10217;} subspace — a parity-preserving ansatz that keeps the state within the correct symmetry sector. The agent decomposed this into RXX(&#952;) and RYY(&#952;) rotations, matching the paper's approach.</p>
+
+<h3>3. Noise Model</h3>
+<p>Realistic noise parameters matching the paper's device characterization:</p>
+<ul>
+<li>T&#8321; = 30&#956;s, T&#8322; = 60&#956;s (thermal relaxation)</li>
+<li>Depolarizing noise on single-qubit gates (0.1%) and two-qubit gates (1%)</li>
+<li>Measurement error (1%)</li>
+</ul>
+
+<h3>4. Symmetry Verification</h3>
+<p>The key innovation of the paper: post-selecting measurement results on states where the qubit parity matches the ground-state sector (even parity for H&#8322;). This filters out a significant fraction of errors without additional circuit overhead.</p>
+
+<h3>5. Measurement Protocol</h3>
+<p>Three measurement bases (Z, X, Y) with 8192 shots each. The XX expectation value requires Hadamard-rotated measurements; YY requires Sdg-Hadamard-rotated measurements. The agent correctly implemented all three basis rotations.</p>
+
+<h2>What This Demonstrates</h2>
+
+<p>This experiment shows that AI agents can:</p>
+<ol>
+<li><strong>Read and understand quantum physics papers</strong> — extracting the Hamiltonian, ansatz structure, noise parameters, and measurement protocol</li>
+<li><strong>Translate physics to code</strong> — implementing the Bravyi-Kitaev transformation, noise channels, and symmetry verification in Qiskit</li>
+<li><strong>Handle domain-specific details</strong> — correctly managing complex numbers, basis rotations, and expectation value calculations</li>
+</ol>
+
+<p>The entire replication was done in a single session with Claude Opus 4.6 acting as a coding agent through Claude Code. The human role was to provide the paper reference and review the output — the agent handled the physics, mathematics, and implementation.</p>
+
+<h2>Limitations</h2>
+
+<p>To be clear about what this doesn't show:</p>
+<ul>
+<li>We haven't yet run this on actual quantum hardware (only Qiskit Aer simulation)</li>
+<li>We haven't done a quantitative comparison of our curves against the paper's published figures</li>
+<li>The noise model is approximate — real device noise is more complex</li>
+<li>A human physicist reviewed the code, which matters for trust</li>
+</ul>
+
+<p>These are next steps, not fundamental limitations. The point is that the AI produced a reasonable starting point — 300 lines of domain-specific simulation code — from a paper reference alone.</p>
+`,
+    sources: [
+      { label: 'Sagastizabal et al. (2019) — original paper', url: 'https://arxiv.org/abs/1902.11258' },
+      { label: 'Our replication code (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_sagastizabal.py' },
+      { label: 'O\'Malley et al. — H2 coefficient data', url: 'https://arxiv.org/abs/1512.06860' },
+      { label: 'Bravyi-Kitaev transformation', url: 'https://arxiv.org/abs/1208.5986' },
     ],
   },
   {
@@ -1093,178 +770,6 @@ b = measure q"""
       { label: 'MCP Python SDK', url: 'https://github.com/modelcontextprotocol/python-sdk' },
       { label: 'Our MCP server code (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/mcp-servers' },
       { label: 'Claude Code', url: 'https://docs.anthropic.com/en/docs/claude-code' },
-    ],
-  },
-  {
-    slug: 'nist-quantum-randomness-certification',
-    title: 'Is Quantum Hardware Actually Random? We Tested It.',
-    subtitle: 'Running 8 NIST statistical tests on 20,000 bits from a spin qubit processor reveals measurable bias — and a classical fix that works perfectly',
-    date: '2026-02-10',
-    author: 'AI x Quantum Research Team',
-    category: 'experiment',
-    tags: ['QRNG', 'NIST SP 800-22', 'Tuna-9', 'von Neumann debiasing', 'randomness', 'certification', 'empirical'],
-    heroImage: 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=1200&q=80',
-    heroCaption: 'Random or not? Statistical tests reveal the truth about quantum hardware output.',
-    excerpt: 'We ran the full NIST SP 800-22 statistical test battery on 20,000 bits from Quantum Inspire\'s Tuna-9 spin qubit processor. Raw output failed 7 of 8 tests. After von Neumann debiasing, it passed all 8 — statistically indistinguishable from ideal randomness.',
-    content: `
-<p>Quantum mechanics promises perfect randomness. A qubit in superposition, when measured, should collapse to |0&#x27E9; or |1&#x27E9; with exactly equal probability. But real hardware has noise, crosstalk, and calibration drift. How random is the output <em>actually</em>?</p>
-
-<p>We tested this empirically by running the <strong>NIST SP 800-22</strong> statistical test battery — the US government standard for certifying random number generators — against three quantum random sources: raw Tuna-9 hardware, von Neumann debiased Tuna-9, and the QI local emulator.</p>
-
-<p>The results were striking. And they reveal something important about the gap between quantum theory and quantum engineering.</p>
-
-<h2>The Experiment</h2>
-
-<p>Our setup:</p>
-<ul>
-<li><strong>Circuit</strong>: 8-qubit Hadamard gate (H on each qubit, then measure). Each shot produces one random byte.</li>
-<li><strong>Backend</strong>: Quantum Inspire Tuna-9 — a 9-qubit spin processor built by QuTech at TU Delft.</li>
-<li><strong>Sample size</strong>: 20,000 bits per source (the minimum recommended by NIST for meaningful statistical testing).</li>
-<li><strong>Test suite</strong>: 8 tests from NIST SP 800-22: Frequency, Block Frequency, Runs, Longest Run of Ones, Spectral (DFT), Serial, Approximate Entropy, and Cumulative Sums.</li>
-<li><strong>Significance level</strong>: &alpha; = 0.01 (a sequence passes if p-value &gt; 0.01).</li>
-</ul>
-
-<p>The full circuit in cQASM 3.0:</p>
-
-<pre><code>version 3.0
-qubit[8] q
-bit[8] b
-
-H q[0]
-H q[1]
-H q[2]
-H q[3]
-H q[4]
-H q[5]
-H q[6]
-H q[7]
-
-b = measure q</code></pre>
-
-<p>Simple. A Hadamard gate puts each qubit into equal superposition, measurement collapses it, and we read out 8 random bits. In theory, this is the purest possible random number generator.</p>
-
-<h2>Result 1: Raw Hardware Fails Badly</h2>
-
-<p>The raw Tuna-9 output passed only <strong>1 out of 8</strong> NIST tests.</p>
-
-<table>
-<thead><tr><th>NIST Test</th><th>Raw Tuna-9</th><th>p-value</th></tr></thead>
-<tbody>
-<tr><td>Frequency (Monobit)</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>5.2 &times; 10&#x207B;&#x2078;</td></tr>
-<tr><td>Block Frequency</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>0.0069</td></tr>
-<tr><td>Runs</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>0.0 (pre-test failed)</td></tr>
-<tr><td>Longest Run of Ones</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>6.1 &times; 10&#x207B;&#x2075;</td></tr>
-<tr><td>Spectral (DFT)</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.559</td></tr>
-<tr><td>Serial</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>3.4 &times; 10&#x207B;&#x2077;</td></tr>
-<tr><td>Approximate Entropy</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>0.00071</td></tr>
-<tr><td>Cumulative Sums</td><td style="color:#ff6b9d"><strong>FAIL</strong></td><td>9.6 &times; 10&#x207B;&#x2078;</td></tr>
-</tbody>
-</table>
-
-<p>The root cause is visible in the Frequency test: the ones fraction is <strong>0.4808</strong> — nearly 2% below the expected 0.5. That might sound small, but over 20,000 bits it's statistically catastrophic. The monobit p-value is 5.2 &times; 10&#x207B;&#x2078;, meaning the probability of seeing this much deviation from a truly random source is less than one in ten million.</p>
-
-<p>This bias cascades. The Runs test can't even start (its prerequisite check fails). The Serial test, which looks for patterns in consecutive bit pairs, finds massive deviations. The Cumulative Sums test, which tracks the running balance of 0s and 1s, shows the bias accumulating over the full sequence.</p>
-
-<p>Only the Spectral (DFT) test passes — it looks for periodic structure in the frequency domain, and the hardware bias is non-periodic.</p>
-
-<h2>Why Is the Hardware Biased?</h2>
-
-<p>Tuna-9's spin qubits are electron spins in semiconductor quantum dots. The qubit states |0&#x27E9; and |1&#x27E9; correspond to spin-up and spin-down. In principle, a Hadamard gate creates a perfect 50/50 superposition. In practice:</p>
-
-<ul>
-<li><strong>Gate calibration drift</strong> — the microwave pulses that implement H may not rotate by exactly &pi;/2</li>
-<li><strong>Readout asymmetry</strong> — the detector may be slightly more likely to register one state than the other</li>
-<li><strong>Thermal relaxation (T1)</strong> — during the measurement process, some qubits may relax toward their ground state</li>
-</ul>
-
-<p>The 48.1% ones fraction suggests the qubits have a slight preference for |0&#x27E9;. This is typical of NISQ (noisy intermediate-scale quantum) hardware — and it's exactly the kind of systematic error that von Neumann debiasing was designed to fix.</p>
-
-<h2>Result 2: Von Neumann Debiasing Fixes Everything</h2>
-
-<p>Von Neumann debiasing is a beautifully simple algorithm from 1951. Take bits in pairs:</p>
-<ul>
-<li>01 &rarr; output 0</li>
-<li>10 &rarr; output 1</li>
-<li>00 or 11 &rarr; discard</li>
-</ul>
-
-<p>The key insight: even if P(0) &ne; P(1), we know that P(01) = P(10) = P(0)&middot;P(1), assuming consecutive bits are independent. So the output is perfectly balanced regardless of the input bias. The cost is discarding roughly 75% of your bits (in our case, 74.9% — almost exactly the theoretical prediction for p=0.481).</p>
-
-<p>After debiasing, Tuna-9 passes <strong>all 8 tests</strong>:</p>
-
-<table>
-<thead><tr><th>NIST Test</th><th>Raw</th><th>Debiased</th><th>p-value (debiased)</th></tr></thead>
-<tbody>
-<tr><td>Frequency (Monobit)</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.092</td></tr>
-<tr><td>Block Frequency</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.967</td></tr>
-<tr><td>Runs</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.521</td></tr>
-<tr><td>Longest Run of Ones</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.739</td></tr>
-<tr><td>Spectral (DFT)</td><td style="color:#00ff88">PASS</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.243</td></tr>
-<tr><td>Serial</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.200</td></tr>
-<tr><td>Approximate Entropy</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.252</td></tr>
-<tr><td>Cumulative Sums</td><td style="color:#ff6b9d">FAIL</td><td style="color:#00ff88"><strong>PASS</strong></td><td>0.157</td></tr>
-</tbody>
-</table>
-
-<p>The debiased ones fraction is 0.506 — well within the expected range. All p-values are comfortably above 0.01. The output is statistically indistinguishable from ideal randomness.</p>
-
-<h2>A Subtle Bug We Discovered</h2>
-
-<p>The path to these results wasn't straightforward. Our first attempt at debiasing actually made things <em>worse</em> — the debiased output passed 0 out of 8 tests, compared to 1/8 for raw output.</p>
-
-<p>The problem wasn't the debiasing algorithm. It was how we expanded the measurement histogram.</p>
-
-<p>Quantum hardware returns results as a histogram: <code>{{"10101010": 500, "01010101": 524, ...}}</code>. To get a sequence of random bytes, you expand this: 500 copies of value 170, 524 copies of value 85, etc. But if you just concatenate these groups, you get 500 <em>identical consecutive values</em> followed by 524 more identical values. The Serial test sees massive artificial correlations. The Runs test finds impossibly long runs of identical bits.</p>
-
-<p>Von Neumann debiasing can't fix structural correlations — it only fixes bit-level bias. The fix was simple: <strong>shuffle the expanded values</strong> before debiasing. This restores the independence assumption that von Neumann requires, and the output passes all tests.</p>
-
-<p>This is the kind of bug that's easy to miss in a textbook implementation but shows up immediately under rigorous statistical testing. It's also a good argument for running the full NIST battery rather than just checking the ones fraction.</p>
-
-<h2>Result 3: Emulator Baseline</h2>
-
-<p>For comparison, we also tested the local QI emulator (qxelarator). It passed all 8 tests with strong p-values, confirming that the test implementation itself is correct and the emulator's pseudorandom measurement sampling is high quality.</p>
-
-<h2>What This Means for Our QRNG MCP Server</h2>
-
-<p>These results directly validated the architecture of our <a href="/blog/quantum-mcp-servers">QRNG MCP server</a>, which gives Claude Code access to quantum random numbers. The server uses a three-source fallback chain:</p>
-
-<ol>
-<li><strong>ANU QRNG</strong> — optical vacuum fluctuations (fastest, but occasionally unavailable)</li>
-<li><strong>Tuna-9 spin qubits</strong> — with von Neumann debiasing and histogram shuffle (now NIST-certified)</li>
-<li><strong>Local emulator</strong> — pseudorandom fallback (always available)</li>
-</ol>
-
-<p>The Tuna-9 path now includes the full pipeline we validated here: Hadamard circuits, histogram expansion with shuffle, and von Neumann pair extraction. Every random number Claude generates through this path has passed the same statistical certification standard used by NIST.</p>
-
-<h2>Broader Implications</h2>
-
-<p>This experiment highlights a pattern we keep seeing in quantum computing: <strong>the gap between theory and engineering is where the interesting work happens</strong>.</p>
-
-<p>In theory, measuring a qubit in superposition gives perfect randomness. In practice, you get 48.1% ones and fail 7 out of 8 statistical tests. The fix isn't more quantum — it's a classical post-processing step from 1951. The quantum hardware provides genuine physical randomness (something no classical computer can do); the classical post-processing makes it usable.</p>
-
-<p>This is likely to be a recurring theme as quantum computing matures. Raw quantum operations are noisy and imperfect. The value comes from combining quantum resources with classical error mitigation, whether that's von Neumann debiasing for random numbers, error correction codes for computation, or variational hybrid algorithms for optimization.</p>
-
-<p>The experiment also demonstrates something about AI-accelerated research methodology. This entire investigation — from discovering the ANU API was down, to building the Tuna-9 fallback, to discovering the histogram expansion bug, to implementing and validating the fix — happened in a single Claude Code session. The AI agent designed the statistical tests, ran the experiments, diagnosed the failure, and iterated to a solution. The human's role was to ask "can we use Tuna-9 as a fallback?" and approve the direction. Everything else was autonomous.</p>
-
-<h2>Reproducibility</h2>
-
-<p>All code and data are open source:</p>
-<ul>
-<li><strong>Certification script</strong>: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/scripts/qrng_certification.py">experiments/scripts/qrng_certification.py</a></li>
-<li><strong>Raw results</strong>: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/qrng-certification-001.json">experiments/results/qrng-certification-001.json</a></li>
-<li><strong>QRNG MCP server</strong>: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/mcp-servers/qrng/qrng_server.py">mcp-servers/qrng/qrng_server.py</a></li>
-<li><strong>Live dashboard</strong>: <a href="https://quantuminspire.vercel.app/experiments">quantuminspire.vercel.app/experiments</a></li>
-</ul>
-
-<p>To reproduce: activate the Python 3.12 venv, authenticate with Quantum Inspire (<code>qi login</code>), and run <code>python experiments/scripts/qrng_certification.py</code>. The script will fetch 20,000 bits from each source and run all 8 NIST tests.</p>
-`,
-    sources: [
-      { label: 'NIST SP 800-22: Statistical Test Suite for Random Number Generators', url: 'https://csrc.nist.gov/publications/detail/sp/800-22/rev-1a/final' },
-      { label: 'von Neumann, J. (1951). Various techniques used in connection with random digits', url: 'https://mcnp.lanl.gov/pdf_files/nbs_vonneumann.pdf' },
-      { label: 'Quantum Inspire Platform (QuTech / TU Delft)', url: 'https://www.quantum-inspire.com/' },
-      { label: 'Experiment results (live dashboard)', url: 'https://quantuminspire.vercel.app/experiments' },
-      { label: 'QRNG certification script (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/scripts/qrng_certification.py' },
-      { label: 'QRNG MCP server (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/mcp-servers/qrng/qrng_server.py' },
     ],
   },
 ]

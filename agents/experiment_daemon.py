@@ -211,29 +211,29 @@ def generate_vqe_y_circuit(params):
 # Each Clifford is represented as a list of gate strings to apply in order.
 SINGLE_QUBIT_CLIFFORDS = [
     [],                     # 0: I
-    ["X"],                  # 1: X
-    ["Y"],                  # 2: Y
-    ["Z"],                  # 3: Z
-    ["H"],                  # 4: H
-    ["S"],                  # 5: S
-    ["Sdag"],               # 6: Sdag
-    ["H", "S"],             # 7: H.S = sqrt(X).phase
-    ["S", "H"],             # 8: S.H
-    ["H", "S", "H"],        # 9: H.S.H
-    ["S", "H", "S"],        # 10: S.H.S
-    ["H", "S", "H", "S"],   # 11: H.S.H.S
-    ["X", "H"],             # 12: X.H
-    ["Y", "H"],             # 13: Y.H
-    ["X", "S"],             # 14: X.S
-    ["Y", "S"],             # 15: Y.S
-    ["X", "H", "S"],        # 16: X.H.S
-    ["Y", "H", "S"],        # 17: Y.H.S
-    ["X", "S", "H"],        # 18: X.S.H
-    ["Y", "S", "H"],        # 19: Y.S.H
-    ["H", "X"],             # 20: H.X
-    ["H", "Y"],             # 21: H.Y
-    ["S", "X"],             # 22: S.X = S.X
-    ["S", "Y"],             # 23: S.Y
+    ["H"],                  # 1: H
+    ["S"],                  # 2: S
+    ["Sdag"],               # 3: Sdag
+    ["X"],                  # 4: X
+    ["Y"],                  # 5: Y
+    ["Z"],                  # 6: Z
+    ["H", "S"],             # 7: HS
+    ["H", "Sdag"],          # 8: HSdag
+    ["S", "H"],             # 9: SH
+    ["Sdag", "H"],          # 10: SdagH
+    ["X", "H"],             # 11: XH
+    ["X", "S"],             # 12: XS
+    ["X", "Sdag"],          # 13: XSdag
+    ["Y", "H"],             # 14: YH
+    ["Z", "H"],             # 15: ZH
+    ["H", "S", "H"],        # 16: HSH
+    ["H", "Sdag", "H"],     # 17: HSdagH
+    ["S", "H", "Sdag"],     # 18: SHSdag
+    ["Sdag", "H", "S"],     # 19: SdagHS
+    ["X", "S", "H"],        # 20: XSH
+    ["X", "Sdag", "H"],     # 21: XSdagH
+    ["Y", "H", "S"],        # 22: YHS
+    ["Y", "H", "Sdag"],     # 23: YHSdag
 ]
 
 # Pre-computed multiplication table: CLIFFORD_MULT[i][j] = index of C_i * C_j
@@ -403,8 +403,9 @@ def generate_qaoa_circuits(params):
     Single QAOA layer with a sweep of gamma/beta parameters.
     """
     qubits = params.get("qubits", [0, 1, 2])
-    gamma_values = params.get("gamma_values", [0.3, 0.6, 0.9])
-    beta_values = params.get("beta_values", [0.3, 0.6, 0.9])
+    _default_sweep = [round(0.1 + 0.1 * i, 1) for i in range(10)]  # 0.1..1.0
+    gamma_values = params.get("gamma_values", _default_sweep)
+    beta_values = params.get("beta_values", _default_sweep)
     # Triangle edges
     edges = [(qubits[0], qubits[1]), (qubits[1], qubits[2]), (qubits[0], qubits[2])]
 
@@ -448,8 +449,9 @@ def analyze_qaoa(all_counts, params):
     Computes approximation ratio vs classical optimum.
     """
     qubits = params.get("qubits", [0, 1, 2])
-    gamma_values = params.get("gamma_values", [0.3, 0.6, 0.9])
-    beta_values = params.get("beta_values", [0.3, 0.6, 0.9])
+    _default_sweep = [round(0.1 + 0.1 * i, 1) for i in range(10)]
+    gamma_values = params.get("gamma_values", _default_sweep)
+    beta_values = params.get("beta_values", _default_sweep)
     n = len(qubits)
     edges = [(0, 1), (1, 2), (0, 2)]  # triangle
 
@@ -758,6 +760,555 @@ def analyze_qv(all_counts, params):
     }
 
 
+# ─── Connectivity Probe ──────────────────────────────────────────────────
+
+def generate_connectivity_probe_circuits(params):
+    """Generate Bell-pair circuits for all qubit pairs to map CNOT fidelity.
+
+    Creates one Bell circuit per pair (i,j) with i<j on 9 qubits.
+    """
+    num_qubits = params.get("num_qubits", 9)
+    pairs = params.get("pairs", None)
+    if pairs is None:
+        pairs = [(i, j) for i in range(num_qubits) for j in range(i + 1, num_qubits)]
+
+    circuits = {}
+    for i, j in pairs:
+        circuit = f"""version 3.0
+qubit[{num_qubits}] q
+bit[{num_qubits}] b
+
+H q[{i}]
+CNOT q[{i}], q[{j}]
+b = measure q"""
+        circuits[f"pair_{i}_{j}"] = circuit
+    return circuits
+
+
+def analyze_connectivity_probe(all_counts, params):
+    """Analyze Bell fidelity for each qubit pair.
+
+    Returns pair fidelities ranked best to worst, plus a 9x9 heatmap.
+    """
+    num_qubits = params.get("num_qubits", 9)
+    pair_fidelities = {}
+
+    for key, counts in all_counts.items():
+        if not key.startswith("pair_"):
+            continue
+        parts = key.split("_")
+        i, j = int(parts[1]), int(parts[2])
+        total = sum(counts.values())
+        if total == 0:
+            continue
+
+        # Bell fidelity = P(both same) for the target qubits
+        correct = 0
+        for bitstring, count in counts.items():
+            bits = bitstring.zfill(num_qubits)
+            # cQASM bit order: b[0] is leftmost in output
+            bi = int(bits[-(i + 1)])
+            bj = int(bits[-(j + 1)])
+            if bi == bj:
+                correct += count
+
+        fidelity = correct / total
+        pair_fidelities[f"{i}-{j}"] = round(fidelity, 4)
+
+    # Build heatmap (symmetric)
+    heatmap = {}
+    for pair_key, fid in pair_fidelities.items():
+        i, j = map(int, pair_key.split("-"))
+        heatmap[f"{i},{j}"] = fid
+        heatmap[f"{j},{i}"] = fid
+    for i in range(num_qubits):
+        heatmap[f"{i},{i}"] = 1.0
+
+    # Rank pairs
+    ranked = sorted(pair_fidelities.items(), key=lambda x: x[1], reverse=True)
+    best_5q = []
+    best_6q = []
+    if ranked:
+        # Greedy subgraph: pick best-connected 5 qubits
+        used = set()
+        for pair_key, fid in ranked:
+            i, j = map(int, pair_key.split("-"))
+            used.add(i)
+            used.add(j)
+            if len(used) >= 5 and not best_5q:
+                best_5q = sorted(list(used))[:5]
+            if len(used) >= 6 and not best_6q:
+                best_6q = sorted(list(used))[:6]
+                break
+
+    avg_fidelity = sum(pair_fidelities.values()) / len(pair_fidelities) if pair_fidelities else 0
+
+    return {
+        "pair_fidelities": pair_fidelities,
+        "heatmap": heatmap,
+        "num_qubits": num_qubits,
+        "num_pairs": len(pair_fidelities),
+        "average_fidelity": round(avg_fidelity, 4),
+        "best_pairs": [{"pair": p, "fidelity": f} for p, f in ranked[:10]],
+        "worst_pairs": [{"pair": p, "fidelity": f} for p, f in ranked[-5:]],
+        "recommended_5q_subgraph": best_5q,
+        "recommended_6q_subgraph": best_6q,
+        "interpretation": (
+            f"Connectivity probe: {len(pair_fidelities)} pairs measured. "
+            f"Average Bell fidelity: {avg_fidelity:.1%}. "
+            f"Best pair: {ranked[0][0]} ({ranked[0][1]:.1%}). "
+            f"Worst pair: {ranked[-1][0]} ({ranked[-1][1]:.1%})."
+            if ranked else "No pairs measured."
+        ),
+    }
+
+
+# ─── Repetition Code (3-qubit) ──────────────────────────────────────────
+
+def generate_repetition_code_circuits(params):
+    """Generate 3-qubit repetition code circuits with syndrome extraction.
+
+    Layout: d0 -- s0 -- d1 -- s1 -- d2
+    Qubits: [d0, d1, d2, s0, s1] mapped to physical qubits from params.
+    Stabilizers: Z0Z1 -> s0, Z1Z2 -> s1 (via CNOT).
+    """
+    # Physical qubit mapping (default: 0-4)
+    qmap = params.get("qubit_mapping", [0, 1, 2, 3, 4])
+    d0, d1, d2 = qmap[0], qmap[1], qmap[2]
+    s0, s1 = qmap[3], qmap[4]
+    num_qubits = max(qmap) + 1
+    shots = params.get("shots", 4096)
+
+    variants = {}
+
+    # No error: logical |0> = |000>
+    variants["no_error"] = {
+        "prep": [],
+        "error": [],
+        "expected_syndrome": [0, 0],
+        "expected_data_parity": 0,
+    }
+
+    # Error on d0
+    variants["error_d0"] = {
+        "prep": [],
+        "error": [f"X q[{d0}]"],
+        "expected_syndrome": [1, 0],
+        "expected_data_parity": 1,
+    }
+
+    # Error on d1
+    variants["error_d1"] = {
+        "prep": [],
+        "error": [f"X q[{d1}]"],
+        "expected_syndrome": [1, 1],
+        "expected_data_parity": 1,
+    }
+
+    # Error on d2
+    variants["error_d2"] = {
+        "prep": [],
+        "error": [f"X q[{d2}]"],
+        "expected_syndrome": [0, 1],
+        "expected_data_parity": 1,
+    }
+
+    # Logical |1> = |111>
+    variants["logical_1"] = {
+        "prep": [f"X q[{d0}]", f"X q[{d1}]", f"X q[{d2}]"],
+        "error": [],
+        "expected_syndrome": [0, 0],
+        "expected_data_parity": 1,
+    }
+
+    # Logical |+>
+    variants["logical_plus"] = {
+        "prep": [f"H q[{d0}]", f"H q[{d1}]", f"H q[{d2}]"],
+        "error": [],
+        "expected_syndrome": None,  # mixed
+        "expected_data_parity": None,
+    }
+
+    circuits = {}
+    for name, v in variants.items():
+        lines = [
+            "version 3.0",
+            f"qubit[{num_qubits}] q",
+            f"bit[{num_qubits}] b",
+            "",
+            f"// Repetition code: {name}",
+        ]
+
+        # State preparation
+        if v["prep"]:
+            lines.append("// Prepare logical state")
+            lines.extend(v["prep"])
+            lines.append("")
+
+        # Error injection
+        if v["error"]:
+            lines.append("// Inject error")
+            lines.extend(v["error"])
+            lines.append("")
+
+        # Syndrome extraction: Z0Z1 -> s0, Z1Z2 -> s1
+        lines.append("// Syndrome extraction")
+        lines.append(f"CNOT q[{d0}], q[{s0}]")
+        lines.append(f"CNOT q[{d1}], q[{s0}]")
+        lines.append(f"CNOT q[{d1}], q[{s1}]")
+        lines.append(f"CNOT q[{d2}], q[{s1}]")
+        lines.append("")
+        lines.append("b = measure q")
+
+        circuits[name] = "\n".join(lines)
+
+    return circuits
+
+
+def analyze_repetition_code(all_counts, params):
+    """Analyze repetition code results.
+
+    Extracts syndromes from ancilla bits, checks against expected values,
+    and computes logical error rate with majority-vote decoding.
+    """
+    qmap = params.get("qubit_mapping", [0, 1, 2, 3, 4])
+    d0, d1, d2 = qmap[0], qmap[1], qmap[2]
+    s0, s1 = qmap[3], qmap[4]
+    num_qubits = max(qmap) + 1
+
+    expected_syndromes = {
+        "no_error": (0, 0),
+        "error_d0": (1, 0),
+        "error_d1": (1, 1),
+        "error_d2": (0, 1),
+        "logical_1": (0, 0),
+    }
+
+    # Correction map: syndrome -> which data qubit to flip
+    correction_map = {
+        (0, 0): None,
+        (1, 0): 0,  # d0
+        (1, 1): 1,  # d1
+        (0, 1): 2,  # d2
+    }
+
+    variant_results = {}
+    total_logical_errors = 0
+    total_correctable = 0
+
+    for variant_name, counts in all_counts.items():
+        if variant_name == "logical_plus":
+            # Skip: syndrome is inherently mixed
+            variant_results[variant_name] = {"note": "Mixed syndrome expected for |+> state"}
+            continue
+
+        total = sum(counts.values())
+        if total == 0:
+            continue
+
+        expected = expected_syndromes.get(variant_name)
+        correct_syndrome_count = 0
+        logical_errors_after_correction = 0
+
+        # Determine expected logical value
+        is_logical_1 = variant_name == "logical_1"
+
+        syndrome_dist = {}
+        for bitstring, count in counts.items():
+            bits = bitstring.zfill(num_qubits)
+            # Extract bits (cQASM: bit index matches qubit index, rightmost = q[0])
+            def get_bit(q_idx):
+                return int(bits[-(q_idx + 1)])
+
+            measured_s0 = get_bit(s0)
+            measured_s1 = get_bit(s1)
+            syndrome = (measured_s0, measured_s1)
+            syndrome_key = f"{measured_s0}{measured_s1}"
+            syndrome_dist[syndrome_key] = syndrome_dist.get(syndrome_key, 0) + count
+
+            # Check syndrome accuracy
+            if expected and syndrome == expected:
+                correct_syndrome_count += count
+
+            # Majority vote decoding on data qubits
+            data_bits = [get_bit(d0), get_bit(d1), get_bit(d2)]
+
+            # Apply correction based on syndrome
+            correction = correction_map.get(syndrome)
+            if correction is not None:
+                data_bits[correction] ^= 1
+
+            # Decode logical value via majority vote
+            logical_val = 1 if sum(data_bits) >= 2 else 0
+            expected_logical = 1 if is_logical_1 else 0
+
+            if logical_val != expected_logical:
+                logical_errors_after_correction += count
+
+        syndrome_accuracy = correct_syndrome_count / total if expected else None
+        logical_error_rate = logical_errors_after_correction / total
+
+        variant_results[variant_name] = {
+            "total_shots": total,
+            "syndrome_accuracy": round(syndrome_accuracy, 4) if syndrome_accuracy is not None else None,
+            "syndrome_distribution": syndrome_dist,
+            "logical_error_rate": round(logical_error_rate, 4),
+            "expected_syndrome": f"{expected[0]}{expected[1]}" if expected else None,
+        }
+
+        if variant_name not in ("logical_1", "logical_plus"):
+            total_logical_errors += logical_errors_after_correction
+            total_correctable += total
+
+    avg_logical_error_rate = total_logical_errors / total_correctable if total_correctable > 0 else 0
+
+    # Compute average syndrome accuracy across deterministic variants
+    syn_accs = [v["syndrome_accuracy"] for v in variant_results.values()
+                if isinstance(v, dict) and v.get("syndrome_accuracy") is not None]
+    avg_syndrome_accuracy = sum(syn_accs) / len(syn_accs) if syn_accs else 0
+
+    return {
+        "variant_results": variant_results,
+        "average_syndrome_accuracy": round(avg_syndrome_accuracy, 4),
+        "average_logical_error_rate": round(avg_logical_error_rate, 4),
+        "qubit_mapping": qmap,
+        "code_type": "3-qubit repetition",
+        "num_data_qubits": 3,
+        "num_syndrome_qubits": 2,
+        "interpretation": (
+            f"3-qubit repetition code: avg syndrome accuracy {avg_syndrome_accuracy:.1%}, "
+            f"logical error rate {avg_logical_error_rate:.1%} (after majority-vote correction). "
+            f"{'Code is working — errors detected and corrected.' if avg_syndrome_accuracy > 0.7 else 'Significant hardware noise affecting syndrome extraction.'}"
+        ),
+    }
+
+
+# ─── [[4,2,2]] Detection Code ───────────────────────────────────────────
+
+def generate_detection_code_circuits(params):
+    """Generate [[4,2,2]] detection code circuits.
+
+    4 data qubits + 2 ancilla (X-type and Z-type).
+    Stabilizers: XXXX (detects Z errors) and ZZZZ (detects X errors).
+    """
+    qmap = params.get("qubit_mapping", [0, 1, 2, 3, 4, 5])
+    d0, d1, d2, d3 = qmap[0], qmap[1], qmap[2], qmap[3]
+    ax, az = qmap[4], qmap[5]  # X-ancilla, Z-ancilla
+    num_qubits = max(qmap) + 1
+
+    def syndrome_block():
+        """XXXX and ZZZZ stabilizer measurement."""
+        lines = []
+        # XXXX stabilizer (X-type): detects Z errors
+        lines.append("// XXXX stabilizer measurement")
+        lines.append(f"H q[{ax}]")
+        lines.append(f"CNOT q[{ax}], q[{d0}]")
+        lines.append(f"CNOT q[{ax}], q[{d1}]")
+        lines.append(f"CNOT q[{ax}], q[{d2}]")
+        lines.append(f"CNOT q[{ax}], q[{d3}]")
+        lines.append(f"H q[{ax}]")
+        lines.append("")
+        # ZZZZ stabilizer (Z-type): detects X errors
+        lines.append("// ZZZZ stabilizer measurement")
+        lines.append(f"CNOT q[{d0}], q[{az}]")
+        lines.append(f"CNOT q[{d1}], q[{az}]")
+        lines.append(f"CNOT q[{d2}], q[{az}]")
+        lines.append(f"CNOT q[{d3}], q[{az}]")
+        return lines
+
+    # GHZ state preparation: logical |00> = (|0000>+|1111>)/sqrt(2)
+    # This puts data qubits into the [[4,2,2]] codespace (+1 eigenspace of XXXX and ZZZZ)
+    codespace_prep = [
+        f"// Prepare logical |00> = GHZ state (codespace)",
+        f"H q[{d0}]",
+        f"CNOT q[{d0}], q[{d1}]",
+        f"CNOT q[{d0}], q[{d2}]",
+        f"CNOT q[{d0}], q[{d3}]",
+    ]
+
+    variants = {}
+
+    # No error: logical |00>, both syndromes = 0
+    variants["no_error"] = {"prep": codespace_prep, "error": [], "expected_x_syndrome": 0, "expected_z_syndrome": 0, "error_type": "none"}
+
+    # X errors on each data qubit (ZZZZ flips)
+    for idx, dq in enumerate([d0, d1, d2, d3]):
+        variants[f"x_error_d{idx}"] = {
+            "prep": codespace_prep, "error": [f"X q[{dq}]"],
+            "expected_x_syndrome": 0, "expected_z_syndrome": 1,
+            "error_type": f"X_d{idx}",
+        }
+
+    # Z errors on each data qubit (XXXX flips)
+    for idx, dq in enumerate([d0, d1, d2, d3]):
+        variants[f"z_error_d{idx}"] = {
+            "prep": codespace_prep, "error": [f"Z q[{dq}]"],
+            "expected_x_syndrome": 1, "expected_z_syndrome": 0,
+            "error_type": f"Z_d{idx}",
+        }
+
+    # Y errors on each data qubit (both flip)
+    for idx, dq in enumerate([d0, d1, d2, d3]):
+        variants[f"y_error_d{idx}"] = {
+            "prep": codespace_prep, "error": [f"X q[{dq}]", f"Z q[{dq}]"],
+            "expected_x_syndrome": 1, "expected_z_syndrome": 1,
+            "error_type": f"Y_d{idx}",
+        }
+
+    circuits = {}
+    for name, v in variants.items():
+        lines = [
+            "version 3.0",
+            f"qubit[{num_qubits}] q",
+            f"bit[{num_qubits}] b",
+            "",
+            f"// [[4,2,2]] detection code: {name}",
+        ]
+
+        if v["prep"]:
+            lines.extend(v["prep"])
+            lines.append("")
+
+        if v["error"]:
+            lines.append("// Inject error")
+            lines.extend(v["error"])
+            lines.append("")
+
+        lines.extend(syndrome_block())
+        lines.append("")
+        lines.append("b = measure q")
+
+        circuits[name] = "\n".join(lines)
+
+    return circuits
+
+
+def analyze_detection_code(all_counts, params):
+    """Analyze [[4,2,2]] detection code results.
+
+    Checks syndrome extraction accuracy, detection rates, and false positive rates.
+    Optionally trains NN decoder if enough data.
+    """
+    qmap = params.get("qubit_mapping", [0, 1, 2, 3, 4, 5])
+    d0, d1, d2, d3 = qmap[0], qmap[1], qmap[2], qmap[3]
+    ax, az = qmap[4], qmap[5]
+    num_qubits = max(qmap) + 1
+
+    variant_results = {}
+    detection_correct = 0
+    detection_total = 0
+    false_positives = 0
+    false_positive_total = 0
+
+    # Collect training data for decoder
+    decoder_X = []
+    decoder_y = []
+
+    for variant_name, counts in all_counts.items():
+        total = sum(counts.values())
+        if total == 0:
+            continue
+
+        # Determine expected syndromes
+        is_no_error = variant_name == "no_error"
+        expected_x = 0
+        expected_z = 0
+        error_type = "none"
+        if variant_name.startswith("x_error"):
+            expected_z = 1
+            error_type = variant_name.replace("x_error_", "X_")
+        elif variant_name.startswith("z_error"):
+            expected_x = 1
+            error_type = variant_name.replace("z_error_", "Z_")
+        elif variant_name.startswith("y_error"):
+            expected_x = 1
+            expected_z = 1
+            error_type = variant_name.replace("y_error_", "Y_")
+
+        correct_detection = 0
+        syndrome_dist = {}
+
+        for bitstring, count in counts.items():
+            bits = bitstring.zfill(num_qubits)
+            def get_bit(q_idx):
+                return int(bits[-(q_idx + 1)])
+
+            sx = get_bit(ax)
+            sz = get_bit(az)
+            syndrome_key = f"X{sx}Z{sz}"
+            syndrome_dist[syndrome_key] = syndrome_dist.get(syndrome_key, 0) + count
+
+            # Check if error was detected
+            any_error_detected = (sx == 1 or sz == 1)
+            should_detect = not is_no_error
+
+            if should_detect and any_error_detected:
+                correct_detection += count
+            elif is_no_error and not any_error_detected:
+                correct_detection += count
+
+            if is_no_error and any_error_detected:
+                false_positives += count
+
+            # Collect decoder training data
+            data_bits = [get_bit(d0), get_bit(d1), get_bit(d2), get_bit(d3)]
+            features = data_bits + [sx, sz]
+            for _ in range(count):
+                decoder_X.append(features)
+                decoder_y.append(error_type)
+
+        detection_rate = correct_detection / total
+
+        if is_no_error:
+            false_positive_total += total
+        else:
+            detection_total += total
+            detection_correct += correct_detection
+
+        variant_results[variant_name] = {
+            "total_shots": total,
+            "detection_rate": round(detection_rate, 4),
+            "syndrome_distribution": syndrome_dist,
+            "error_type": error_type,
+        }
+
+    overall_detection = detection_correct / detection_total if detection_total > 0 else 0
+    false_positive_rate = false_positives / false_positive_total if false_positive_total > 0 else 0
+
+    result = {
+        "variant_results": variant_results,
+        "overall_detection_rate": round(overall_detection, 4),
+        "false_positive_rate": round(false_positive_rate, 4),
+        "qubit_mapping": qmap,
+        "code_type": "[[4,2,2]] detection",
+        "num_data_qubits": 4,
+        "num_ancilla_qubits": 2,
+        "interpretation": (
+            f"[[4,2,2]] detection code: {overall_detection:.1%} error detection rate, "
+            f"{false_positive_rate:.1%} false positive rate. "
+            f"{'Excellent detection performance.' if overall_detection > 0.9 else 'Moderate detection — hardware noise affecting ancilla.' if overall_detection > 0.7 else 'Significant noise degrading error detection.'}"
+        ),
+    }
+
+    # Try NN decoder if we have enough data
+    if len(decoder_X) > 100:
+        try:
+            from agents.qec_decoder import train_and_evaluate_decoders
+            decoder_results = train_and_evaluate_decoders(
+                np.array(decoder_X), decoder_y
+            )
+            result["decoder_comparison"] = decoder_results
+            result["interpretation"] += (
+                f" NN decoder: {decoder_results.get('nn_accuracy', 0):.1%} accuracy "
+                f"vs lookup table: {decoder_results.get('lookup_accuracy', 0):.1%}."
+            )
+        except Exception as e:
+            log(f"Decoder training failed: {e}")
+            result["decoder_error"] = str(e)
+
+    return result
+
+
 def generate_circuit(exp_type, params):
     """Generate the appropriate circuit(s) for an experiment type."""
     if exp_type == "bell_calibration":
@@ -776,6 +1327,12 @@ def generate_circuit(exp_type, params):
         return generate_qaoa_circuits(params)
     elif exp_type == "quantum_volume":
         return generate_qv_circuits(params)
+    elif exp_type == "connectivity_probe":
+        return generate_connectivity_probe_circuits(params)
+    elif exp_type == "repetition_code":
+        return generate_repetition_code_circuits(params)
+    elif exp_type == "detection_code":
+        return generate_detection_code_circuits(params)
     else:
         raise ValueError(f"Unknown experiment type: {exp_type}")
 
@@ -1109,6 +1666,15 @@ def run_experiment(exp, dry_run=False):
     elif exp_type == "quantum_volume":
         analysis = analyze_qv(all_counts, params)
         raw_counts = all_counts
+    elif exp_type == "connectivity_probe":
+        analysis = analyze_connectivity_probe(all_counts, params)
+        raw_counts = all_counts
+    elif exp_type == "repetition_code":
+        analysis = analyze_repetition_code(all_counts, params)
+        raw_counts = all_counts
+    elif exp_type == "detection_code":
+        analysis = analyze_detection_code(all_counts, params)
+        raw_counts = all_counts
     else:
         analysis = {"raw": all_counts}
         raw_counts = all_counts
@@ -1340,8 +1906,8 @@ def create_seed_experiments():
             "parameters": {
                 "shots": 1024,
                 "qubits": [0, 1, 2],
-                "gamma_values": [0.3, 0.6, 0.9],
-                "beta_values": [0.3, 0.6, 0.9],
+                "gamma_values": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+                "beta_values": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
             },
             "priority": 5,
             "description": "QAOA MaxCut on 3-qubit triangle graph. Sweep gamma/beta for optimal approximation ratio.",

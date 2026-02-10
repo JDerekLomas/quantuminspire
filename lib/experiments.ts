@@ -91,6 +91,9 @@ export const typeLabels: Record<string, string> = {
   qaoa_maxcut: 'QAOA MaxCut',
   quantum_volume: 'Quantum Volume',
   qrng_certification: 'QRNG Certification',
+  connectivity_probe: 'Connectivity Probe',
+  repetition_code: 'Repetition Code',
+  detection_code: 'Detection Code',
 }
 
 export const typeColors: Record<string, string> = {
@@ -101,6 +104,25 @@ export const typeColors: Record<string, string> = {
   qaoa_maxcut: '#ff6b9d',
   quantum_volume: '#14b8a6',
   qrng_certification: '#f59e0b',
+  connectivity_probe: '#e879f9',
+  repetition_code: '#22d3ee',
+  detection_code: '#a78bfa',
+}
+
+// ---------------------------------------------------------------------------
+// Study lookups (for experiment detail pages)
+// ---------------------------------------------------------------------------
+
+import { studies, type ExperimentStudy } from '@/content/experiments/studies'
+
+export type { ExperimentStudy }
+
+export function getAllStudies(): ExperimentStudy[] {
+  return studies
+}
+
+export function getStudyBySlug(slug: string): ExperimentStudy | undefined {
+  return studies.find(s => s.slug === slug)
 }
 
 // ---------------------------------------------------------------------------

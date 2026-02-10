@@ -1,0 +1,132 @@
+{
+  "paper_id": "sagastizabal2019",
+  "paper": {
+    "title": "Error Mitigation by Symmetry Verification on a VQE",
+    "authors": "Sagastizabal et al.",
+    "journal": "Phys. Rev. A 100, 010302(R) (2019)",
+    "arxiv": "1902.11258",
+    "institution": "QuTech / TU Delft",
+    "hardware": "2-qubit transmon (Starmon-5)",
+    "url": "https://arxiv.org/abs/1902.11258"
+  },
+  "generated": "2026-02-10T17:45:47.430006",
+  "backends_tested": [
+    "emulator",
+    "ibm",
+    "tuna9"
+  ],
+  "comparisons": [
+    {
+      "claim_id": "vqe-h2-equilibrium",
+      "description": "H2 ground state energy at equilibrium (R=0.735 A)",
+      "published_value": -1.1373,
+      "published_error": 0.002,
+      "unit": "Hartree",
+      "figure": "Fig. 2",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": -1.1385,
+          "discrepancy": -0.0012,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none",
+          "error_kcal_mol": 0.75
+        },
+        "ibm": {
+          "measured_value": -0.943621208954451,
+          "discrepancy": 0.193679,
+          "within_published_error": false,
+          "failure_mode": "noise_dominated",
+          "failure_description": "Hardware noise overwhelms the signal",
+          "severity": "high",
+          "error_kcal_mol": 121.54
+        },
+        "tuna9": {
+          "measured_value": -1.00448,
+          "discrepancy": 0.13282,
+          "within_published_error": false,
+          "failure_mode": "noise_dominated",
+          "failure_description": "Hardware noise overwhelms the signal",
+          "severity": "high",
+          "error_kcal_mol": 83.35
+        }
+      }
+    },
+    {
+      "claim_id": "symmetry-verification-improvement",
+      "description": "Symmetry verification reduces VQE error vs raw noisy measurement",
+      "published_value": 2.0,
+      "published_error": 1.0,
+      "unit": "x improvement",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "emulator": {
+          "status": "no_data",
+          "note": "Metric 'improvement_factor' not found in result"
+        },
+        "ibm": {
+          "measured_value": 1.1394934226511473,
+          "discrepancy": -0.860507,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        },
+        "tuna9": {
+          "status": "no_data",
+          "note": "Metric 'improvement_factor' not found in result"
+        }
+      }
+    },
+    {
+      "claim_id": "chemical-accuracy",
+      "description": "VQE achieves chemical accuracy (< 1.6 mHa) with error mitigation",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 2",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        },
+        "ibm": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "Hardware noise degrades result but qualitative behavior preserved",
+          "severity": "medium"
+        },
+        "tuna9": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "Hardware noise degrades result but qualitative behavior preserved",
+          "severity": "medium"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "total_claims_tested": 7,
+    "successes": 3,
+    "success_rate": 0.43,
+    "failure_mode_counts": {
+      "success": 3,
+      "noise_dominated": 2,
+      "partial_noise": 2
+    },
+    "backends_tested": [
+      "emulator",
+      "ibm",
+      "tuna9"
+    ]
+  }
+}

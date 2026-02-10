@@ -1,0 +1,85 @@
+{
+  "paper_id": "cross2019",
+  "paper": {
+    "title": "Validating quantum computers using randomized model circuits",
+    "authors": "Cross et al.",
+    "journal": "Phys. Rev. A 100, 032328 (2019)",
+    "arxiv": "1811.12926",
+    "institution": "IBM Research",
+    "hardware": "IBM superconducting (various)",
+    "url": "https://arxiv.org/abs/1811.12926"
+  },
+  "generated": "2026-02-10T17:45:47.432734",
+  "backends_tested": [
+    "emulator",
+    "emulator_rb"
+  ],
+  "comparisons": [
+    {
+      "claim_id": "qv-pass-2q",
+      "description": "2-qubit QV circuits pass heavy output test (> 2/3)",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    },
+    {
+      "claim_id": "qv-pass-3q",
+      "description": "3-qubit QV circuits pass heavy output test (> 2/3)",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    },
+    {
+      "claim_id": "rb-gate-fidelity",
+      "description": "Randomized benchmarking gives gate fidelity > 99%",
+      "published_value": 0.99,
+      "published_error": 0.01,
+      "unit": "fidelity",
+      "figure": "Section III",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": 0.9995,
+          "discrepancy": 0.0095,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "total_claims_tested": 3,
+    "successes": 3,
+    "success_rate": 1.0,
+    "failure_mode_counts": {
+      "success": 3
+    },
+    "backends_tested": [
+      "emulator",
+      "emulator_rb"
+    ]
+  }
+}
