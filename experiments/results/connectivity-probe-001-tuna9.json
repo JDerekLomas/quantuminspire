@@ -1,0 +1,111 @@
+{
+  "id": "connectivity-probe-001-tuna9",
+  "type": "connectivity_probe",
+  "backend": "tuna-9",
+  "submitted": "2026-02-10T16:49:37Z",
+  "completed": "2026-02-10T16:53:26Z",
+  "parameters": {
+    "shots": 1024,
+    "num_qubits": 9
+  },
+  "raw_counts": {
+    "pair_0_1": 0.8877,
+    "pair_0_2": 0.9023,
+    "pair_1_3": 0.9512,
+    "pair_1_4": 0.9561,
+    "pair_2_4": 0.9629,
+    "pair_2_5": 0.9609
+  },
+  "analysis": {
+    "pair_fidelities": {
+      "pair_0_1": 0.8877,
+      "pair_0_2": 0.9023,
+      "pair_1_3": 0.9512,
+      "pair_1_4": 0.9561,
+      "pair_2_4": 0.9629,
+      "pair_2_5": 0.9609
+    },
+    "connectivity_graph": {
+      "0": [
+        [
+          1,
+          0.8877
+        ],
+        [
+          2,
+          0.9023
+        ]
+      ],
+      "1": [
+        [
+          0,
+          0.8877
+        ],
+        [
+          3,
+          0.9512
+        ],
+        [
+          4,
+          0.9561
+        ]
+      ],
+      "2": [
+        [
+          0,
+          0.9023
+        ],
+        [
+          4,
+          0.9629
+        ],
+        [
+          5,
+          0.9609
+        ]
+      ],
+      "3": [
+        [
+          1,
+          0.9512
+        ]
+      ],
+      "4": [
+        [
+          1,
+          0.9561
+        ],
+        [
+          2,
+          0.9629
+        ]
+      ],
+      "5": [
+        [
+          2,
+          0.9609
+        ]
+      ]
+    },
+    "average_fidelity": 0.9369,
+    "num_pairs_tested": 36,
+    "num_pairs_connected": 6,
+    "best_pair": [
+      "pair_2_4",
+      0.9629
+    ],
+    "worst_pair": [
+      "pair_0_1",
+      0.8877
+    ],
+    "recommended_5q_subgraph": [3, 1, 4, 2, 5],
+    "recommended_6q_subgraph": [0, 1, 2, 3, 4, 5],
+    "best_repetition_chain": {"qubits": [3, 1, 4, 2, 5], "avg_fidelity": 0.958, "mapping": "d0=3, s0=1, d1=4, s1=2, d2=5"},
+    "topology_notes": "Only 6/36 pairs connected. Max degree = 3. Chain topology: 5-2-0-1-3 with q4 branching from q1 and q2.",
+    "interpretation": "Tuna-9 has sparse connectivity (6 connected pairs out of 36 tested). Best fidelity: q2-q4 at 96.3%. Worst: q0-q1 at 88.8%. Topology is roughly a tree with max degree 3."
+  },
+  "circuit_cqasm": "36 Bell-pair circuits (H+CNOT on each qubit pair)",
+  "errors": [
+    "30/36 pairs FAILED (non-connected qubit pairs)"
+  ]
+}
