@@ -1,0 +1,36 @@
+{
+  "model": "claude-opus-4-6",
+  "variant": "standard_rag_context7",
+  "rag": "context7",
+  "timestamp": "20260210_175427",
+  "total_tasks": 1,
+  "passed": 1,
+  "pass_rate": 100.0,
+  "infrastructure_failures": 0,
+  "testable_tasks": 1,
+  "adjusted_pass_rate": 100.0,
+  "total_input_tokens": 230,
+  "total_output_tokens": 90,
+  "by_difficulty": {
+    "basic": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 100.0
+    }
+  },
+  "results": [
+    {
+      "task_id": "qiskitHumanEval/1",
+      "difficulty": "basic",
+      "entry_point": "run_bell_state_simulator",
+      "passed": true,
+      "completion": "    qc = QuantumCircuit(2)\n    qc.h(0)\n    qc.cx(0, 1)\n    qc.measure_all()\n\n    backend = AerSimulator()\n    pm = generate_preset_pass_manager(optimization_level=1, backend=backend)\n    transpiled = pm.run(qc)\n\n    sampler = Sampler(mode=backend)\n    result = sampler.run([transpiled]).result()\n    counts = result[0].data.meas.get_counts()\n\n    return counts\n",
+      "stdout": "BENCHMARK_PASS\n",
+      "stderr": "",
+      "api_time": 9.19,
+      "exec_time": 1.32,
+      "input_tokens": 230,
+      "output_tokens": 90
+    }
+  ]
+}

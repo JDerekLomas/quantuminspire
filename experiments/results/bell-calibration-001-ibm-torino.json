@@ -1,0 +1,28 @@
+{
+  "id": "bell-calibration-001-ibm-torino",
+  "type": "bell_calibration",
+  "backend": "ibm_torino",
+  "backend_qubits": 133,
+  "submitted": "2026-02-10T16:56:11.458201+00:00",
+  "completed": "2026-02-10T16:56:16.866213+00:00",
+  "job_id": "d65m6atbujdc73ctl8fg",
+  "parameters": {
+    "shots": 4096,
+    "method": "IBM MCP server (ibm_submit_circuit)"
+  },
+  "raw_counts": {
+    "00": 2045,
+    "11": 1978,
+    "10": 41,
+    "01": 32
+  },
+  "analysis": {
+    "fidelity": 0.9822,
+    "parity_leakage": 0.0178,
+    "correct_parity": 4023,
+    "wrong_parity": 73,
+    "total_shots": 4096,
+    "interpretation": "Bell state on ibm_torino via MCP: 98.2% fidelity. Slightly lower than ibm_marrakesh (99.0%), likely qubit-dependent."
+  },
+  "errors": null
+}

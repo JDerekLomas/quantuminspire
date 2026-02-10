@@ -1,0 +1,4 @@
+paper,year,journal,first_author,claims_tested,claims_passed_emulator,claims_passed_hardware,emulator_pass_rate,hardware_pass_rate,molecule_or_system,key_finding
+sagastizabal2019,2019,Phys Rev A,Sagastizabal,7,3,0,100.0,0.0,H2,"Emulator achieves chemical accuracy; hardware fails due to noise (26-121 kcal/mol error)"
+peruzzo2014,2014,Nature Communications,Peruzzo,3,3,0,100.0,,HeH+,"100% emulator replication; MAE 0.00012 Ha vs published <=0.001 Ha"
+cross2019,2019,Phys Rev A,Cross,3,3,0,100.0,,QV benchmark,"All QV/RB claims replicated on emulator; 99.95% gate fidelity"

@@ -1,0 +1,18 @@
+experiment_id,type,backend,qubits,shots,date,primary_metric,metric_name,metric_unit,reference_value,reference_unit,error,error_unit,pass,notes
+bell-calibration-001,entanglement,qxelarator,2,1024,2026-02-10,100.0,fidelity,%,100.0,%,0.0,%,TRUE,Perfect Bell state
+bell-calibration-001-ibm,entanglement,ibm_marrakesh,2,4096,2026-02-10,99.05,fidelity,%,100.0,%,0.95,%,TRUE,39/4096 wrong parity
+bell-calibration-001-tuna9,entanglement,tuna-9,2,4096,2026-02-10,87.28,fidelity,%,100.0,%,12.72,%,FALSE,521/4096 wrong parity
+ghz-003,entanglement,qxelarator,3,1024,2026-02-10,100.0,fidelity,%,100.0,%,0.0,%,TRUE,Perfect GHZ
+ghz-003-ibm,entanglement,ibm_marrakesh,3,4096,2026-02-10,98.14,fidelity,%,100.0,%,1.86,%,TRUE,76/4096 leakage
+ghz-003-tuna9,entanglement,tuna-9,3,4096,2026-02-10,86.6,fidelity,%,100.0,%,13.4,%,FALSE,549/4096 leakage
+vqe-equilibrium-001,vqe,qxelarator,2,4096,2026-02-10,-1.1385,energy,Ha,-1.1373,Ha,0.75,kcal/mol,TRUE,Chemical accuracy achieved
+vqe-equilibrium-001-ibm,vqe,ibm_marrakesh,2,4096,2026-02-10,-1.0956,energy,Ha,-1.1373,Ha,26.15,kcal/mol,FALSE,Z-basis only
+vqe-equilibrium-001-ibm-marrakesh,vqe,ibm_marrakesh,2,4096,2026-02-10,-1.0956,energy,Ha,-1.1373,Ha,26.15,kcal/mol,FALSE,Duplicate of above
+vqe-equilibrium-002-ibm-torino,vqe,ibm_torino,2,4096,2026-02-10,-0.9436,energy,Ha,-1.1373,Ha,121.54,kcal/mol,FALSE,Very noisy
+vqe-equilibrium-001-tuna9,vqe,tuna-9,2,4096,2026-02-10,-1.0045,energy,Ha,-1.1373,Ha,83.35,kcal/mol,FALSE,Bell fidelity 87.3%
+vqe-h2-sweep-emulator,vqe_sweep,qxelarator,2,65536,2026-02-10,-1.1373,energy,Ha,-1.1373,Ha,0.0,kcal/mol,TRUE,13 bond distances 0.3-3.0A
+qv-001,quantum_volume,qxelarator,3,1024,2026-02-10,8,quantum_volume,QV,8,QV,0,,TRUE,2q and 3q both pass
+rb-1qubit-001,randomized_benchmarking,qxelarator,1,1024,2026-02-10,99.95,gate_fidelity,%,99.0,%,0.95,%,TRUE,Error per gate 0.0005
+qaoa-maxcut-001,qaoa,qxelarator,3,1024,2026-02-10,87.4,approximation_ratio,%,100.0,%,12.6,%,TRUE,Triangle graph best gamma=1.0 beta=0.2
+qrng-certification-001,qrng,tuna-9,8,20000,2026-02-10,100.0,nist_pass_rate,%,100.0,%,0.0,%,TRUE,8/8 NIST tests pass after von Neumann debiasing
+peruzzo2014-heh-sweep,vqe_sweep,qxelarator,2,4096,2026-02-10,0.00012,mae,Ha,0.001,Ha,-0.00088,Ha,TRUE,HeH+ 11 bond distances 0.5-3.0A

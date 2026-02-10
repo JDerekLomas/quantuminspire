@@ -1,0 +1,7 @@
+experiment_type,metric,metric_unit,qxelarator,ibm_marrakesh,ibm_torino,tuna_9,notes
+bell_fidelity,fidelity,%,100.0,99.05,,87.28,2-qubit Bell state
+ghz_fidelity,fidelity,%,100.0,98.14,,86.6,3-qubit GHZ state
+vqe_h2_energy,energy,Ha,-1.1385,-1.0956,-0.9436,-1.0045,H2 at R=0.735A
+vqe_h2_error,chemical_error,kcal/mol,0.75,26.15,121.54,83.35,vs FCI=-1.1373 Ha
+bell_parity_leakage,leakage,%,0.0,0.95,,12.72,Wrong parity fraction
+ghz_parity_leakage,leakage,%,0.0,1.86,,13.4,Wrong parity fraction
