@@ -96,19 +96,36 @@ export const posts: BlogPost[] = [
 
 <p>One fundamental limitation: <strong>Z errors can\\'t be localized from Z-basis measurement.</strong> Z errors don\\'t flip bits in the computational basis &mdash; they flip phase &mdash; so the NN gets 0% recall on individual Z errors (Z_d0, Z_d1, etc.). The ZZZZ syndrome <em>detects</em> that a Z error occurred, but the data bits don\\'t reveal which qubit was affected. This isn\\'t a decoder failure; it\\'s a fundamental limitation of single-basis measurement.</p>
 
-<h2>The RB Compilation Artifact</h2>
+<h2>Why IBM\\'s 99.99% RB Is Fake (and Tuna-9\\'s 99.82% Is Real)</h2>
 
-<p>A methodological caveat worth highlighting: our IBM Torino RB result (99.99% gate fidelity) is misleading. IBM\\'s Qiskit transpiler recognizes that random Clifford sequences compose into a single Clifford, and compiles the entire sequence &mdash; regardless of length (m=1, 4, 8, 16, or 32) &mdash; down to 1&ndash;2 physical gates.</p>
+<p>This might be the most important methodological finding in our data. IBM Torino reports <strong>99.99% single-qubit gate fidelity</strong> from randomized benchmarking. Tuna-9 reports <strong>99.82%</strong>. At face value, IBM\\'s gates are 100x better. In reality, the two numbers are measuring completely different things.</p>
 
-<p>The result: survival probability is flat at ~90% across all sequence lengths, reflecting <strong>readout error</strong> (how accurately we can measure the qubit) rather than <strong>gate error</strong> (how accurately we can manipulate it). The exponential decay that defines RB never appears because there are no extra gates to decay through.</p>
+<p>Here\\'s what happens: IBM\\'s Qiskit transpiler recognizes that a sequence of random Clifford gates composes into a single Clifford operation. So regardless of whether you ask for m=1, 4, 8, 16, or 32 Clifford gates, the transpiler compiles the <em>entire sequence</em> down to 1&ndash;2 physical gates. Our data shows this clearly:</p>
 
-<p>Tuna-9\\'s RB result (99.82%) is more trustworthy because its compiler doesn\\'t perform this optimization &mdash; the Cliffords are actually executed as sequences of physical gates, so the survival probability genuinely decays with sequence length.</p>
+<table>
+<thead><tr><th>Sequence length</th><th>IBM survival</th><th>Tuna-9 survival</th></tr></thead>
+<tbody>
+<tr><td>m=1</td><td>90.5%</td><td>95.8%</td></tr>
+<tr><td>m=4</td><td>90.3%</td><td>94.8%</td></tr>
+<tr><td>m=8</td><td>90.4%</td><td>93.6%</td></tr>
+<tr><td>m=16</td><td>90.0%</td><td>91.5%</td></tr>
+<tr><td>m=32</td><td>90.1%</td><td>89.0%</td></tr>
+</tbody>
+</table>
 
-<p>This is a known issue in the community, but it\\'s rarely mentioned in cross-platform comparisons. For honest benchmarking, you\\'d need to either disable Clifford compilation or use interleaved RB with non-Clifford gates.</p>
+<p>IBM\\'s survival probability is <strong>flat at ~90%</strong> &mdash; no decay at all. That 90% floor is pure readout error: how accurately you can measure a qubit in the |0&rang; state. The exponential decay that RB is supposed to measure &mdash; the decay that tells you about gate quality &mdash; never appears because there are no extra gates to decay through.</p>
+
+<p>Tuna-9\\'s curve, by contrast, <strong>actually decays</strong> from 95.8% to 89.0%. Its compiler doesn\\'t collapse Clifford sequences, so the gates are physically executed. The 99.82% fidelity extracted from this decay is a genuine measurement of gate quality.</p>
+
+<p><strong>The punchline: Tuna-9\\'s "worse" number is the more honest measurement.</strong> A smaller processor with a simpler compiler produces more trustworthy benchmarks than a 133-qubit system with an aggressively optimizing transpiler. For the field, this raises an uncomfortable question: how many published RB numbers are actually measuring readout error dressed up as gate fidelity?</p>
+
+<p>The fix is straightforward &mdash; use interleaved RB with non-Clifford gates, or disable Clifford compilation during benchmarking. But this is rarely flagged in cross-platform comparisons, and it means <strong>you cannot naively compare RB numbers across platforms without understanding what each compiler does to your circuits.</strong></p>
 
 <h2>What We Learned</h2>
 
 <ol>
+<li><strong>Compiler honesty matters more than qubit count.</strong> IBM\\'s 99.99% RB looks 100x better than Tuna-9\\'s 99.82%, but IBM\\'s number measures readout error while Tuna-9\\'s measures actual gate quality. A simpler compiler produces more trustworthy benchmarks. Cross-platform comparisons are meaningless without understanding what each transpiler does to your circuits.</li>
+
 <li><strong>Benchmarks and applications live in different worlds.</strong> QV and RB pass on hardware that can\\'t do useful chemistry. The gap between "this hardware works" (QV PASS) and "this hardware is useful" (VQE within chemical accuracy) is enormous.</li>
 
 <li><strong>Error correction needs topology, not just qubits.</strong> Tuna-9 has enough qubits for [[4,2,2]] but not enough connectivity. IBM Torino has 133 qubits but ~14% false positive rate on a 6-qubit code. Neither is ready for fault-tolerant computation, but they fail for completely different reasons.</li>
@@ -116,8 +133,6 @@ export const posts: BlogPost[] = [
 <li><strong>AI decoders beat classical decoders on real hardware data.</strong> A simple 2-layer neural network outperforms lookup tables by 50% on qubit-level error classification. On real hardware, noise has structure that ML can exploit.</li>
 
 <li><strong>The molecule matters as much as the machine.</strong> IBM Torino gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+, because HeH+\\'s asymmetric Hamiltonian amplifies readout bias. You can\\'t benchmark VQE on one molecule and assume it generalizes.</li>
-
-<li><strong>Transpiler optimizations can lie.</strong> IBM\\'s RB result looks 100x better than Tuna-9\\'s, but it\\'s measuring a different thing entirely. Cross-platform comparisons require understanding what each compiler does to your circuits.</li>
 </ol>
 
 <hr />
