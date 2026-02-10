@@ -146,9 +146,9 @@ X q[{q[0]}]
 
 // Ry ansatz: excitation rotation
 CNOT q[{q[0]}], q[{q[1]}]
-Ry q[{q[0]}], {theta:.6f}
+Ry({theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
-Ry q[{q[0]}], {-theta:.6f}
+Ry({-theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
 CNOT q[{q[0]}], q[{q[1]}]
 
@@ -171,9 +171,9 @@ X q[{q[0]}]
 
 // Ry ansatz
 CNOT q[{q[0]}], q[{q[1]}]
-Ry q[{q[0]}], {theta:.6f}
+Ry({theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
-Ry q[{q[0]}], {-theta:.6f}
+Ry({-theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
 CNOT q[{q[0]}], q[{q[1]}]
 
@@ -199,9 +199,9 @@ X q[{q[0]}]
 
 // Ry ansatz
 CNOT q[{q[0]}], q[{q[1]}]
-Ry q[{q[0]}], {theta:.6f}
+Ry({theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
-Ry q[{q[0]}], {-theta:.6f}
+Ry({-theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
 CNOT q[{q[0]}], q[{q[1]}]
 
