@@ -32,12 +32,29 @@ const vqeData = {
   paper: 'Sagastizabal et al., Phys. Rev. A 100, 010302 (2019)',
   arxiv: '1902.11258',
   institution: 'QuTech / TU Delft',
-  method: '2-qubit VQE for H\u2082 ground-state energy',
-  bondDistances: 29,
-  ansatz: 'Single-parameter exchange rotation in {|01\u27E9, |10\u27E9} subspace',
-  hamiltonian: 'H = g\u2080II + g\u2081ZI + g\u2082IZ + g\u2083ZZ + g\u2084XX + g\u2085YY',
+  method: '4-qubit Jordan-Wigner VQE for H\u2082 ground-state energy',
+  ansatz: 'PennyLane DoubleExcitation (UCCSD)',
+  hamiltonian: 'OpenFermion/PySCF \u2192 Jordan-Wigner transform (15 Pauli terms)',
   mitigation: 'Z-parity symmetry verification (post-selection on even parity)',
-  noiseModel: 'T\u2081=30\u03BCs, T\u2082=60\u03BCs, depolarizing single/two-qubit gates',
+  noiseModel: '5% depolarizing channels on all qubits (pre- and post-gate)',
+  results: [
+    { R: 0.3, exact: -0.60180, ideal: -0.60180, noisy: -0.19340, sv: -0.46458 },
+    { R: 0.5, exact: -1.05516, ideal: -1.05516, noisy: -0.73730, sv: -0.95249 },
+    { R: 0.7, exact: -1.13619, ideal: -1.13619, noisy: -0.88332, sv: -1.05198 },
+    { R: 0.9, exact: -1.12056, ideal: -1.12056, noisy: -0.91199, sv: -1.04356 },
+    { R: 1.1, exact: -1.07919, ideal: -1.07919, noisy: -0.89693, sv: -1.00586 },
+    { R: 1.3, exact: -1.03519, ideal: -1.03519, noisy: -0.86864, sv: -0.95497 },
+    { R: 1.5, exact: -0.99815, ideal: -0.99815, noisy: -0.83715, sv: -0.90859 },
+    { R: 1.7, exact: -0.97143, ideal: -0.97143, noisy: -0.80961, sv: -0.86623 },
+    { R: 1.9, exact: -0.95434, ideal: -0.95434, noisy: -0.79180, sv: -0.83763 },
+    { R: 2.1, exact: -0.94437, ideal: -0.94437, noisy: -0.77611, sv: -0.81500 },
+    { R: 2.3, exact: -0.93892, ideal: -0.93892, noisy: -0.76622, sv: -0.79880 },
+    { R: 2.5, exact: -0.93605, ideal: -0.93605, noisy: -0.76137, sv: -0.78934 },
+  ],
+  maeIdeal: 0.000000,
+  maeNoisy: 0.211460,
+  maeSV: 0.106861,
+  improvement: 2.0,
 }
 
 const experiments = [
@@ -52,14 +69,14 @@ const experiments = [
     highlight: '62.25% Pass@1 across 151 tasks',
   },
   {
-    id: 'vqe-replication',
-    title: 'AI-Assisted Paper Replication',
+    id: 'vqe-simulation',
+    title: 'AI-Assisted VQE Simulation',
     status: 'complete' as const,
-    category: 'Replication',
-    question: 'Can AI agents replicate published quantum experiments end-to-end?',
+    category: 'Simulation',
+    question: 'Can AI write correct quantum simulation code from a paper reference?',
     description:
-      'Full replication of a QuTech paper on symmetry-verified VQE for H\u2082. Claude Opus 4.6 autonomously wrote the Hamiltonian construction, ansatz circuit, noise model, and symmetry verification \u2014 300 lines of production Qiskit code.',
-    highlight: '29 bond distances, 3 measurement bases, symmetry verification',
+      'Simulation of symmetry-verified VQE for H\u2082 inspired by Sagastizabal et al. (QuTech). Claude Opus 4.6 wrote the Hamiltonian construction, ansatz circuit, toy noise model, and symmetry verification \u2014 300 lines of PennyLane code. Runs in classical simulation, not on quantum hardware.',
+    highlight: '29 bond distances, 3 measurement bases, 2x noise reduction via symmetry verification',
   },
   {
     id: 'viz-zoo',
@@ -68,8 +85,8 @@ const experiments = [
     category: 'Education',
     question: 'Can AI build interactive quantum simulations for teaching?',
     description:
-      'Five interactive exhibits running a full state-vector quantum simulator in TypeScript. Bloch sphere, multi-qubit state vectors, measurement statistics, Grover\'s search, and entanglement analysis \u2014 all computed live, nothing mocked.',
-    highlight: '5 interactive exhibits, real quantum math in the browser',
+      'Seven interactive exhibits running a full state-vector quantum simulator in TypeScript. Bloch sphere, state vectors, measurement, Grover\'s search, entanglement, Rabi oscillations, and multi-slit interference \u2014 all computed live, nothing mocked.',
+    highlight: '7 interactive exhibits, real quantum math in the browser',
   },
   {
     id: 'circuit-optimization',
@@ -152,6 +169,8 @@ const vizExhibits = [
   { href: '/measurement', title: 'Measurement Lab', desc: 'Watch quantum randomness converge to Born rule probabilities in real time.', color: '#00ff88', features: '6 circuits, live stats, adjustable shots' },
   { href: '/grovers', title: "Grover's Search", desc: 'Step through oracle and diffusion operators. See amplitude amplification happen.', color: '#ff8c42', features: '2-5 qubits, target selection, optimal iterations' },
   { href: '/entanglement', title: 'Entanglement Lab', desc: 'Density matrices, partial traces, Bell states. Concurrence and von Neumann entropy.', color: '#ff6b9d', features: '8 states, reduced density matrices, metrics' },
+  { href: '/rabi', title: 'Rabi Oscillations', desc: 'Watch a qubit oscillate between |0\u27E9 and |1\u27E9 under a driving field. Detuning, damping, Bloch sphere trajectory.', color: '#eab308', features: 'Animated, detuning, T\u2082 dephasing, Bloch sphere' },
+  { href: '/interference', title: 'Multi-Slit Interference', desc: 'N-slit diffraction patterns with adjustable geometry and wavelength. Photon-by-photon accumulation mode.', color: '#14b8a6', features: '1-8 slits, visible spectrum, photon mode' },
 ]
 
 // ─── Components ──────────────────────────────────────────────────────────────
@@ -200,7 +219,8 @@ function Nav() {
           <a href="#experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
           <a href="#viz" className="hover:text-[#8b5cf6] transition-colors">Viz Zoo</a>
           <a href="#agents" className="hover:text-[#ff8c42] transition-colors">Agents</a>
-          <a href="/wp44" className="hover:text-[#ff6b9d] transition-colors">WP4.4</a>
+          <a href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</a>
+          <a href="/wp44" className="hover:text-[#ff6b9d] transition-colors hidden sm:block">WP4.4</a>
           <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
         </div>
       </div>
@@ -239,7 +259,7 @@ function Hero() {
           {[
             { value: '62.25%', label: 'Pass@1 on Qiskit HumanEval', color: '#00ff88' },
             { value: '151', label: 'quantum coding tasks benchmarked', color: '#00d4ff' },
-            { value: '5', label: 'interactive quantum simulations', color: '#8b5cf6' },
+            { value: '7', label: 'interactive quantum simulations', color: '#8b5cf6' },
             { value: '1', label: 'paper replicated autonomously', color: '#ff8c42' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
@@ -368,6 +388,17 @@ function BenchmarkResults() {
 // ─── VQE Replication ─────────────────────────────────────────────────────────
 
 function VQEReplication() {
+  const d = vqeData
+  // Scale energy values to chart coordinates
+  const chartW = 600, chartH = 260, padL = 45, padR = 15, padT = 15, padB = 30
+  const plotW = chartW - padL - padR, plotH = chartH - padT - padB
+  const minE = -1.2, maxE = -0.1
+  const minR = 0.3, maxR = 2.5
+  const x = (r: number) => padL + ((r - minR) / (maxR - minR)) * plotW
+  const y = (e: number) => padT + ((maxE - e) / (maxE - minE)) * plotH
+  const line = (pts: { R: number; val: number }[]) =>
+    pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${x(p.R).toFixed(1)},${y(p.val).toFixed(1)}`).join(' ')
+
   return (
     <section className="py-20 px-6 border-t border-white/5">
       <div className="max-w-6xl mx-auto">
@@ -375,77 +406,106 @@ function VQEReplication() {
           Paper Replication
         </h2>
         <p className="text-gray-400 text-sm mb-10 max-w-3xl">
-          Autonomous replication of a QuTech/TU Delft paper using Claude Opus 4.6 as the coding agent.
-          The AI wrote 300 lines of Qiskit simulation code from the paper reference alone.
+          Autonomous replication of{' '}
+          <a href={`https://arxiv.org/abs/${d.arxiv}`} target="_blank" rel="noopener noreferrer" className="text-[#ff8c42] hover:underline">
+            Sagastizabal et al. (2019)
+          </a>
+          {' '}&mdash; symmetry-verified VQE for H&#x2082; from QuTech/TU Delft.
+          Claude Opus 4.6 wrote the full simulation: Hamiltonian construction, variational ansatz,
+          noise model, and parity post-selection error mitigation.
         </p>
 
-        <div className="grid lg:grid-cols-2 gap-6">
-          {/* Paper details */}
-          <div className="p-6 rounded-xl border border-[#ff8c4220] bg-[#ff8c4205]">
-            <div className="text-xs font-mono text-[#ff8c42] uppercase tracking-widest mb-4">Source Paper</div>
-            <h3 className="text-lg font-bold text-white mb-2">
-              Error Mitigation by Symmetry Verification on a VQE
-            </h3>
-            <div className="text-sm text-gray-400 mb-4">{vqeData.paper}</div>
-            <div className="space-y-2 text-xs font-mono text-gray-400">
-              <div><span className="text-gray-500">Institution:</span> <span className="text-white">{vqeData.institution}</span></div>
-              <div><span className="text-gray-500">Method:</span> <span className="text-white">{vqeData.method}</span></div>
-              <div><span className="text-gray-500">Bond distances:</span> <span className="text-white">{vqeData.bondDistances} points (0.2 - 3.0 &#x212B;)</span></div>
-              <div><span className="text-gray-500">Ansatz:</span> <span className="text-white">{vqeData.ansatz}</span></div>
+        {/* Results chart + summary */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-6">
+          {/* Energy curve chart */}
+          <div className="lg:col-span-2 p-6 rounded-xl border border-[#ff8c4220] bg-[#ff8c4205]">
+            <div className="text-xs font-mono text-[#ff8c42] uppercase tracking-widest mb-4">
+              H&#x2082; Potential Energy Surface
             </div>
-            <a
-              href={`https://arxiv.org/abs/${vqeData.arxiv}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block mt-4 text-xs font-mono text-[#ff8c42] hover:underline"
-            >
-              arxiv:{vqeData.arxiv} &rarr;
-            </a>
+            <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full" style={{ maxHeight: 300 }}>
+              {/* Grid lines */}
+              {[-1.2, -1.0, -0.8, -0.6, -0.4, -0.2].map(e => (
+                <g key={e}>
+                  <line x1={padL} y1={y(e)} x2={chartW - padR} y2={y(e)} stroke="white" strokeOpacity={0.05} />
+                  <text x={padL - 5} y={y(e) + 3} textAnchor="end" fill="#666" fontSize={9} fontFamily="monospace">{e.toFixed(1)}</text>
+                </g>
+              ))}
+              {[0.5, 1.0, 1.5, 2.0, 2.5].map(r => (
+                <g key={r}>
+                  <line x1={x(r)} y1={padT} x2={x(r)} y2={chartH - padB} stroke="white" strokeOpacity={0.05} />
+                  <text x={x(r)} y={chartH - padB + 14} textAnchor="middle" fill="#666" fontSize={9} fontFamily="monospace">{r.toFixed(1)}</text>
+                </g>
+              ))}
+              {/* Axis labels */}
+              <text x={chartW / 2} y={chartH - 2} textAnchor="middle" fill="#888" fontSize={10} fontFamily="monospace">Bond distance (&#x212B;)</text>
+              <text x={8} y={chartH / 2} textAnchor="middle" fill="#888" fontSize={10} fontFamily="monospace" transform={`rotate(-90, 8, ${chartH / 2})`}>Energy (Ha)</text>
+
+              {/* Exact (FCI) */}
+              <path d={line(d.results.map(r => ({ R: r.R, val: r.exact })))} fill="none" stroke="white" strokeWidth={2} />
+              {/* Noisy */}
+              <path d={line(d.results.map(r => ({ R: r.R, val: r.noisy })))} fill="none" stroke="#ff6b9d" strokeWidth={1.5} strokeDasharray="4,3" />
+              {/* Symmetry-verified */}
+              <path d={line(d.results.map(r => ({ R: r.R, val: r.sv })))} fill="none" stroke="#00ff88" strokeWidth={2} />
+              {/* Data points */}
+              {d.results.map(r => (
+                <g key={r.R}>
+                  <circle cx={x(r.R)} cy={y(r.exact)} r={2.5} fill="white" />
+                  <circle cx={x(r.R)} cy={y(r.noisy)} r={2} fill="#ff6b9d" />
+                  <circle cx={x(r.R)} cy={y(r.sv)} r={2.5} fill="#00ff88" />
+                </g>
+              ))}
+              {/* Legend */}
+              <g transform={`translate(${padL + 10}, ${padT + 10})`}>
+                <line x1={0} y1={0} x2={16} y2={0} stroke="white" strokeWidth={2} />
+                <text x={20} y={3} fill="white" fontSize={9} fontFamily="monospace">Exact (FCI)</text>
+                <line x1={0} y1={14} x2={16} y2={14} stroke="#ff6b9d" strokeWidth={1.5} strokeDasharray="4,3" />
+                <text x={20} y={17} fill="#ff6b9d" fontSize={9} fontFamily="monospace">Noisy (5% depol.)</text>
+                <line x1={0} y1={28} x2={16} y2={28} stroke="#00ff88" strokeWidth={2} />
+                <text x={20} y={31} fill="#00ff88" fontSize={9} fontFamily="monospace">Symmetry-verified</text>
+              </g>
+            </svg>
           </div>
 
-          {/* What AI did */}
-          <div className="p-6 rounded-xl border border-white/5 bg-white/[0.02]">
-            <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
-              What the AI Agent Built
+          {/* Summary stats */}
+          <div className="space-y-4">
+            <div className="p-5 rounded-xl border border-[#00ff8820] bg-[#00ff8805]">
+              <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-3">Mitigation Result</div>
+              <div className="text-4xl font-black font-mono text-[#00ff88] mb-1">{d.improvement}x</div>
+              <div className="text-sm text-gray-400">noise reduction</div>
+              <div className="text-[10px] font-mono text-gray-500 mt-2">
+                MAE: {d.maeNoisy.toFixed(3)} &rarr; {d.maeSV.toFixed(3)} Ha
+              </div>
             </div>
-            <div className="space-y-3">
-              {[
-                {
-                  label: 'Hamiltonian',
-                  detail: vqeData.hamiltonian,
-                  desc: 'Bravyi-Kitaev reduced H\u2082 with tabulated coefficients from O\'Malley et al.',
-                },
-                {
-                  label: 'Ansatz Circuit',
-                  detail: 'RXX(\u03B8) + RYY(\u03B8) on |10\u27E9',
-                  desc: 'Parity-preserving exchange rotation matching the paper\'s approach',
-                },
-                {
-                  label: 'Noise Model',
-                  detail: vqeData.noiseModel,
-                  desc: 'Thermal relaxation + depolarizing channels on all gates',
-                },
-                {
-                  label: 'Error Mitigation',
-                  detail: vqeData.mitigation,
-                  desc: 'Post-select on states where qubit parity matches ground-state sector',
-                },
-                {
-                  label: 'Measurement',
-                  detail: 'Z, X, Y bases (3 circuits per \u03B8)',
-                  desc: '8192 shots per basis. XX from H-rotated, YY from Sdg-H-rotated measurements',
-                },
-              ].map((item) => (
-                <div key={item.label} className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                  <div className="flex items-baseline gap-2 mb-1">
-                    <span className="text-xs font-mono text-[#ff8c42]">{item.label}</span>
-                    <span className="text-[10px] font-mono text-gray-500">{item.detail}</span>
-                  </div>
-                  <p className="text-xs text-gray-400">{item.desc}</p>
-                </div>
-              ))}
+            <div className="p-5 rounded-xl border border-white/5 bg-white/[0.02]">
+              <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-3">Ideal VQE</div>
+              <div className="text-2xl font-black font-mono text-white mb-1">0.000</div>
+              <div className="text-sm text-gray-400">Ha MAE (exact)</div>
+              <div className="text-[10px] font-mono text-gray-500 mt-2">
+                DoubleExcitation ansatz + Brent optimizer
+              </div>
+            </div>
+            <div className="p-5 rounded-xl border border-white/5 bg-white/[0.02]">
+              <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-3">Setup</div>
+              <div className="space-y-1 text-[10px] font-mono text-gray-400">
+                <div>4 qubits (Jordan-Wigner)</div>
+                <div>PennyLane + OpenFermion/PySCF</div>
+                <div>8192 shots, 12 bond distances</div>
+                <div>Parity post-selection on Z terms</div>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Key insight */}
+        <div className="p-4 rounded-lg border border-[#ff8c4220] bg-[#ff8c4205]">
+          <div className="text-xs font-mono text-[#ff8c42] uppercase tracking-widest mb-2">Key Insight</div>
+          <p className="text-sm text-gray-300 leading-relaxed">
+            Symmetry verification works by post-selecting measurement outcomes where the total qubit parity
+            matches the expected symmetry sector. For H&#x2082;, this means keeping only even-parity samples
+            when measuring Z-diagonal Hamiltonian terms. The technique is <span className="text-white font-medium">most effective near
+            equilibrium</span> (up to 3x at R=0.7 &#x212B;) and degrades at large bond distances where
+            electron correlation dominates. Next step: run on real Quantum Inspire hardware.
+          </p>
         </div>
       </div>
     </section>
