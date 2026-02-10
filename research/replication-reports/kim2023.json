@@ -1,0 +1,116 @@
+{
+  "paper_id": "kim2023",
+  "paper": {
+    "title": "Evidence for the utility of quantum computing before fault tolerance",
+    "authors": "Kim et al.",
+    "journal": "Nature 618, 500-505 (2023)",
+    "arxiv": "2302.11590",
+    "institution": "IBM Quantum",
+    "hardware": "127-qubit Eagle (ibm_kyiv)",
+    "url": "https://arxiv.org/abs/2302.11590"
+  },
+  "generated": "2026-02-10T21:00:00.000000",
+  "backends_tested": [
+    "emulator"
+  ],
+  "comparisons": [
+    {
+      "claim_id": "mz-decays-with-depth",
+      "description": "Unmitigated magnetization M_z decays monotonically with Trotter depth due to noise accumulation",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 2c",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Noisy M_z decays from 0.972 (d=1) to 0.755 (d=10) on 9-qubit Tuna-9 topology with p=0.01 depolarizing noise. Monotonic decay matches paper's observation on 127 qubits.",
+          "severity": "none",
+          "noisy_mz_d1": 0.972,
+          "noisy_mz_d10": 0.755,
+          "noise_model": "depolarizing p=0.01"
+        }
+      }
+    },
+    {
+      "claim_id": "zne-recovers-clifford",
+      "description": "ZNE error mitigation recovers ideal M_z at Clifford point (theta_h=0) across depths",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 2c",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "ZNE with gate folding (factors 1,3,5) and Richardson extrapolation recovers M_z to within 3.0% of ideal at depth 10. Max ZNE error 0.030 vs noisy error 0.245. At depth 1, ZNE error is only 0.002%.",
+          "severity": "none",
+          "max_zne_error": 0.0305,
+          "max_noisy_error": 0.2453,
+          "zne_method": "gate folding (1x,3x,5x) + Richardson extrapolation"
+        }
+      }
+    },
+    {
+      "claim_id": "zne-improves-accuracy",
+      "description": "ZNE error mitigation substantially improves accuracy over unmitigated results",
+      "published_value": 10.0,
+      "published_error": 5.0,
+      "unit": "x improvement factor",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": 14.1,
+          "discrepancy": -4.1,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "ZNE achieves 14.1x improvement over unmitigated results (ZNE MAE 0.010 vs noisy MAE 0.141). Paper reported ~10x with PEA on 127 qubits. Our basic ZNE on 9 qubits achieves higher improvement likely due to simpler noise landscape at smaller scale.",
+          "severity": "none",
+          "depth_sweep_zne_mae": 0.00996,
+          "depth_sweep_noisy_mae": 0.14083,
+          "improvement_factor": 14.1,
+          "note": "Paper used PEA (learned Pauli-Lindblad noise model). We use basic ZNE gate folding, which is simpler but effective at 9-qubit scale."
+        }
+      }
+    }
+  ],
+  "scaling_notes": {
+    "original_qubits": 127,
+    "replication_qubits": 9,
+    "topology": "Tuna-9 (10 edges, non-planar graph)",
+    "original_topology": "heavy-hex lattice (127 qubits)",
+    "original_mitigation": "PEA with learned Pauli-Lindblad noise model",
+    "replication_mitigation": "ZNE gate folding (factors 1,3,5) + Richardson extrapolation",
+    "key_difference": "Physics is identical (kicked Ising Trotterization), but scale and mitigation sophistication differ. 9 qubits is classically exactly simulable, providing ground truth. 127 qubits is in the regime where classical methods struggle.",
+    "classical_controversy": "Tindall et al. (2024) showed tensor network methods can reproduce 127-qubit results with higher accuracy. At 9 qubits, classical simulation is trivial, making this a test of the mitigation method rather than quantum advantage."
+  },
+  "depth_sweep_data": {
+    "description": "M_z vs Trotter depth at theta_h=0 (Clifford), 9 qubits, depolarizing p=0.01",
+    "steps": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "ideal_mz": [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    "noisy_mz": [0.972, 0.945, 0.919, 0.893, 0.868, 0.844, 0.821, 0.798, 0.776, 0.755],
+    "zne_mz": [1.000, 1.000, 0.999, 0.998, 0.995, 0.992, 0.988, 0.983, 0.977, 0.970]
+  },
+  "theta_sweep_data": {
+    "description": "M_z vs theta_h at depth=5, 9 qubits, depolarizing p=0.01",
+    "theta_h_over_pi": [0.0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5],
+    "ideal_mz": [1.0, 0.928, 0.626, 0.241, 0.023, 0.0, -0.023, -0.241, -0.626, -0.928, -1.0],
+    "noisy_mz": [0.868, 0.799, 0.530, 0.201, 0.024, 0.0, -0.024, -0.201, -0.530, -0.799, -0.868],
+    "zne_mz": [0.995, 0.923, 0.622, 0.239, 0.025, 0.0, -0.025, -0.239, -0.622, -0.923, -0.995]
+  },
+  "summary": {
+    "total_claims_tested": 3,
+    "successes": 3,
+    "success_rate": 1.0,
+    "failure_mode_counts": {
+      "success": 3
+    },
+    "backends_tested": ["emulator"],
+    "notes": "All 3 claims PASS on emulator with simulated noise. 9-qubit kicked Ising on Tuna-9 topology with depolarizing noise p=0.01. ZNE gate folding provides 14.1x improvement. Key physics reproduced: noise accumulates with depth, ZNE recovers ideal at Clifford, ZNE substantially outperforms unmitigated. Hardware runs on Tuna-9 and IBM Torino planned as next step."
+  }
+}

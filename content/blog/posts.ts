@@ -1462,7 +1462,7 @@ b = measure q"""
   },
   {
     slug: 'systematic-paper-replication',
-    title: 'Tier 1 Complete: 5 Papers, 21 Claims, 4 Backends',
+    title: 'Tier 1 Complete + Kim 2023: 6 Papers, 24 Claims, 4 Backends',
     subtitle: 'What happens when AI agents try to reproduce quantum computing experiments across different hardware?',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
@@ -1470,7 +1470,7 @@ b = measure q"""
     tags: ['replication', 'VQE', 'QAOA', 'quantum volume', 'randomized benchmarking', 'reproducibility', 'cross-platform'],
     heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80',
     heroCaption: 'The gaps between published results and reproduced results are themselves a research finding.',
-    excerpt: 'We replicated 5 foundational quantum computing papers across 4 hardware backends. 90% of claims reproduce successfully. The biggest finding: TREX error mitigation (one flag change in Qiskit) achieves chemical accuracy on IBM Torino — 0.22 kcal/mol, a 119x improvement over raw measurement.',
+    excerpt: 'We replicated 6 quantum computing papers across 4 hardware backends. 92% of claims reproduce successfully. Kim 2023 (Nature "utility" paper) is our first Tier 2 replication: 9-qubit kicked Ising with ZNE achieves 14.1x error reduction. TREX on IBM achieves 0.22 kcal/mol for VQE.',
     content: `<p>Reproducibility is one of the quiet crises in quantum computing. Papers report impressive results on custom hardware, but how well do those results transfer to different backends? We built an automated pipeline to find out &mdash; and the results tell a clear story about the current state of quantum computing.</p>
 
 <h2>The Approach</h2>
@@ -1493,7 +1493,8 @@ b = measure q"""
 <tr><td>Peruzzo 2014</td><td>5</td><td>3</td><td>60%</td><td>Emulator, IBM</td></tr>
 <tr><td>Cross 2019</td><td>3</td><td>3</td><td>100%</td><td>Emulator, IBM, Tuna-9, IQM</td></tr>
 <tr><td>Harrigan 2021</td><td>4</td><td>4</td><td>100%</td><td>Emulator, Tuna-9</td></tr>
-<tr><td><strong>Total</strong></td><td><strong>21</strong></td><td><strong>19</strong></td><td><strong>90%</strong></td><td><strong>4 backends</strong></td></tr>
+<tr><td>Kim 2023</td><td>3</td><td>3</td><td>100%</td><td>Emulator</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>24</strong></td><td><strong>22</strong></td><td><strong>92%</strong></td><td><strong>4 backends</strong></td></tr>
 </tbody>
 </table>
 
@@ -1549,15 +1550,34 @@ b = measure q"""
 
 <p>This is not a criticism of the original papers &mdash; they used carefully calibrated, custom hardware. The finding is about <strong>reproducibility across platforms</strong>: quantum computing results are currently hardware-specific in ways that classical computing results are not. But with the right post-processing, the gap is surprisingly narrow.</p>
 
+<h2>Tier 2 Update: Kim et al. 2023 &mdash; "Evidence for Utility"</h2>
+
+<p><em>Nature 618, 500-505</em> &mdash; <a href="https://arxiv.org/abs/2302.11590">arXiv:2302.11590</a></p>
+
+<p>The most cited quantum computing paper of 2023 demonstrated 127-qubit Trotterized time evolution on IBM's heavy-hex lattice with PEA (Probabilistic Error Amplification) mitigation. We replicated the core physics on 9 qubits using the Tuna-9 topology with basic ZNE (gate folding + Richardson extrapolation) and simulated depolarizing noise (p=0.01).</p>
+
+<p>Three claims tested, all pass:</p>
+
+<ol>
+<li><strong>M_z decays with depth</strong> &mdash; Noisy magnetization drops from 0.972 (d=1) to 0.755 (d=10). The same qualitative decay seen at 127 qubits.</li>
+<li><strong>ZNE recovers ideal at Clifford</strong> &mdash; At theta_h=0 (classically simulable), ZNE reduces error from 24.5% to 3.0% at depth 10. Richardson extrapolation from fold factors [1,3,5] works cleanly.</li>
+<li><strong>ZNE improves over unmitigated</strong> &mdash; <strong>14.1x improvement factor</strong> (ZNE MAE 0.010 vs noisy MAE 0.141). The paper reported ~10x with their more sophisticated PEA method.</li>
+</ol>
+
+<p>Note: 9 qubits is exactly classically simulable, so this tests the <em>mitigation method</em>, not quantum advantage. The classical controversy (Tindall et al. showed tensor networks reproduce the 127-qubit results) is irrelevant at our scale. Hardware runs on Tuna-9 and IBM Torino are next.</p>
+
+<p><strong>Result: 100% pass (3/3 claims).</strong> ZNE gate folding is the poor man's PEA &mdash; simpler but effective at small scale.</p>
+
 <h2>What's Next</h2>
 
-<p>Tier 1 is complete. We're moving to Tier 2: Kim et al. 2023 ("Evidence for the utility of quantum computing," Nature), Watson et al. 2022 (QuTech silicon spin qubits), and Philips et al. 2022 (universal 6-qubit silicon). The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
+<p>Tier 2 has started. Kim 2023 is the first paper where we replicate an <em>error mitigation technique</em> rather than a physical result. Next: submit the kicked Ising circuit to Tuna-9 and IBM Torino hardware. Watson et al. 2022 (QuTech silicon spin qubits) and Philips et al. 2022 (universal 6-qubit silicon) are planned. The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
     sources: [
       { label: 'Sagastizabal et al. (2019)', url: 'https://arxiv.org/abs/1902.11258' },
       { label: 'Kandala et al. (2017) - Hardware-efficient VQE', url: 'https://arxiv.org/abs/1704.05018' },
       { label: 'Peruzzo et al. (2014) - Original VQE paper', url: 'https://arxiv.org/abs/1304.3061' },
       { label: 'Cross et al. (2019) - Quantum Volume', url: 'https://arxiv.org/abs/1811.12926' },
       { label: 'Harrigan et al. (2021) - QAOA MaxCut', url: 'https://arxiv.org/abs/2004.04197' },
+      { label: 'Kim et al. (2023) - Evidence for utility', url: 'https://arxiv.org/abs/2302.11590' },
       { label: 'Live replication dashboard', url: 'https://quantuminspire.vercel.app/replications' },
       { label: 'Replication analyzer (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_analyzer.py' },
       { label: 'HeH+ replication script (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_peruzzo.py' },

@@ -162,7 +162,7 @@ export const PAPER_PIPELINE: Array<{
     authors: 'Kim et al.',
     journal: 'Nature 618, 500-505 (2023)',
     arxiv: '2302.11590',
-    status: 'in_progress',
+    status: 'completed',
     qubits: 127,
     type: 'Error Mitigation',
   },
