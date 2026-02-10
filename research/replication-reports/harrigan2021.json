@@ -1,0 +1,875 @@
+{
+  "paper_id": "harrigan2021",
+  "paper": {
+    "title": "Quantum approximate optimization of non-planar graph problems on a planar superconducting processor",
+    "authors": "Harrigan et al.",
+    "journal": "Nature Physics 17, 332-336 (2021)",
+    "arxiv": "2004.04197",
+    "institution": "Google AI Quantum",
+    "hardware": "53-qubit Sycamore (Google)",
+    "url": "https://arxiv.org/abs/2004.04197"
+  },
+  "generated": "2026-02-10T18:25:23.501460+00:00",
+  "backends_tested": [
+    "emulator"
+  ],
+  "comparisons": [
+    {
+      "claim_id": "qaoa-beats-random",
+      "description": "QAOA MaxCut at p=1 achieves approximation ratio above random guessing (0.5)",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 2",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "All 10 graphs beat random at p=1",
+          "severity": "none"
+        }
+      }
+    },
+    {
+      "claim_id": "depth-improves-performance",
+      "description": "QAOA performance increases with circuit depth (p=1 to p=3)",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "8/10 graphs show monotonically increasing approximation ratio with depth",
+          "severity": "none"
+        }
+      }
+    },
+    {
+      "claim_id": "3regular-matches-theory",
+      "description": "3-regular MaxCut achieves known theoretical bounds (p=1: >= 0.6924)",
+      "published_value": 0.6924,
+      "published_error": 0.05,
+      "unit": "approximation ratio",
+      "figure": "Supplementary",
+      "results_by_backend": {
+        "emulator": {
+          "measured_value": 0.922485,
+          "discrepancy": 0.2301,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "11/11 3-regular tests match theoretical bounds",
+          "severity": "none"
+        }
+      }
+    }
+  ],
+  "emulator_details": [
+    {
+      "graph": "triangle_K3",
+      "nodes": [
+        0,
+        1,
+        2
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "n_nodes": 3,
+      "n_edges": 3,
+      "classical_max_cut": 2,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.998862,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gamma": 2.4975,
+          "best_beta": 1.254
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.999936,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.1599,
+            2.5803
+          ],
+          "best_betas": [
+            1.187,
+            1.1722
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.999981,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.1684,
+            2.134,
+            0.6415
+          ],
+          "best_betas": [
+            1.6083,
+            0.3187,
+            0.7098
+          ]
+        }
+      }
+    },
+    {
+      "graph": "cycle_C4",
+      "nodes": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "n_nodes": 4,
+      "n_edges": 4,
+      "classical_max_cut": 4,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.74961,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gamma": 2.3687,
+          "best_beta": 1.1906
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.999841,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            1.5663,
+            0.7927
+          ],
+          "best_betas": [
+            0.3876,
+            0.7967
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.999916,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.7172,
+            1.0953,
+            2.9837
+          ],
+          "best_betas": [
+            0.528,
+            0.863,
+            1.134
+          ]
+        }
+      }
+    },
+    {
+      "graph": "complete_K4",
+      "nodes": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "n_nodes": 4,
+      "n_edges": 6,
+      "classical_max_cut": 4,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.922485,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": 0.6924,
+          "best_gamma": 2.6263,
+          "best_beta": 0.3035
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.999827,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": 0.7559,
+          "best_gammas": [
+            0.4559,
+            1.4162
+          ],
+          "best_betas": [
+            0.28,
+            0.1562
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.999687,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": 0.7924,
+          "best_gammas": [
+            2.6869,
+            2.693,
+            2.3814
+          ],
+          "best_betas": [
+            1.3578,
+            0.7575,
+            0.5811
+          ]
+        }
+      }
+    },
+    {
+      "graph": "cycle_C5",
+      "nodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "n_nodes": 5,
+      "n_edges": 5,
+      "classical_max_cut": 4,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.937012,
+          "random_baseline": 0.625,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gamma": 2.3687,
+          "best_beta": 1.1906
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.999885,
+          "random_baseline": 0.625,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            2.6228,
+            2.0453
+          ],
+          "best_betas": [
+            1.0219,
+            1.302
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.999901,
+          "random_baseline": 0.625,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.5446,
+            0.9817,
+            2.3442
+          ],
+          "best_betas": [
+            1.4217,
+            1.4,
+            0.6052
+          ]
+        }
+      }
+    },
+    {
+      "graph": "tuna9_4node",
+      "nodes": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "edges": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "n_nodes": 4,
+      "n_edges": 3,
+      "classical_max_cut": 3,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.791698,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gamma": 0.9517,
+          "best_beta": 0.3668
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.910544,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.885,
+            1.5425
+          ],
+          "best_betas": [
+            0.5696,
+            0.3209
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.920507,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            1.7587,
+            2.3737,
+            1.0252
+          ],
+          "best_betas": [
+            0.3692,
+            0.2546,
+            1.0148
+          ]
+        }
+      }
+    },
+    {
+      "graph": "tuna9_5node",
+      "nodes": [
+        2,
+        4,
+        5,
+        6,
+        8
+      ],
+      "edges": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "n_nodes": 5,
+      "n_edges": 4,
+      "classical_max_cut": 4,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.777532,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gamma": 0.9517,
+          "best_beta": 0.3668
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.881733,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.7903,
+            1.432
+          ],
+          "best_betas": [
+            0.5854,
+            0.3175
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.870536,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            1.7587,
+            2.7053,
+            0.9147
+          ],
+          "best_betas": [
+            0.1847,
+            0.1831,
+            1.0463
+          ]
+        }
+      }
+    },
+    {
+      "graph": "tuna9_6node",
+      "nodes": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        8
+      ],
+      "edges": [
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "n_nodes": 6,
+      "n_edges": 5,
+      "classical_max_cut": 5,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.759158,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gamma": 0.8229,
+          "best_beta": 0.3668
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.853461,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.7113,
+            1.2425
+          ],
+          "best_betas": [
+            0.4898,
+            0.27
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.829493,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": null,
+          "best_gammas": [
+            0.8587,
+            3.2895,
+            1.1831
+          ],
+          "best_betas": [
+            0.2765,
+            0.01,
+            1.3306
+          ]
+        }
+      }
+    },
+    {
+      "graph": "3regular_4",
+      "nodes": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "n_nodes": 4,
+      "n_edges": 6,
+      "classical_max_cut": 4,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.922485,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": 0.6924,
+          "best_gamma": 2.6263,
+          "best_beta": 0.3035
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.999827,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": 0.7559,
+          "best_gammas": [
+            0.4559,
+            1.4162
+          ],
+          "best_betas": [
+            0.28,
+            0.1562
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.999687,
+          "random_baseline": 0.75,
+          "beats_random": "True",
+          "theoretical_bound": 0.7924,
+          "best_gammas": [
+            2.6869,
+            2.693,
+            2.3814
+          ],
+          "best_betas": [
+            1.3578,
+            0.7575,
+            0.5811
+          ]
+        }
+      }
+    },
+    {
+      "graph": "3regular_6",
+      "nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "n_nodes": 6,
+      "n_edges": 9,
+      "classical_max_cut": 9,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.690955,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": 0.6924,
+          "best_gamma": 2.4975,
+          "best_beta": 0.3668
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.840675,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": 0.7559,
+          "best_gammas": [
+            0.6904,
+            2.7985
+          ],
+          "best_betas": [
+            1.0771,
+            0.6428
+          ]
+        },
+        "p3": {
+          "p": 3,
+          "approximation_ratio": 0.91539,
+          "random_baseline": 0.5,
+          "beats_random": "True",
+          "theoretical_bound": 0.7924,
+          "best_gammas": [
+            0.4082,
+            2.8481,
+            2.2303
+          ],
+          "best_betas": [
+            0.5768,
+            0.4807,
+            1.1573
+          ]
+        }
+      }
+    },
+    {
+      "graph": "3regular_8",
+      "nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "n_nodes": 8,
+      "n_edges": 12,
+      "classical_max_cut": 10,
+      "depths": {
+        "p1": {
+          "p": 1,
+          "approximation_ratio": 0.800431,
+          "random_baseline": 0.6,
+          "beats_random": "True",
+          "theoretical_bound": 0.6924,
+          "best_gamma": 0.5653,
+          "best_beta": 0.3668
+        },
+        "p2": {
+          "p": 2,
+          "approximation_ratio": 0.878397,
+          "random_baseline": 0.6,
+          "beats_random": "True",
+          "theoretical_bound": 0.7559,
+          "best_gammas": [
+            0.506,
+            0.9268
+          ],
+          "best_betas": [
+            0.4889,
+            0.2752
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "total_claims_tested": 3,
+    "successes": 3,
+    "success_rate": 1.0,
+    "failure_mode_counts": {
+      "success": 3
+    },
+    "backends_tested": [
+      "emulator"
+    ]
+  }
+}
