@@ -130,21 +130,21 @@ def generate_vqe_z_circuit(params):
     Uses a simplified 2-qubit ansatz decomposition of the DoubleExcitation
     gate, mapped to cQASM 3.0 native gates.
     """
-    theta = params.get("theta", 0.2286)
-    qubits = params.get("qubits", [0, 1, 2, 3])
+    theta = params.get("theta", 0.1118)
+    qubits = params.get("qubits", [0, 1])
     q = qubits
 
-    # Simplified 2-qubit Ry ansatz for H2 (Bravyi-Kitaev reduced)
-    # HF state: |01> (one electron per qubit in BK basis)
-    # Ansatz: Ry(theta) rotation in the {|01>, |10>} subspace
+    # 2-qubit Ry ansatz for H2 (JW sector-projected)
+    # HF state: |01> (q0=1, maps to bonding orbital occupied)
+    # Ansatz: CNOT-Ry-CNOT rotation in the {|01>, |10>} subspace
     return f"""version 3.0
 qubit[{max(q) + 1}] q
 bit[{max(q) + 1}] b
 
-// Prepare HF state |01> in BK basis
+// Prepare HF state |01>
 X q[{q[0]}]
 
-// Ry ansatz: excitation rotation
+// Ry ansatz: excitation rotation in {{|01>, |10>}} subspace
 CNOT q[{q[0]}], q[{q[1]}]
 Ry({theta:.6f}) q[{q[0]}]
 CNOT q[{q[1]}], q[{q[0]}]
@@ -158,15 +158,15 @@ b = measure q"""
 
 def generate_vqe_x_circuit(params):
     """VQE circuit with X-basis measurement (H rotation before measure)."""
-    theta = params.get("theta", 0.2286)
-    qubits = params.get("qubits", [0, 1, 2, 3])
+    theta = params.get("theta", 0.1118)
+    qubits = params.get("qubits", [0, 1])
     q = qubits
 
     return f"""version 3.0
 qubit[{max(q) + 1}] q
 bit[{max(q) + 1}] b
 
-// Prepare HF state |01> in BK basis
+// Prepare HF state |01>
 X q[{q[0]}]
 
 // Ry ansatz
@@ -186,15 +186,15 @@ b = measure q"""
 
 def generate_vqe_y_circuit(params):
     """VQE circuit with Y-basis measurement (Sdg+H rotation before measure)."""
-    theta = params.get("theta", 0.2286)
-    qubits = params.get("qubits", [0, 1, 2, 3])
+    theta = params.get("theta", 0.1118)
+    qubits = params.get("qubits", [0, 1])
     q = qubits
 
     return f"""version 3.0
 qubit[{max(q) + 1}] q
 bit[{max(q) + 1}] b
 
-// Prepare HF state |01> in BK basis
+// Prepare HF state |01>
 X q[{q[0]}]
 
 // Ry ansatz
@@ -387,14 +387,16 @@ def analyze_vqe(all_counts, params):
     """
     R = params.get("bond_distance", 0.735)
 
-    # H2 Hamiltonian coefficients (STO-3G, Bravyi-Kitaev, 2-qubit reduced)
-    # From O'Malley et al. / Sagastizabal et al. for R ~ 0.735 A
-    g0 = -0.4804
-    g1 = 0.3435
-    g2 = -0.4347
-    g3 = 0.5716
-    g4 = 0.0910
-    g5 = 0.0910
+    # H2 Hamiltonian coefficients (STO-3G, 2-qubit, JW + sector projection)
+    # Computed via PySCF/OpenFermion at R = 0.735 A.
+    # Projects 4-qubit JW Hamiltonian into {|1100>, |0011>} -> {|01>, |10>}.
+    # Ground state eigenvalue = -1.1373 Ha (matches FCI exactly).
+    g0 = -0.321124
+    g1 = 0.397937
+    g2 = -0.397937
+    g3 = 0.0
+    g4 = 0.090466
+    g5 = 0.090466
 
     def expectation_from_counts(counts, total):
         """Compute <Z0>, <Z1>, <Z0Z1> from bitstring counts."""
@@ -723,8 +725,8 @@ def create_seed_experiments():
             "parameters": {
                 "shots": 4096,
                 "bond_distance": 0.735,
-                "theta": 0.2286,
-                "qubits": [0, 1, 2, 3],
+                "theta": 0.1118,
+                "qubits": [0, 1],
             },
             "priority": 3,
             "description": "H2 VQE at equilibrium (0.735 A). 3 measurement bases.",

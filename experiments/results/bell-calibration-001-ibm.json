@@ -1,0 +1,28 @@
+{
+  "id": "bell-calibration-001-ibm",
+  "type": "bell_calibration",
+  "backend": "ibm_marrakesh",
+  "backend_qubits": 156,
+  "submitted": "2026-02-10T15:24:38.100290+00:00",
+  "completed": "2026-02-10T15:24:38.110292+00:00",
+  "job_id": "d65kqpoqbmes739d1k2g",
+  "parameters": {
+    "shots": 4096
+  },
+  "raw_counts": {
+    "z_basis": {
+      "00": 2065,
+      "11": 1992,
+      "10": 13,
+      "01": 26
+    }
+  },
+  "analysis": {
+    "fidelity": 0.990478515625,
+    "parity_leakage": 0.009521484375,
+    "correct_parity": 4057,
+    "wrong_parity": 39,
+    "total_shots": 4096
+  },
+  "errors": null
+}

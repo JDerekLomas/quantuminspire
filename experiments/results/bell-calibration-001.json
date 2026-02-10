@@ -1,7 +1,7 @@
 {
   "id": "bell-calibration-001",
   "type": "bell_calibration",
-  "backend": "tuna-9",
+  "backend": "qxelarator (emulator)",
   "submitted": "2026-02-10T15:17:52.305433+00:00",
   "completed": "2026-02-10T15:17:54.280348+00:00",
   "parameters": {

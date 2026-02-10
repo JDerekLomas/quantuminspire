@@ -899,14 +899,14 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
   {
     slug: 'quantum-mcp-servers',
     title: 'Giving Claude Direct Access to Quantum Hardware',
-    subtitle: 'We built MCP servers that let Claude Code generate random numbers from vacuum fluctuations and submit circuits to real quantum processors',
+    subtitle: 'MCP servers that let Claude Code generate random numbers from vacuum fluctuations (with Tuna-9 spin qubit fallback) and submit circuits to real quantum processors',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'technical',
     tags: ['MCP', 'Claude Code', 'Quantum Inspire', 'QRNG', 'tooling', 'infrastructure'],
     heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&q=80',
     heroCaption: 'Bridging AI and quantum hardware through the Model Context Protocol.',
-    excerpt: 'We built two MCP servers that give Claude Code direct access to quantum resources: true random numbers from vacuum fluctuations (ANU QRNG) and circuit execution on Quantum Inspire hardware. Here\'s how they work and why this matters for AI-accelerated quantum research.',
+    excerpt: 'We built two MCP servers that give Claude Code direct access to quantum resources: true random numbers with automatic fallback from ANU vacuum fluctuations to Tuna-9 spin qubits, plus circuit execution on Quantum Inspire hardware. Here\'s how they work and why this matters for AI-accelerated quantum research.',
     content: `
 <p>One of the most powerful ideas in the AI-for-science movement is <strong>closing the feedback loop</strong> — giving AI agents direct access to experimental tools so they can design, execute, and analyze experiments without human intermediation. We just took a concrete step toward this for quantum computing.</p>
 
@@ -1057,13 +1057,13 @@ b = measure q"""
 
 <h3>Architecture</h3>
 
-<p>Both servers use the <strong>stdio transport</strong> — they communicate with Claude Code via JSON-RPC over stdin/stdout. This means they run as local processes, no network server needed. Configuration lives in <code>.mcp.json</code> at the project root:</p>
+<p>Both servers are <strong>Python</strong> using the MCP Python SDK's <code>FastMCP</code> framework, communicating via <strong>stdio transport</strong> (JSON-RPC over stdin/stdout). The QRNG server was originally Node.js but was rewritten in Python to share the QI SDK for Tuna-9 fallback. Configuration lives in <code>.mcp.json</code> at the project root:</p>
 
 <pre><code>{
   "mcpServers": {
     "qrng": {
-      "command": "node",
-      "args": ["mcp-servers/qrng/index.js"]
+      "command": "python",
+      "args": ["mcp-servers/qrng/qrng_server.py"]
     },
     "qi-circuits": {
       "command": "python",
@@ -1074,15 +1074,15 @@ b = measure q"""
 
 <h3>Authentication</h3>
 
-<p>The QI server reuses the OAuth token from <code>qi login</code> (stored in <code>~/.quantuminspire/config.json</code>). No additional setup required — if you can use the QI CLI, the MCP server works automatically.</p>
+<p>Both servers reuse the OAuth token from <code>qi login</code> (stored in <code>~/.quantuminspire/config.json</code>) for Quantum Inspire access. The QRNG server's ANU endpoint needs no auth. The Tuna-9 fallback only initializes the QI backend on first use (lazy loading), so if you only have ANU access, the server works fine without QI credentials.</p>
 
-<h3>Error handling</h3>
+<h3>Error handling &amp; fallback</h3>
 
-<p>All tools return structured JSON with error details on failure. The server uses lazy initialization — backends are only created when first needed, so startup is fast even if QI authentication is unavailable.</p>
+<p>All tools return structured JSON with error details on failure. The QRNG server's fallback chain (ANU → Tuna-9 → local emulator) is automatic — each source is tried in order, and the response always reports which source was used. Backend initialization is lazy, so startup is fast.</p>
 
 <h2>What's Next</h2>
 
-<p>These MCP servers are v1. The roadmap includes:</p>
+<p>The roadmap includes:</p>
 
 <ol>
 <li><strong>IBM Quantum MCP Server</strong> — Same pattern for IBM's quantum hardware (ibm_torino, ibm_fez, ibm_marrakesh). We already have IBM credentials configured.</li>

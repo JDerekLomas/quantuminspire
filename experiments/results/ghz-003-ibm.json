@@ -1,0 +1,32 @@
+{
+  "id": "ghz-003-ibm",
+  "type": "ghz_state",
+  "backend": "ibm_marrakesh",
+  "backend_qubits": 156,
+  "submitted": "2026-02-10T15:24:38.100290+00:00",
+  "completed": "2026-02-10T15:24:38.110856+00:00",
+  "job_id": "d65kqpoqbmes739d1k2g",
+  "parameters": {
+    "shots": 4096
+  },
+  "raw_counts": {
+    "z_basis": {
+      "000": 2098,
+      "111": 1922,
+      "011": 13,
+      "101": 14,
+      "110": 36,
+      "001": 10,
+      "100": 2,
+      "010": 1
+    }
+  },
+  "analysis": {
+    "fidelity": 0.9814453125,
+    "parity_leakage": 0.0185546875,
+    "p_all_zero": 0.51220703125,
+    "p_all_one": 0.46923828125,
+    "total_shots": 4096
+  },
+  "errors": null
+}
