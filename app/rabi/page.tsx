@@ -2,95 +2,58 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import Link from 'next/link'
+import { computeHeatmapValue, rabiBloch, rabiBlochXY, rabiP1, rabiSigmaZ, type RabiViewId } from '@/lib/rabi'
+import { VIEW_CONFIGS, RECIPES } from '@/lib/visualization/rabiConfig'
 
-// Rabi oscillation physics:
-// P(|1⟩, t) = (Ω/Ω_eff)² sin²(Ω_eff·t/2)
-// Ω_eff = √(Ω² + Δ²)
-// With damping: multiply by exp(-t/T₂)
+// ─── Views ─────────────────────────────────────────────────────────
 
-function rabiP1(t: number, omega: number, detuning: number, t2: number): number {
-  const omegaEff = Math.sqrt(omega * omega + detuning * detuning)
-  if (omegaEff < 1e-10) return 0
-  const ratio = omega / omegaEff
-  const osc = Math.sin(omegaEff * t / 2)
-  const decay = t2 > 0 ? Math.exp(-t / t2) : 1
-  return ratio * ratio * osc * osc * decay
-}
+type ViewId = RabiViewId
 
-// Bloch coords during Rabi oscillation
-function rabiBloch(t: number, omega: number, detuning: number, t2: number): [number, number, number] {
-  const p1 = rabiP1(t, omega, detuning, t2)
-  const p0 = 1 - p1
-  const theta = 2 * Math.acos(Math.sqrt(Math.max(0, Math.min(1, p0))))
-  const omegaEff = Math.sqrt(omega * omega + detuning * detuning)
-  const phi = omegaEff * t
-  return [
-    Math.sin(theta) * Math.cos(phi),
-    Math.sin(theta) * Math.sin(phi),
-    Math.cos(theta),
-  ]
-}
-
-// Viridis-inspired colormap: dark purple → blue → teal → green → yellow
-function viridis(t: number): [number, number, number] {
-  t = Math.max(0, Math.min(1, t))
-  // 6-stop interpolation matching viridis
-  const stops: [number, number, number, number][] = [
-    [0.00, 68, 1, 84],
-    [0.20, 59, 82, 139],
-    [0.40, 33, 145, 140],
-    [0.60, 53, 183, 121],
-    [0.80, 144, 215, 67],
-    [1.00, 253, 231, 37],
-  ]
-  let i = 0
-  while (i < stops.length - 2 && t > stops[i + 1][0]) i++
-  const [t0, r0, g0, b0] = stops[i]
-  const [t1, r1, g1, b1] = stops[i + 1]
-  const f = (t - t0) / (t1 - t0)
-  return [
-    Math.round(r0 + f * (r1 - r0)),
-    Math.round(g0 + f * (g1 - g0)),
-    Math.round(b0 + f * (b1 - b0)),
-  ]
-}
+// ─── Component ─────────────────────────────────────────────────────
 
 export default function RabiPage() {
   const chevronRef = useRef<HTMLCanvasElement>(null)
   const sliceRef = useRef<HTMLCanvasElement>(null)
   const blochRef = useRef<HTMLCanvasElement>(null)
 
-  const [omega, setOmega] = useState(4.0)       // Rabi frequency (MHz)
-  const [t2, setT2] = useState(0)                // T2 dephasing (0 = off)
-  const [qubitFreq] = useState(8.50)             // Qubit frequency (GHz)
-  const [freqSpan, setFreqSpan] = useState(0.04) // Frequency span (GHz) — ±span around qubit
-  const [maxPulse, setMaxPulse] = useState(2.0)  // Max pulse length (μs)
+  const [omega, setOmega] = useState(4.0)
+  const [t2, setT2] = useState(0)
+  const [qubitFreq] = useState(8.50)
+  const [freqSpan, setFreqSpan] = useState(0.04)
+  const [maxPulse, setMaxPulse] = useState(2.0)
+  const [activeView, setActiveView] = useState<ViewId>('p1')
 
-  // Crosshair position (selected point on chevron)
-  const [selFreq, setSelFreq] = useState(qubitFreq) // Selected drive freq
-  const [selTime, setSelTime] = useState(0.5)        // Selected pulse length
+  const [selFreq, setSelFreq] = useState(qubitFreq)
+  const [selTime, setSelTime] = useState(0.5)
   const [isDragging, setIsDragging] = useState(false)
 
-  const selDetuning = (selFreq - qubitFreq) * 1000 // Convert GHz offset to MHz
+  const selDetuning = (selFreq - qubitFreq) * 1000
   const selP1 = rabiP1(selTime, omega, selDetuning, t2)
   const omegaEff = Math.sqrt(omega * omega + selDetuning * selDetuning)
+  const viewCfg = VIEW_CONFIGS[activeView]
 
-  // Precompute chevron heatmap data
+  // Compute selected view value at crosshair
+  const selValue = computeHeatmapValue(activeView, selTime, omega, selDetuning, t2)
+
+  // Precompute heatmap data
   const chevronData = useMemo(() => {
     const res = 200
     const data = new Float32Array(res * res)
+    let minVal = Infinity, maxVal = -Infinity
     for (let yi = 0; yi < res; yi++) {
       const t = (yi / (res - 1)) * maxPulse
       for (let xi = 0; xi < res; xi++) {
         const freq = qubitFreq - freqSpan + (xi / (res - 1)) * 2 * freqSpan
-        const det = (freq - qubitFreq) * 1000 // GHz to MHz
-        data[yi * res + xi] = rabiP1(t, omega, det, t2)
+        const det = (freq - qubitFreq) * 1000
+        const val = computeHeatmapValue(activeView, t, omega, det, t2)
+        data[yi * res + xi] = val
+        if (val < minVal) minVal = val
+        if (val > maxVal) maxVal = val
       }
     }
-    return { data, res }
-  }, [omega, t2, qubitFreq, freqSpan, maxPulse])
+    return { data, res, minVal, maxVal }
+  }, [omega, t2, qubitFreq, freqSpan, maxPulse, activeView])
 
-  // Map pixel position to frequency/time
   const pixelToCoords = useCallback((canvas: HTMLCanvasElement, clientX: number, clientY: number) => {
     const rect = canvas.getBoundingClientRect()
     const pad = { left: 55, right: 60, top: 15, bottom: 35 }
@@ -138,8 +101,14 @@ export default function RabiPage() {
     ctx.fillStyle = '#0a0a1a'
     ctx.fillRect(0, 0, w, h)
 
-    // Render heatmap using ImageData for performance
-    const { data, res } = chevronData
+    // Determine normalization for colormap
+    const { data, res, minVal, maxVal } = chevronData
+    const [rangeMin, rangeMax] = activeView === 'omega-eff'
+      ? [0, maxVal]      // dynamic range for Omega_eff
+      : activeView === 'phase'
+        ? [0, 2 * Math.PI]
+        : viewCfg.range
+
     const imgData = ctx.createImageData(Math.ceil(cw), Math.ceil(ch))
     const imgW = imgData.width, imgH = imgData.height
 
@@ -147,8 +116,11 @@ export default function RabiPage() {
       for (let px = 0; px < imgW; px++) {
         const xi = Math.floor((px / imgW) * res)
         const yi = Math.floor((py / imgH) * res)
-        const val = data[yi * res + Math.min(xi, res - 1)]
-        const [r, g, b] = viridis(val)
+        const raw = data[yi * res + Math.min(xi, res - 1)]
+        // Normalize to [0,1] for colormap
+        const span = rangeMax - rangeMin
+        const norm = span > 1e-10 ? (raw - rangeMin) / span : 0
+        const [r, g, b] = viewCfg.colormap(Math.max(0, Math.min(1, norm)))
         const idx = (py * imgW + px) * 4
         imgData.data[idx] = r
         imgData.data[idx + 1] = g
@@ -156,17 +128,13 @@ export default function RabiPage() {
         imgData.data[idx + 3] = 255
       }
     }
-    ctx.putImageData(imgData, pad.left * dpr, pad.top * dpr)
-    // Re-scale since putImageData ignores transforms
-    // Instead, draw via offscreen canvas
     const offscreen = document.createElement('canvas')
     offscreen.width = imgW
     offscreen.height = imgH
     offscreen.getContext('2d')!.putImageData(imgData, 0, 0)
-    ctx.clearRect(pad.left, pad.top, cw, ch)
     ctx.drawImage(offscreen, pad.left, pad.top, cw, ch)
 
-    // Y-axis labels (Pulse length)
+    // Y-axis labels
     ctx.fillStyle = 'rgba(255,255,255,0.4)'
     ctx.font = '10px JetBrains Mono, monospace'
     ctx.textAlign = 'right'
@@ -174,7 +142,6 @@ export default function RabiPage() {
       const t = (i / 4) * maxPulse
       const y = pad.top + (i / 4) * ch
       ctx.fillText(t.toFixed(1), pad.left - 6, y + 3)
-      // Tick
       ctx.strokeStyle = 'rgba(255,255,255,0.15)'
       ctx.lineWidth = 1
       ctx.beginPath()
@@ -182,7 +149,6 @@ export default function RabiPage() {
       ctx.lineTo(pad.left, y)
       ctx.stroke()
     }
-    // Y-axis title
     ctx.save()
     ctx.translate(11, pad.top + ch / 2)
     ctx.rotate(-Math.PI / 2)
@@ -192,7 +158,7 @@ export default function RabiPage() {
     ctx.fillText('Pulse length (\u03BCs)', 0, 0)
     ctx.restore()
 
-    // X-axis labels (Drive frequency)
+    // X-axis labels
     ctx.textAlign = 'center'
     ctx.fillStyle = 'rgba(255,255,255,0.4)'
     ctx.font = '10px JetBrains Mono, monospace'
@@ -228,46 +194,55 @@ export default function RabiPage() {
     ctx.fillText(`f\u2080 = ${qubitFreq.toFixed(3)}`, qx, pad.top - 3)
 
     // Crosshair
-    const cx = pad.left + ((selFreq - (qubitFreq - freqSpan)) / (2 * freqSpan)) * cw
-    const cy = pad.top + (selTime / maxPulse) * ch
+    const crossX = pad.left + ((selFreq - (qubitFreq - freqSpan)) / (2 * freqSpan)) * cw
+    const crossY = pad.top + (selTime / maxPulse) * ch
     ctx.strokeStyle = 'rgba(255,255,255,0.6)'
     ctx.lineWidth = 1
     ctx.setLineDash([2, 2])
     ctx.beginPath()
-    ctx.moveTo(cx, pad.top)
-    ctx.lineTo(cx, pad.top + ch)
+    ctx.moveTo(crossX, pad.top)
+    ctx.lineTo(crossX, pad.top + ch)
     ctx.stroke()
     ctx.beginPath()
-    ctx.moveTo(pad.left, cy)
-    ctx.lineTo(pad.left + cw, cy)
+    ctx.moveTo(pad.left, crossY)
+    ctx.lineTo(pad.left + cw, crossY)
     ctx.stroke()
     ctx.setLineDash([])
 
-    // Crosshair dot
     ctx.fillStyle = '#fff'
     ctx.shadowColor = '#fff'
     ctx.shadowBlur = 8
     ctx.beginPath()
-    ctx.arc(cx, cy, 4, 0, Math.PI * 2)
+    ctx.arc(crossX, crossY, 4, 0, Math.PI * 2)
     ctx.fill()
     ctx.shadowBlur = 0
 
-    // Readout
+    // Readout on canvas
     ctx.fillStyle = 'rgba(255,255,255,0.7)'
     ctx.font = '10px JetBrains Mono, monospace'
     ctx.textAlign = 'left'
-    const readX = cx + 10 > pad.left + cw - 120 ? cx - 130 : cx + 10
-    const readY = cy - 10 < pad.top + 20 ? cy + 20 : cy - 10
+    const readX = crossX + 10 > pad.left + cw - 140 ? crossX - 140 : crossX + 10
+    const readY = crossY - 10 < pad.top + 20 ? crossY + 20 : crossY - 10
     ctx.fillText(`f = ${selFreq.toFixed(4)} GHz`, readX, readY)
     ctx.fillText(`t = ${selTime.toFixed(3)} \u03BCs`, readX, readY + 13)
-    ctx.fillStyle = '#fde725'
-    ctx.fillText(`P(|1\u27E9) = ${selP1.toFixed(3)}`, readX, readY + 26)
+    // Show active view's value with appropriate color
+    const valNorm = (rangeMax - rangeMin) > 1e-10 ? (selValue - rangeMin) / (rangeMax - rangeMin) : 0
+    const [vr, vg, vb] = viewCfg.colormap(Math.max(0, Math.min(1, valNorm)))
+    ctx.fillStyle = `rgb(${vr},${vg},${vb})`
+    const valLabel = activeView === 'p1' ? `P(|1\u27E9) = ${selValue.toFixed(3)}`
+      : activeView === 'omega-eff' ? `\u03A9_eff = ${selValue.toFixed(2)} MHz`
+      : activeView === 'phase' ? `\u03C6 = ${selValue.toFixed(2)} rad`
+      : `${viewCfg.label} = ${selValue.toFixed(3)}`
+    ctx.fillText(valLabel, readX, readY + 26)
 
     // Colorbar
+    const cbLabels = activeView === 'omega-eff'
+      ? [`${maxVal.toFixed(1)}`, `${(maxVal / 2).toFixed(1)}`, '0.0']
+      : viewCfg.colorbarLabels
     const cbX = w - pad.right + 12, cbY = pad.top, cbW = 14, cbH = ch
     for (let i = 0; i < cbH; i++) {
       const val = 1 - i / cbH
-      const [r, g, b] = viridis(val)
+      const [r, g, b] = viewCfg.colormap(val)
       ctx.fillStyle = `rgb(${r},${g},${b})`
       ctx.fillRect(cbX, cbY + i, cbW, 1.5)
     }
@@ -277,22 +252,21 @@ export default function RabiPage() {
     ctx.fillStyle = 'rgba(255,255,255,0.5)'
     ctx.font = '9px JetBrains Mono, monospace'
     ctx.textAlign = 'left'
-    ctx.fillText('1.0', cbX + cbW + 3, cbY + 4)
-    ctx.fillText('0.5', cbX + cbW + 3, cbY + cbH / 2 + 3)
-    ctx.fillText('0.0', cbX + cbW + 3, cbY + cbH + 3)
-    // Label
+    ctx.fillText(cbLabels[0], cbX + cbW + 3, cbY + 4)
+    ctx.fillText(cbLabels[1], cbX + cbW + 3, cbY + cbH / 2 + 3)
+    ctx.fillText(cbLabels[2], cbX + cbW + 3, cbY + cbH + 3)
     ctx.save()
     ctx.translate(cbX + cbW + 16, cbY + cbH / 2)
     ctx.rotate(Math.PI / 2)
     ctx.fillStyle = 'rgba(255,255,255,0.4)'
     ctx.font = '9px JetBrains Mono, monospace'
     ctx.textAlign = 'center'
-    ctx.fillText('rel. excitation', 0, 0)
+    ctx.fillText(viewCfg.colorbarTitle, 0, 0)
     ctx.restore()
 
-  }, [chevronData, selFreq, selTime, selP1, qubitFreq, freqSpan, maxPulse])
+  }, [chevronData, selFreq, selTime, selValue, qubitFreq, freqSpan, maxPulse, activeView, viewCfg])
 
-  // ─── 1D time slice at selected detuning ───
+  // ─── 1D time slice ───
   useEffect(() => {
     const canvas = sliceRef.current
     if (!canvas) return
@@ -313,9 +287,19 @@ export default function RabiPage() {
     ctx.fillStyle = '#0a0a1a'
     ctx.fillRect(0, 0, w, h)
 
+    // Determine Y-axis range based on view
+    const { minVal, maxVal } = chevronData
+    const [yMin, yMax] = activeView === 'omega-eff'
+      ? [0, maxVal]
+      : activeView === 'phase'
+        ? [0, 2 * Math.PI]
+        : viewCfg.range
+
     // Grid
-    for (let i = 0; i <= 2; i++) {
-      const y = pad.top + ch * (1 - i / 2)
+    const gridSteps = activeView === 'phase' ? 2 : 2
+    for (let i = 0; i <= gridSteps; i++) {
+      const frac = i / gridSteps
+      const y = pad.top + ch * (1 - frac)
       ctx.strokeStyle = 'rgba(255,255,255,0.04)'
       ctx.lineWidth = 1
       ctx.beginPath()
@@ -325,7 +309,8 @@ export default function RabiPage() {
       ctx.fillStyle = 'rgba(255,255,255,0.25)'
       ctx.font = '9px JetBrains Mono, monospace'
       ctx.textAlign = 'right'
-      ctx.fillText((i / 2).toFixed(1), pad.left - 4, y + 3)
+      const label = (yMin + frac * (yMax - yMin)).toFixed(1)
+      ctx.fillText(label, pad.left - 4, y + 3)
     }
 
     // X axis
@@ -337,21 +322,26 @@ export default function RabiPage() {
       ctx.fillText(t.toFixed(1), x, h - 4)
     }
 
-    // P(|1⟩) curve at selected detuning
-    ctx.strokeStyle = '#fde725'
+    // Curve
+    const valNormForColor = (yMax - yMin) > 1e-10 ? (selValue - yMin) / (yMax - yMin) : 0
+    const [lr, lg, lb] = viewCfg.colormap(Math.max(0, Math.min(1, valNormForColor)))
+    const lineColor = `rgb(${lr},${lg},${lb})`
+
+    ctx.strokeStyle = lineColor
     ctx.lineWidth = 2
     ctx.beginPath()
     for (let i = 0; i <= cw; i++) {
       const t = (i / cw) * maxPulse
-      const p = rabiP1(t, omega, selDetuning, t2)
-      const y = pad.top + ch * (1 - p)
+      const v = computeHeatmapValue(activeView, t, omega, selDetuning, t2)
+      const frac = (yMax - yMin) > 1e-10 ? (v - yMin) / (yMax - yMin) : 0
+      const y = pad.top + ch * (1 - Math.max(0, Math.min(1, frac)))
       if (i === 0) ctx.moveTo(pad.left + i, y)
       else ctx.lineTo(pad.left + i, y)
     }
     ctx.stroke()
 
-    // Envelope
-    if (t2 > 0) {
+    // Envelope for damped P(|1⟩)
+    if (t2 > 0 && activeView === 'p1') {
       const ratio = omegaEff > 1e-10 ? (omega / omegaEff) : 0
       ctx.strokeStyle = 'rgba(253, 231, 37, 0.2)'
       ctx.lineWidth = 1
@@ -380,10 +370,11 @@ export default function RabiPage() {
     ctx.setLineDash([])
 
     // Point
-    const py = pad.top + ch * (1 - selP1)
-    ctx.shadowColor = '#fde725'
+    const valFrac = (yMax - yMin) > 1e-10 ? (selValue - yMin) / (yMax - yMin) : 0
+    const py = pad.top + ch * (1 - Math.max(0, Math.min(1, valFrac)))
+    ctx.shadowColor = lineColor
     ctx.shadowBlur = 8
-    ctx.fillStyle = '#fde725'
+    ctx.fillStyle = lineColor
     ctx.beginPath()
     ctx.arc(tx, py, 4, 0, Math.PI * 2)
     ctx.fill()
@@ -393,9 +384,9 @@ export default function RabiPage() {
     ctx.fillStyle = 'rgba(255,255,255,0.5)'
     ctx.font = '9px JetBrains Mono, monospace'
     ctx.textAlign = 'left'
-    ctx.fillText(`\u0394 = ${selDetuning.toFixed(1)} MHz  |  P(|1\u27E9) vs t`, pad.left + 4, pad.top + 10)
+    ctx.fillText(`\u0394 = ${selDetuning.toFixed(1)} MHz  |  ${viewCfg.label} vs t`, pad.left + 4, pad.top + 10)
 
-  }, [omega, selDetuning, t2, selTime, selP1, maxPulse, omegaEff])
+  }, [omega, selDetuning, t2, selTime, selValue, maxPulse, omegaEff, activeView, viewCfg, chevronData])
 
   // ─── Mini Bloch sphere ───
   useEffect(() => {
@@ -475,7 +466,15 @@ export default function RabiPage() {
     const [lx1, ly1] = project(0, -1.35, 0)
     ctx.fillText('|1\u27E9', lx1, ly1)
 
-    // Trajectory trace (sweep pulse length at selected detuning)
+    // Determine colormap normalization for trail
+    const { maxVal } = chevronData
+    const [rangeMin, rangeMax] = activeView === 'omega-eff'
+      ? [0, maxVal]
+      : activeView === 'phase'
+        ? [0, 2 * Math.PI]
+        : viewCfg.range
+
+    // Trajectory trace
     const trailSteps = 60
     for (let i = 0; i <= trailSteps; i++) {
       const tt = (i / trailSteps) * selTime
@@ -483,8 +482,9 @@ export default function RabiPage() {
       const [px, py, pz] = project(bx, bz, by)
       const age = i / trailSteps
       const depthFade = pz > 0 ? 1 : 0.3
-      const val = rabiP1(tt, omega, selDetuning, t2)
-      const [cr, cg, cb] = viridis(val)
+      const val = computeHeatmapValue(activeView, tt, omega, selDetuning, t2)
+      const norm = (rangeMax - rangeMin) > 1e-10 ? (val - rangeMin) / (rangeMax - rangeMin) : 0
+      const [cr, cg, cb] = viewCfg.colormap(Math.max(0, Math.min(1, norm)))
       ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${(age * depthFade * 0.6).toFixed(3)})`
       ctx.beginPath()
       ctx.arc(px, py, pz > 0 ? 2.2 : 1.2, 0, Math.PI * 2)
@@ -496,7 +496,11 @@ export default function RabiPage() {
     const [sx, sy] = project(bx, bz, by)
     const [ox, oy] = project(0, 0, 0)
 
-    ctx.strokeStyle = '#fde725'
+    const valNow = computeHeatmapValue(activeView, selTime, omega, selDetuning, t2)
+    const normNow = (rangeMax - rangeMin) > 1e-10 ? (valNow - rangeMin) / (rangeMax - rangeMin) : 0
+    const [cr, cg, cb] = viewCfg.colormap(Math.max(0, Math.min(1, normNow)))
+
+    ctx.strokeStyle = `rgb(${cr},${cg},${cb})`
     ctx.lineWidth = 1.5
     ctx.globalAlpha = 0.5
     ctx.beginPath()
@@ -505,7 +509,6 @@ export default function RabiPage() {
     ctx.stroke()
     ctx.globalAlpha = 1
 
-    const [cr, cg, cb] = viridis(selP1)
     ctx.shadowColor = `rgb(${cr},${cg},${cb})`
     ctx.shadowBlur = 14
     ctx.fillStyle = `rgb(${cr},${cg},${cb})`
@@ -519,7 +522,7 @@ export default function RabiPage() {
     ctx.fill()
     ctx.shadowBlur = 0
 
-  }, [selTime, omega, selDetuning, t2, selP1])
+  }, [selTime, omega, selDetuning, t2, activeView, viewCfg, chevronData])
 
   // Resize handler
   useEffect(() => {
@@ -545,6 +548,22 @@ export default function RabiPage() {
         <div className="flex-1 flex flex-col">
           {/* Chevron heatmap — hero */}
           <div className="flex-1 relative min-h-[320px]">
+            {/* View tabs */}
+            <div className="absolute top-2 left-14 z-10 flex gap-1">
+              {(Object.keys(VIEW_CONFIGS) as ViewId[]).map(id => (
+                <button
+                  key={id}
+                  onClick={() => setActiveView(id)}
+                  className={`px-2 py-0.5 text-[10px] font-mono rounded transition-all ${
+                    activeView === id
+                      ? 'bg-white/15 text-white border border-white/20'
+                      : 'bg-white/[0.04] text-gray-500 border border-transparent hover:text-gray-300 hover:bg-white/[0.08]'
+                  }`}
+                >
+                  {VIEW_CONFIGS[id].label}
+                </button>
+              ))}
+            </div>
             <canvas
               ref={chevronRef}
               className="absolute inset-0 w-full h-full cursor-crosshair"
@@ -636,29 +655,85 @@ export default function RabiPage() {
                 <span className="text-white">{omegaEff.toFixed(2)} MHz</span>
               </div>
               <div className="flex justify-between text-gray-400 pt-1 border-t border-white/5">
-                <span>P(|1&#x27E9;)</span>
-                <span className="text-[#fde725] font-bold">{selP1.toFixed(4)}</span>
+                <span>{viewCfg.label}</span>
+                <span className="text-[#fde725] font-bold">
+                  {activeView === 'omega-eff' ? `${selValue.toFixed(2)} MHz`
+                    : activeView === 'phase' ? `${selValue.toFixed(2)} rad`
+                    : selValue.toFixed(4)}
+                </span>
+              </div>
+              {activeView !== 'p1' && (
+                <div className="flex justify-between text-gray-400">
+                  <span>P(|1&#x27E9;)</span>
+                  <span className="text-gray-300">{selP1.toFixed(4)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Accuracy & method panel */}
+          <div className="mb-5 p-3 rounded bg-white/[0.02] border border-white/5">
+            <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Accuracy &amp; Method</h3>
+            <div className="text-[10px] font-mono text-gray-500 space-y-2">
+              <div className="text-gray-400 bg-white/[0.03] rounded px-1.5 py-1">{viewCfg.formula}</div>
+              <div>Numerical error: <span className="text-green-400">None</span> (closed-form, no integration)</div>
+
+              <div className="pt-1.5 border-t border-white/5 space-y-1.5">
+                <div className="text-[9px] uppercase tracking-widest text-gray-600">Approximation</div>
+                <div className="text-gray-400">
+                  Rotating wave approximation (RWA). Valid when &#x3A9; &laquo; f<sub>qubit</sub> &mdash; always true for superconducting qubits (MHz drive vs GHz qubit). Counter-rotating terms are dropped.
+                </div>
+              </div>
+
+              <div className="pt-1.5 border-t border-white/5 space-y-1.5">
+                <div className="text-[9px] uppercase tracking-widest text-gray-600">What you&apos;d measure</div>
+                <div className="text-gray-400">
+                  {activeView === 'p1' && 'Measure qubit in Z basis, count |1⟩ outcomes. This is the standard readout — no extra gates needed.'}
+                  {activeView === 'z' && '⟨σ_z⟩ = 1 − 2P(|1⟩). Same Z-basis measurement as P(|1⟩), just rescaled to [−1, +1]. Population inversion: +1 = ground, −1 = excited.'}
+                  {activeView === 'x' && 'Apply a π/2 rotation about Y before readout (Hadamard-like). Maps X-basis coherence onto Z for measurement. Zero at resonance — requires detuning.'}
+                  {activeView === 'y' && 'Apply a π/2 rotation about X before readout (S†·H gate). Maps Y-basis coherence onto Z for measurement. Oscillates even at resonance.'}
+                  {activeView === 'omega-eff' && 'Not directly measured in one shot. Extracted by fitting oscillation frequency vs detuning. The V-shape is the geometry of √(Ω² + Δ²).'}
+                  {activeView === 'phase' && 'Extracted from Ramsey-type experiments or full state tomography. The accumulated phase wraps cyclically, encoding Ω_eff in the ring spacing.'}
+                </div>
+              </div>
+
+              <div className="pt-1.5 border-t border-white/5 space-y-1.5">
+                <div className="text-[9px] uppercase tracking-widest text-gray-600">Damping model</div>
+                <div className="text-gray-400">
+                  Simplified: all components decay as exp(&minus;t/T&#x2082;). Real qubits have separate T&#x2081; (population relaxation, &#x3C3;<sub>z</sub> &#x2192; equilibrium) and T&#x2082; (dephasing, &#x3C3;<sub>x,y</sub> &#x2192; 0). Typically T&#x2082; &#x2264; 2T&#x2081;.
+                </div>
+              </div>
+
+              <div className="pt-1.5 border-t border-white/5 space-y-1.5">
+                <div className="text-[9px] uppercase tracking-widest text-gray-600">Lab context</div>
+                <div className="text-gray-400">
+                  Chevron scans are a standard calibration step for superconducting qubits. You sweep drive frequency and pulse length to find the &#x3C0;-pulse time (first P(|1&#x27E9;)=1 at resonance). The V-opening directly encodes &#x3A9;.
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Presets */}
+          {/* Recipes */}
           <div className="mb-5">
-            <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Presets</h3>
+            <h3 className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-2">Recipes</h3>
             <div className="space-y-1.5">
-              {[
-                { name: 'Clean chevron', desc: 'No damping', o: 4, t: 0, mp: 2, fs: 0.04 },
-                { name: 'Wide sweep', desc: 'Large detuning range', o: 6, t: 0, mp: 1.5, fs: 0.06 },
-                { name: 'Damped (realistic)', desc: 'T\u2082 = 3 \u03BCs', o: 5, t: 3, mp: 3, fs: 0.04 },
-                { name: 'Slow drive', desc: 'Low Rabi freq', o: 1.5, t: 0, mp: 4, fs: 0.02 },
-              ].map(p => (
+              {RECIPES.map(r => (
                 <button
-                  key={p.name}
-                  onClick={() => { setOmega(p.o); setT2(p.t); setMaxPulse(p.mp); setFreqSpan(p.fs) }}
-                  className="w-full text-left px-3 py-1.5 rounded border bg-white/[0.02] border-white/5 text-gray-400 hover:border-[#fde725]/30 hover:text-white transition-all"
+                  key={r.name}
+                  onClick={() => {
+                    setOmega(r.omega)
+                    setT2(r.t2)
+                    setMaxPulse(r.maxPulse)
+                    setFreqSpan(r.freqSpan)
+                    setActiveView(r.view)
+                  }}
+                  className="w-full text-left px-3 py-1.5 rounded border bg-white/[0.02] border-white/5 text-gray-400 hover:border-[#fde725]/30 hover:text-white transition-all group"
                 >
-                  <div className="text-xs font-medium">{p.name}</div>
-                  <div className="text-[10px] font-mono text-gray-500">{p.desc}</div>
+                  <div className="text-xs font-medium flex items-center gap-1.5">
+                    {r.name}
+                    <span className="text-[9px] font-mono text-gray-600 group-hover:text-gray-400">{VIEW_CONFIGS[r.view].label}</span>
+                  </div>
+                  <div className="text-[10px] font-mono text-gray-600">{r.desc}</div>
                 </button>
               ))}
             </div>

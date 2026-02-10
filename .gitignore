@@ -17,3 +17,8 @@ node_modules/
 
 # Build output
 out/
+
+# Transient artifacts
+tsconfig.tsbuildinfo
+logs/
+benchmark_results/checkpoint_*

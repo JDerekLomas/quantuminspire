@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Viz = {
   name: string
@@ -14,6 +15,31 @@ type Viz = {
   ourVersion?: string
   embedUrl?: string
   category: string
+  screenshot?: string
+}
+
+// Screenshot manifest — maps viz name to image path
+const SCREENSHOTS: Record<string, string> = {
+  "Blochy (kherb.io)": "/gallery/blochy-kherb-io.png",
+  "unBLOCHed": "/gallery/unbloched.png",
+  "cduck/bloch_sphere": "/gallery/cduck-bloch-sphere.png",
+  "Quirk": "/gallery/quirk.png",
+  "Quirk-E": "/gallery/quirk-e.png",
+  "quantum-viz.js": "/gallery/quantum-viz-js.png",
+  "QCVIS": "/gallery/qcvis.png",
+  "BraKetVue": "/gallery/braketvue.png",
+  "animated-qubits": "/gallery/animated-qubits.png",
+  "Quantum Flytrap Virtual Lab": "/gallery/quantum-flytrap-virtual-lab.png",
+  "VENUS": "/gallery/venus.png",
+  "Visual QFT": "/gallery/visual-qft.png",
+  "ShorVis": "/gallery/shorvis.png",
+  "Black Opal": "/gallery/black-opal.png",
+  "Quantum Playground": "/gallery/quantum-playground.png",
+  "IBM Quantum Composer": "/gallery/ibm-quantum-composer.png",
+  "Qiskit Visualization Suite": "/gallery/qiskit-visualization-suite.png",
+  "QuTiP Visualization": "/gallery/qutip-visualization.png",
+  "Surface Code Interactive": "/gallery/surface-code-interactive.png",
+  "QML Playground": "/gallery/qml-playground.png",
 }
 
 const VISUALIZATIONS: Viz[] = [
@@ -329,8 +355,29 @@ export default function GalleryPage() {
               className="bg-white/[0.03] border border-white/5 rounded-lg overflow-hidden hover:border-white/10 transition-all group"
             >
               {/* Preview area */}
-              <div className="h-40 bg-gradient-to-br from-white/[0.02] to-transparent flex items-center justify-center relative">
-                {viz.embedUrl ? (
+              <div className="h-44 bg-gradient-to-br from-white/[0.02] to-transparent flex items-center justify-center relative overflow-hidden">
+                {SCREENSHOTS[viz.name] ? (
+                  <button
+                    onClick={() => viz.embedUrl ? setEmbedViz(viz) : window.open(viz.url, '_blank')}
+                    className="w-full h-full relative group/img"
+                  >
+                    <Image
+                      src={SCREENSHOTS[viz.name]}
+                      alt={`Screenshot of ${viz.name}`}
+                      fill
+                      className="object-cover object-top opacity-80 group-hover/img:opacity-100 transition-opacity"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    {viz.embedUrl && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover/img:opacity-100 transition-opacity">
+                        <svg className="w-10 h-10 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
+                ) : viz.embedUrl ? (
                   <button
                     onClick={() => setEmbedViz(viz)}
                     className="text-xs font-mono text-gray-500 hover:text-[#00d4ff] transition-colors flex flex-col items-center gap-2"
@@ -348,7 +395,7 @@ export default function GalleryPage() {
                 )}
 
                 {/* Quality badge */}
-                <span className={`absolute top-2 right-2 text-[10px] font-mono px-2 py-0.5 rounded border ${qualityColor[viz.quality]}`}>
+                <span className={`absolute top-2 right-2 text-[10px] font-mono px-2 py-0.5 rounded border ${qualityColor[viz.quality]} z-10`}>
                   {qualityLabel[viz.quality]}
                 </span>
 
@@ -356,7 +403,7 @@ export default function GalleryPage() {
                 {viz.ourVersion && (
                   <Link
                     href={viz.ourVersion}
-                    className="absolute top-2 left-2 text-[10px] font-mono px-2 py-0.5 rounded border border-green-400/30 bg-green-400/10 text-green-400 hover:bg-green-400/20 transition-colors"
+                    className="absolute top-2 left-2 text-[10px] font-mono px-2 py-0.5 rounded border border-green-400/30 bg-green-400/10 text-green-400 hover:bg-green-400/20 transition-colors z-10"
                   >
                     Our version &rarr;
                   </Link>

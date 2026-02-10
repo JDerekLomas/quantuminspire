@@ -30,6 +30,7 @@ PROJECT_DIR = AGENTS_DIR.parent
 QUEUE_DIR = PROJECT_DIR / "experiments" / "queue"
 RESULTS_DIR = PROJECT_DIR / "experiments" / "results"
 LOG_FILE = AGENTS_DIR / "experiment_daemon.log"
+VENV_BIN = PROJECT_DIR / ".venv" / "bin"
 
 DEFAULT_INTERVAL = 300  # 5 minutes between checks
 
@@ -259,9 +260,12 @@ def finalize(results):
         f.write(hybrid_code)
         tmp_path = f.name
 
+    # Resolve qi binary — prefer venv, fall back to PATH
+    qi_bin = str(VENV_BIN / "qi") if (VENV_BIN / "qi").exists() else "qi"
+
     try:
         result = subprocess.run(
-            ["qi", "files", "run", tmp_path],
+            [qi_bin, "files", "run", tmp_path],
             capture_output=True,
             text=True,
             timeout=120,

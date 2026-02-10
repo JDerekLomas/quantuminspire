@@ -65,12 +65,47 @@ Here is a reference of current correct APIs:
 
 {cheatsheet}"""
 
+CONTEXT7_LIBS = ["/qiskit/qiskit", "/qiskit/qiskit-ibm-runtime"]
+CONTEXT7_TOKENS = 1500  # max tokens of docs to retrieve per library
+
 
 def load_cheatsheet():
     """Load the Qiskit 2.x API cheatsheet for RAG injection."""
     if CHEATSHEET_PATH.exists():
         return CHEATSHEET_PATH.read_text()
     return ""
+
+
+def query_context7(task_prompt, tokens=CONTEXT7_TOKENS):
+    """Fetch relevant Qiskit docs from Context7 for a given task prompt.
+
+    Queries both qiskit core and qiskit-ibm-runtime libraries.
+    Returns concatenated doc snippets.
+    """
+    import urllib.request
+    import urllib.parse
+
+    # Extract key terms from the task prompt (function name + imports + docstring)
+    snippets = []
+    for lib_id in CONTEXT7_LIBS:
+        query = urllib.parse.urlencode({
+            "libraryId": lib_id,
+            "query": task_prompt[:500],  # first 500 chars have the signature + docstring
+            "tokens": tokens,
+        })
+        url = f"https://context7.com/api/v2/context?{query}"
+        try:
+            req = urllib.request.Request(url, headers={"Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read().decode())
+                if isinstance(data, dict) and data.get("context"):
+                    snippets.append(data["context"])
+                elif isinstance(data, str) and data.strip():
+                    snippets.append(data)
+        except Exception as e:
+            # Don't let Context7 failures block the benchmark
+            print(f"  [context7 warning: {lib_id}: {e}]")
+    return "\n\n---\n\n".join(snippets) if snippets else ""
 
 
 def load_dataset(hard=False):
@@ -100,10 +135,14 @@ def call_llm(prompt, hard=False, model=MODEL, rag=False):
     provider = detect_provider(model)
     system = SYSTEM_PROMPT_HARD if hard else SYSTEM_PROMPT
 
-    if rag:
+    if rag == "cheatsheet":
         cheatsheet = load_cheatsheet()
         if cheatsheet:
             system += RAG_SUFFIX.format(cheatsheet=cheatsheet)
+    elif rag == "context7":
+        docs = query_context7(prompt)
+        if docs:
+            system += RAG_SUFFIX.format(cheatsheet=docs)
 
     if hard:
         user_msg = prompt
@@ -446,6 +485,7 @@ def run_benchmark(args):
     summary = {
         "model": model,
         "variant": variant,
+        "rag": rag,
         "timestamp": timestamp,
         "total_tasks": total_done,
         "passed": total_pass,
@@ -488,6 +528,8 @@ if __name__ == "__main__":
     parser.add_argument("--resume", action="store_true", help="Resume from checkpoint")
     parser.add_argument("--task-id", type=int, help="Run a single task by index")
     parser.add_argument("--timeout", type=int, default=60, help="Exec timeout (seconds)")
+    parser.add_argument("--rag", choices=["cheatsheet", "context7"], default=None,
+                        help="RAG mode: 'cheatsheet' (static file) or 'context7' (dynamic per-task docs)")
     args = parser.parse_args()
 
     if args.timeout:

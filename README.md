@@ -52,7 +52,15 @@ npm run dev
 source .venv/bin/activate
 secret-lover run -- python benchmark_harness.py --limit 10
 python replicate_sagastizabal.py
+
+# Tests (JS/TS)
+npm test
 ```
+
+## Project layout
+
+- Content lives in `content/` (e.g., blog posts), pure logic in `lib/` (math/visualization helpers), UI in `app/`. See `docs/structure.md` for a quick map.
+- Unit tests live in `tests/` and run with `npm test` (Vitest).
 
 ## Stack
 
