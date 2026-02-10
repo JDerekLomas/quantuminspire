@@ -2,6 +2,140 @@ import { BlogPost } from "@/lib/blogTypes"
 
 export const posts: BlogPost[] = [
   {
+    slug: 'cross-platform-quantum-comparison',
+    title: 'Three Quantum Backends, One Question: How Much Does the Hardware Matter?',
+    subtitle: 'We ran the same experiments on a noiseless emulator, IBM Torino (133 qubits), and Tuna-9 (9 qubits). The answer: it matters a lot, but not always in the ways you expect.',
+    date: '2026-02-11',
+    author: 'AI x Quantum Research Team',
+    category: 'experiment',
+    tags: ['cross-platform', 'IBM Quantum', 'Tuna-9', 'VQE', 'quantum volume', 'QEC', 'neural network decoder', 'hardware noise'],
+    heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
+    heroCaption: 'The same quantum algorithm produces radically different results depending on where you run it.',
+    excerpt: 'We ran VQE, quantum volume, randomized benchmarking, and error correction across 3 quantum backends. Benchmarks pass everywhere. VQE fails everywhere except the emulator. Error correction reveals the sharpest hardware differences: topology kills circuits on Tuna-9 that work fine on IBM. And a neural network decoder trained on IBM hardware data outperforms lookup tables by 50%.',
+    content: `<p>What happens when you take the same quantum algorithm and run it on three completely different backends? We\\'ve been answering this question systematically across 20+ experiments, 4 paper replications, and 3 platforms: a noiseless QI emulator, IBM\\'s 133-qubit Torino processor, and QuTech\\'s 9-qubit Tuna-9 transmon chip.</p>
+
+<p>The headline: <strong>benchmarks are forgiving, chemistry is brutal, and error correction reveals the sharpest hardware differences of all.</strong></p>
+
+<h2>The Scorecard</h2>
+
+<table>
+<thead><tr><th>Experiment</th><th>Metric</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th></tr></thead>
+<tbody>
+<tr><td>QV n=2</td><td>HOF</td><td>77.2%</td><td>69.7%</td><td>69.2%</td></tr>
+<tr><td>QV n=3</td><td>HOF</td><td>85.1%</td><td>81.0%</td><td>82.1%</td></tr>
+<tr><td>RB 1-qubit</td><td>Gate fidelity</td><td>99.95%</td><td>99.99%*</td><td>99.82%</td></tr>
+<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td>9.2</td><td>9.5</td></tr>
+<tr><td>VQE HeH+</td><td>MAE (kcal/mol)</td><td>0.08</td><td>83.5</td><td>&mdash;</td></tr>
+<tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>FAILED</td></tr>
+<tr><td>Bell state</td><td>Fidelity</td><td>100%</td><td>99.1%</td><td>85.8&ndash;93.5%</td></tr>
+</tbody>
+</table>
+
+<p><em>*IBM RB fidelity inflated: Qiskit transpiler collapses Clifford sequences to depth 1&ndash;2 circuits, measuring readout error rather than gate error.</em></p>
+
+<p>Three patterns jump out:</p>
+
+<ol>
+<li><strong>Benchmarks pass everywhere.</strong> QV and RB are designed to be noise-tolerant. Both hardware platforms pass QV=8 with similar margins.</li>
+<li><strong>VQE fails everywhere except the emulator.</strong> Even IBM Torino &mdash; a 133-qubit processor &mdash; can\\'t achieve chemical accuracy on a 2-qubit molecule without error mitigation.</li>
+<li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can\\'t execute on Tuna-9 due to topology constraints.</li>
+</ol>
+
+<h2>VQE: When Bond Curves Break</h2>
+
+<p>The Peruzzo 2014 replication tells this story most clearly. We computed the potential energy surface (PES) of HeH+ across 11 bond distances (0.5&ndash;3.0 &Aring;), using the same 2-qubit sector-projected ansatz on each backend.</p>
+
+<table>
+<thead><tr><th>Bond distance (&Aring;)</th><th>FCI (Ha)</th><th>Emulator (Ha)</th><th>IBM Torino (Ha)</th><th>IBM error (kcal/mol)</th></tr></thead>
+<tbody>
+<tr><td>0.50</td><td>&minus;2.641</td><td>&minus;2.641</td><td>&minus;2.459</td><td>114.1</td></tr>
+<tr><td>0.75</td><td>&minus;2.846</td><td>&minus;2.846</td><td>&minus;2.701</td><td>91.2</td></tr>
+<tr><td>1.00 (eq.)</td><td>&minus;2.860</td><td>&minus;2.860</td><td>&minus;2.728</td><td>82.9</td></tr>
+<tr><td>1.50</td><td>&minus;2.825</td><td>&minus;2.825</td><td>&minus;2.716</td><td>68.5</td></tr>
+<tr><td>2.00</td><td>&minus;2.811</td><td>&minus;2.811</td><td>&minus;2.687</td><td>77.9</td></tr>
+<tr><td>3.00</td><td>&minus;2.808</td><td>&minus;2.808</td><td>&minus;2.678</td><td>81.4</td></tr>
+</tbody>
+</table>
+
+<p>The emulator matches the exact (FCI) curve to within 0.08 kcal/mol MAE. IBM Torino\\'s curve has the right <em>shape</em> &mdash; minimum at R&asymp;1.0 &Aring;, dissociation plateau at large R &mdash; but is offset by ~0.13 Ha at every point. The error is remarkably uniform: 68&ndash;114 kcal/mol across all 11 distances.</p>
+
+<p>Why so bad? The HeH+ 2-qubit Hamiltonian has the form <code>H = g0 + g1&lang;Z0&rang; + g2&lang;Z1&rang; + g3&lang;Z0Z1&rang; + g4&lang;X0X1&rang; + g5&lang;Y0Y1&rang;</code>. The g1 coefficient (&sim;0.5&ndash;0.8) amplifies readout bias: a 10% readout error on &lang;Z&rang; operators contributes &sim;0.05&ndash;0.08 Ha of error. The energy also depends on the difference g1&minus;g2 &mdash; when both Z terms are biased in the same direction, the error compounds rather than cancels.</p>
+
+<p>For H2, the Hamiltonian is more symmetric and the g1 coefficient is smaller (&sim;0.4), which is why IBM gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+. <strong>The molecule matters as much as the hardware.</strong></p>
+
+<h2>Quantum Error Correction: Where Topology Kills</h2>
+
+<p>The [[4,2,2]] error detection code encodes 2 logical qubits into 4 data qubits, with 2 ancilla qubits measuring XXXX and ZZZZ stabilizers. It can <em>detect</em> (but not correct) any single-qubit error.</p>
+
+<p>On the <strong>emulator</strong>: 100% detection rate, 0% false positive rate. Perfect, as expected from a noiseless backend.</p>
+
+<p>On <strong>IBM Torino</strong> (133 qubits, heavy-hex topology): 92.7% detection rate, 14.0% false positive rate. IBM\\'s rich connectivity easily accommodates the circuit &mdash; each ancilla needs CNOTs to all 4 data qubits (degree 4), and IBM\\'s topology provides this.</p>
+
+<p>On <strong>Tuna-9</strong>: <strong>Every circuit FAILED.</strong> The stabilizer measurement requires each ancilla to CNOT all 4 data qubits, meaning the ancilla needs degree 4. Tuna-9\\'s maximum qubit degree is 3. There is no 6-qubit subgraph on Tuna-9 that can execute this circuit without SWAP gates &mdash; and cQASM 3.0 doesn\\'t support implicit routing.</p>
+
+<p>This is the starkest cross-platform difference in our data. The <strong>same algorithm, same encoding, same error model</strong> &mdash; one platform runs it with 93% accuracy, the other can\\'t run it at all. Topology isn\\'t just a performance factor; it\\'s a hard constraint that determines which algorithms are physically possible on a given chip.</p>
+
+<h2>Training an AI Decoder on Hardware Data</h2>
+
+<p>The IBM Torino [[4,2,2]] data gave us something the emulator never could: <strong>realistic noise patterns to train an AI decoder</strong>.</p>
+
+<p>We ran 13 error variants (no error, X/Z/Y on each of 4 data qubits) with 4,096 shots each = 53,248 labeled samples. Each sample is a 6-bit measurement outcome (4 data + 2 syndrome bits) with a known injected error class.</p>
+
+<p>We trained a neural network decoder (scikit-learn MLPClassifier, 32/16 hidden layers) and compared it to a lookup-table decoder:</p>
+
+<table>
+<thead><tr><th>Decoder</th><th>Accuracy</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>NN (13 classes)</td><td><strong>61.7%</strong></td><td>Learns data-bit correlation patterns</td></tr>
+<tr><td>Lookup table (13 classes)</td><td>41.1%</td><td>Syndrome &rarr; most likely error</td></tr>
+<tr><td>Lookup table (4 classes)</td><td>79.8%</td><td>Coarser: no-error vs X/Z/Y type only</td></tr>
+</tbody>
+</table>
+
+<p>The NN outperforms the detailed lookup table by <strong>50%</strong> (61.7% vs 41.1%). Why? The lookup table only uses the 2 syndrome bits; the NN also uses the 4 data bits. This matters because hardware noise creates correlations between data-bit patterns and error types that a syndrome-only decoder can\\'t see.</p>
+
+<p>One fundamental limitation: <strong>Z errors can\\'t be localized from Z-basis measurement.</strong> Z errors don\\'t flip bits in the computational basis &mdash; they flip phase &mdash; so the NN gets 0% recall on individual Z errors (Z_d0, Z_d1, etc.). The ZZZZ syndrome <em>detects</em> that a Z error occurred, but the data bits don\\'t reveal which qubit was affected. This isn\\'t a decoder failure; it\\'s a fundamental limitation of single-basis measurement.</p>
+
+<h2>The RB Compilation Artifact</h2>
+
+<p>A methodological caveat worth highlighting: our IBM Torino RB result (99.99% gate fidelity) is misleading. IBM\\'s Qiskit transpiler recognizes that random Clifford sequences compose into a single Clifford, and compiles the entire sequence &mdash; regardless of length (m=1, 4, 8, 16, or 32) &mdash; down to 1&ndash;2 physical gates.</p>
+
+<p>The result: survival probability is flat at ~90% across all sequence lengths, reflecting <strong>readout error</strong> (how accurately we can measure the qubit) rather than <strong>gate error</strong> (how accurately we can manipulate it). The exponential decay that defines RB never appears because there are no extra gates to decay through.</p>
+
+<p>Tuna-9\\'s RB result (99.82%) is more trustworthy because its compiler doesn\\'t perform this optimization &mdash; the Cliffords are actually executed as sequences of physical gates, so the survival probability genuinely decays with sequence length.</p>
+
+<p>This is a known issue in the community, but it\\'s rarely mentioned in cross-platform comparisons. For honest benchmarking, you\\'d need to either disable Clifford compilation or use interleaved RB with non-Clifford gates.</p>
+
+<h2>What We Learned</h2>
+
+<ol>
+<li><strong>Benchmarks and applications live in different worlds.</strong> QV and RB pass on hardware that can\\'t do useful chemistry. The gap between "this hardware works" (QV PASS) and "this hardware is useful" (VQE within chemical accuracy) is enormous.</li>
+
+<li><strong>Error correction needs topology, not just qubits.</strong> Tuna-9 has enough qubits for [[4,2,2]] but not enough connectivity. IBM Torino has 133 qubits but ~14% false positive rate on a 6-qubit code. Neither is ready for fault-tolerant computation, but they fail for completely different reasons.</li>
+
+<li><strong>AI decoders beat classical decoders on real hardware data.</strong> A simple 2-layer neural network outperforms lookup tables by 50% on qubit-level error classification. On real hardware, noise has structure that ML can exploit.</li>
+
+<li><strong>The molecule matters as much as the machine.</strong> IBM Torino gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+, because HeH+\\'s asymmetric Hamiltonian amplifies readout bias. You can\\'t benchmark VQE on one molecule and assume it generalizes.</li>
+
+<li><strong>Transpiler optimizations can lie.</strong> IBM\\'s RB result looks 100x better than Tuna-9\\'s, but it\\'s measuring a different thing entirely. Cross-platform comparisons require understanding what each compiler does to your circuits.</li>
+</ol>
+
+<hr />
+
+<p>All raw data &mdash; measurement counts, job IDs, expectation values, decoder metrics &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory. The experiments dashboard at <a href="https://quantuminspire.vercel.app/experiments">/experiments</a> shows live results across all backends.</p>
+
+<p>Hardware job IDs: IBM HeH+ VQE (d65ncqoqbmes739d4h30). IBM Cross QV/RB (d65ncilbujdc73ctmjr0). IBM [[4,2,2]] (d65n33je4kfs73cvklt0 + 12 more). Tuna-9 QV (415379&ndash;415394). Tuna-9 RB (415395&ndash;415404).</p>`,
+    sources: [
+      { label: 'Experiments dashboard', url: 'https://quantuminspire.vercel.app/experiments' },
+      { label: 'HeH+ VQE IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/peruzzo2014-ibm-torino.json' },
+      { label: 'Cross QV/RB IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-ibm-torino.json' },
+      { label: '[[4,2,2]] IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/detection-code-001-ibm-torino.json' },
+      { label: 'Peruzzo et al. 2014', url: 'https://arxiv.org/abs/1304.3061' },
+      { label: 'Cross et al. 2019', url: 'https://arxiv.org/abs/1811.12926' },
+      { label: 'Sagastizabal et al. 2019', url: 'https://arxiv.org/abs/1902.11258' },
+    ],
+  },
+  {
     slug: 'replication-crisis-quantum',
     title: 'We Tried to Replicate 4 Quantum Computing Papers. Here\'s What Happened.',
     subtitle: 'AI agents reproduced 14 published claims across emulator, IBM Torino, and Tuna-9 hardware. The gaps tell us more than the successes.',
@@ -66,19 +200,19 @@ export const posts: BlogPost[] = [
 
 <p>Cross et al. 2019 defined <a href="https://arxiv.org/abs/1811.12926">Quantum Volume</a> as the gold standard for benchmarking quantum computers. The test: run random circuits on n qubits, check whether the heavy output fraction exceeds 2/3.</p>
 
-<p>Both the emulator and Tuna-9 <strong>pass QV=8</strong> (up to 3-qubit circuits):</p>
+<p>All three backends <strong>pass QV=8</strong> (up to 3-qubit circuits):</p>
 
 <table>
-<thead><tr><th>Test</th><th>Threshold</th><th>Emulator</th><th>Tuna-9</th></tr></thead>
+<thead><tr><th>Test</th><th>Threshold</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th></tr></thead>
 <tbody>
-<tr><td>n=2 (5 circuits)</td><td>> 66.7%</td><td>77.2%</td><td>69.2%</td></tr>
-<tr><td>n=3 (5 circuits)</td><td>> 66.7%</td><td>85.1%</td><td>82.1%</td></tr>
+<tr><td>n=2 (5 circuits)</td><td>> 66.7%</td><td>77.2%</td><td>69.7%</td><td>69.2%</td></tr>
+<tr><td>n=3 (5 circuits)</td><td>> 66.7%</td><td>85.1%</td><td>81.0%</td><td>82.1%</td></tr>
 </tbody>
 </table>
 
-<p>Tuna-9's n=2 result (69.2%) barely clears the threshold &mdash; 3 of 5 circuits passed, 2 were marginal. At n=3, the wider distribution of ideal probabilities actually helps: the heavy set is more distinct, making it easier to pass despite hardware noise.</p>
+<p>All three backends pass both tests. IBM Torino and Tuna-9 are remarkably close despite being completely different hardware platforms (133-qubit heavy-hex vs 9-qubit linear). Tuna-9's n=2 result (69.2%) barely clears the threshold &mdash; 3 of 5 circuits passed, 2 were marginal. At n=3, the wider distribution of ideal probabilities actually helps: the heavy set is more distinct, making it easier to pass despite hardware noise.</p>
 
-<p>The randomized benchmarking results complement this: Tuna-9 achieves <strong>99.82% single-qubit gate fidelity</strong> (0.18% error per gate), matching the emulator's 99.95% closely. This confirms that single-qubit operations on Tuna-9 are high quality; the VQE failures come from 2-qubit (CNOT) errors and decoherence.</p>
+<p>The randomized benchmarking results complement this: Tuna-9 achieves <strong>99.82% single-qubit gate fidelity</strong> (0.18% error per gate), matching the emulator's 99.95% closely. IBM Torino shows 99.99% &mdash; though this is inflated because IBM's transpiler collapses Clifford sequences to single gates, so RB measures readout error rather than gate error. This confirms that single-qubit operations on both platforms are high quality; the VQE failures come from 2-qubit (CNOT) errors and decoherence.</p>
 
 <h2>The Reproducibility Gap</h2>
 
@@ -87,8 +221,8 @@ export const posts: BlogPost[] = [
 <table>
 <thead><tr><th>Backend</th><th>Claims Tested</th><th>Pass</th><th>Partial</th><th>Fail</th></tr></thead>
 <tbody>
-<tr><td>QI Emulator</td><td>10</td><td><strong>9</strong></td><td>0</td><td>0</td></tr>
-<tr><td>IBM Torino</td><td>4</td><td>0</td><td><strong>3</strong></td><td>0</td></tr>
+<tr><td>QI Emulator</td><td>13</td><td><strong>12</strong></td><td>0</td><td>0</td></tr>
+<tr><td>IBM Torino</td><td>7</td><td><strong>3</strong></td><td>3</td><td><strong>1</strong></td></tr>
 <tr><td>QI Tuna-9</td><td>5</td><td><strong>3</strong></td><td>1</td><td><strong>1</strong></td></tr>
 </tbody>
 </table>
@@ -116,12 +250,13 @@ export const posts: BlogPost[] = [
 
 <h2>What's Next</h2>
 
-<p>We have 14 claims across 4 papers. Our next targets:</p>
+<p><strong>Update (2026-02-10)</strong>: We've now completed Peruzzo on IBM (HeH+ bond sweep, MAE 83.5 kcal/mol &mdash; PES shape correct but absolute values noise-dominated) and Cross on IBM (QV PASS at n=2 and n=3, RB 99.99%). See <a href="/blog/cross-platform-quantum-comparison">the cross-platform comparison post</a> for the full story, including [[4,2,2]] quantum error correction and a neural network decoder trained on hardware data.</p>
+
+<p>Remaining targets:</p>
 <ul>
-<li><strong>Peruzzo 2014 on hardware</strong> &mdash; HeH+ bond sweep on IBM Torino. The emulator already shows 100% replication; hardware will reveal whether bond curves reproduce or just equilibrium points.</li>
-<li><strong>Cross 2019 on IBM</strong> &mdash; QV testing on a 133-qubit processor. IBM should pass at much higher QV than Tuna-9.</li>
 <li><strong>Harrigan et al. 2021</strong> &mdash; QAOA for MaxCut on non-planar graphs. This requires 23 qubits and will be our first test beyond the small-circuit regime.</li>
 <li><strong>Error mitigation</strong> &mdash; Implement Sagastizabal's symmetry verification to see if the IBM VQE result improves from 9.2 kcal/mol toward chemical accuracy.</li>
+<li><strong>Peruzzo 2014 on Tuna-9</strong> &mdash; HeH+ bond sweep on 9-qubit hardware. Will the topology constraints that broke QEC also affect VQE?</li>
 </ul>
 
 <hr />
@@ -630,14 +765,14 @@ export const posts: BlogPost[] = [
   {
     slug: 'rag-quantum-code-generation',
     title: 'Dynamic RAG Boosts Quantum Code Generation by 14% — Static RAG Does Nothing',
-    subtitle: 'We tested two retrieval-augmented generation strategies on 151 Qiskit tasks. Only one worked.',
+    subtitle: 'We tested two RAG strategies on 151 Qiskit tasks across two frontier models. Both models converge to the same ceiling.',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['benchmark', 'RAG', 'Context7', 'Qiskit', 'LLM', 'Gemini', 'API staleness'],
     heroImage: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80',
     heroCaption: 'The right documentation at the right time makes all the difference.',
-    excerpt: 'Our baseline benchmark showed that API staleness — not algorithmic misunderstanding — is the dominant failure mode when LLMs write quantum code. We tested two RAG strategies: a static Qiskit 2.x cheatsheet injected into every prompt, and dynamic per-task documentation retrieval via Context7. The static approach did nothing. The dynamic approach pushed Pass@1 from 62.3% to 70.9%.',
+    excerpt: 'API staleness is the dominant failure mode when LLMs write quantum code. We tested two RAG strategies on Gemini 3 Flash and Claude Opus 4.6: a static cheatsheet (no improvement) and dynamic per-task retrieval via Context7 (+14%). Both models converge to exactly 70.9% — the ceiling is the documentation, not the model.',
     content: `
 <p>In our <a href="/blog/llms-write-quantum-code">previous post</a>, we found that frontier LLMs score around 62-64% on the Qiskit HumanEval benchmark — 151 quantum programming tasks graded by automated code execution. The most interesting finding wasn't the score but the failure mode: <strong>the dominant error is API staleness, not algorithmic misunderstanding</strong>. Models trained on Qiskit 1.x documentation generate code for APIs that no longer exist in Qiskit 2.x.</p>
 
@@ -666,6 +801,7 @@ export const posts: BlogPost[] = [
 <tr><td>Claude Opus 4.6 (baseline)</td><td>63.6% (96)</td><td>67.1% (53)</td><td>62.7% (42)</td><td>20% (1)</td><td>30K</td></tr>
 <tr><td>Gemini + Static Cheatsheet</td><td>62.3% (94)</td><td>65.8% (52)</td><td>62.7% (42)</td><td>0% (0)</td><td>486K</td></tr>
 <tr><td><strong>Gemini + Context7</strong></td><td><strong>70.9% (107)</strong></td><td><strong>77.2% (61)</strong></td><td><strong>67.2% (45)</strong></td><td>20% (1)</td><td>287K</td></tr>
+<tr><td><strong>Opus 4.6 + Context7</strong></td><td><strong>70.9% (107)</strong></td><td>76.0% (60)</td><td><strong>67.2% (45)</strong></td><td><strong>40% (2)</strong></td><td>406K</td></tr>
 </tbody>
 </table>
 
@@ -697,6 +833,22 @@ export const posts: BlogPost[] = [
 <p>The improvement is concentrated in basic tasks — exactly the tasks most likely to fail from simple API changes (wrong import path, deprecated method call). These are tasks where the model knows the quantum logic but generates code for the wrong API version. A targeted snippet showing the correct <code>SamplerV2</code> usage or the right import path is enough to fix the output.</p>
 
 <p>Intermediate tasks see a smaller but real improvement. Difficult tasks — which require multi-step algorithmic reasoning — don't improve. Dynamic RAG helps with <em>API recall</em>, not <em>quantum reasoning</em>.</p>
+
+<h2>The Convergence: Opus Matches Gemini Exactly</h2>
+
+<p>We ran the same Context7 experiment with <strong>Claude Opus 4.6</strong>. The result: <strong>exactly 70.9% Pass@1</strong> (107/151) — identical to Gemini 3 Flash.</p>
+
+<p>This convergence is striking. Two very different models — Google's fast model and Anthropic's flagship — land on the same number when given the same documentation context. The differences are in the margins:</p>
+
+<ul>
+<li>Gemini has a slight edge on <strong>basic tasks</strong>: 77.2% vs 76.0% (+1 task)</li>
+<li>Opus pulls ahead on <strong>difficult tasks</strong>: 40% vs 20% (+1 task)</li>
+<li>They tie exactly on <strong>intermediate tasks</strong>: 67.2% (45/67)</li>
+</ul>
+
+<p>This suggests the <strong>ceiling is set by the documentation coverage</strong>, not the model. Context7's Qiskit index determines which API questions can be answered, and both models are good enough to use the provided docs correctly. The bottleneck has shifted from model capability to retrieval quality.</p>
+
+<p>Also notable: Opus 4.6 had only 2 infrastructure failures vs Gemini's 5 (all Context7 429 rate-limit errors in the Gemini run, which was done without an API key). The Opus run used a Context7 API key and had zero rate-limit issues.</p>
 
 <h2>Why Dynamic Beats Static</h2>
 

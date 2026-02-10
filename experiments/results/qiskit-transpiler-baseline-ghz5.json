@@ -66,6 +66,11 @@
     },
     "conclusion": "Qiskit transpiler achieves same fidelity as AI routing (86.0% vs 86.7%) with valid circuits. For 3-qubit GHZ, AI and Qiskit choose identical routing [2,4,6]. The AI adds no measurable routing advantage over Qiskit optimization_level=3 when given the same topology/error data."
   },
+  "raw_counts": {
+    "00000": 1882,
+    "11111": 1641
+  },
+  "circuit_cqasm": "version 3.0\nqubit[9] q\nbit[9] b\n\n// 5-qubit GHZ via Qiskit transpiler routing\n// CNOT chain: q5->q2->q4->q6->q8\nH q[5]\nCNOT q[5], q[2]\nCNOT q[2], q[4]\nCNOT q[4], q[6]\nCNOT q[6], q[8]\n\nb = measure q",
   "job_id": 415434,
   "errors": null,
   "schema_version": "1.0",
