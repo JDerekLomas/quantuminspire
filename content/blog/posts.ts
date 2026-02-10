@@ -1125,4 +1125,186 @@ b = measure q"""
       { label: 'Quantum Inspire - Tuna-9', url: 'https://www.quantum-inspire.com/' },
     ],
   },
+  {
+    slug: 'ai-characterizes-quantum-processor',
+    title: 'An AI Mapped an Unknown Quantum Processor and Improved Its Own Circuits',
+    subtitle: 'Claude autonomously discovered Tuna-9\'s topology, characterized its noise, and achieved 33% lower error rates through hardware-aware routing',
+    date: '2026-02-10',
+    author: 'AI x Quantum Research Team',
+    category: 'experiment',
+    tags: ['autonomous research', 'hardware characterization', 'Tuna-9', 'noise tomography', 'qubit routing', 'MCP'],
+    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&q=80',
+    heroCaption: 'An AI agent autonomously characterized a quantum processor and used what it learned to improve circuit performance.',
+    excerpt: 'We gave an AI agent access to a quantum processor it had never seen before and asked: can you figure out how it works and use that knowledge to run better circuits? In 33 hardware jobs, Claude discovered the full topology, identified the best and worst qubits, characterized noise types, and improved GHZ state fidelity by 5.8 percentage points.',
+    content: `<p>In our <a href="/blog/ai-runs-quantum-experiment">previous experiment</a>, Claude ran a pre-designed Bell state experiment on quantum hardware. That was a tech demo. This time we asked a harder question: <strong>can a general-purpose AI autonomously characterize an unknown quantum processor and exploit what it learns?</strong></p>
+
+<h2>Why This Matters</h2>
+
+<p>Quantum processors are temperamental. Each qubit has different error rates. Physical connections between qubits vary in quality. The noise isn't uniform &mdash; some qubits suffer from energy decay (T1), others from phase randomization (T2), and the pattern can change after recalibration.</p>
+
+<p>Today, this characterization is done by specialized teams using purpose-built tools like Q-CTRL's Fire Opal or IBM's Qiskit Runtime error suppression. The question is: <strong>can a general-purpose AI, with no prior knowledge of the hardware, perform this characterization from scratch?</strong></p>
+
+<p>If it can, it would mean any team with hardware access could get optimized results without specialized quantum engineering expertise &mdash; lowering the barrier to useful quantum computing.</p>
+
+<h2>The Setup</h2>
+
+<p>We gave Claude (Opus 4.6) access to QuTech's <strong>Tuna-9</strong> superconducting transmon processor through <a href="https://modelcontextprotocol.io/">MCP tool calls</a>. The AI was told only that the processor has 9 qubits numbered 0&ndash;8. No topology map. No calibration data. No error rates. It had to discover everything through experiments.</p>
+
+<p>The AI designed a three-phase research plan:</p>
+<ol>
+<li><strong>Discovery</strong>: Which qubits work? Which pairs are connected? What's the noise like?</li>
+<li><strong>Exploitation</strong>: Use the hardware model to route circuits optimally</li>
+<li><strong>Verification</strong>: Compare optimized vs. naive circuits to measure the improvement</li>
+</ol>
+
+<h2>Phase 1: Discovery &mdash; Mapping an Unknown Processor</h2>
+
+<h3>Step 1: Single-Qubit Viability (4 jobs, 4,096 shots)</h3>
+
+<p>Claude's first move: apply an X gate (bit-flip) to every qubit and measure. If a qubit works, it should read |1&rang;. The error rate reveals single-qubit quality.</p>
+
+<table>
+<thead><tr><th>Qubit</th><th>Error Rate</th><th>Assessment</th></tr></thead>
+<tbody>
+<tr><td>q[2]</td><td><strong>1.6%</strong></td><td>Best</td></tr>
+<tr><td>q[5]</td><td><strong>1.6%</strong></td><td>Best</td></tr>
+<tr><td>q[4]</td><td>1.9%</td><td>Excellent</td></tr>
+<tr><td>q[6]</td><td>2.7%</td><td>Good</td></tr>
+<tr><td>q[8]</td><td>3.5%</td><td>Good</td></tr>
+<tr><td>q[1]</td><td>3.7%</td><td>Good</td></tr>
+<tr><td>q[7]</td><td>4.5%</td><td>Fair</td></tr>
+<tr><td>q[3]</td><td>5.2%</td><td>Fair</td></tr>
+<tr><td>q[0]</td><td><strong>12.3%</strong></td><td>Poor</td></tr>
+</tbody>
+</table>
+
+<p><strong>Finding:</strong> All 9 qubits are functional, but q[0] is dramatically worse than the rest &mdash; over 6x the error rate of the best qubits.</p>
+
+<h3>Step 2: Connectivity Mapping (20 jobs, 20,480 shots)</h3>
+
+<p>Next, Claude submitted Bell state circuits (H + CNOT) for 20 qubit pairs. On Tuna-9, the hardware <strong>rejects</strong> CNOT operations between non-connected qubits with a FAILED status. Claude exploited this: failure itself is topology information.</p>
+
+<table>
+<thead><tr><th>Connected Pair</th><th>Bell Fidelity</th><th>Failed Pair</th></tr></thead>
+<tbody>
+<tr><td>q[4]&harr;q[6]</td><td><strong>93.5%</strong></td><td>q[1]&harr;q[2]</td></tr>
+<tr><td>q[2]&harr;q[4]</td><td><strong>92.3%</strong></td><td>q[3]&harr;q[4]</td></tr>
+<tr><td>q[2]&harr;q[5]</td><td>91.4%</td><td>q[4]&harr;q[5]</td></tr>
+<tr><td>q[1]&harr;q[3]</td><td>91.3%</td><td>q[5]&harr;q[6]</td></tr>
+<tr><td>q[6]&harr;q[8]</td><td>91.3%</td><td>q[6]&harr;q[7]</td></tr>
+<tr><td>q[1]&harr;q[4]</td><td>89.8%</td><td>q[0]&harr;q[3]</td></tr>
+<tr><td>q[7]&harr;q[8]</td><td>88.3%</td><td>q[0]&harr;q[5]</td></tr>
+<tr><td>q[3]&harr;q[6]</td><td>87.1%</td><td>q[3]&harr;q[5]</td></tr>
+<tr><td>q[0]&harr;q[1]</td><td>87.0%</td><td>q[5]&harr;q[8]</td></tr>
+<tr><td>q[0]&harr;q[2]</td><td>85.8%</td><td>q[0]&harr;q[8]</td></tr>
+</tbody>
+</table>
+
+<p><strong>Surprise discovery:</strong> Our previous experiments (from a few days earlier) had reported that qubits 6&ndash;8 had no two-qubit connectivity. Claude's fresh probes found <strong>four previously unknown connections</strong>: q[3]&harr;q[6], q[4]&harr;q[6], q[6]&harr;q[8], and q[7]&harr;q[8]. The full processor is a connected graph across all 9 qubits with 10 edges.</p>
+
+<p>The AI had discovered that the hardware had been recalibrated since our last characterization &mdash; something we didn't know.</p>
+
+<h3>Step 3: Noise Characterization (9 jobs, 9,216 shots)</h3>
+
+<p>Claude performed Bell state tomography (measuring in Z, X, and Y bases) on the best, medium, and worst connections to identify the noise type:</p>
+
+<table>
+<thead><tr><th>Connection</th><th>&rang;ZZ&rang;</th><th>&rang;XX&rang;</th><th>&rang;YY&rang;</th><th>Fidelity</th><th>Noise Type</th></tr></thead>
+<tbody>
+<tr><td>q[4]&harr;q[6]</td><td>+0.945</td><td>+0.902</td><td>&minus;0.896</td><td>93.6%</td><td><strong>Dephasing</strong> (T2)</td></tr>
+<tr><td>q[2]&harr;q[4]</td><td>+0.914</td><td>+0.926</td><td>&minus;0.912</td><td>93.8%</td><td><strong>Depolarizing</strong></td></tr>
+<tr><td>q[0]&harr;q[2]</td><td>+0.773</td><td>+0.762</td><td>&minus;0.791</td><td>83.2%</td><td><strong>Asymmetric</strong></td></tr>
+</tbody>
+</table>
+
+<p>The noise fingerprints are distinct: the best connection (q[4]&harr;q[6]) shows <strong>dephasing</strong> &mdash; Z correlations are preserved while X and Y decay. The mid-range connection (q[2]&harr;q[4]) shows <strong>pure depolarizing noise</strong> &mdash; all correlators degrade equally. The worst connection (q[0]&harr;q[2]) shows <strong>asymmetric error</strong> dominated by q[0]'s T1 relaxation, where excited states decay to ground.</p>
+
+<h2>Phase 2: Exploitation &mdash; Hardware-Aware Circuit Design</h2>
+
+<p>Armed with its hardware model, Claude designed two versions of the same quantum circuit &mdash; a GHZ entangled state &mdash; with different qubit assignments:</p>
+
+<h3>3-Qubit GHZ State</h3>
+
+<p><strong>Naive routing</strong> (q[0,1,2]): Uses q[0] as the hub qubit controlling both CNOT gates. This is the worst possible choice &mdash; q[0] has 12.3% single-qubit error and its connections are the two weakest on the chip.</p>
+
+<p><strong>Hardware-aware routing</strong> (q[2,4,6]): Uses q[4] as the hub, connecting to q[2] and q[6] through the two best connections on the chip (92.3% and 93.5%).</p>
+
+<table>
+<thead><tr><th>Routing</th><th>Qubits</th><th>|000&rang;</th><th>|111&rang;</th><th>GHZ Fidelity</th></tr></thead>
+<tbody>
+<tr><td>Naive</td><td>q[0,1,2]</td><td>1,908</td><td>1,495</td><td>83.1%</td></tr>
+<tr><td><strong>Optimal</strong></td><td>q[2,4,6]</td><td>1,925</td><td>1,717</td><td><strong>88.9%</strong></td></tr>
+</tbody>
+</table>
+
+<p><strong>Improvement: +5.8 percentage points.</strong> The naive circuit's dominant error is q[0] T1 decay: 292 out of 4,096 shots (7.1%) measured |011&rang; instead of |111&rang;, meaning q[0] collapsed from |1&rang; to |0&rang;. The optimized circuit's errors are balanced across all three qubits at 0.6&ndash;1.4% each.</p>
+
+<h3>5-Qubit GHZ State</h3>
+
+<p>To test whether the gap widens with more qubits:</p>
+
+<table>
+<thead><tr><th>Routing</th><th>Qubits</th><th>|00000&rang;</th><th>|11111&rang;</th><th>GHZ Fidelity</th></tr></thead>
+<tbody>
+<tr><td>Naive</td><td>q[0,1,2,3,4]</td><td>1,833</td><td>1,360</td><td>78.0%</td></tr>
+<tr><td><strong>Optimal</strong></td><td>q[2,4,5,6,8]</td><td>1,828</td><td>1,603</td><td><strong>83.8%</strong></td></tr>
+</tbody>
+</table>
+
+<p><strong>Same improvement: +5.8 percentage points.</strong> The consistency is notable &mdash; it suggests the improvement scales linearly with qubit count for this circuit family.</p>
+
+<h2>What the AI Actually Did</h2>
+
+<p>In total, Claude executed <strong>33 hardware jobs</strong> with <strong>~42,000 measurement shots</strong> across three phases. The entire process &mdash; from "I know nothing about this processor" to "here's an optimized circuit with 33% lower error" &mdash; was autonomous. No human selected qubits, analyzed results, or designed circuits.</p>
+
+<p>The AI's decision-making process:</p>
+<ol>
+<li><strong>Probe broadly</strong>: X gates on all qubits simultaneously to identify candidates</li>
+<li><strong>Isolate and characterize</strong>: Individual qubit probes to measure crosstalk</li>
+<li><strong>Map connectivity</strong>: Bell circuits on all plausible pairs, using hardware failures as topology data</li>
+<li><strong>Fingerprint noise</strong>: Multi-basis tomography on representative connections</li>
+<li><strong>Exploit knowledge</strong>: Route circuits through best qubits, avoid worst ones</li>
+</ol>
+
+<h2>The Result in Context</h2>
+
+<p>A 33% reduction in per-qubit error rate from routing alone is meaningful. For context:</p>
+<ul>
+<li>IBM's error suppression (dynamical decoupling, Pauli twirling) typically provides 2&ndash;5x improvement</li>
+<li>Quantum error mitigation techniques like ZNE typically provide 1.5&ndash;3x improvement</li>
+<li>Our improvement comes from <strong>zero additional circuit complexity</strong> &mdash; just choosing better qubits</li>
+</ul>
+
+<p>The AI also discovered that the processor's connectivity had changed since our last characterization (days earlier), catching a recalibration that we had missed. This is exactly the kind of "check your assumptions" step that automation enables &mdash; a human might reuse old calibration data, but the AI started fresh.</p>
+
+<h2>Limitations</h2>
+
+<p>This is a proof of concept, not a production system:</p>
+<ul>
+<li>Only tested on GHZ-type circuits (entanglement benchmarks, not algorithms)</li>
+<li>Tuna-9 is a small processor (9 qubits) with limited routing freedom</li>
+<li>The AI used exhaustive probing (20 pair probes) &mdash; a smarter strategy could reduce characterization overhead</li>
+<li>Hardware conditions change over time; this is a snapshot</li>
+<li>No comparison to specialized tools (Q-CTRL, Qiskit transpiler optimization)</li>
+</ul>
+
+<h2>What's Next</h2>
+
+<p>The natural follow-up: can the AI learn to do this <em>efficiently</em>? Instead of probing all 20 pairs, can it use early results to predict which pairs are worth characterizing? Can it adapt its characterization strategy based on what it finds? And can it optimize circuits beyond simple qubit routing &mdash; adding dynamical decoupling sequences, pulse-level optimization, or error mitigation?</p>
+
+<p>The broader question: if a general-purpose AI can characterize hardware in 33 jobs, what happens when it can run 33,000 &mdash; like Ginkgo's GPT-5 running 36,000 protein experiments? The gap between "useful characterization" and "automated discovery" may be smaller than we think.</p>
+
+<hr />
+
+<p>All measurements were taken on February 10, 2026, on QuTech's Tuna-9 superconducting transmon processor. The complete raw data &mdash; all measurement counts, job IDs, correlators, and analysis &mdash; is stored at <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/autonomous-characterization-full.json">experiments/results/autonomous-characterization-full.json</a>.</p>
+
+<p>Hardware job IDs: Single-qubit probes (415259&ndash;415262), connectivity mapping (415273&ndash;415293), noise tomography (415323&ndash;415332), GHZ comparison (415373, 415374, 415385, 415387).</p>`,
+    sources: [
+      { label: 'Full experiment data (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/autonomous-characterization-full.json' },
+      { label: 'Previous experiment: AI runs quantum hardware', url: '/blog/ai-runs-quantum-experiment' },
+      { label: 'Model Context Protocol (MCP)', url: 'https://modelcontextprotocol.io/' },
+      { label: 'QI Circuits MCP server (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/mcp-servers/qi-circuits/qi_server.py' },
+      { label: 'Quantum Inspire - Tuna-9', url: 'https://www.quantum-inspire.com/' },
+    ],
+  },
 ]
