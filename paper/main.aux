@@ -16,6 +16,8 @@
 \citation{peruzzo2014}
 \citation{cross2019}
 \citation{harrigan2021}
+\citation{kim2023}
+\citation{kim2023}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}Replication Pipeline}{2}{section*.6}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Five-stage replication pipeline. Each stage is fully automated; the daemon handles hardware submission and result collection.}}{2}{figure.1}\protected@file@percent }
 \newlabel{fig:pipeline}{{1}{2}{Five-stage replication pipeline. Each stage is fully automated; the daemon handles hardware submission and result collection}{figure.1}{}}
@@ -26,16 +28,15 @@
 \newlabel{tab:papers}{{I}{2}{Target papers for replication}{table.1}{}}
 \citation{temme2017}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}Reproducing This Work}{3}{section*.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {}Cross-Platform Characterization}{3}{section*.11}\protected@file@percent }
-\newlabel{sec:platforms}{{}{3}{}{section*.11}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Hardware platforms used in this study.}}{3}{table.2}\protected@file@percent }
 \newlabel{tab:platforms}{{II}{3}{Hardware platforms used in this study}{table.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}Cross-Platform Characterization}{3}{section*.11}\protected@file@percent }
+\newlabel{sec:platforms}{{}{3}{}{section*.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}Bell State Tomography}{3}{section*.12}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Bell state characterization across platforms. Best qubit pair used for Tuna-9 and Garnet; default transpiler placement for Torino.}}{3}{table.3}\protected@file@percent }
 \newlabel{tab:bell}{{III}{3}{Bell state characterization across platforms. Best qubit pair used for Tuna-9 and Garnet; default transpiler placement for Torino}{table.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Noise fingerprint from Bell state tomography. Dephasing noise (Tuna-9, Garnet) shows $\langle ZZ \rangle > \langle XX \rangle \approx |\langle YY \rangle |$; depolarizing noise (Torino) shows all correlators approximately equal. Best qubit pair used for Tuna-9 and Garnet; default transpiler placement for Torino.}}{3}{figure.2}\protected@file@percent }
 \newlabel{fig:noise}{{2}{3}{Noise fingerprint from Bell state tomography. Dephasing noise (Tuna-9, Garnet) shows $\langle ZZ \rangle > \langle XX \rangle \approx |\langle YY \rangle |$; depolarizing noise (Torino) shows all correlators approximately equal. Best qubit pair used for Tuna-9 and Garnet; default transpiler placement for Torino}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}GHZ Scaling}{3}{section*.13}\protected@file@percent }
 \citation{cross2019}
 \citation{sagastizabal2019}
 \citation{kandala2017}
@@ -43,8 +44,10 @@
 \citation{cross2019}
 \citation{harrigan2021}
 \citation{kim2023}
+\citation{kim2023}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces GHZ state fidelity as a function of qubit count. Emulator (dashed) achieves 100\% at all sizes. IBM Torino's 50-qubit GHZ (8.5\% fidelity) represents the largest entangled state in this study. Per-qubit error is approximately constant ($\sim $5\%) across all circuit sizes on Torino.}}{4}{figure.3}\protected@file@percent }
 \newlabel{fig:ghz}{{3}{4}{GHZ state fidelity as a function of qubit count. Emulator (dashed) achieves 100\% at all sizes. IBM Torino's 50-qubit GHZ (8.5\% fidelity) represents the largest entangled state in this study. Per-qubit error is approximately constant ($\sim $5\%) across all circuit sizes on Torino}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}GHZ Scaling}{4}{section*.13}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces GHZ fidelity (\%) across platforms.}}{4}{table.4}\protected@file@percent }
 \newlabel{tab:ghz}{{IV}{4}{GHZ fidelity (\%) across platforms}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}Quantum Volume}{4}{section*.14}\protected@file@percent }
@@ -56,40 +59,46 @@
 \newlabel{sec:results}{{}{4}{}{section*.15}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}VQE Replications}{4}{section*.16}\protected@file@percent }
 \citation{cross2019}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Replication scorecard across six papers and three backends. Green = PASS (claim replicated within stated criteria), red = FAIL, grey = not tested on that platform. Both failures are HeH$^+$ VQE claims where coefficient amplification makes hardware noise exceed molecular signal.}}{5}{figure.5}\protected@file@percent }
+\newlabel{fig:scorecard}{{5}{5}{Replication scorecard across six papers and three backends. Green = PASS (claim replicated within stated criteria), red = FAIL, grey = not tested on that platform. Both failures are HeH$^+$ VQE claims where coefficient amplification makes hardware noise exceed molecular signal}{figure.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Replication scorecard. \textcolor {pass}{\textbf  {PASS}}{} = claim replicated within stated criteria, \textcolor {fail}{\textbf  {FAIL}}{} = claim not met, --- = not tested. Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only, $^d$PS+REM hybrid, $^e$emulator only.}}{5}{table.6}\protected@file@percent }
+\newlabel{tab:replication}{{VI}{5}{Replication scorecard. \PASS {} = claim replicated within stated criteria, \FAIL {} = claim not met, --- = not tested. Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only, $^d$PS+REM hybrid, $^e$emulator only}{table.6}{}}
 \citation{harrigan2021}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Replication scorecard across five papers and three backends. Green = PASS (claim replicated within stated criteria), red = FAIL, grey = not tested on that platform. All failures occur in the Garnet/Torino column and are attributable to hardware noise degradation of off-diagonal Hamiltonian terms (HeH$^+$ VQE).}}{5}{figure.5}\protected@file@percent }
-\newlabel{fig:scorecard}{{5}{5}{Replication scorecard across five papers and three backends. Green = PASS (claim replicated within stated criteria), red = FAIL, grey = not tested on that platform. All failures occur in the Garnet/Torino column and are attributable to hardware noise degradation of off-diagonal Hamiltonian terms (HeH$^+$ VQE)}{figure.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces Replication scorecard. \textcolor {pass}{\textbf  {PASS}}{} = claim replicated within stated criteria, \textcolor {fail}{\textbf  {FAIL}}{} = claim not met, --- = not tested. Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only.}}{5}{table.6}\protected@file@percent }
-\newlabel{tab:replication}{{VI}{5}{Replication scorecard. \PASS {} = claim replicated within stated criteria, \FAIL {} = claim not met, --- = not tested. Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only}{table.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}Quantum Volume and Randomized Benchmarking}{5}{section*.17}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {}QAOA Replication}{5}{section*.18}\protected@file@percent }
+\citation{kim2023}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces H$_2$ potential energy surface. Exact FCI values (black), emulator (grey dashed, nearly indistinguishable), Tuna-9 with post-selection (blue), and IBM Torino with TREX (green diamond, single point at $R = 0.735$\,\r A{} within the chemical accuracy band). Hardware error increases at large $R$ where entanglement gates amplify noise.}}{6}{figure.6}\protected@file@percent }
 \newlabel{fig:vqe}{{6}{6}{H$_2$ potential energy surface. Exact FCI values (black), emulator (grey dashed, nearly indistinguishable), Tuna-9 with post-selection (blue), and IBM Torino with TREX (green diamond, single point at $R = 0.735$\,\AA {} within the chemical accuracy band). Hardware error increases at large $R$ where entanglement gates amplify noise}{figure.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}Failure Taxonomy}{6}{section*.19}\protected@file@percent }
-\newlabel{sec:failures}{{}{6}{}{section*.19}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}Discussion}{6}{section*.20}\protected@file@percent }
-\newlabel{sec:discussion}{{}{6}{}{section*.20}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}What Replication Gaps Reveal}{6}{section*.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {}Cross-Platform Insights}{6}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Quantum Volume and Randomized Benchmarking}{6}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}QAOA Replication}{6}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Mitigation Technique Ranking}{6}{section*.19}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Mitigation ladder on IBM Torino (H$_2$ VQE, $R = 0.735$\,\r A, 4096 shots). Chemical accuracy threshold: $1.6\,\text  {kcal/mol}$.}}{6}{table.7}\protected@file@percent }
+\newlabel{tab:mitigation}{{VII}{6}{Mitigation ladder on IBM Torino (H$_2$ VQE, $R = 0.735$\,\AA , 4096 shots). Chemical accuracy threshold: $1.6\kcalmol $}{table.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Hybrid PS+REM on Tuna-9}{6}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Kim et al.\ (2023): Utility-Scale Circuits}{6}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {}Failure Taxonomy}{7}{section*.22}\protected@file@percent }
+\newlabel{sec:failures}{{}{7}{}{section*.22}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}Discussion}{7}{section*.23}\protected@file@percent }
+\newlabel{sec:discussion}{{}{7}{}{section*.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}What Replication Gaps Reveal}{7}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Cross-Platform Insights}{7}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}AI as Replication Infrastructure}{7}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {}ZNE Ineffectiveness on Tuna-9}{7}{section*.27}\protected@file@percent }
 \bibdata{mainNotes,references}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}AI as Replication Infrastructure}{7}{section*.23}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {}ZNE Ineffectiveness on Tuna-9}{7}{section*.24}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {}Conclusion}{7}{section*.25}\protected@file@percent }
-\newlabel{sec:conclusion}{{}{7}{}{section*.25}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}Data Availability}{7}{section*.26}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {}Acknowledgments}{7}{section*.27}\protected@file@percent }
 \bibcite{baker2016}{{1}{2016}{{Baker}}{{}}}
 \bibcite{sagastizabal2019}{{2}{2019}{{Sagastizabal\ \emph  {et~al.}}}{{Sagastizabal \emph  {et~al.}}}}
 \bibcite{kandala2017}{{3}{2017}{{Kandala\ \emph  {et~al.}}}{{Kandala, Mezzacapo, Temme, Takita, Brink, Chow,\ and\ Gambetta}}}
 \bibcite{peruzzo2014}{{4}{2014}{{Peruzzo\ \emph  {et~al.}}}{{Peruzzo, McClean, Shadbolt, Yung, Zhou, Love, Aspuru-Guzik,\ and\ O'Brien}}}
 \bibcite{cross2019}{{5}{2019}{{Cross\ \emph  {et~al.}}}{{Cross, Bishop, Sheldon, Nation,\ and\ Gambetta}}}
 \bibcite{harrigan2021}{{6}{2021}{{Harrigan\ \emph  {et~al.}}}{{Harrigan \emph  {et~al.}}}}
-\bibcite{temme2017}{{7}{2017}{{Temme\ \emph  {et~al.}}}{{Temme, Bravyi,\ and\ Gambetta}}}
-\bibcite{kim2023}{{8}{2023}{{Kim\ \emph  {et~al.}}}{{Kim, Eddins, Anand, Wei, van~den Berg, Rosenblatt, Nayfeh, Wu, Zaletel, Temme,\ and\ Kandala}}}
+\bibcite{kim2023}{{7}{2023}{{Kim\ \emph  {et~al.}}}{{Kim, Eddins, Anand, Wei, van~den Berg, Rosenblatt, Nayfeh, Wu, Zaletel, Temme,\ and\ Kandala}}}
+\bibcite{temme2017}{{8}{2017}{{Temme\ \emph  {et~al.}}}{{Temme, Bravyi,\ and\ Gambetta}}}
 \bibstyle{apsrev4-2}
 \citation{REVTEX42Control}
 \citation{apsrev42Control}
-\@writefile{toc}{\contentsline {section}{\numberline {}References}{8}{section*.28}\protected@file@percent }
-\newlabel{LastBibItem}{{8}{8}{}{section*.28}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}Conclusion}{8}{section*.28}\protected@file@percent }
+\newlabel{sec:conclusion}{{}{8}{}{section*.28}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}Data Availability}{8}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {}Acknowledgments}{8}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {}References}{8}{section*.31}\protected@file@percent }
+\newlabel{LastBibItem}{{8}{8}{}{section*.31}{}}
 \newlabel{LastPage}{{}{8}{}{}{}}
 \gdef \@abspage@last{8}

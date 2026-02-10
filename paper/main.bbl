@@ -128,17 +128,6 @@
   {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {17}},\ \bibinfo
   {pages} {332} (\bibinfo {year} {2021})},\ \bibinfo {note}
   {arXiv:2004.04197}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Temme}\ \emph {et~al.}(2017)\citenamefont {Temme},
-  \citenamefont {Bravyi},\ and\ \citenamefont {Gambetta}}]{temme2017}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
-  {Temme}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Bravyi}},\ and\
-  \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Gambetta}},\
-  }\bibfield  {title} {\bibinfo {title} {Error mitigation for short-depth
-  quantum circuits},\ }\href {https://doi.org/10.1103/PhysRevLett.119.180509}
-  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
-  }\textbf {\bibinfo {volume} {119}},\ \bibinfo {pages} {180509} (\bibinfo
-  {year} {2017})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Kim}\ \emph {et~al.}(2023)\citenamefont {Kim},
   \citenamefont {Eddins}, \citenamefont {Anand}, \citenamefont {Wei},
   \citenamefont {van~den Berg}, \citenamefont {Rosenblatt}, \citenamefont
@@ -160,4 +149,15 @@
   {https://doi.org/10.1038/s41586-023-06096-3} {\bibfield  {journal} {\bibinfo
   {journal} {Nature}\ }\textbf {\bibinfo {volume} {618}},\ \bibinfo {pages}
   {500} (\bibinfo {year} {2023})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Temme}\ \emph {et~al.}(2017)\citenamefont {Temme},
+  \citenamefont {Bravyi},\ and\ \citenamefont {Gambetta}}]{temme2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Temme}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Bravyi}},\ and\
+  \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Gambetta}},\
+  }\bibfield  {title} {\bibinfo {title} {Error mitigation for short-depth
+  quantum circuits},\ }\href {https://doi.org/10.1103/PhysRevLett.119.180509}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
+  }\textbf {\bibinfo {volume} {119}},\ \bibinfo {pages} {180509} (\bibinfo
+  {year} {2017})}\BibitemShut {NoStop}%
 \end{thebibliography}%
