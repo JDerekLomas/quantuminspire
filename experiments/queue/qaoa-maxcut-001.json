@@ -1,7 +1,7 @@
 {
   "id": "qaoa-maxcut-001",
   "type": "qaoa_maxcut",
-  "status": "pending",
+  "status": "completed",
   "backend": "qxelarator",
   "created": "2026-02-10T16:17:31.570908+00:00",
   "parameters": {

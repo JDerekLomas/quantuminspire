@@ -1,0 +1,191 @@
+{
+  "id": "qaoa-maxcut-001",
+  "type": "qaoa_maxcut",
+  "backend": "qxelarator",
+  "submitted": "2026-02-10T16:18:39.288684+00:00",
+  "completed": "2026-02-10T16:18:49.670072+00:00",
+  "parameters": {
+    "shots": 1024,
+    "qubits": [
+      0,
+      1,
+      2
+    ],
+    "gamma_values": [
+      0.3,
+      0.6,
+      0.9
+    ],
+    "beta_values": [
+      0.3,
+      0.6,
+      0.9
+    ]
+  },
+  "raw_counts": {
+    "qaoa_g0_b0": {
+      "000": 353.0,
+      "001": 56.0,
+      "010": 60.0,
+      "011": 49.0,
+      "100": 44.0,
+      "101": 69.0,
+      "110": 54.0,
+      "111": 339.0
+    },
+    "qaoa_g0_b1": {
+      "000": 355.0,
+      "001": 49.0,
+      "010": 55.0,
+      "011": 43.0,
+      "100": 49.0,
+      "101": 49.0,
+      "110": 63.0,
+      "111": 361.0
+    },
+    "qaoa_g0_b2": {
+      "000": 167.0,
+      "001": 111.0,
+      "010": 117.0,
+      "011": 113.0,
+      "100": 114.0,
+      "101": 129.0,
+      "110": 117.0,
+      "111": 156.0
+    },
+    "qaoa_g1_b0": {
+      "000": 339.0,
+      "001": 55.0,
+      "010": 65.0,
+      "011": 50.0,
+      "100": 58.0,
+      "101": 48.0,
+      "110": 48.0,
+      "111": 361.0
+    },
+    "qaoa_g1_b1": {
+      "000": 502.0,
+      "001": 2.0,
+      "010": 6.0,
+      "011": 2.0,
+      "100": 2.0,
+      "101": 2.0,
+      "110": 3.0,
+      "111": 505.0
+    },
+    "qaoa_g1_b2": {
+      "000": 377.0,
+      "001": 48.0,
+      "010": 41.0,
+      "011": 50.0,
+      "100": 34.0,
+      "101": 44.0,
+      "110": 41.0,
+      "111": 389.0
+    },
+    "qaoa_g2_b0": {
+      "000": 164.0,
+      "001": 108.0,
+      "010": 119.0,
+      "011": 136.0,
+      "100": 112.0,
+      "101": 119.0,
+      "110": 95.0,
+      "111": 171.0
+    },
+    "qaoa_g2_b1": {
+      "000": 407.0,
+      "001": 38.0,
+      "010": 40.0,
+      "011": 46.0,
+      "100": 48.0,
+      "101": 38.0,
+      "110": 39.0,
+      "111": 368.0
+    },
+    "qaoa_g2_b2": {
+      "000": 528.0,
+      "010": 1.0,
+      "101": 1.0,
+      "110": 2.0,
+      "111": 492.0
+    }
+  },
+  "analysis": {
+    "best_approximation_ratio": 0.6846,
+    "best_gamma": 0.3,
+    "best_beta": 0.9,
+    "classical_max_cut": 2,
+    "heatmap": {
+      "g0_b0": {
+        "gamma": 0.3,
+        "beta": 0.3,
+        "expected_cut": 0.6484,
+        "approximation_ratio": 0.3242
+      },
+      "g0_b1": {
+        "gamma": 0.3,
+        "beta": 0.6,
+        "expected_cut": 0.6016,
+        "approximation_ratio": 0.3008
+      },
+      "g0_b2": {
+        "gamma": 0.3,
+        "beta": 0.9,
+        "expected_cut": 1.3691,
+        "approximation_ratio": 0.6846
+      },
+      "g1_b0": {
+        "gamma": 0.6,
+        "beta": 0.3,
+        "expected_cut": 0.6328,
+        "approximation_ratio": 0.3164
+      },
+      "g1_b1": {
+        "gamma": 0.6,
+        "beta": 0.6,
+        "expected_cut": 0.0332,
+        "approximation_ratio": 0.0166
+      },
+      "g1_b2": {
+        "gamma": 0.6,
+        "beta": 0.9,
+        "expected_cut": 0.5039,
+        "approximation_ratio": 0.252
+      },
+      "g2_b0": {
+        "gamma": 0.9,
+        "beta": 0.3,
+        "expected_cut": 1.3457,
+        "approximation_ratio": 0.6729
+      },
+      "g2_b1": {
+        "gamma": 0.9,
+        "beta": 0.6,
+        "expected_cut": 0.4863,
+        "approximation_ratio": 0.2432
+      },
+      "g2_b2": {
+        "gamma": 0.9,
+        "beta": 0.9,
+        "expected_cut": 0.0078,
+        "approximation_ratio": 0.0039
+      }
+    },
+    "gamma_values": [
+      0.3,
+      0.6,
+      0.9
+    ],
+    "beta_values": [
+      0.3,
+      0.6,
+      0.9
+    ],
+    "num_qubits": 3,
+    "graph": "triangle",
+    "interpretation": "QAOA MaxCut on triangle: best approximation ratio 68.5% at gamma=0.30, beta=0.90. Classical optimum: 2 edges cut."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[3] q\nbit[3] b\n\n// QAOA MaxCut: gamma=0.300, beta=0.300\n// Initial superposition\nH q[0]\nH q[1]\nH q[2]\n\n// Cost layer: exp(-i*gamma*C) via ZZ interactions\nCNOT q[0], q[1]\nRz(0.600000) q[1]\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nRz(0.600000) q[2]\nCNOT q[1], q[2]\nCNOT q[0], q[2]\nRz(0.600000) q[2]\nCNOT q[0], q[2]\n\n// Mixer layer: exp(-i*beta*B) via X rotations\nRx(0.600000) q[0]\nRx(0.600000) q[1]\nRx(0.600000) q[2]\n\nb = measure q",
+  "errors": null
+}
