@@ -1,0 +1,132 @@
+{
+  "experiment": "cross-platform-diagnostic-suite",
+  "backend": "iqm-garnet",
+  "backend_details": {
+    "provider": "IQM Resonance",
+    "processor": "Garnet",
+    "qubits": 20,
+    "cz_connections": 29,
+    "native_gates": ["prx", "cz", "measure"],
+    "topology": "square-lattice-like",
+    "max_degree": 4
+  },
+  "timestamp": "2026-02-10T19:00:00Z",
+  "total_jobs": 30,
+  "total_shots": 47104,
+  "bell_fidelity_map": {
+    "QB1-QB2": {"fidelity": 0.981, "region": "corner-corner"},
+    "QB1-QB4": {"fidelity": 0.970, "region": "corner-hub"},
+    "QB4-QB5": {"fidelity": 0.969, "region": "hub-hub center"},
+    "QB5-QB6": {"fidelity": 0.951, "region": "hub-edge"},
+    "QB11-QB16": {"fidelity": 0.967, "region": "hub-hub middle"},
+    "QB14-QB15": {"fidelity": 0.963, "region": "hub-hub lower"},
+    "QB19-QB20": {"fidelity": 0.974, "region": "edge-edge far"},
+    "QB8-QB9": {"fidelity": 0.896, "region": "edge mid"},
+    "QB4-QB9": {"fidelity": 0.884, "region": "hub-edge diagonal"}
+  },
+  "bell_fidelity_summary": {
+    "best_pair": "QB1-QB2",
+    "best_fidelity": 0.981,
+    "worst_pair": "QB4-QB9",
+    "worst_fidelity": 0.884,
+    "average": 0.947,
+    "weak_region": "QB8-QB9 area (QB9 appears to be the problem qubit)"
+  },
+  "noise_tomography": {
+    "QB19-QB20": {
+      "label": "best",
+      "correlators": {"ZZ": 0.949, "XX": 0.930, "YY": -0.922},
+      "bell_fidelity_tomo": 0.950,
+      "noise_type": "near-depolarizing (slight ZZ bias)",
+      "depolarizing_rate": 0.050
+    },
+    "QB8-QB9": {
+      "label": "worst",
+      "correlators": {"ZZ": 0.814, "XX": 0.723, "YY": -0.752},
+      "bell_fidelity_tomo": 0.822,
+      "noise_type": "dephasing + asymmetric bit-flip",
+      "depolarizing_rate": 0.178,
+      "asymmetry": "QB9 bit-flip 84/1024 vs QB8 11/1024 in Z-basis"
+    },
+    "QB14-QB15": {
+      "label": "mid",
+      "correlators": {"ZZ": 0.975, "XX": 0.949, "YY": -0.881},
+      "bell_fidelity_tomo": 0.951,
+      "noise_type": "dephasing-dominated",
+      "depolarizing_rate": 0.049,
+      "signature": "ZZ >> XX >> |YY| — clear T2 decay pattern"
+    }
+  },
+  "ghz_results": {
+    "ghz3_best": {
+      "qubits": ["QB14", "QB15", "QB16"],
+      "fidelity": 0.939,
+      "depth": 8,
+      "cz_gates": 3,
+      "shots": 4096,
+      "counts_000": 1924,
+      "counts_111": 1924,
+      "dominant_error": "|101> at 1.6%"
+    },
+    "ghz3_worst": {
+      "qubits": ["QB4", "QB9", "QB8"],
+      "fidelity": 0.898,
+      "depth": 11,
+      "cz_gates": 5,
+      "shots": 4096,
+      "counts_000": 1980,
+      "counts_111": 1699,
+      "dominant_error": "|101> at 5.0% (QB9 bit-flip)"
+    },
+    "ghz5_through_weak_region": {
+      "qubits": ["QB10", "QB15", "QB14", "QB9", "QB4"],
+      "fidelity": 0.578,
+      "depth": 16,
+      "cz_gates": 7,
+      "shots": 4096,
+      "counts_00000": 1370,
+      "counts_11111": 999,
+      "note": "Includes weak QB9 region — poor despite lower depth"
+    },
+    "ghz5_best": {
+      "qubits": ["QB11", "QB16", "QB15", "QB14", "QB18"],
+      "fidelity": 0.818,
+      "depth": 20,
+      "cz_gates": 9,
+      "shots": 4096,
+      "counts_00000": 1741,
+      "counts_11111": 1610,
+      "note": "Avoids weak region — higher fidelity despite more gates"
+    },
+    "ghz10": {
+      "qubits": ["QB1", "QB4", "QB5", "QB10", "QB11", "QB14", "QB15", "QB16", "QB19", "QB20"],
+      "fidelity": 0.547,
+      "depth": 33,
+      "cz_gates": 18,
+      "shots": 4096,
+      "counts_0000000000": 1322,
+      "counts_1111111111": 919,
+      "note": "10-qubit GHZ — not possible on Tuna-9"
+    }
+  },
+  "quantum_volume": {
+    "n2": {"hof": 0.740, "pass": true, "trials": 5},
+    "n3": {"hof": 0.786, "pass": true, "trials": 5},
+    "n4": {"hof": 0.695, "pass": true, "trials": 5},
+    "n5": {"hof": 0.692, "pass": true, "trials": 5},
+    "quantum_volume": 32,
+    "qubits_used": ["QB14", "QB15", "QB16", "QB11", "QB10"]
+  },
+  "key_findings": [
+    "IQM Garnet achieves QV=32 — 4x Tuna-9's QV=8",
+    "Bell fidelity ranges 88.4-98.1% across chip (average 94.7%)",
+    "QB9 region is the clear weak spot — both connections involving QB9 are below 90%",
+    "Noise is predominantly dephasing (ZZ > XX > |YY|) across the chip",
+    "QB8-QB9 also shows strong asymmetric bit-flip (QB9 errors 8x more than QB8)",
+    "Qubit quality dominates circuit depth: GHZ-5 at 81.8% (depth 20) beats 57.8% (depth 16) by avoiding weak qubits",
+    "GHZ-10 achieves 54.7% fidelity — first 10-qubit entanglement in this project",
+    "IQM's native CZ gate requires more decomposition than CNOT (star GHZ needs SWAP routing)"
+  ],
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json"
+}

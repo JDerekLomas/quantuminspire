@@ -1,7 +1,7 @@
 {
   "id": "bell-tuna9-recal-001",
   "type": "bell_calibration",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T20:00:00Z",
   "parameters": {
