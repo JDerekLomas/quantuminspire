@@ -1,0 +1,57 @@
+{
+  "id": "vqe-equilibrium-002-ibm-torino",
+  "type": "vqe_h2",
+  "backend": "ibm_torino",
+  "backend_qubits": 133,
+  "submitted": "2026-02-10T16:36:07.697770+00:00",
+  "completed": "2026-02-10T16:36:07.706050+00:00",
+  "job_id": "d65lsrje4kfs73cvjb6g",
+  "parameters": {
+    "shots": 4096,
+    "theta": 0.2286,
+    "dynamical_decoupling": "XpXm",
+    "twirling": true,
+    "parity_postselection": true
+  },
+  "raw_counts": {
+    "z_basis": {
+      "01": 3739,
+      "10": 241,
+      "00": 63,
+      "11": 53
+    },
+    "x_basis": {
+      "10": 1473,
+      "11": 609,
+      "00": 595,
+      "01": 1419
+    },
+    "y_basis": {
+      "01": 1467,
+      "10": 1480,
+      "00": 591,
+      "11": 558
+    }
+  },
+  "analysis": {
+    "energy_hartree": -0.943621208954451,
+    "energy_raw": -0.9166034545360351,
+    "energy_postselected": -0.943621208954451,
+    "postselection_keep_fraction": 0.9716796875,
+    "fci_energy": -1.137306,
+    "error_hartree": 0.19368479104554892,
+    "error_millihartree": 193.68479104554893,
+    "error_raw_millihartree": 220.70254546396484,
+    "error_kcal_mol": 121.53894954420136,
+    "chemical_accuracy": false,
+    "expectation_values": {
+      "Z0": -0.8788944723618091,
+      "Z1": 0.8788944723618091,
+      "Z0Z1": -1.0,
+      "X0X1": -0.412109375,
+      "Y0Y1": -0.43896484375
+    },
+    "total_shots_per_basis": 4096
+  },
+  "errors": null
+}

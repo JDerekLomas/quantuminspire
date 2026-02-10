@@ -1,5 +1,5 @@
 {
-  "id": "vqe-equilibrium-001-ibm",
+  "id": "vqe-equilibrium-001-ibm-marrakesh",
   "type": "vqe_h2",
   "backend": "ibm_marrakesh",
   "backend_qubits": 156,
