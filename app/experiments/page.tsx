@@ -1016,11 +1016,44 @@ function DetectionCodeCard({ result }: { result: ExperimentResult }) {
         </div>
         <div className="flex flex-col items-end gap-1.5">
           <BackendBadge backend={result.backend} />
-          <StatusPill status="completed" />
+          <StatusPill status={analysis.status === 'FAILED' ? 'failed' : 'completed'} />
         </div>
       </div>
 
-      {analysis.overall_detection_rate !== undefined && (
+      {analysis.status === 'FAILED' && (
+        <div className="space-y-3">
+          <div className="bg-red-500/5 border border-red-500/20 rounded p-4">
+            <p className="text-[10px] font-mono text-red-400/80 uppercase tracking-wider mb-2">Hardware Constraint</p>
+            <p className="text-sm text-gray-300 leading-relaxed">{analysis.root_cause}</p>
+          </div>
+          {analysis.connectivity_analysis && (
+            <div className="bg-white/[0.02] rounded p-3">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Topology Analysis</p>
+              <div className="grid grid-cols-3 gap-3 text-center">
+                <div>
+                  <p className="text-lg font-mono font-bold text-red-400">{analysis.connectivity_analysis.cnot_pairs_needing_routing}</p>
+                  <p className="text-[10px] font-mono text-gray-500">CNOTs need routing</p>
+                </div>
+                <div>
+                  <p className="text-lg font-mono font-bold text-yellow-400">{analysis.connectivity_analysis.max_degree}</p>
+                  <p className="text-[10px] font-mono text-gray-500">Max qubit degree</p>
+                </div>
+                <div>
+                  <p className="text-lg font-mono font-bold text-gray-400">{analysis.connectivity_analysis.required_degree_for_ancilla}</p>
+                  <p className="text-[10px] font-mono text-gray-500">Required degree</p>
+                </div>
+              </div>
+            </div>
+          )}
+          {analysis.jobs_attempted && (
+            <div className="text-[10px] font-mono text-gray-500">
+              {analysis.jobs_attempted.length} circuit variant(s) attempted, all rejected by hardware compiler
+            </div>
+          )}
+        </div>
+      )}
+
+      {analysis.status !== 'FAILED' && analysis.overall_detection_rate !== undefined && (
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white/[0.02] rounded p-3">

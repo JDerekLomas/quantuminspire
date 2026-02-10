@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "id": "detection-code-001-tuna9",
+  "type": "detection_code",
+  "backend": "tuna-9",
+  "backend_qubits": [0, 1, 2, 3, 4, 5],
+  "submitted": "2026-02-10T17:41:24Z",
+  "completed": "2026-02-10T17:45:28Z",
+  "parameters": {
+    "shots": 4096,
+    "qubit_mapping": [0, 1, 2, 3, 4, 5]
+  },
+  "raw_counts": {},
+  "analysis": {
+    "status": "FAILED",
+    "failure_mode": "hardware_topology_constraint",
+    "jobs_attempted": [
+      {"variant": "no_error", "job_id": 415333, "status": "FAILED"},
+      {"variant": "x_error_d0", "job_id": 415339, "status": "FAILED"},
+      {"variant": "x_error_d1", "job_id": 415356, "status": "FAILED"}
+    ],
+    "root_cause": "Tuna-9 topology cannot support [[4,2,2]] detection code. Both XXXX and ZZZZ stabilizers require degree-4 ancilla connectivity (CNOT between ancilla and all 4 data qubits). Tuna-9 max degree is 3 (qubits q1 and q2). Even optimal mapping (ax=q1 connected to q0,q3,q4; az=q2 connected to q0,q4,q5) leaves each stabilizer with 1 non-adjacent data qubit requiring 3-hop SWAP routing.",
+    "connectivity_analysis": {
+      "connected_pairs": ["0-1", "0-2", "1-3", "1-4", "2-4", "2-5"],
+      "max_degree": 3,
+      "required_degree_for_ancilla": 4,
+      "cnot_pairs_required": 11,
+      "cnot_pairs_connected": 5,
+      "cnot_pairs_needing_routing": 6,
+      "optimal_mapping_analysis": {
+        "best_mapping": {"d0": 0, "d1": 3, "d2": 4, "d3": 5, "ax": 1, "az": 2},
+        "xxxx_connected": 3,
+        "xxxx_missing": "q1-q5 (3 hops via q4-q2 or q0-q2)",
+        "zzzz_connected": 3,
+        "zzzz_missing": "q3-q2 (3 hops via q1-q0 or q1-q4)"
+      }
+    },
+    "emulator_comparison": {
+      "emulator_detection_rate": 1.0,
+      "hardware_detection_rate": null,
+      "gap_reason": "Circuit rejected by hardware compiler due to non-adjacent CNOT pairs"
+    },
+    "interpretation": "[[4,2,2]] detection code FAILED on Tuna-9. All circuit variants rejected by hardware -- the 6-qubit detection code requires degree-4 ancilla connectivity that exceeds Tuna-9's tree topology (max degree 3). SWAP routing would add 6+ CNOTs per stabilizer, making the circuit prohibitively deep (~22+ CNOTs vs 11 native). This is a fundamental hardware topology constraint, not a noise issue. The emulator achieves 100% detection rate with the same circuits. Recommendation: use 3-qubit repetition code (already demonstrated at 93.2% syndrome accuracy on Tuna-9) or wait for higher-connectivity hardware."
+  },
+  "circuit_cqasm": null,
+  "errors": [
+    "Job 415333 (no_error): FAILED on Tuna-9",
+    "Job 415339 (x_error_d0): FAILED on Tuna-9",
+    "Job 415356 (x_error_d1): FAILED on Tuna-9"
+  ]
+}

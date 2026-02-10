@@ -1,0 +1,14 @@
+{
+  "id": "detection-code-001-tuna9",
+  "type": "detection_code",
+  "status": "failed",
+  "backend": "tuna-9",
+  "created": "2026-02-10T20:00:00Z",
+  "completed": "2026-02-10T20:45:28Z",
+  "priority": 1,
+  "description": "[[4,2,2]] detection code on Tuna-9 hardware — FAILED due to topology constraint (max degree 3, need degree 4 for ancilla)",
+  "parameters": {
+    "shots": 4096,
+    "qubit_mapping": [0, 1, 2, 3, 4, 5]
+  }
+}
