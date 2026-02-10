@@ -1,0 +1,14 @@
+{
+  "id": "ghz-tuna9-daemon-001",
+  "type": "ghz_state",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T12:00:00Z",
+  "parameters": {
+    "shots": 1024,
+    "num_qubits": 3,
+    "qubits": [1, 0, 2]
+  },
+  "priority": 2,
+  "description": "3-qubit GHZ on Tuna-9 qubits 1-0-2. Chain: CNOT 1→0, CNOT 0→2. Uses best-connected hub qubits."
+}

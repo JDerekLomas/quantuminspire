@@ -1,0 +1,16 @@
+{
+  "id": "bell-tuna9-daemon-001",
+  "type": "bell_calibration",
+  "status": "running",
+  "backend": "tuna-9",
+  "created": "2026-02-10T12:00:00Z",
+  "parameters": {
+    "shots": 1024,
+    "qubits": [
+      0,
+      1
+    ]
+  },
+  "priority": 1,
+  "description": "Bell state on Tuna-9 qubits 0-1 (88.8% fidelity from connectivity probe). SDK-direct submission."
+}

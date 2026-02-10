@@ -1337,17 +1337,143 @@ def generate_circuit(exp_type, params):
         raise ValueError(f"Unknown experiment type: {exp_type}")
 
 
-# ─── QI Submission ───────────────────────────────────────────────────────────
+# ─── QI Submission (SDK-direct) ──────────────────────────────────────────────
+
+# Lazy singletons — created on first use
+_remote_backend = None
+_local_backend = None
+
+TUNA9_BACKEND_TYPE_ID = 6
+TUNA9_POLL_INTERVAL = 10   # seconds between status checks
+TUNA9_TIMEOUT = 600        # 10 minutes max wait
+
+
+def _get_local_backend():
+    """Lazy-init the qxelarator LocalBackend."""
+    global _local_backend
+    if _local_backend is None:
+        from quantuminspire.util.api.local_backend import LocalBackend
+        _local_backend = LocalBackend()
+        log("SDK: LocalBackend (qxelarator) initialized")
+    return _local_backend
+
+
+def _get_remote_backend():
+    """Lazy-init the QI RemoteBackend (requires auth)."""
+    global _remote_backend
+    if _remote_backend is None:
+        from quantuminspire.util.api.remote_backend import RemoteBackend
+        _remote_backend = RemoteBackend()
+        log("SDK: RemoteBackend initialized")
+    return _remote_backend
+
+
+def _make_algorithm(circuit_cqasm, name="daemon_circuit"):
+    """Create a CqasmAlgorithm from a raw cQASM 3.0 string."""
+    from quantuminspire.sdk.models.cqasm_algorithm import CqasmAlgorithm
+    algo = CqasmAlgorithm(platform_name="Quantum Inspire", program_name=name)
+    algo._content = circuit_cqasm
+    return algo
+
+
+def submit_to_emulator(circuit_cqasm, shots=1024):
+    """Submit a circuit to the local qxelarator emulator via SDK.
+
+    Synchronous — returns results immediately.
+    Returns (counts_dict, error_string_or_None).
+    """
+    try:
+        backend = _get_local_backend()
+        result = backend.run_quantum(circuit_cqasm, number_of_shots=shots)
+        counts = result.results
+        log(f"EMULATOR: {shots} shots → {len(counts)} unique bitstrings")
+        return counts, None
+    except Exception as e:
+        log(f"EMULATOR ERROR: {e}")
+        return None, str(e)
+
+
+def submit_to_tuna9(circuit_cqasm, shots=1024, name="daemon_circuit"):
+    """Submit a circuit to Tuna-9 hardware via SDK.
+
+    Async: submit → poll until COMPLETED/FAILED → fetch results.
+    Returns (counts_dict, error_string_or_None).
+    """
+    try:
+        from quantuminspire.sdk.models.job_options import JobOptions
+
+        backend = _get_remote_backend()
+        algo = _make_algorithm(circuit_cqasm, name)
+        options = JobOptions(number_of_shots=shots)
+
+        job_id = backend.run(algo, backend_type_id=TUNA9_BACKEND_TYPE_ID, options=options)
+        log(f"TUNA-9: Submitted job {job_id} ({shots} shots)")
+
+        # Poll for completion
+        elapsed = 0
+        while elapsed < TUNA9_TIMEOUT:
+            time.sleep(TUNA9_POLL_INTERVAL)
+            elapsed += TUNA9_POLL_INTERVAL
+
+            job = backend.get_job(job_id)
+            status = str(getattr(job, "status", "UNKNOWN"))
+            log(f"TUNA-9: Job {job_id} status={status} ({elapsed}s elapsed)")
+
+            if status == "COMPLETED":
+                # Fetch results
+                raw = backend.get_results(job_id)
+                items = raw.items if hasattr(raw, "items") else (raw or [])
+                for item in items:
+                    if hasattr(item, "results") and item.results:
+                        log(f"TUNA-9: Job {job_id} complete — {len(item.results)} bitstrings")
+                        return item.results, None
+
+                # Results might come from final_results CLI fallback
+                log(f"TUNA-9: Job {job_id} COMPLETED but get_results empty, trying CLI fallback")
+                return _tuna9_cli_results(job_id)
+
+            elif status == "FAILED":
+                log(f"TUNA-9: Job {job_id} FAILED")
+                return None, f"Job {job_id} failed on Tuna-9"
+
+            elif not _running:
+                log(f"TUNA-9: Daemon shutdown during polling for job {job_id}")
+                return None, "Daemon shutdown during job polling"
+
+        log(f"TUNA-9: Job {job_id} timed out after {TUNA9_TIMEOUT}s")
+        return None, f"Job {job_id} timed out ({TUNA9_TIMEOUT}s)"
+
+    except Exception as e:
+        log(f"TUNA-9 ERROR: {e}")
+        return None, str(e)
+
+
+def _tuna9_cli_results(job_id):
+    """Fallback: fetch results via `qi final_results get` CLI."""
+    qi_bin = str(VENV_BIN / "qi") if (VENV_BIN / "qi").exists() else "qi"
+    try:
+        result = subprocess.run(
+            [qi_bin, "final_results", "get", str(job_id)],
+            capture_output=True, text=True, timeout=30,
+        )
+        if result.returncode != 0:
+            return None, f"CLI fallback failed: {result.stderr[:200]}"
+
+        output = result.stdout.strip()
+        for line in reversed(output.split("\n")):
+            line = line.strip()
+            if line.startswith("{") or line.startswith("'"):
+                counts = json.loads(line.replace("'", '"'))
+                return counts, None
+        return None, f"CLI fallback: could not parse output"
+    except Exception as e:
+        return None, f"CLI fallback error: {e}"
+
 
 def submit_to_qi(circuit_cqasm, shots=1024):
-    """Submit a circuit to Quantum Inspire via the SDK hybrid interface.
-
-    Uses `qi files run` for local emulator or the SDK for remote hardware.
-    Returns raw measurement counts.
-    """
+    """Legacy: Submit via `qi files run` subprocess. Kept as fallback."""
     import tempfile
 
-    # Write a hybrid file that the QI SDK expects
     hybrid_code = f'''"""Auto-generated experiment circuit."""
 from quantuminspire.sdk.quantum_interface import QuantumInterface
 
@@ -1367,32 +1493,25 @@ def finalize(results):
         f.write(hybrid_code)
         tmp_path = f.name
 
-    # Resolve qi binary — prefer venv, fall back to PATH
     qi_bin = str(VENV_BIN / "qi") if (VENV_BIN / "qi").exists() else "qi"
 
     try:
         result = subprocess.run(
             [qi_bin, "files", "run", tmp_path],
-            capture_output=True,
-            text=True,
-            timeout=120,
+            capture_output=True, text=True, timeout=120,
         )
 
         if result.returncode != 0:
             log(f"QI ERROR (exit {result.returncode}): {result.stderr[:500]}")
             return None, result.stderr[:500]
 
-        # Parse the output — QI returns JSON-like dict
         output = result.stdout.strip()
         try:
-            # Try parsing the last line as JSON (QI outputs other stuff too)
             for line in reversed(output.split("\n")):
                 line = line.strip()
                 if line.startswith("{") or line.startswith("'"):
-                    # Handle Python dict format (single quotes)
                     counts = json.loads(line.replace("'", '"'))
                     return counts, None
-            # If no JSON found, try the whole output
             log(f"QI raw output: {output[:300]}")
             return None, f"Could not parse QI output: {output[:200]}"
         except (json.JSONDecodeError, ValueError) as e:
@@ -1623,7 +1742,8 @@ def run_experiment(exp, dry_run=False):
             print(cqasm)
         return None
 
-    # Submit circuit(s) to QI
+    # Submit circuit(s) — dispatch by backend
+    backend = exp.get("backend", "emulator").lower()
     update_queue_status(exp, "running")
     submitted = datetime.now(timezone.utc).isoformat()
 
@@ -1631,14 +1751,23 @@ def run_experiment(exp, dry_run=False):
     all_errors = []
 
     for basis, cqasm in circuits.items():
-        log(f"EXPERIMENT: Submitting {exp_id} {basis} ({shots} shots)")
-        counts, error = submit_to_qi(cqasm, shots=shots)
+        log(f"EXPERIMENT: Submitting {exp_id} {basis} ({shots} shots) → {backend}")
+
+        if backend in ("emulator", "qxelarator"):
+            counts, error = submit_to_emulator(cqasm, shots=shots)
+        elif backend == "tuna-9":
+            counts, error = submit_to_tuna9(cqasm, shots=shots, name=f"{exp_id}_{basis}")
+        else:
+            # Fallback to legacy subprocess
+            log(f"EXPERIMENT: Unknown backend '{backend}', using legacy submit_to_qi")
+            counts, error = submit_to_qi(cqasm, shots=shots)
+
         if error:
             all_errors.append(f"{basis}: {error}")
             log(f"EXPERIMENT: {exp_id} {basis} failed: {error}")
         elif counts:
             all_counts[basis] = counts
-            log(f"EXPERIMENT: {exp_id} {basis} complete: {counts}")
+            log(f"EXPERIMENT: {exp_id} {basis} complete: {len(counts)} bitstrings")
 
     if not all_counts:
         log(f"EXPERIMENT: {exp_id} all submissions failed: {all_errors}")
@@ -1718,11 +1847,26 @@ def git_commit_results():
         if not status.stdout.strip():
             return False
 
-        # Stage and commit
+        # Stage results and any modified queue files (not whole dir — avoids staging stale deletions)
         subprocess.run(
-            ["git", "add", "experiments/results/", "experiments/queue/"],
+            ["git", "add", "experiments/results/"],
             cwd=str(PROJECT_DIR),
         )
+        # Only stage queue files that exist and changed (status updates)
+        queue_status = subprocess.run(
+            ["git", "status", "--porcelain", "experiments/queue/"],
+            capture_output=True, text=True, cwd=str(PROJECT_DIR),
+        )
+        if queue_status.stdout.strip():
+            modified_queue = [
+                line.split()[-1] for line in queue_status.stdout.strip().split("\n")
+                if line.strip().startswith("M ")
+            ]
+            if modified_queue:
+                subprocess.run(
+                    ["git", "add"] + modified_queue,
+                    cwd=str(PROJECT_DIR),
+                )
         ts = datetime.now().strftime("%Y-%m-%d %H:%M")
         subprocess.run(
             ["git", "commit", "-m", f"experiment results [{ts}]"],
@@ -1826,7 +1970,11 @@ def show_status():
     if results:
         print(f"\n  Latest results:")
         for r in results[-5:]:
+            if not isinstance(r, dict):
+                continue
             analysis = r.get("analysis", {})
+            if not isinstance(analysis, dict):
+                analysis = {}
             metric = ""
             if "fidelity" in analysis:
                 metric = f"fidelity={analysis['fidelity']:.1%}"

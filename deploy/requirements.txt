@@ -1,0 +1,7 @@
+# Experiment daemon dependencies for VPS deployment
+quantuminspire==3.5.1
+qxelarator
+pennylane
+numpy
+scipy
+gitpython
