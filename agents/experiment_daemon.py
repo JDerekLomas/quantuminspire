@@ -1627,16 +1627,39 @@ def finalize(results):
 
 # ─── Analysis ────────────────────────────────────────────────────────────────
 
+def _extract_qubit_bits(bitstring, qubits):
+    """Extract bits for specific physical qubits from a full-width bitstring.
+
+    Bitstring is MSB-first: bit[N-1]...bit[1]bit[0].
+    Returns a string of just the relevant qubit values, in the order given.
+    """
+    result = ""
+    for q in qubits:
+        if q < len(bitstring):
+            result += bitstring[-(q + 1)]
+        else:
+            result += "0"
+    return result
+
+
 def analyze_bell(counts, params):
     """Analyze Bell state measurement results."""
     total = sum(counts.values())
     if total == 0:
         return {"error": "No measurement results"}
 
+    qubits = params.get("qubits", [0, 1])
+
     # For Bell state |Phi+> = (|00> + |11>) / sqrt(2)
-    # Ideal: 50% |00>, 50% |11>, 0% |01>, 0% |10>
-    correct = counts.get("00", 0) + counts.get("11", 0)
-    leakage = counts.get("01", 0) + counts.get("10", 0)
+    # Extract only the relevant qubit bits from full-width bitstrings
+    correct = 0
+    leakage = 0
+    for bs, count in counts.items():
+        bits = _extract_qubit_bits(bs, qubits)
+        if bits in ("00", "11"):
+            correct += count
+        else:
+            leakage += count
     fidelity = correct / total
 
     return {
@@ -1657,6 +1680,7 @@ def analyze_bell(counts, params):
 def analyze_ghz(counts, params):
     """Analyze GHZ state measurement results."""
     n = params.get("num_qubits", 3)
+    qubits = params.get("qubits", list(range(n)))
     total = sum(counts.values())
     if total == 0:
         return {"error": "No measurement results"}
@@ -1665,14 +1689,13 @@ def analyze_ghz(counts, params):
     all_zeros = "0" * n
     all_ones = "1" * n
 
-    # Handle variable-length bitstrings from different backends
+    # Handle variable-length bitstrings — extract only relevant qubit bits
     correct = 0
     wrong = 0
     parity_dist = {"even": 0, "odd": 0}
 
     for bitstring, count in counts.items():
-        # Trim or pad to n qubits
-        bits = bitstring[-n:] if len(bitstring) >= n else bitstring.zfill(n)
+        bits = _extract_qubit_bits(bitstring, qubits)
         parity = sum(int(b) for b in bits) % 2
         parity_dist["even" if parity == 0 else "odd"] += count
 
@@ -1702,15 +1725,18 @@ def analyze_ghz(counts, params):
     }
 
 
-def parity_postselect(counts):
+def parity_postselect(counts, qubits=None):
     """Filter Z-basis counts to odd-parity bitstrings only.
 
     For BK-reduced 2-qubit H2, valid states are |01> and |10> (odd parity).
     Even-parity states (|00>, |11>) are leakage from hardware noise.
+    Uses physical qubit indices to extract the correct bits.
     """
+    if qubits is None:
+        qubits = [0, 1]
     filtered = {}
     for bs, count in counts.items():
-        bits = bs[-2:]
+        bits = _extract_qubit_bits(bs, qubits)
         parity = int(bits[0]) ^ int(bits[1])
         if parity == 1:  # odd parity = valid
             filtered[bs] = count
@@ -1735,13 +1761,19 @@ def analyze_vqe(all_counts, params):
     g4 = params.get("g4", 0.090466)
     g5 = params.get("g5", 0.090466)
 
+    qubits = params.get("qubits", [0, 1])
+
     def expectation_from_counts(counts, total):
-        """Compute <Z0>, <Z1>, <Z0Z1> from bitstring counts."""
+        """Compute <Z0>, <Z1>, <Z0Z1> from bitstring counts.
+
+        Uses physical qubit indices to extract the correct bits from
+        full-width bitstrings (e.g. qubits [2,4] produce 5-bit strings).
+        """
         z0, z1, z0z1 = 0, 0, 0
         for bitstring, count in counts.items():
-            bits = bitstring[-2:]
-            b0 = int(bits[-1])
-            b1 = int(bits[-2])
+            bits = _extract_qubit_bits(bitstring, qubits)
+            b0 = int(bits[0])  # first qubit in list
+            b1 = int(bits[1])  # second qubit in list
             z0 += (1 - 2 * b0) * count
             z1 += (1 - 2 * b1) * count
             z0z1 += (1 - 2 * b0) * (1 - 2 * b1) * count
@@ -1770,7 +1802,7 @@ def analyze_vqe(all_counts, params):
     energy_raw = g0 + g1 * exp_z0 + g2 * exp_z1 + g3 * exp_z0z1 + g4 * exp_x0x1 + g5 * exp_y0y1
 
     # Post-selected energy (filter Z-basis to odd-parity only)
-    z_filtered = parity_postselect(z_counts)
+    z_filtered = parity_postselect(z_counts, qubits)
     z_kept = sum(z_filtered.values())
     keep_fraction = z_kept / total_z if total_z > 0 else 0
 
