@@ -7,7 +7,7 @@ export const posts: BlogPost[] = [
     subtitle: 'AI agents reproduced 14 published claims across emulator, IBM Torino, and Tuna-9 hardware. The gaps tell us more than the successes.',
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
-    category: 'research',
+    category: 'experiment',
     tags: ['replication', 'VQE', 'quantum volume', 'IBM Quantum', 'Tuna-9', 'reproducibility', 'hardware noise'],
     heroImage: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1200&q=80',
     heroCaption: 'Replication is the foundation of science. In quantum computing, the gap between published results and reproduced results reveals how much hardware matters.',
