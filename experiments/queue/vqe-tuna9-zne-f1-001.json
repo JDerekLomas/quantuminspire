@@ -1,0 +1,24 @@
+{
+  "id": "vqe-tuna9-zne-f1-001",
+  "type": "vqe_h2",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T19:00:00Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "alpha": -0.2234,
+    "qubits": [2, 4],
+    "cnot_folds": 1,
+    "g0": -0.321124,
+    "g1": 0.397937,
+    "g2": -0.397937,
+    "g3": 0.0,
+    "g4": 0.090466,
+    "g5": 0.090466,
+    "fci_energy": -1.137306
+  },
+  "priority": 1,
+  "research_question": "ZNE noise level 1 (baseline, 1 CNOT). Paired with f3/f5 to enable Richardson extrapolation. Can ZNE bring Tuna-9 VQE below chemical accuracy (1.6 kcal/mol)?",
+  "description": "VQE H2 at R=0.735A on Tuna-9, q[2,4], 1 CNOT fold (noise level 1). Part of ZNE triplet."
+}

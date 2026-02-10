@@ -210,15 +210,25 @@ def _vqe_ansatz_block(params):
 
     Accepts either 'alpha' (preferred) or legacy 'theta' parameter.
     For equilibrium H2 (R=0.735A), optimal alpha ~ -0.2235.
+
+    Gate folding (ZNE): If cnot_folds > 1, repeats CNOT an odd number of
+    times. Since CNOT is self-inverse, CNOT^(2k+1) = CNOT logically, but
+    on real hardware each gate accumulates noise. This enables zero-noise
+    extrapolation by running at noise levels 1, 3, 5, ... and extrapolating
+    to noise level 0.
     """
     alpha = params.get("alpha", params.get("theta", -0.2235))
     qubits = params.get("qubits", [0, 1])
+    cnot_folds = params.get("cnot_folds", 1)
     q = qubits
+    # Build CNOT block with folding
+    cnot_line = f"CNOT q[{q[0]}], q[{q[1]}]"
+    cnot_lines = [cnot_line] * cnot_folds
     lines = [
-        f"// Subspace-preserving ansatz: Ry-CNOT-X",
+        f"// Subspace-preserving ansatz: Ry-CNOT-X (cnot_folds={cnot_folds})",
         f"// State = cos(a/2)|10> + sin(a/2)|01>, alpha={alpha:.6f}",
         f"Ry({alpha:.6f}) q[{q[0]}]",
-        f"CNOT q[{q[0]}], q[{q[1]}]",
+    ] + cnot_lines + [
         f"X q[{q[0]}]",
     ]
     return q, lines
