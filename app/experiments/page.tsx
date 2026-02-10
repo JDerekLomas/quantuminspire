@@ -77,7 +77,7 @@ function FidelityBar({ value, label }: { value: number; label: string }) {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs font-mono">
-        <span className="text-gray-500">{label}</span>
+        <span className="text-gray-400">{label}</span>
         <span style={{ color }}>{pct}%</span>
       </div>
       <div className="w-full h-2 rounded-full bg-white/5 overflow-hidden">
@@ -106,7 +106,7 @@ function CountsBar({ counts, total, accentColor }: { counts: Record<string, numb
                 style={{ width: `${pct}%`, backgroundColor: accentColor || colors[i % colors.length] }}
               />
             </div>
-            <span className="text-gray-400 w-20 text-right">{count} ({pct.toFixed(1)}%)</span>
+            <span className="text-gray-300 w-20 text-right">{count} ({pct.toFixed(1)}%)</span>
           </div>
         )
       })}
@@ -117,8 +117,8 @@ function CountsBar({ counts, total, accentColor }: { counts: Record<string, numb
 function EmulatorNote() {
   return (
     <div className="mt-3 px-3 py-2 rounded bg-yellow-500/5 border border-yellow-500/10">
-      <p className="text-[11px] text-yellow-400/80 font-mono leading-relaxed">
-        Emulator (noiseless) -- run on hardware to see real noise effects
+      <p className="text-[11px] text-yellow-300 font-mono leading-relaxed">
+        This ran on a noiseless emulator. Hardware results will show real noise effects.
       </p>
     </div>
   )
@@ -172,9 +172,9 @@ function SummaryDashboard({ results }: { results: ExperimentResult[] }) {
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       {metrics.map(m => (
         <div key={m.label} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
-          <p className="text-[10px] font-mono text-gray-500 uppercase tracking-wider mb-1">{m.label}</p>
+          <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">{m.label}</p>
           <p className="text-xl font-mono font-bold" style={{ color: m.color }}>{m.value}</p>
-          {m.sub && <p className="text-[10px] font-mono text-gray-600 mt-0.5 truncate">{m.sub}</p>}
+          {m.sub && <p className="text-[10px] font-mono text-gray-400 mt-0.5 truncate">{m.sub}</p>}
         </div>
       ))}
     </div>
@@ -225,7 +225,7 @@ function EnergyLevelDiagram({ result, comparisonResult }: { result: ExperimentRe
 
   return (
     <div className="mt-4">
-      <p className="text-[10px] font-mono text-gray-500 uppercase tracking-wider mb-2">Energy Level Diagram</p>
+      <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Energy Level Diagram</p>
       <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full max-w-lg" xmlns="http://www.w3.org/2000/svg">
         {/* Background */}
         <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="4" />
@@ -429,7 +429,7 @@ function BellCard({ result }: { result: ExperimentResult }) {
         <CountsBar counts={counts} total={total} />
       </div>
       {analysis.interpretation && (
-        <p className="text-xs text-gray-400 mt-3 leading-relaxed">{analysis.interpretation}</p>
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
       )}
       {perfectFidelity && <EmulatorNote />}
       {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
@@ -478,7 +478,7 @@ function GHZCard({ result }: { result: ExperimentResult }) {
         <CountsBar counts={counts} total={total} />
       </div>
       {analysis.interpretation && (
-        <p className="text-xs text-gray-400 mt-3 leading-relaxed">{analysis.interpretation}</p>
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
       )}
       {perfectFidelity && <EmulatorNote />}
       {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
@@ -512,11 +512,11 @@ function VQECard({ result, comparisonResult }: { result: ExperimentResult; compa
           {/* Energy metrics */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white/[0.02] rounded p-3">
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-wider mb-1">Measured Energy</p>
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">Measured Energy</p>
               <p className="text-lg font-mono text-white">{analysis.energy_hartree.toFixed(4)} <span className="text-xs text-gray-500">Ha</span></p>
             </div>
             <div className="bg-white/[0.02] rounded p-3">
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-wider mb-1">FCI Reference</p>
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">FCI Reference</p>
               <p className="text-lg font-mono text-gray-400">{analysis.fci_energy.toFixed(4)} <span className="text-xs text-gray-500">Ha</span></p>
             </div>
           </div>
@@ -547,7 +547,7 @@ function VQECard({ result, comparisonResult }: { result: ExperimentResult; compa
           {/* Expectation values */}
           {analysis.expectation_values && (
             <div>
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-wider mb-2">Expectation Values</p>
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Expectation Values</p>
               <div className="grid grid-cols-5 gap-2">
                 {Object.entries(analysis.expectation_values as Record<string, number>).map(([op, val]) => (
                   <div key={op} className="text-center bg-white/[0.02] rounded p-2">
@@ -567,7 +567,7 @@ function VQECard({ result, comparisonResult }: { result: ExperimentResult; compa
       )}
 
       {analysis.interpretation && (
-        <p className="text-xs text-gray-400 mt-3 leading-relaxed">{analysis.interpretation}</p>
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
       )}
 
       {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
@@ -721,24 +721,24 @@ export default function ExperimentsPage() {
           <div className="flex flex-wrap gap-6 text-sm font-mono">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#00ff88]" />
-              <span className="text-gray-500">{stats.completed} completed</span>
+              <span className="text-gray-300">{stats.completed} completed</span>
             </div>
             {stats.pending > 0 && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-yellow-400" />
-                <span className="text-gray-500">{stats.pending} pending</span>
+                <span className="text-gray-300">{stats.pending} pending</span>
               </div>
             )}
             {stats.running > 0 && (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                <span className="text-gray-500">{stats.running} running</span>
+                <span className="text-gray-300">{stats.running} running</span>
               </div>
             )}
             {stats.lastRun && (
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">Last run:</span>
-                <span className="text-gray-400">{new Date(stats.lastRun).toLocaleDateString()}</span>
+                <span className="text-gray-400">Last run:</span>
+                <span className="text-gray-300">{new Date(stats.lastRun).toLocaleDateString()}</span>
               </div>
             )}
           </div>
@@ -761,7 +761,7 @@ export default function ExperimentsPage() {
                 <span className="text-xs font-mono text-gray-600">{group.results.length} result{group.results.length !== 1 ? 's' : ''}</span>
               </div>
               {group.description && (
-                <p className="text-sm text-gray-500 mb-6 ml-5">{group.description}</p>
+                <p className="text-sm text-gray-300 mb-6 ml-5 max-w-3xl leading-relaxed">{group.description}</p>
               )}
 
               {isVQE ? (
@@ -827,13 +827,18 @@ export default function ExperimentsPage() {
       {/* How it works */}
       <section className="px-6 pb-20 border-t border-white/5 pt-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-6">How It Works</h2>
+          <h2 className="text-xl font-bold text-white mb-3">How It Works</h2>
+          <p className="text-sm text-gray-300 mb-6 max-w-3xl leading-relaxed">
+            An autonomous Python daemon processes a queue of experiments. It generates quantum circuits,
+            submits them to real hardware, analyzes the measurement results, and publishes everything
+            to this page -- no human intervention required.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { step: '1', title: 'Queue', desc: 'JSON experiment definitions in experiments/queue/', color: '#eab308' },
-              { step: '2', title: 'Generate', desc: 'Daemon generates cQASM 3.0 circuits for QI hardware', color: '#00d4ff' },
-              { step: '3', title: 'Execute', desc: 'Circuits submitted to Quantum Inspire (Tuna-9) or IBM Quantum', color: '#8b5cf6' },
-              { step: '4', title: 'Analyze', desc: 'Results analyzed, committed to git, dashboard auto-updates', color: '#00ff88' },
+              { step: '1', title: 'Queue', desc: 'Experiments are defined as structured descriptions -- what to measure, which backend, how many shots.', color: '#eab308' },
+              { step: '2', title: 'Generate', desc: 'The daemon translates each experiment into a quantum circuit written in cQASM 3.0 (the native instruction set for Quantum Inspire hardware).', color: '#00d4ff' },
+              { step: '3', title: 'Execute', desc: 'Circuits are submitted to real quantum processors: Quantum Inspire\'s Tuna-9 (9 superconducting qubits) or IBM Quantum (100+ qubits).', color: '#8b5cf6' },
+              { step: '4', title: 'Analyze', desc: 'Raw measurement counts are processed into physical quantities -- fidelities, energies, error rates -- then published here automatically.', color: '#00ff88' },
             ].map(s => (
               <div key={s.step} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -842,7 +847,7 @@ export default function ExperimentsPage() {
                   </span>
                   <span className="text-white font-bold text-sm">{s.title}</span>
                 </div>
-                <p className="text-xs text-gray-500">{s.desc}</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
