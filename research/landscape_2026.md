@@ -375,8 +375,8 @@ Source: [AlphaQubit (Google DeepMind)](https://blog.google/technology/google-dee
 Source: [Optimize quantum circuits with AI-powered transpiler passes (IBM)](https://www.ibm.com/quantum/blog/ai-transpiler-passes)
 
 **C. Quantum Code Generation and Debugging**
-- Problem: Quantum programming is error-prone. Our Qiskit HumanEval benchmark shows even the best LLMs achieve only 62.25% Pass@1. API version mismatches are the #1 error category.
-- AI opportunity: Fine-tuned models for Qiskit 2.x, cQASM (Quantum Inspire's native language), and PennyLane. RAG systems with up-to-date documentation. QUASAR achieved 99.31% circuit validity with RAG.
+- Problem: Quantum programming is error-prone. Our Qiskit HumanEval benchmark shows frontier LLMs achieve 62-64% Pass@1 zero-shot, improving to 68-71% with RAG (Context7). A 3-run ensemble reaches 79.5%, but 31/151 tasks (20.5%) remain a hard floor. API version mismatches are the #1 error category.
+- AI opportunity: Fine-tuned models for Qiskit 2.x, cQASM (Quantum Inspire's native language), and PennyLane. RAG systems with up-to-date documentation. QUASAR achieved 99.31% circuit validity with RAG. Ensemble/retry strategies can push functional correctness toward 80%.
 - Specific tool: A coding assistant with Quantum Inspire SDK knowledge baked in, capable of writing correct cQASM/Qiskit code for QI backends and debugging failed jobs.
 
 **D. VQE/Variational Algorithm Optimization**

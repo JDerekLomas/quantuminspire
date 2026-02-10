@@ -128,14 +128,17 @@ The replication crisis exists in quantum computing too — most published result
 
 Using the Qiskit HumanEval benchmark (151 tasks, 3 difficulty levels):
 
-| Model | Pass@1 | Basic (79) | Intermediate (67) | Difficult (5) |
-|---|---|---|---|---|
-| Claude Opus 4.6 | 63.58% (96/151) | 67.09% | 62.69% | 20.0% |
-| Gemini 3 Flash | 62.25% (94/151) | 65.82% | 62.69% | 0.0% |
+| Model | Pass@1 | Notes |
+|---|---|---|
+| Claude Opus 4.6 (baseline) | 63.6% (96/151) | Zero-shot |
+| Gemini 3 Flash (baseline) | 62.3% (94/151) | Zero-shot |
+| Claude Opus 4.6 + Context7 RAG | 70.9% (107/151) | +14% relative |
+| Gemini 3 Flash + Context7 RAG | 68-71% (103-107/151) | 2.7pp run-to-run variance at temp=0 |
+| 3-run ensemble (union) | 79.5% (120/151) | Hard floor: 31 tasks unsolved by any run |
 
-Error analysis of 57 failures: 13 wrong answers (23%), 11 syntax errors, 9 SamplerV2 API mismatch, 6 auth/runtime, 5 attribute errors, 4 type errors, 9 other.
+Failure taxonomy (34 core failures — both models fail with RAG): 41% logic errors, 26% API staleness, 3% type signature, 29% other.
 
-**Key insight**: The dominant failure mode is API version staleness (Qiskit 2.x breaking changes), not algorithmic misunderstanding.
+**Key insights**: (1) RAG fixes API staleness but not reasoning errors. (2) Temperature=0 does not guarantee determinism — 16/151 tasks (10.6%) are flaky. (3) Union of 3 runs reaches 79.5%, but majority vote only 71.5% (high inter-run correlation).
 
 #### 4. QRNG Certification
 

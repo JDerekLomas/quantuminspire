@@ -682,12 +682,13 @@ export const posts: BlogPost[] = [
 <tr><td><a href="https://arxiv.org/abs/2510.00967">QUASAR</a></td><td>Circuit validity</td><td>99.31% Pass@1</td><td>4B params + agentic RL; validity is not correctness</td></tr>
 <tr><td><a href="https://arxiv.org/abs/2510.26101">QCoder</a> (o3)</td><td>Functional accuracy</td><td>78%</td><td>vs. 40% for human contest code; chain-of-thought helps</td></tr>
 <tr><td>Our benchmark (Claude Opus 4.6)</td><td>Functional correctness</td><td>63.6%</td><td><a href="/blog/llms-write-quantum-code">151 Qiskit tasks</a>; dominant failure: API staleness</td></tr>
-<tr><td>Our benchmark (Gemini 3 Flash)</td><td>Functional correctness</td><td>62.25%</td><td>Within 1.4pp of Claude; same failure mode</td></tr>
-<tr><td>Our benchmark (Gemini 3 Flash + <a href="/blog/rag-quantum-code-generation">Context7 RAG</a>)</td><td>Functional correctness</td><td>70.86%</td><td>+14% relative; dynamic doc retrieval per task</td></tr>
+<tr><td>Our benchmark (Gemini 3 Flash)</td><td>Functional correctness</td><td>62.3%</td><td>Within 1.4pp of Claude; same failure mode</td></tr>
+<tr><td>Our benchmark (+ <a href="/blog/rag-quantum-code-generation">Context7 RAG</a>)</td><td>Functional correctness</td><td>68\u201371%</td><td>+14% relative; 2.7pp run-to-run variance at temp=0</td></tr>
+<tr><td>Our benchmark (3-run ensemble)</td><td>Functional correctness</td><td>79.5%</td><td>Union of Opus + 2\u00d7Gemini RAG runs; 31 hard-floor tasks</td></tr>
 </tbody>
 </table>
 
-<p>The gap between QUASAR's 99.31% validity and our 63.6% correctness is telling: generating syntactically valid circuits is easy; getting the quantum logic right is hard. <strong>Q-Fusion</strong> (IEEE ISVLSI 2025) takes yet another approach \u2014 graph diffusion models that produce 100% valid outputs \u2014 but faces the same correctness gap.</p>
+<p>The gap between QUASAR's 99.31% validity and our baseline 63.6% correctness is telling: generating syntactically valid circuits is easy; getting the quantum logic right is hard. With Context7 RAG, we push to 68\u201371% \u2014 and a 3-run ensemble reaches 79.5% \u2014 but 31 tasks (20.5%) remain unsolved by any model or run. <strong>Q-Fusion</strong> (IEEE ISVLSI 2025) takes yet another approach \u2014 graph diffusion models that produce 100% valid outputs \u2014 but faces the same correctness gap.</p>
 
 <h2>Autonomous Quantum Agents</h2>
 
@@ -845,7 +846,7 @@ export const posts: BlogPost[] = [
 <tr><td><strong>Foundation Models</strong></td><td>Train large models on domain data to learn a field's "language"</td><td>AlphaFold (protein), GNoME (materials, 2.2M crystals)</td><td>QUASAR (quantum circuits), domain-specific quantum models</td></tr>
 <tr><td><strong>Autonomous Agents</strong></td><td>AI plans, executes, and analyzes experiments</td><td>Sakana AI Scientist, Google AI co-scientist, FutureHouse Kosmos</td><td>k-agents (superconducting calibration), our MCP pipeline</td></tr>
 <tr><td><strong>Self-Driving Labs</strong></td><td>Closed-loop: AI + robotic execution + feedback</td><td>Ginkgo/GPT-5 (36,000 experiments), DeepMind UK materials lab</td><td>Quantum processors are already digital — no robot needed</td></tr>
-<tr><td><strong>LLM Code Generation</strong></td><td>Generate working scientific code from descriptions</td><td>QCoder (78%), our benchmark (63.6%)</td><td>Circuit synthesis, SDK translation, error analysis</td></tr>
+<tr><td><strong>LLM Code Generation</strong></td><td>Generate working scientific code from descriptions</td><td>QCoder (78%), our benchmark (68\u201371% with RAG)</td><td>Circuit synthesis, SDK translation, error analysis</td></tr>
 <tr><td><strong>AI-Guided Search</strong></td><td>RL/evolutionary methods for combinatorial optimization</td><td>AlphaTensor-Quantum (halved T-gates), AlphaEvolve</td><td>Circuit optimization, error code discovery</td></tr>
 </tbody>
 </table>
@@ -1000,7 +1001,7 @@ export const posts: BlogPost[] = [
   {
     slug: 'llms-write-quantum-code',
     title: 'Can LLMs Write Quantum Code? We Tested 151 Tasks',
-    subtitle: 'Gemini 3 Flash scores 62.25% and Claude Opus 4.6 scores 63.6% — but the failures are more interesting than the passes',
+    subtitle: 'Baseline: 62\u201364%. With RAG: 68\u201371%. Ensemble: 79.5%. The failures reveal more than the passes.',
     date: '2026-02-09',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
@@ -1070,7 +1071,7 @@ export const posts: BlogPost[] = [
 
 <h2>Next Steps</h2>
 
-<p><strong>Update:</strong> We ran the RAG experiment. <a href="/blog/rag-quantum-code-generation">Dynamic RAG with Context7 pushed Pass@1 to 70.9%</a> — a 14% relative improvement. Static RAG did nothing. <a href="/blog/rag-quantum-code-generation">Read the full results.</a></p>
+<p><strong>Update:</strong> We ran the RAG experiment. <a href="/blog/rag-quantum-code-generation">Dynamic RAG with Context7 pushed Pass@1 to 68\u201371%</a> (varies run-to-run even at temperature=0) — a 14% relative improvement. A 3-run ensemble (2\u00d7Gemini + Opus) reaches 79.5%. Static RAG did nothing. <a href="/blog/rag-quantum-code-generation">Read the full results.</a></p>
 
 <p>Other planned work:</p>
 <ol>

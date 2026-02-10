@@ -211,11 +211,17 @@ We ran the existing Qiskit HumanEval benchmark (151 code completion tasks) to es
 | QuanBench frontier models | <40% | -- | -- | -- | Zero-shot |
 | **Gemini 3 Flash Preview** | **62.3%** | 65.8% | 62.7% | 0.0% | Zero-shot, Feb 2026 |
 | **Claude Opus 4.6** | **63.6%** | 67.1% | 62.7% | 20.0% | Zero-shot via CLI, Feb 2026 |
+| **Gemini 3 Flash + Context7** | **68-71%** | -- | -- | -- | RAG, 2 runs (70.9%, 68.2%), Feb 2026 |
+| **Claude Opus 4.6 + Context7** | **70.9%** | -- | -- | -- | RAG, single run, Feb 2026 |
+| **3-model ensemble (union)** | **79.5%** | -- | -- | -- | Union of all 3 RAG runs |
 
 Key findings from baseline:
 - General-purpose frontier models now **beat fine-tuned quantum-specific models** at Qiskit code generation
 - Both Gemini and Claude fail at "difficult" tasks that require multi-step reasoning or obscure API knowledge
 - Common failure modes: deprecated Qiskit 2.x APIs (SamplerV2 signature), endianness confusion, incorrect parameter binding
+- **Context7 RAG improves both models by ~14% relative** — dynamic per-task doc retrieval beats static documentation
+- **Run-to-run variance is ~2.7pp** even at temperature=0 (16/151 tasks are flaky)
+- **Union of 3 runs reaches 79.5%** — 31 tasks (20.5%) remain a hard floor that no model/run solves
 - **This is exactly why we need QuantumAgentBench** — code completion is becoming trivial; the hard part is debugging, reasoning, and hardware awareness
 
 ## Implementation Plan
