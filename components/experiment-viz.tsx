@@ -32,13 +32,15 @@ export function backendLabel(backend: string): { label: string; isHw: boolean } 
   return { label: backend, isHw: false }
 }
 
-export function flatCounts(raw: Record<string, any>): Record<string, number> {
+export function flatCounts(raw: Record<string, any> | null | undefined): Record<string, number> {
+  if (!raw) return {}
   const first = Object.values(raw)[0]
   if (typeof first === 'object' && first !== null) return first as Record<string, number>
   return raw as Record<string, number>
 }
 
-export function hasMultiBasis(raw: Record<string, any>): boolean {
+export function hasMultiBasis(raw: Record<string, any> | null | undefined): boolean {
+  if (!raw) return false
   return 'z_basis' in raw && 'x_basis' in raw && 'y_basis' in raw
 }
 
