@@ -1,0 +1,152 @@
+{
+  "id": "readout-cal-emulator-q24-001",
+  "type": "readout_calibration",
+  "backend": "emulator",
+  "submitted": "2026-02-10T19:23:53.762779+00:00",
+  "completed": "2026-02-10T19:23:53.821177+00:00",
+  "parameters": {
+    "shots": 4096,
+    "qubits": [
+      2,
+      4
+    ]
+  },
+  "raw_counts": {
+    "prep_00": {
+      "00000": 4096.0
+    },
+    "prep_01": {
+      "10000": 4096.0
+    },
+    "prep_10": {
+      "00100": 4096.0
+    },
+    "prep_11": {
+      "10100": 4096.0
+    }
+  },
+  "analysis": {
+    "confusion_matrix_4x4": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "confusion_matrix_q0": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "confusion_matrix_q1": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "inverse_matrix_q0": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "inverse_matrix_q1": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "inverse_matrix_4x4": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "readout_errors": {
+      "q2_flip_0to1": 0.0,
+      "q2_flip_1to0": 0.0,
+      "q2_total_error": 0.0,
+      "q4_flip_0to1": 0.0,
+      "q4_flip_1to0": 0.0,
+      "q4_total_error": 0.0
+    },
+    "max_crosstalk": 0.0,
+    "qubits": [
+      2,
+      4
+    ],
+    "state_distributions": {
+      "prep_00": {
+        "00": 4096.0
+      },
+      "prep_01": {
+        "01": 4096.0
+      },
+      "prep_10": {
+        "10": 4096.0
+      },
+      "prep_11": {
+        "11": 4096.0
+      }
+    },
+    "interpretation": "Readout calibration q[2,4]: q2 error 0.0% (0\u21921: 0.00%, 1\u21920: 0.00%), q4 error 0.0% (0\u21921: 0.00%, 1\u21920: 0.00%). Cross-talk: 0.0000. Low cross-talk \u2014 qubits are independent."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[5] q\nbit[5] b\n\n// Readout calibration: prepare |00> on q[2],q[4]\nb = measure q",
+  "errors": null
+}
