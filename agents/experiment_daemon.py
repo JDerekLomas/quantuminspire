@@ -411,8 +411,12 @@ def analyze_rb(all_counts, params):
             total = sum(counts.values())
             if total == 0:
                 continue
-            # Survival = probability of measuring |0>
-            p0 = counts.get("0", 0) + counts.get("00", 0)
+            # Survival = probability of measuring |0> on the target qubit
+            p0 = 0
+            for bitstring, count in counts.items():
+                bit = _extract_qubit_bits(bitstring, [qubit])
+                if bit == "0":
+                    p0 += count
             probs.append(p0 / total)
         if probs:
             survival[m] = sum(probs) / len(probs)
