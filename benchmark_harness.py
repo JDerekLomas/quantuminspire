@@ -67,6 +67,7 @@ Here is a reference of current correct APIs:
 
 CONTEXT7_LIBS = ["/qiskit/qiskit", "/qiskit/qiskit-ibm-runtime"]
 CONTEXT7_TOKENS = 1500  # max tokens of docs to retrieve per library
+CONTEXT7_CACHE_FILE = Path("benchmark_results/context7_cache.json")
 
 
 def load_cheatsheet():
@@ -87,6 +88,7 @@ def query_context7(task_prompt, tokens=CONTEXT7_TOKENS):
 
     # Extract key terms from the task prompt (function name + imports + docstring)
     snippets = []
+    api_key = os.environ.get("CONTEXT7_API_KEY", "")
     for lib_id in CONTEXT7_LIBS:
         query = urllib.parse.urlencode({
             "libraryId": lib_id,
@@ -96,14 +98,94 @@ def query_context7(task_prompt, tokens=CONTEXT7_TOKENS):
         url = f"https://context7.com/api/v2/context?{query}"
         try:
             req = urllib.request.Request(url)
-            with urllib.request.urlopen(req, timeout=10) as resp:
+            if api_key:
+                req.add_header("Authorization", f"Bearer {api_key}")
+            with urllib.request.urlopen(req, timeout=15) as resp:
                 text = resp.read().decode()
                 if text.strip():
                     snippets.append(text.strip())
         except Exception as e:
-            # Don't let Context7 failures block the benchmark
-            print(f"  [context7 warning: {lib_id}: {e}]")
+            if "429" in str(e):
+                # Rate limited — wait and retry once
+                print(f"  [context7 rate limited, waiting 65s...]")
+                time.sleep(65)
+                try:
+                    req2 = urllib.request.Request(url)
+                    if api_key:
+                        req2.add_header("Authorization", f"Bearer {api_key}")
+                    with urllib.request.urlopen(req2, timeout=15) as resp2:
+                        text = resp2.read().decode()
+                        if text.strip():
+                            snippets.append(text.strip())
+                except Exception as e2:
+                    print(f"  [context7 retry failed: {lib_id}: {e2}]")
+            else:
+                print(f"  [context7 warning: {lib_id}: {e}]")
     return "\n\n---\n\n".join(snippets) if snippets else ""
+
+
+def build_context7_cache(hard=False, delay=65):
+    """Pre-fetch Context7 docs for all tasks with rate-limiting delays.
+
+    Saves a JSON cache mapping task_id -> docs string.
+    Respects Context7's 60 req/hour free tier by waiting between requests.
+    """
+    tasks = load_dataset(hard=hard)
+    cache = {}
+    if CONTEXT7_CACHE_FILE.exists():
+        with open(CONTEXT7_CACHE_FILE) as f:
+            cache = json.load(f)
+        print(f"Loaded existing cache with {len(cache)} entries")
+
+    remaining = [t for t in tasks if t["task_id"] not in cache]
+    print(f"Need to fetch {len(remaining)} tasks ({len(cache)} already cached)")
+
+    for i, task in enumerate(remaining):
+        task_id = task["task_id"]
+        print(f"[{i+1}/{len(remaining)}] Fetching docs for {task_id}...")
+        docs = query_context7(task["prompt"])
+        if docs:
+            cache[task_id] = docs
+            print(f"  Got {len(docs)} chars")
+        else:
+            print(f"  WARNING: No docs returned (rate limited?)")
+            # Save progress and wait longer
+            with open(CONTEXT7_CACHE_FILE, "w") as f:
+                json.dump(cache, f)
+            print(f"  Saved {len(cache)} cached entries. Waiting {delay*2}s...")
+            time.sleep(delay * 2)
+            # Retry once
+            docs = query_context7(task["prompt"])
+            if docs:
+                cache[task_id] = docs
+                print(f"  Retry OK: {len(docs)} chars")
+            else:
+                print(f"  Retry failed. Skipping.")
+                continue
+
+        # Save checkpoint
+        if (i + 1) % 5 == 0:
+            with open(CONTEXT7_CACHE_FILE, "w") as f:
+                json.dump(cache, f)
+            print(f"  [checkpoint: {len(cache)} cached]")
+
+        # Rate limit: ~1 request per minute (we make 2 per task to 2 libs)
+        if i < len(remaining) - 1:
+            print(f"  Waiting {delay}s for rate limit...")
+            time.sleep(delay)
+
+    with open(CONTEXT7_CACHE_FILE, "w") as f:
+        json.dump(cache, f)
+    print(f"\nDone! Cache has {len(cache)}/{len(tasks)} tasks")
+    return cache
+
+
+def load_context7_cache():
+    """Load pre-built Context7 cache."""
+    if CONTEXT7_CACHE_FILE.exists():
+        with open(CONTEXT7_CACHE_FILE) as f:
+            return json.load(f)
+    return {}
 
 
 def load_dataset(hard=False):
@@ -128,7 +210,7 @@ def detect_provider(model):
     return "google"
 
 
-def call_llm(prompt, hard=False, model=MODEL, rag=False):
+def call_llm(prompt, hard=False, model=MODEL, rag=False, task_id=None, context7_cache=None):
     """Send a task prompt to the LLM and get the completion."""
     provider = detect_provider(model)
     system = SYSTEM_PROMPT_HARD if hard else SYSTEM_PROMPT
@@ -138,7 +220,12 @@ def call_llm(prompt, hard=False, model=MODEL, rag=False):
         if cheatsheet:
             system += RAG_SUFFIX.format(cheatsheet=cheatsheet)
     elif rag == "context7":
-        docs = query_context7(prompt)
+        # Use cache if available, otherwise fetch live
+        docs = None
+        if context7_cache and task_id and task_id in context7_cache:
+            docs = context7_cache[task_id]
+        else:
+            docs = query_context7(prompt)
         if docs:
             system += RAG_SUFFIX.format(cheatsheet=docs)
 
@@ -317,6 +404,11 @@ def run_benchmark(args):
         tasks = tasks[: args.limit]
 
     rag = getattr(args, "rag", None) or None
+    context7_cache = None
+    if rag == "context7":
+        context7_cache = load_context7_cache()
+        if context7_cache:
+            print(f"  Using Context7 cache: {len(context7_cache)} entries")
     variant = "hard" if args.hard else "standard"
     if rag:
         variant += f"_rag_{rag}"
@@ -358,7 +450,8 @@ def run_benchmark(args):
         t0 = time.time()
         try:
             completion, input_tokens, output_tokens = call_llm(
-                task["prompt"], hard=args.hard, model=model, rag=rag
+                task["prompt"], hard=args.hard, model=model, rag=rag,
+                task_id=task_id, context7_cache=context7_cache
             )
         except Exception as e:
             print(f"  API ERROR: {e}")
@@ -528,7 +621,13 @@ if __name__ == "__main__":
     parser.add_argument("--timeout", type=int, default=60, help="Exec timeout (seconds)")
     parser.add_argument("--rag", choices=["cheatsheet", "context7"], default=None,
                         help="RAG mode: 'cheatsheet' (static file) or 'context7' (dynamic per-task docs)")
+    parser.add_argument("--build-cache", action="store_true",
+                        help="Pre-fetch Context7 docs for all tasks (rate-limited, saves to cache file)")
     args = parser.parse_args()
+
+    if args.build_cache:
+        build_context7_cache(hard=args.hard)
+        sys.exit(0)
 
     if args.timeout:
         EXECUTION_TIMEOUT = args.timeout

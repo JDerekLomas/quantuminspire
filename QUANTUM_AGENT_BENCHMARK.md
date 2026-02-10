@@ -23,10 +23,10 @@ Recent results show AI is not hypothetically useful for quantum — it's already
 
 - **AlphaQubit** (Google DeepMind, 2024): Neural QEC decoder achieves lower logical error rates than previous SOTA on Google's Sycamore, but doesn't scale past distance-5 due to training data explosion
 - **AlphaTensor-Quantum** (Google DeepMind, 2024): Discovers novel circuit decompositions with 37-47% fewer T-gates than human-designed circuits
-- **IBM AI Transpiler** (2024-25): AI-driven circuit optimization achieves ~50% gate count reduction over heuristic methods on heavy-hex topologies
+- **IBM AI Transpiler** (2024-25): AI-driven circuit optimization achieves ~42% two-qubit gate count reduction over heuristic methods on heavy-hex topologies
 - **GPT-QE** (2025): LLM-guided quantum chemistry pipeline automates molecule-to-circuit workflows
 - **k-agents** (Argonne National Lab, 2025): Autonomous AI agents run real quantum experiments for hours without human intervention
-- **Quantum Inspire** (QuTech/TU Delft): The only publicly accessible spin qubit processor — a unique testbed for hardware-aware AI
+- **Quantum Inspire** (QuTech/TU Delft): Publicly accessible superconducting transmon processor (Tuna-9) — a unique testbed for hardware-aware AI
 
 The question is no longer "can AI help quantum?" but "how much, and where are the gaps?" This benchmark provides a quantitative answer.
 
@@ -248,7 +248,7 @@ This benchmark is developed at **TU Delft / QuTech** in the context of the **Qua
 
 - **IBM**: Heavy-hex topologies (Eagle 127q, Heron 156q), Qiskit 2.x migration challenges, AI transpiler advances
 - **Google**: Sycamore grid topology, Cirq framework, AlphaQubit/AlphaTensor-Quantum breakthroughs, Willow processor QEC milestones
-- **QuTech/TU Delft**: Quantum Inspire platform with the world's only publicly accessible spin qubit processor, unique noise profiles
+- **QuTech/TU Delft**: Quantum Inspire platform with publicly accessible superconducting transmon (Tuna-9) and spin qubit (Spin-2+) processors, unique noise profiles
 - **Xanadu**: PennyLane as the dominant framework for variational quantum algorithms and quantum machine learning
 - **Cross-ecosystem**: OpenQASM 3.0 as the emerging interoperability standard
 
