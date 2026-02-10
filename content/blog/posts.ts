@@ -4,21 +4,21 @@ export const posts: BlogPost[] = [
   {
     slug: 'error-mitigation-showdown',
     title: 'We Tested 15 Error Mitigation Strategies. Only One Achieved Chemical Accuracy.',
-    subtitle: 'IBM\\'s TREX hit 0.22 kcal/mol. Tuna-9\\'s best combo (REM+PS) averaged 2.52 kcal/mol. ZNE made things worse. Here\\'s what actually works for NISQ chemistry.',
+    subtitle: "IBM's TREX hit 0.22 kcal/mol. Tuna-9's best combo (REM+PS) averaged 2.52 kcal/mol. ZNE made things worse. Here's what actually works for NISQ chemistry.",
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['error mitigation', 'VQE', 'TREX', 'readout error', 'ZNE', 'post-selection', 'IBM Quantum', 'Tuna-9', 'chemical accuracy'],
     heroImage: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80',
     heroCaption: 'More mitigation does not always mean better results. The winning strategy is often the simplest one.',
-    excerpt: 'We compared 15+ error mitigation techniques across IBM Torino and Tuna-9 for H2 VQE. IBM\\'s TREX achieved chemical accuracy (0.22 kcal/mol) in a single shot. On Tuna-9, combining readout error mitigation with post-selection cut errors by 70% to 2.52 kcal/mol. But adding dynamical decoupling and twirling to TREX made IBM 45x worse. The lesson: understand your noise before stacking techniques.',
+    excerpt: "We compared 15+ error mitigation techniques across IBM Torino and Tuna-9 for H2 VQE. IBM's TREX achieved chemical accuracy (0.22 kcal/mol) in a single shot. On Tuna-9, combining readout error mitigation with post-selection cut errors by 70% to 2.52 kcal/mol. But adding dynamical decoupling and twirling to TREX made IBM 45x worse. The lesson: understand your noise before stacking techniques.",
     content: `<p>After running 50+ VQE experiments across two quantum backends, we had a nagging question: <strong>we know the hardware errors are ~7-10 kcal/mol, but where exactly is the error coming from, and what actually fixes it?</strong></p>
 
-<p>We systematically tested every error mitigation technique available to us &mdash; from simple post-selection to IBM\\'s advanced TREX readout correction to zero-noise extrapolation &mdash; and ranked them by effectiveness. The results surprised us.</p>
+<p>We systematically tested every error mitigation technique available to us &mdash; from simple post-selection to IBM's advanced TREX readout correction to zero-noise extrapolation &mdash; and ranked them by effectiveness. The results surprised us.</p>
 
 <h2>The IBM Mitigation Ladder</h2>
 
-<p>On IBM Torino, we ran the same H2 VQE circuit (R=0.735 &Aring;, 2-qubit sector-projected ansatz) through IBM\\'s Estimator API with progressively more mitigation layers. Each technique adds cost (more shots, more QPU time) but is supposed to reduce error.</p>
+<p>On IBM Torino, we ran the same H2 VQE circuit (R=0.735 &Aring;, 2-qubit sector-projected ansatz) through IBM's Estimator API with progressively more mitigation layers. Each technique adds cost (more shots, more QPU time) but is supposed to reduce error.</p>
 
 <table>
 <thead><tr><th>Rank</th><th>Technique</th><th>Energy (Ha)</th><th>Error (kcal/mol)</th><th>QPU time</th></tr></thead>
@@ -42,7 +42,7 @@ export const posts: BlogPost[] = [
 
 <p>The best technique is the <em>simplest</em> advanced option: <strong>TREX alone at 0.22 kcal/mol</strong> &mdash; well within chemical accuracy. TREX (Twirled Readout EXtraction) mitigates readout errors by randomizing the measurement basis, which is exactly what our noise analysis predicted: readout error is the dominant noise source.</p>
 
-<p>But adding dynamical decoupling (DD) to TREX makes it worse (1.33 kcal/mol). Adding DD <em>and</em> Pauli twirling makes it <strong>45x worse</strong> (10.0 kcal/mol). Why? These techniques add extra gates to suppress coherent errors &mdash; but our circuit is only 3 gates deep. The overhead of the mitigation exceeds the error it\\'s trying to fix.</p>
+<p>But adding dynamical decoupling (DD) to TREX makes it worse (1.33 kcal/mol). Adding DD <em>and</em> Pauli twirling makes it <strong>45x worse</strong> (10.0 kcal/mol). Why? These techniques add extra gates to suppress coherent errors &mdash; but our circuit is only 3 gates deep. The overhead of the mitigation exceeds the error it's trying to fix.</p>
 
 <p>ZNE (zero-noise extrapolation) is the worst performer: the linear extrapolant gives 12.84 kcal/mol, and the exponential fit fails entirely (returns NaN). This confirms what we found on Tuna-9: <strong>CNOT gate noise is not the dominant error source on either backend</strong>. ZNE amplifies gate noise and extrapolates to zero, but when gate noise is already small compared to readout error, the extrapolation has nothing useful to extrapolate.</p>
 
@@ -111,7 +111,7 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>The trend is noisy with small N, but REM+PS at fold=5 (1.68 kcal/mol) is the best Tuna-9 result overall. This hints that ZNE <em>might</em> have a mild effect once readout error is removed &mdash; but we\\'d need more data to confirm.</p>
+<p>The trend is noisy with small N, but REM+PS at fold=5 (1.68 kcal/mol) is the best Tuna-9 result overall. This hints that ZNE <em>might</em> have a mild effect once readout error is removed &mdash; but we'd need more data to confirm.</p>
 
 <h2>Cross-Platform Comparison</h2>
 
@@ -128,19 +128,19 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>IBM\\'s TREX is the only technique that consistently achieves chemical accuracy on real hardware. But it\\'s proprietary to IBM\\'s Estimator API &mdash; you can\\'t apply it on other platforms. For Tuna-9, the open-source approach (confusion matrix + post-selection) gets within 2.5x of the target.</p>
+<p>IBM's TREX is the only technique that consistently achieves chemical accuracy on real hardware. But it's proprietary to IBM's Estimator API &mdash; you can't apply it on other platforms. For Tuna-9, the open-source approach (confusion matrix + post-selection) gets within 2.5x of the target.</p>
 
 <h2>Why ZNE Failed on Both Backends</h2>
 
 <p>Zero-noise extrapolation assumes that gate noise increases monotonically with circuit depth. You run the circuit at multiple noise levels (by inserting extra identity-equivalent gate pairs), then extrapolate back to zero noise.</p>
 
-<p>On Tuna-9, we ran 12 experiments with 1, 3, and 5 CNOT folds. The PS-only error was essentially flat: 8.65, 8.62, and 6.86 kcal/mol. <strong>Extra CNOTs added less than 1.3 kcal/mol of noise</strong> &mdash; the signal ZNE needs to extrapolate simply isn\\'t there.</p>
+<p>On Tuna-9, we ran 12 experiments with 1, 3, and 5 CNOT folds. The PS-only error was essentially flat: 8.65, 8.62, and 6.86 kcal/mol. <strong>Extra CNOTs added less than 1.3 kcal/mol of noise</strong> &mdash; the signal ZNE needs to extrapolate simply isn't there.</p>
 
 <p>On IBM Torino, ZNE with DD+twirling gave 12.84 kcal/mol (linear) and NaN (exponential). The base error with DD+twirling is already 10.0 kcal/mol &mdash; worse than the raw TREX starting point.</p>
 
-<p>The root cause is the same on both backends: <strong>our VQE circuit is only 3 native gates deep</strong> (Ry, CNOT, X). Gate noise contributes &lt;20% of total error. The dominant errors are readout bias, state preparation imperfections, and T1/T2 decoherence during measurement. None of these scale with gate count, so ZNE\\'s extrapolation has no signal to amplify.</p>
+<p>The root cause is the same on both backends: <strong>our VQE circuit is only 3 native gates deep</strong> (Ry, CNOT, X). Gate noise contributes &lt;20% of total error. The dominant errors are readout bias, state preparation imperfections, and T1/T2 decoherence during measurement. None of these scale with gate count, so ZNE's extrapolation has no signal to amplify.</p>
 
-<p>ZNE would likely work better on deeper circuits (QAOA with multiple layers, Trotterized dynamics) where gate noise dominates. For shallow VQE, it\\'s the wrong tool.</p>
+<p>ZNE would likely work better on deeper circuits (QAOA with multiple layers, Trotterized dynamics) where gate noise dominates. For shallow VQE, it's the wrong tool.</p>
 
 <h2>What We Learned</h2>
 
@@ -151,7 +151,7 @@ export const posts: BlogPost[] = [
 
 <li><strong>Order matters for combined techniques.</strong> REM then post-selection (2.52 kcal/mol) beats post-selection then REM (3.90 kcal/mol) because REM redistributes probability before information is discarded.</li>
 
-<li><strong>IBM\\'s TREX is genuinely impressive.</strong> Chemical accuracy on real hardware from a single API parameter is a major engineering achievement. The catch: it\\'s proprietary and not available on other platforms.</li>
+<li><strong>IBM's TREX is genuinely impressive.</strong> Chemical accuracy on real hardware from a single API parameter is a major engineering achievement. The catch: it's proprietary and not available on other platforms.</li>
 
 <li><strong>Simple techniques close most of the gap.</strong> Going from raw (32 kcal/mol) to PS (8.3) to REM+PS (2.5 kcal/mol) on Tuna-9 recovers 90% of the error using techniques that work on any backend with a confusion matrix.</li>
 </ol>
@@ -178,7 +178,7 @@ export const posts: BlogPost[] = [
     heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
     heroCaption: 'The same quantum algorithm produces radically different results depending on where you run it.',
     excerpt: `We ran VQE, quantum volume, randomized benchmarking, and error correction across 4 quantum backends. Benchmarks pass everywhere. VQE fails everywhere except the emulator. IQM Garnet achieves QV=32 while Tuna-9 manages QV=8. Error correction reveals the sharpest hardware differences. And IBM's 99.99% RB fidelity is fake.`,
-    content: `<p>What happens when you take the same quantum algorithm and run it on four completely different backends? We\\'ve been answering this question systematically across 50+ experiments, 4 paper replications, and 4 platforms: a noiseless QI emulator, IBM\\'s 133-qubit Torino processor, QuTech\\'s 9-qubit Tuna-9 transmon chip, and IQM\\'s 20-qubit Garnet processor.</p>
+    content: `<p>What happens when you take the same quantum algorithm and run it on four completely different backends? We've been answering this question systematically across 50+ experiments, 4 paper replications, and 4 platforms: a noiseless QI emulator, IBM's 133-qubit Torino processor, QuTech's 9-qubit Tuna-9 transmon chip, and IQM's 20-qubit Garnet processor.</p>
 
 <p>The headline: <strong>benchmarks are forgiving, chemistry is brutal, and error correction reveals the sharpest hardware differences of all.</strong></p>
 
@@ -207,8 +207,8 @@ export const posts: BlogPost[] = [
 <ol>
 <li><strong>Benchmarks pass everywhere, but unevenly.</strong> QV passes on all hardware, but IQM Garnet hits QV=32 while Tuna-9 tops out at QV=8. More qubits with better connectivity wins the benchmark game.</li>
 <li><strong>VQE fails everywhere except the emulator &mdash; but qubit selection matters enormously.</strong> No hardware achieves chemical accuracy, but choosing the right qubit pair on Tuna-9 cuts error from 9.5 to 3.0 kcal/mol (3.1x improvement). On the same chip, qubit selection matters more than error mitigation.</li>
-<li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can\\'t execute on Tuna-9 due to topology constraints.</li>
-<li><strong>Compiler tricks inflate benchmarks.</strong> IBM\\'s 99.99% RB fidelity is measuring readout error, not gate quality. Tuna-9 and IQM Garnet both report 99.82% &mdash; genuine gate fidelity measured via raw native gates with no Clifford-level compilation.</li>
+<li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can't execute on Tuna-9 due to topology constraints.</li>
+<li><strong>Compiler tricks inflate benchmarks.</strong> IBM's 99.99% RB fidelity is measuring readout error, not gate quality. Tuna-9 and IQM Garnet both report 99.82% &mdash; genuine gate fidelity measured via raw native gates with no Clifford-level compilation.</li>
 </ol>
 
 <h2>VQE: When Bond Curves Break</h2>
@@ -227,7 +227,7 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>The emulator matches the exact (FCI) curve to within 0.08 kcal/mol MAE. IBM Torino\\'s curve has the right <em>shape</em> &mdash; minimum at R&asymp;1.0 &Aring;, dissociation plateau at large R &mdash; but is offset by ~0.13 Ha at every point. The error is remarkably uniform: 68&ndash;114 kcal/mol across all 11 distances.</p>
+<p>The emulator matches the exact (FCI) curve to within 0.08 kcal/mol MAE. IBM Torino's curve has the right <em>shape</em> &mdash; minimum at R&asymp;1.0 &Aring;, dissociation plateau at large R &mdash; but is offset by ~0.13 Ha at every point. The error is remarkably uniform: 68&ndash;114 kcal/mol across all 11 distances.</p>
 
 <p>Why so bad? The HeH+ 2-qubit Hamiltonian has the form <code>H = g0 + g1&lang;Z0&rang; + g2&lang;Z1&rang; + g3&lang;Z0Z1&rang; + g4&lang;X0X1&rang; + g5&lang;Y0Y1&rang;</code>. The g1 coefficient (&sim;0.5&ndash;0.8) amplifies readout bias: a 10% readout error on &lang;Z&rang; operators contributes &sim;0.05&ndash;0.08 Ha of error. The energy also depends on the difference g1&minus;g2 &mdash; when both Z terms are biased in the same direction, the error compounds rather than cancels.</p>
 
@@ -272,11 +272,11 @@ export const posts: BlogPost[] = [
 
 <p>On the <strong>emulator</strong>: 100% detection rate, 0% false positive rate. Perfect, as expected from a noiseless backend.</p>
 
-<p>On <strong>IBM Torino</strong> (133 qubits, heavy-hex topology): 92.7% detection rate, 14.0% false positive rate. IBM\\'s rich connectivity easily accommodates the circuit &mdash; each ancilla needs CNOTs to all 4 data qubits (degree 4), and IBM\\'s topology provides this.</p>
+<p>On <strong>IBM Torino</strong> (133 qubits, heavy-hex topology): 92.7% detection rate, 14.0% false positive rate. IBM's rich connectivity easily accommodates the circuit &mdash; each ancilla needs CNOTs to all 4 data qubits (degree 4), and IBM's topology provides this.</p>
 
-<p>On <strong>Tuna-9</strong>: <strong>Every circuit FAILED.</strong> The stabilizer measurement requires each ancilla to CNOT all 4 data qubits, meaning the ancilla needs degree 4. Tuna-9\\'s maximum qubit degree is 3. There is no 6-qubit subgraph on Tuna-9 that can execute this circuit without SWAP gates &mdash; and cQASM 3.0 doesn\\'t support implicit routing.</p>
+<p>On <strong>Tuna-9</strong>: <strong>Every circuit FAILED.</strong> The stabilizer measurement requires each ancilla to CNOT all 4 data qubits, meaning the ancilla needs degree 4. Tuna-9's maximum qubit degree is 3. There is no 6-qubit subgraph on Tuna-9 that can execute this circuit without SWAP gates &mdash; and cQASM 3.0 doesn't support implicit routing.</p>
 
-<p>This is the starkest cross-platform difference in our data. The <strong>same algorithm, same encoding, same error model</strong> &mdash; one platform runs it with 93% accuracy, the other can\\'t run it at all. Topology isn\\'t just a performance factor; it\\'s a hard constraint that determines which algorithms are physically possible on a given chip.</p>
+<p>This is the starkest cross-platform difference in our data. The <strong>same algorithm, same encoding, same error model</strong> &mdash; one platform runs it with 93% accuracy, the other can't run it at all. Topology isn't just a performance factor; it's a hard constraint that determines which algorithms are physically possible on a given chip.</p>
 
 <h2>Training an AI Decoder on Hardware Data</h2>
 
@@ -295,15 +295,15 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>The NN outperforms the detailed lookup table by <strong>50%</strong> (61.7% vs 41.1%). Why? The lookup table only uses the 2 syndrome bits; the NN also uses the 4 data bits. This matters because hardware noise creates correlations between data-bit patterns and error types that a syndrome-only decoder can\\'t see.</p>
+<p>The NN outperforms the detailed lookup table by <strong>50%</strong> (61.7% vs 41.1%). Why? The lookup table only uses the 2 syndrome bits; the NN also uses the 4 data bits. This matters because hardware noise creates correlations between data-bit patterns and error types that a syndrome-only decoder can't see.</p>
 
-<p>One fundamental limitation: <strong>Z errors can\\'t be localized from Z-basis measurement.</strong> Z errors don\\'t flip bits in the computational basis &mdash; they flip phase &mdash; so the NN gets 0% recall on individual Z errors (Z_d0, Z_d1, etc.). The ZZZZ syndrome <em>detects</em> that a Z error occurred, but the data bits don\\'t reveal which qubit was affected. This isn\\'t a decoder failure; it\\'s a fundamental limitation of single-basis measurement.</p>
+<p>One fundamental limitation: <strong>Z errors can't be localized from Z-basis measurement.</strong> Z errors don't flip bits in the computational basis &mdash; they flip phase &mdash; so the NN gets 0% recall on individual Z errors (Z_d0, Z_d1, etc.). The ZZZZ syndrome <em>detects</em> that a Z error occurred, but the data bits don't reveal which qubit was affected. This isn't a decoder failure; it's a fundamental limitation of single-basis measurement.</p>
 
-<h2>Why IBM\\'s 99.99% RB Is Fake (and Tuna-9\\'s 99.82% Is Real)</h2>
+<h2>Why IBM's 99.99% RB Is Fake (and Tuna-9's 99.82% Is Real)</h2>
 
-<p>This might be the most important methodological finding in our data. IBM Torino reports <strong>99.99% single-qubit gate fidelity</strong> from randomized benchmarking. Tuna-9 reports <strong>99.82%</strong>. At face value, IBM\\'s gates are 100x better. In reality, the two numbers are measuring completely different things.</p>
+<p>This might be the most important methodological finding in our data. IBM Torino reports <strong>99.99% single-qubit gate fidelity</strong> from randomized benchmarking. Tuna-9 reports <strong>99.82%</strong>. At face value, IBM's gates are 100x better. In reality, the two numbers are measuring completely different things.</p>
 
-<p>Here\\'s what happens: IBM\\'s Qiskit transpiler recognizes that a sequence of random Clifford gates composes into a single Clifford operation. So regardless of whether you ask for m=1, 4, 8, 16, or 32 Clifford gates, the transpiler compiles the <em>entire sequence</em> down to 1&ndash;2 physical gates. Our data shows this clearly:</p>
+<p>Here's what happens: IBM's Qiskit transpiler recognizes that a sequence of random Clifford gates composes into a single Clifford operation. So regardless of whether you ask for m=1, 4, 8, 16, or 32 Clifford gates, the transpiler compiles the <em>entire sequence</em> down to 1&ndash;2 physical gates. Our data shows this clearly:</p>
 
 <table>
 <thead><tr><th>Sequence length</th><th>IBM survival</th><th>Tuna-9 survival</th><th>IQM Garnet survival</th></tr></thead>
@@ -316,28 +316,28 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>IBM\\'s survival probability is <strong>flat at ~90%</strong> &mdash; no decay at all. That 90% floor is pure readout error: how accurately you can measure a qubit in the |0&rang; state. The exponential decay that RB is supposed to measure &mdash; the decay that tells you about gate quality &mdash; never appears because there are no extra gates to decay through.</p>
+<p>IBM's survival probability is <strong>flat at ~90%</strong> &mdash; no decay at all. That 90% floor is pure readout error: how accurately you can measure a qubit in the |0&rang; state. The exponential decay that RB is supposed to measure &mdash; the decay that tells you about gate quality &mdash; never appears because there are no extra gates to decay through.</p>
 
-<p>Tuna-9\\'s curve, by contrast, <strong>actually decays</strong> from 95.8% to 89.0%. Its compiler doesn\\'t collapse Clifford sequences, so the gates are physically executed. The 99.82% fidelity extracted from this decay is a genuine measurement of gate quality.</p>
+<p>Tuna-9's curve, by contrast, <strong>actually decays</strong> from 95.8% to 89.0%. Its compiler doesn't collapse Clifford sequences, so the gates are physically executed. The 99.82% fidelity extracted from this decay is a genuine measurement of gate quality.</p>
 
-<p><strong>The punchline: Tuna-9\\'s "worse" number is the more honest measurement.</strong> A smaller processor with a simpler compiler produces more trustworthy benchmarks than a 133-qubit system with an aggressively optimizing transpiler. For the field, this raises an uncomfortable question: how many published RB numbers are actually measuring readout error dressed up as gate fidelity?</p>
+<p><strong>The punchline: Tuna-9's "worse" number is the more honest measurement.</strong> A smaller processor with a simpler compiler produces more trustworthy benchmarks than a 133-qubit system with an aggressively optimizing transpiler. For the field, this raises an uncomfortable question: how many published RB numbers are actually measuring readout error dressed up as gate fidelity?</p>
 
-<p>IQM Garnet confirms this prediction. IQM\\'s native gate set is <code>prx(angle, phase)</code> and <code>cz</code> &mdash; there is no Clifford-level transpilation. When we submit a 32-Clifford RB sequence, IQM executes all ~130 physical prx gates without collapsing them. The result: <strong>clear exponential decay from 98.9% at m=1 to 88.2% at m=32, yielding 99.82% gate fidelity &mdash; identical to Tuna-9.</strong> Two independent backends with honest compilers converge on the same answer. IBM\\'s 100x-better number is the outlier, not the norm.</p>
+<p>IQM Garnet confirms this prediction. IQM's native gate set is <code>prx(angle, phase)</code> and <code>cz</code> &mdash; there is no Clifford-level transpilation. When we submit a 32-Clifford RB sequence, IQM executes all ~130 physical prx gates without collapsing them. The result: <strong>clear exponential decay from 98.9% at m=1 to 88.2% at m=32, yielding 99.82% gate fidelity &mdash; identical to Tuna-9.</strong> Two independent backends with honest compilers converge on the same answer. IBM's 100x-better number is the outlier, not the norm.</p>
 
 <p>The fix is straightforward &mdash; use interleaved RB with non-Clifford gates, or disable Clifford compilation during benchmarking. But this is rarely flagged in cross-platform comparisons, and it means <strong>you cannot naively compare RB numbers across platforms without understanding what each compiler does to your circuits.</strong></p>
 
 <h2>What We Learned</h2>
 
 <ol>
-<li><strong>Compiler honesty matters more than qubit count.</strong> IBM\\'s 99.99% RB looks 100x better than Tuna-9\\'s 99.82%, but IBM\\'s number measures readout error while Tuna-9\\'s measures actual gate quality. IQM Garnet confirms this: with no Clifford-level compilation, IQM\\'s RB shows genuine decay and converges on the <em>same</em> 99.82% fidelity as Tuna-9. Two honest compilers agree; the outlier is the one with aggressive optimization. Cross-platform comparisons are meaningless without understanding what each transpiler does to your circuits.</li>
+<li><strong>Compiler honesty matters more than qubit count.</strong> IBM's 99.99% RB looks 100x better than Tuna-9's 99.82%, but IBM's number measures readout error while Tuna-9's measures actual gate quality. IQM Garnet confirms this: with no Clifford-level compilation, IQM's RB shows genuine decay and converges on the <em>same</em> 99.82% fidelity as Tuna-9. Two honest compilers agree; the outlier is the one with aggressive optimization. Cross-platform comparisons are meaningless without understanding what each transpiler does to your circuits.</li>
 
-<li><strong>Benchmarks and applications live in different worlds.</strong> QV and RB pass on hardware that can\\'t do useful chemistry. The gap between "this hardware works" (QV PASS) and "this hardware is useful" (VQE within chemical accuracy) is enormous.</li>
+<li><strong>Benchmarks and applications live in different worlds.</strong> QV and RB pass on hardware that can't do useful chemistry. The gap between "this hardware works" (QV PASS) and "this hardware is useful" (VQE within chemical accuracy) is enormous.</li>
 
 <li><strong>Error correction needs topology, not just qubits.</strong> Tuna-9 has enough qubits for [[4,2,2]] but not enough connectivity. IBM Torino has 133 qubits but ~14% false positive rate on a 6-qubit code. Neither is ready for fault-tolerant computation, but they fail for completely different reasons.</li>
 
 <li><strong>AI decoders beat classical decoders on real hardware data.</strong> A simple 2-layer neural network outperforms lookup tables by 50% on qubit-level error classification. On real hardware, noise has structure that ML can exploit.</li>
 
-<li><strong>The molecule matters as much as the machine.</strong> IBM Torino gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+, because HeH+\\'s asymmetric Hamiltonian amplifies readout bias. You can\\'t benchmark VQE on one molecule and assume it generalizes.</li>
+<li><strong>The molecule matters as much as the machine.</strong> IBM Torino gets 9 kcal/mol error on H2 but 83 kcal/mol on HeH+, because HeH+'s asymmetric Hamiltonian amplifies readout bias. You can't benchmark VQE on one molecule and assume it generalizes.</li>
 
 <li><strong>Qubit selection is the cheapest optimization.</strong> On Tuna-9, switching from q[0,1] to q[2,4] cuts VQE error by 3.1x &mdash; no algorithm change, no error mitigation, just picking better qubits. This outperforms readout error mitigation and costs nothing at runtime.</li>
 </ol>
@@ -435,7 +435,7 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>All four backends pass QV&ge;8. IQM Garnet stands out by reaching QV=32 (passing n=2 through n=5). Tuna-9\\'s n=2 result (69.2%) barely clears the threshold. IQM\\'s 20-qubit processor with 30 connections and square-lattice topology gives it an edge over Tuna-9\\'s 9 qubits with only 10 connections.</p>
+<p>All four backends pass QV&ge;8. IQM Garnet stands out by reaching QV=32 (passing n=2 through n=5). Tuna-9's n=2 result (69.2%) barely clears the threshold. IQM's 20-qubit processor with 30 connections and square-lattice topology gives it an edge over Tuna-9's 9 qubits with only 10 connections.</p>
 
 <p>The randomized benchmarking results complement this: Tuna-9 and IQM Garnet both achieve <strong>99.82% single-qubit gate fidelity</strong> (0.18% error per gate), matching the emulator's 99.95% closely. IBM Torino shows 99.99% &mdash; though this is inflated because IBM's transpiler collapses Clifford sequences to single gates, so RB measures readout error rather than gate error. The fact that two independent backends with honest compilers converge on the same answer (99.82%) while IBM reports 99.99% strongly suggests IBM's figure is a compiler artifact. This confirms that single-qubit operations on all three hardware platforms are high quality; the VQE failures come from 2-qubit (CNOT) errors and decoherence.</p>
 
