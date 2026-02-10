@@ -4,15 +4,15 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL('https://haiqu.org'),
   title: {
-    default: 'AI x Quantum — TU Delft / Quantum Inspire',
-    template: '%s — AI x Quantum',
+    default: 'haiqu — AI x Quantum Research',
+    template: '%s — haiqu',
   },
   description: 'How might generative AI accelerate quantum computing? An open research initiative from TU Delft.',
   openGraph: {
-    title: 'AI x Quantum — TU Delft / Quantum Inspire',
+    title: 'haiqu — AI x Quantum Research',
     description: 'How might generative AI accelerate quantum computing? Research from TU Delft.',
     type: 'website',
-    siteName: 'AI x Quantum',
+    siteName: 'haiqu',
   },
   twitter: {
     card: 'summary_large_image',

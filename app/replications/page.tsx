@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { getAllReports, PAPER_PIPELINE, type ReplicationReport } from '@/lib/replications'
 
 export const metadata = {
-  title: 'Paper Replications — AI x Quantum',
+  title: 'Paper Replications',
   description: 'Can AI agents systematically replicate quantum computing experiments? Tracking our progress paper by paper.',
 }
 
@@ -213,7 +213,7 @@ export default function ReplicationsPage() {
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm">AI x Quantum</span>
+              <span className="font-mono font-bold text-white tracking-wider text-sm"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></span>
             </Link>
             <span className="text-gray-600 font-mono">/</span>
             <span className="text-sm font-mono text-gray-400">replications</span>
@@ -359,7 +359,7 @@ export default function ReplicationsPage() {
       <footer className="py-12 px-6 border-t border-white/5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-gray-500 font-mono">
-            TU Delft / QuTech / Quantum Inspire — 2026
+            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
           </div>
           <div className="flex gap-4 text-xs text-gray-500 font-mono">
             <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>

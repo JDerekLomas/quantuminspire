@@ -1593,7 +1593,7 @@ export default function AnsatzPage() {
         {/* Footer */}
         <footer className="text-center text-xs text-gray-600 py-8 border-t border-quantum-border">
           Part of the{' '}
-          <Link href="/" className="text-quantum-accent hover:underline">AI x Quantum</Link>{' '}
+          <Link href="/" className="text-quantum-accent hover:underline">haiqu</Link>{' '}
           research initiative at TU Delft / QuTech.
           All hardware data collected from{' '}
           <Link href="/platforms" className="text-quantum-accent hover:underline">three quantum processors</Link>.

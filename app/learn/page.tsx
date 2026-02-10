@@ -340,7 +340,7 @@ export default function LearnPage() {
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
               <span className="font-mono font-bold text-white tracking-wider text-sm">
-                AI x Quantum
+                <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span>
               </span>
             </Link>
             <span className="text-gray-600 font-mono text-xs">/</span>
@@ -462,7 +462,7 @@ export default function LearnPage() {
       <footer className="border-t border-[#1e293b]/50 py-12">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-600 text-xs font-mono">
-            AI x Quantum — TU Delft / QuTech / Quantum Inspire
+            haiqu — TU Delft / QuTech
           </p>
           <div className="flex gap-6 text-xs font-mono text-gray-500">
             <Link href="/" className="hover:text-[#00d4ff] transition-colors">Home</Link>

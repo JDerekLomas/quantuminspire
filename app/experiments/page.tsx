@@ -22,7 +22,7 @@ import {
 } from '@/components/experiment-viz'
 
 export const metadata = {
-  title: 'Live Experiments — AI x Quantum',
+  title: 'Live Experiments',
   description: 'Real-time results from quantum experiments running on Quantum Inspire and IBM Quantum hardware.',
 }
 
@@ -1234,7 +1234,7 @@ export default function ExperimentsPage() {
     { type: 'qrng_certification', label: 'QRNG Certification -- Randomness Quality', results: qrngResults, color: '#f59e0b', description: 'Are quantum random numbers truly random? We run 8 NIST SP 800-22 statistical tests against raw hardware output, von Neumann debiased output, and emulator output. Raw Tuna-9 bits show measurable bias; debiasing fixes it completely.', wide: true },
     { type: 'connectivity_probe', label: 'Connectivity Probe', results: connectivityResults, color: '#e879f9', description: 'Map CNOT fidelity across all 36 qubit pairs on Tuna-9. The heatmap reveals which physical qubits are best-connected -- essential for choosing where to place error correction codes.', wide: true },
     { type: 'repetition_code', label: '3-Qubit Repetition Code', results: repetitionResults, color: '#22d3ee', description: 'The simplest quantum error correction code: 3 data qubits + 2 syndrome qubits detect and correct single bit-flip errors. Syndrome accuracy measures how well the hardware extracts error information.', wide: true },
-    { type: 'detection_code', label: '[[4,2,2]] Error Detection Code', results: detectionResults, color: '#a78bfa', description: 'Four data qubits with XXXX and ZZZZ stabilizers detect any single-qubit error (X, Z, or Y). A neural network decoder trained on hardware syndrome data outperforms simple lookup-table decoding -- AI x Quantum in action.', wide: true },
+    { type: 'detection_code', label: '[[4,2,2]] Error Detection Code', results: detectionResults, color: '#a78bfa', description: 'Four data qubits with XXXX and ZZZZ stabilizers detect any single-qubit error (X, Z, or Y). A neural network decoder trained on hardware syndrome data outperforms simple lookup-table decoding -- haiqu in action.', wide: true },
   ]
 
   if (otherResults.length > 0) {
@@ -1249,7 +1249,7 @@ export default function ExperimentsPage() {
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm">AI x Quantum</span>
+              <span className="font-mono font-bold text-white tracking-wider text-sm"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></span>
             </Link>
             <span className="text-gray-600 font-mono">/</span>
             <span className="text-sm font-mono text-gray-400">experiments</span>

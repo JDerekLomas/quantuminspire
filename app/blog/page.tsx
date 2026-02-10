@@ -3,7 +3,7 @@ import { getAllPosts, categoryColors, categoryLabels } from '@/lib/blog'
 
 export const metadata = {
   title: 'Research Blog',
-  description: 'Research notes, experiment reports, and landscape analysis from the AI x Quantum project at TU Delft.',
+  description: 'Research notes, experiment reports, and landscape analysis from the haiqu project at TU Delft.',
   alternates: {
     canonical: '/blog',
   },
@@ -20,7 +20,7 @@ export default function BlogIndex() {
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm">AI x Quantum</span>
+              <span className="font-mono font-bold text-white tracking-wider text-sm"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></span>
             </Link>
             <span className="text-gray-600 font-mono">/</span>
             <span className="text-sm font-mono text-gray-400">blog</span>
@@ -89,7 +89,7 @@ export default function BlogIndex() {
       <footer className="py-12 px-6 border-t border-white/5">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-gray-500 font-mono">
-            TU Delft / QuTech / Quantum Inspire
+            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech
           </div>
           <div className="flex gap-4 text-xs text-gray-500 font-mono">
             <Link href="/" className="hover:text-white transition-colors">Research Home</Link>

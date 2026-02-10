@@ -312,7 +312,7 @@ export default function PlatformsPage() {
       {/* nav */}
       <nav className="fixed top-0 z-50 w-full bg-black/80 backdrop-blur border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="text-sm font-mono font-bold tracking-wider hover:text-[#00d4ff]">AI x Quantum</Link>
+          <Link href="/" className="text-sm font-mono font-bold tracking-wider hover:text-[#00d4ff]"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></Link>
           <div className="flex gap-6 text-xs font-mono text-gray-400">
             <Link href="/experiments" className="hover:text-white">Experiments</Link>
             <Link href="/replications" className="hover:text-white">Replications</Link>

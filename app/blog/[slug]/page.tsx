@@ -49,7 +49,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
     description: post.excerpt,
     datePublished: post.date,
     author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: 'AI x Quantum — TU Delft' },
+    publisher: { '@type': 'Organization', name: 'haiqu — TU Delft' },
     url: `https://haiqu.org/blog/${post.slug}`,
     ...(post.heroImage && { image: post.heroImage }),
     keywords: post.tags.join(', '),
@@ -67,7 +67,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm">AI x Quantum</span>
+              <span className="font-mono font-bold text-white tracking-wider text-sm"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></span>
             </Link>
             <span className="text-gray-600 font-mono">/</span>
             <Link href="/blog" className="text-sm font-mono text-gray-400 hover:text-white transition-colors">blog</Link>
@@ -186,7 +186,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
       <footer className="py-12 px-6 border-t border-white/5">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-gray-500 font-mono">
-            TU Delft / QuTech / Quantum Inspire
+            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech
           </div>
           <div className="flex gap-4 text-xs text-gray-500 font-mono">
             <Link href="/blog" className="hover:text-white transition-colors">All Posts</Link>
