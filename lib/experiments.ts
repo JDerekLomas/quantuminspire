@@ -90,6 +90,7 @@ export const typeLabels: Record<string, string> = {
   rb_1qubit: 'Randomized Benchmarking',
   qaoa_maxcut: 'QAOA MaxCut',
   quantum_volume: 'Quantum Volume',
+  qrng_certification: 'QRNG Certification',
 }
 
 export const typeColors: Record<string, string> = {
@@ -99,6 +100,7 @@ export const typeColors: Record<string, string> = {
   rb_1qubit: '#ff8c42',
   qaoa_maxcut: '#ff6b9d',
   quantum_volume: '#14b8a6',
+  qrng_certification: '#f59e0b',
 }
 
 // ---------------------------------------------------------------------------

@@ -22,6 +22,7 @@ function backendLabel(backend: string): { label: string; isHw: boolean } {
   if (backend.toLowerCase().includes('emulator') || backend.toLowerCase().includes('qxelarator'))
     return { label: 'QI Emulator', isHw: false }
   if (backend.toLowerCase().includes('tuna')) return { label: 'QI Tuna-9', isHw: true }
+  if (backend.toLowerCase().includes('multi')) return { label: 'Multi-Source', isHw: false }
   return { label: backend, isHw: false }
 }
 
@@ -1203,6 +1204,143 @@ function QVCard({ result }: { result: ExperimentResult }) {
 }
 
 // ---------------------------------------------------------------------------
+// QRNG Certification Card
+// ---------------------------------------------------------------------------
+
+function QRNGCertCard({ result }: { result: ExperimentResult }) {
+  const analysis = result.analysis
+  const sources = analysis.sources as Record<string, any> | undefined
+
+  if (!sources) {
+    return (
+      <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
+        <h3 className="text-white font-bold">{result.id}</h3>
+        <p className="text-xs text-gray-500 font-mono">No source data found</p>
+      </div>
+    )
+  }
+
+  const sourceKeys = ['tuna9_raw', 'tuna9_debiased', 'emulator'] as const
+  const sourceColors: Record<string, string> = {
+    tuna9_raw: '#ff6b9d',
+    tuna9_debiased: '#00ff88',
+    emulator: '#00d4ff',
+  }
+
+  // Get union of all test names
+  const testNames = sources.tuna9_raw?.tests?.map((t: any) => t.test) || []
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#f59e0b]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.qrng_certification }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.qrng_certification}</span>
+          </div>
+          <h3 className="text-white font-bold">{analysis.title || result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">
+            {sources.tuna9_raw?.n_bits?.toLocaleString()} bits per source -- {new Date(result.completed).toLocaleDateString()}
+          </p>
+        </div>
+        <StatusPill status="completed" />
+      </div>
+
+      {/* Summary cards */}
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        {sourceKeys.map(key => {
+          const src = sources[key]
+          if (!src) return null
+          const color = sourceColors[key]
+          const allPassed = src.passed === src.total
+          return (
+            <div key={key} className="bg-white/[0.02] rounded p-3 border border-white/[0.03]">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-1">{src.label}</p>
+              <p className="text-2xl font-mono font-bold" style={{ color }}>
+                {src.passed}/{src.total}
+              </p>
+              <p className="text-[10px] font-mono text-gray-500">
+                {allPassed ? 'All tests passed' : `${src.total - src.passed} tests failed`}
+              </p>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* NIST test comparison table */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs font-mono border-collapse">
+          <thead>
+            <tr>
+              <th className="text-left text-gray-500 font-normal py-1.5 px-2 border-b border-white/5">NIST Test</th>
+              {sourceKeys.map(key => {
+                const src = sources[key]
+                if (!src) return null
+                return (
+                  <th key={key} className="text-center text-gray-500 font-normal py-1.5 px-2 border-b border-white/5">
+                    {src.label}
+                  </th>
+                )
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {testNames.map((testName: string, ti: number) => (
+              <tr key={testName} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                <td className="py-1.5 px-2 text-gray-300">{testName}</td>
+                {sourceKeys.map(key => {
+                  const src = sources[key]
+                  if (!src) return null
+                  const test = src.tests?.[ti]
+                  if (!test) return <td key={key} className="text-center py-1.5 px-2 text-gray-600">--</td>
+                  const passed = test.pass === true || test.pass === 'True'
+                  return (
+                    <td key={key} className="text-center py-1.5 px-2">
+                      <span className={`inline-flex items-center gap-1 ${passed ? 'text-[#00ff88]' : 'text-[#ff6b9d]'}`}>
+                        {passed ? 'PASS' : 'FAIL'}
+                        <span className="text-gray-600 text-[10px]">
+                          p={typeof test.p_value === 'number' ? (test.p_value < 0.001 ? test.p_value.toExponential(1) : test.p_value.toFixed(3)) : '?'}
+                        </span>
+                      </span>
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Key finding */}
+      {analysis.key_finding && (
+        <div className="mt-4 px-3 py-2 rounded bg-[#f59e0b]/5 border border-[#f59e0b]/10">
+          <p className="text-[11px] text-[#f59e0b] font-mono leading-relaxed">
+            {analysis.key_finding}
+          </p>
+        </div>
+      )}
+
+      {/* Debiasing stats */}
+      {sources.tuna9_debiased && (
+        <div className="mt-3 flex flex-wrap gap-4 text-xs font-mono">
+          <span className="text-gray-500">Discard rate: <span className="text-white">{(sources.tuna9_debiased.discard_rate * 100).toFixed(1)}%</span></span>
+          <span className="text-gray-500">Raw bits: <span className="text-white">{sources.tuna9_debiased.raw_bits?.toLocaleString()}</span></span>
+          <span className="text-gray-500">Debiased bits: <span className="text-white">{sources.tuna9_debiased.debiased_bits?.toLocaleString()}</span></span>
+          <span className="text-gray-500">Ones fraction (raw): <span className="text-[#ff6b9d]">{sources.tuna9_raw?.tests?.[0]?.ones_fraction}</span></span>
+          <span className="text-gray-500">Ones fraction (debiased): <span className="text-[#00ff88]">{sources.tuna9_debiased.tests?.[0]?.ones_fraction}</span></span>
+        </div>
+      )}
+
+      {analysis.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+
+      {result.circuit_cqasm && <CircuitBlock cqasm={result.circuit_cqasm} />}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Comparison Table
 // ---------------------------------------------------------------------------
 
@@ -1299,6 +1437,8 @@ function ResultCard({ result, comparison }: { result: ExperimentResult; comparis
       return <QAOACard result={result} />
     case 'quantum_volume':
       return <QVCard result={result} />
+    case 'qrng_certification':
+      return <QRNGCertCard result={result} />
     default:
       return (
         <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
@@ -1327,13 +1467,14 @@ export default function ExperimentsPage() {
   const pending = queue.filter(q => q.status === 'pending')
 
   // Group by type
-  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume']
+  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume', 'qrng_certification']
   const vqeResults = results.filter(r => r.type === 'vqe_h2')
   const bellResults = results.filter(r => r.type === 'bell_calibration')
   const ghzResults = results.filter(r => r.type === 'ghz_state')
   const rbResults = results.filter(r => r.type === 'rb_1qubit')
   const qaoaResults = results.filter(r => r.type === 'qaoa_maxcut')
   const qvResults = results.filter(r => r.type === 'quantum_volume')
+  const qrngResults = results.filter(r => r.type === 'qrng_certification')
   const otherResults = results.filter(r => !knownTypes.includes(r.type))
 
   // Find emulator/hardware pairs for cross-platform comparison
@@ -1350,6 +1491,7 @@ export default function ExperimentsPage() {
     { type: 'rb_1qubit', label: 'Randomized Benchmarking', results: rbResults, color: '#ff8c42', description: 'How good is a single quantum gate? RB applies random sequences of Clifford gates and measures how quickly the signal decays. The decay rate gives the average error per gate -- the fundamental metric for gate quality.', wide: false },
     { type: 'qaoa_maxcut', label: 'QAOA MaxCut', results: qaoaResults, color: '#ff6b9d', description: 'Can a quantum algorithm beat random guessing at graph optimization? QAOA sweeps variational parameters to find the maximum cut of a triangle graph. The approximation ratio measures how close we get to the classical optimum.', wide: false },
     { type: 'quantum_volume', label: 'Quantum Volume', results: qvResults, color: '#14b8a6', description: 'A holistic benchmark combining gate fidelity, connectivity, and compiler quality into a single number. QV tests whether the device can reliably execute random circuits of depth = width. Higher is better.', wide: true },
+    { type: 'qrng_certification', label: 'QRNG Certification -- Randomness Quality', results: qrngResults, color: '#f59e0b', description: 'Are quantum random numbers truly random? We run 8 NIST SP 800-22 statistical tests against raw hardware output, von Neumann debiased output, and emulator output. Raw Tuna-9 bits show measurable bias; debiasing fixes it completely.', wide: true },
   ]
 
   if (otherResults.length > 0) {
