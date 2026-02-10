@@ -7,7 +7,7 @@
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.735,
-    "theta": 0.1118,
+    "alpha": -0.2235,
     "qubits": [0, 1]
   },
   "raw_counts": {
@@ -44,6 +44,6 @@
     },
     "interpretation": "VQE energy: -1.1385 Ha (FCI: -1.1373 Ha). Error: 0.75 kcal/mol. Within chemical accuracy."
   },
-  "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\n// Prepare HF state |01>\nX q[0]\n\n// Ry ansatz: excitation rotation\nCNOT q[0], q[1]\nRy(0.111800) q[0]\nCNOT q[1], q[0]\nRy(-0.111800) q[0]\nCNOT q[1], q[0]\nCNOT q[0], q[1]\n\n// Z-basis measurement\nb = measure q",
+  "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\n// Subspace-preserving ansatz: Ry-CNOT-X\n// State = cos(a/2)|10> + sin(a/2)|01>\nRy(-0.223539) q[0]\nCNOT q[0], q[1]\nX q[0]\n\n// Z-basis measurement\nb = measure q",
   "errors": null
 }

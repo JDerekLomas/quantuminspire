@@ -40,7 +40,7 @@ export function getAllResults(): ExperimentResult[] {
         return null
       }
     })
-    .filter((r): r is ExperimentResult => r !== null)
+    .filter((r): r is ExperimentResult => r !== null && typeof r === 'object' && !Array.isArray(r) && 'id' in r && 'backend' in r)
     .sort((a, b) => (b.completed || '').localeCompare(a.completed || ''))
 }
 
