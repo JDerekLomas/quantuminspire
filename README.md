@@ -2,72 +2,132 @@
 
 **How might generative AI accelerate quantum computing?**
 
-An open research initiative exploring AI-driven quantum computing research. We're building autonomous agent infrastructure that continuously runs quantum experiments, replicates published papers, and discovers optimization opportunities.
+An open research initiative exploring AI-driven quantum computing research. We build autonomous agents that run quantum experiments across multiple hardware backends, replicate published papers, and benchmark LLM capabilities on quantum tasks.
 
-## Live site
+**Live site**: https://quantuminspire.vercel.app
 
-Deployed at the Vercel URL after `vercel --prod`.
+## Current results
 
-## What's here
+### Experiments (22 results across 7 study types)
 
-### Experiments
-
-| Experiment | Status | Description |
+| Study | Backends | Key result |
 |---|---|---|
-| **Qiskit HumanEval Benchmark** | Running | 151 quantum coding tasks evaluated against frontier LLMs (Pass@1) |
-| **AI Paper Replication** | Complete | Autonomous replication of Sagastizabal et al. (2019) — VQE for H₂ with symmetry verification |
-| **AI Circuit Transpilation** | Planned | LLM-optimized circuits vs Qiskit transpiler for QI hardware |
-| **AI Error Characterization** | Planned | Autonomous device characterization and mitigation strategy selection |
-| **Quantum Literature Scout** | Planned | arxiv monitoring + automated replication planning |
+| Bell State Calibration | Emulator, IBM Marrakesh, IBM Torino, Tuna-9 | 100% / 99.05% / varies fidelity |
+| GHZ State (3q) | Emulator, IBM Marrakesh, IBM Torino, Tuna-9 | 100% / 98.14% fidelity |
+| H2 VQE (2q) | Emulator, IBM Marrakesh, IBM Torino, Tuna-9 | -1.1385 Ha emulator (chemical accuracy) |
+| QRNG Certification | Tuna-9 raw + debiased, Emulator | Raw fails NIST; debiased passes all |
+| Randomized Benchmarking | Emulator | 99.95% gate fidelity |
+| QAOA MaxCut | Emulator | 87% approximation ratio |
+| Quantum Volume | Emulator | QV 8 (2q + 3q pass) |
 
-### Agent architecture
+Additional hardware experiments: connectivity probe (Tuna-9 topology), repetition code (3q QEC), detection code (emulator).
 
-A system of specialized AI agents for continuous quantum research:
+### Paper replications (3 papers, 13 claims)
 
-- **Orchestrator** — Coordinates experiments, allocates compute, tracks results
-- **Literature Scout** — Monitors arxiv, identifies replicable experiments
-- **Benchmark Runner** — Continuous LLM evaluation on quantum tasks
-- **Replication Agent** — Autonomous paper replication
-- **Circuit Optimizer** — Hardware-aware circuit optimization
-- **Results Dashboard** — Auto-generated visualizations and reports
+| Paper | Claims tested | Pass rate |
+|---|---|---|
+| Sagastizabal 2019 (H2 VQE) | 7 | 43% (emulator pass, hardware fail) |
+| Peruzzo 2014 (HeH+ VQE) | 3 | 100% (emulator) |
+| Cross 2019 (Quantum Volume) | 3 | 100% (emulator) |
 
-### Files
+## Hardware access
 
-| File | Description |
-|---|---|
-| `benchmark_harness.py` | Qiskit HumanEval benchmark runner (LLM call + sandboxed execution + grading) |
-| `replicate_sagastizabal.py` | Full VQE replication of Sagastizabal et al. (2019) |
-| `qiskit_humaneval.json` | 151 standard Qiskit coding tasks |
-| `qiskit_humaneval_hard.json` | Hard variant (open-ended problem descriptions) |
-| `test_*.py` | Quantum algorithm tests (Bell, GHZ, Grover, QFT, VQE, etc.) |
-| `app/` | Next.js research website |
+| Backend | Qubits | Access |
+|---|---|---|
+| QI Emulator (qxelarator) | Configurable | Local, no auth needed |
+| QI Tuna-9 | 9 (6 usable) | QI member 2108 |
+| IBM Marrakesh | 156 | IBM Quantum (free tier, 10 min/month) |
+| IBM Torino | 133 | IBM Quantum |
+| IBM Fez | 156 | IBM Quantum |
 
 ## Quick start
 
 ```bash
 # Website
 npm run dev
+# Deploy
+vercel --prod
 
-# Python experiments
+# Python experiments (requires .venv)
 source .venv/bin/activate
 secret-lover run -- python benchmark_harness.py --limit 10
 python replicate_sagastizabal.py
+python replicate_peruzzo.py
 
-# Tests (JS/TS)
-npm test
+# Run experiment daemon
+python agents/experiment_daemon.py
+
+# Tests
+npm test                              # JS/TS (Vitest)
+python -m pytest tests/               # Python
 ```
 
-## Project layout
+## Architecture
 
-- Content lives in `content/` (e.g., blog posts), pure logic in `lib/` (math/visualization helpers), UI in `app/`. See `docs/structure.md` for a quick map.
-- Unit tests live in `tests/` and run with `npm test` (Vitest).
+### Website (Next.js 14 + Tailwind + Three.js)
+
+| Route | Description |
+|---|---|
+| `/` | Research home — hero, experiments overview, agent architecture |
+| `/experiments` | Experiment dashboard — grouped by type, backend badges |
+| `/experiments/[id]` | Study detail — abstract, research question, results, visualizations |
+| `/replications` | Paper replication dashboard — claims vs measured, cross-backend |
+| `/blog` | Research blog (7 posts) |
+| `/learn` | Interactive quantum learning page |
+| `/bloch-sphere`, `/state-vector`, etc. | Interactive quantum visualizations |
+
+### Agents (`agents/`)
+
+| Agent | Purpose |
+|---|---|
+| `orchestrator.py` | Pipeline coordinator |
+| `experiment_daemon.py` | Queue -> submit -> analyze -> store results |
+| `benchmark_agent.py` | LLM benchmark runner |
+| `replication_agent.py` | Paper registry + run/analyze replications |
+| `replication_analyzer.py` | Compare results vs published claims |
+| `qec_decoder.py` | Quantum error correction decoder |
+
+### MCP servers (`mcp-servers/`)
+
+| Server | Purpose |
+|---|---|
+| `qi-circuits` | Submit/check circuits on Quantum Inspire hardware |
+| `qrng` | Quantum random number generation |
+| `ibm-quantum` | IBM Quantum hardware access |
+
+## Experiment result JSON schema (v1.0)
+
+All result files in `experiments/results/` follow this schema:
+
+```json
+{
+  "schema_version": "1.0",
+  "id": "bell-calibration-001-ibm",
+  "type": "bell_calibration",
+  "backend": "ibm_marrakesh",
+  "backend_qubits": 156,
+  "job_id": "d65kqpoqbmes739d1k2g",
+  "submitted": "2026-02-10T15:24:38Z",
+  "completed": "2026-02-10T15:24:38Z",
+  "parameters": { "shots": 4096 },
+  "raw_counts": { ... },
+  "analysis": { ... },
+  "circuit_cqasm": "version 3.0\n...",
+  "errors": null
+}
+```
+
+- `schema_version`: always "1.0"
+- `backend_qubits`: qubit count of backend (null for emulators)
+- `job_id`: hardware job ID (null for emulator/local runs)
 
 ## Stack
 
-- **Quantum**: Qiskit 2.1, Qiskit Aer, PennyLane, Quantum Inspire SDK v3, OpenSquirrel
+- **Quantum**: Qiskit 2.1, PennyLane 0.44, QI SDK 3.5.1, OpenFermion, PySCF
 - **AI**: Claude, Gemini, GPT (via respective APIs)
 - **Web**: Next.js 14, Tailwind, Three.js
-- **Hardware**: Quantum Inspire — Starmon-7 (7q), Tuna-5 (5q), Tuna-9 (9q)
+- **Hardware**: Quantum Inspire Tuna-9 (9q), IBM Marrakesh (156q), IBM Torino (133q), IBM Fez (156q)
+- **Python**: 3.12 (3.14 breaks libqasm)
 
 ## Links
 
@@ -76,3 +136,5 @@ npm test
 - [TU Delft](https://www.tudelft.nl)
 - [Qiskit HumanEval paper](https://arxiv.org/abs/2406.02132)
 - [Sagastizabal et al. (2019)](https://arxiv.org/abs/1902.11258)
+- [Peruzzo et al. (2014)](https://doi.org/10.1038/ncomms5213)
+- [Cross et al. (2019)](https://doi.org/10.1103/PhysRevA.100.032328)
