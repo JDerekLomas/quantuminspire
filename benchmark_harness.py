@@ -25,7 +25,15 @@ from pathlib import Path
 from datetime import datetime
 from collections import Counter
 
-from google import genai
+try:
+    from google import genai
+except ImportError:
+    genai = None
+
+try:
+    import anthropic
+except ImportError:
+    anthropic = None
 
 # --- Configuration ---
 
@@ -35,6 +43,7 @@ DATASET_HARD = "qiskit_humaneval_hard.json"
 RESULTS_DIR = Path("benchmark_results")
 EXECUTION_TIMEOUT = 60  # seconds per task execution
 MAX_TOKENS = 8192
+CHEATSHEET_PATH = Path("QISKIT_2X_CHEATSHEET.md")
 
 SYSTEM_PROMPT = """\
 You are a Qiskit quantum computing expert. You will be given a Python function \
@@ -48,6 +57,20 @@ You are a Qiskit quantum computing expert. You will be given a problem descripti
 Write a complete Python function that solves it. Include all necessary imports. \
 Return ONLY the Python code — no markdown fences, no explanation. \
 The function must be named as specified in the problem."""
+
+RAG_SUFFIX = """\
+
+CRITICAL: You MUST use Qiskit 2.x APIs. Many Qiskit APIs have been removed or renamed. \
+Here is a reference of current correct APIs:
+
+{cheatsheet}"""
+
+
+def load_cheatsheet():
+    """Load the Qiskit 2.x API cheatsheet for RAG injection."""
+    if CHEATSHEET_PATH.exists():
+        return CHEATSHEET_PATH.read_text()
+    return ""
 
 
 def load_dataset(hard=False):
@@ -65,10 +88,22 @@ def strip_markdown_fences(text):
     return text
 
 
-def call_llm(prompt, hard=False, model=MODEL):
+def detect_provider(model):
+    """Detect API provider from model name."""
+    if model.startswith("claude-"):
+        return "claude-cli"
+    return "google"
+
+
+def call_llm(prompt, hard=False, model=MODEL, rag=False):
     """Send a task prompt to the LLM and get the completion."""
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+    provider = detect_provider(model)
     system = SYSTEM_PROMPT_HARD if hard else SYSTEM_PROMPT
+
+    if rag:
+        cheatsheet = load_cheatsheet()
+        if cheatsheet:
+            system += RAG_SUFFIX.format(cheatsheet=cheatsheet)
 
     if hard:
         user_msg = prompt
@@ -78,35 +113,70 @@ def call_llm(prompt, hard=False, model=MODEL):
             f"(indented, no signature, no imports):\n\n```python\n{prompt}\n```"
         )
 
-    response = client.models.generate_content(
-        model=model,
-        config=genai.types.GenerateContentConfig(
-            system_instruction=system,
-            max_output_tokens=MAX_TOKENS,
-            temperature=0,
-        ),
-        contents=user_msg,
-    )
-
-    text = response.text
-    text = strip_markdown_fences(text)
-
-    input_tokens = response.usage_metadata.prompt_token_count or 0
-    output_tokens = response.usage_metadata.candidates_token_count or 0
+    if provider == "claude-cli":
+        full_prompt = f"{system}\n\n{user_msg}"
+        result = subprocess.run(
+            ["claude", "-p", full_prompt, "--model", model, "--output-format", "text"],
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"claude CLI error: {result.stderr[:200]}")
+        text = result.stdout
+        text = strip_markdown_fences(text)
+        # CLI doesn't report token counts; estimate from char length
+        input_tokens = len(full_prompt) // 4
+        output_tokens = len(text) // 4
+    else:
+        client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        response = client.models.generate_content(
+            model=model,
+            config=genai.types.GenerateContentConfig(
+                system_instruction=system,
+                max_output_tokens=MAX_TOKENS,
+                temperature=0,
+            ),
+            contents=user_msg,
+        )
+        text = response.text
+        text = strip_markdown_fences(text)
+        input_tokens = response.usage_metadata.prompt_token_count or 0
+        output_tokens = response.usage_metadata.candidates_token_count or 0
 
     return text, input_tokens, output_tokens
 
 
 def ensure_indented(code, indent="    "):
-    """Ensure all lines of the completion are indented (function body)."""
+    """Ensure all lines of the completion are indented as a function body.
+
+    Handles three cases:
+    - All lines unindented: indent everything
+    - Mixed (first line unindented, rest indented): indent the unindented lines
+    - All lines already indented: leave as-is
+    """
     lines = code.split("\n")
-    # If any non-empty line lacks indentation, indent everything
-    needs_indent = any(
-        line and not line.startswith((" ", "\t")) for line in lines
-    )
-    if needs_indent:
-        return "\n".join(indent + line if line.strip() else line for line in lines)
-    return code
+    non_empty = [l for l in lines if l.strip()]
+    if not non_empty:
+        return code
+
+    # Check if ALL non-empty lines already have indentation
+    all_indented = all(l.startswith((" ", "\t")) for l in non_empty)
+    if all_indented:
+        return code
+
+    # Check if MOST non-empty lines are indented (model gave body with 4-space
+    # indent but first line lost its indent)
+    indented_count = sum(1 for l in non_empty if l.startswith((" ", "\t")))
+    if indented_count > len(non_empty) / 2:
+        # Only indent lines that aren't already indented
+        return "\n".join(
+            indent + line if line.strip() and not line.startswith((" ", "\t")) else line
+            for line in lines
+        )
+
+    # No lines indented: indent everything
+    return "\n".join(indent + line if line.strip() else line for line in lines)
 
 
 def build_test_script(task, completion, hard=False):
@@ -148,25 +218,50 @@ def execute_test(script, timeout=EXECUTION_TIMEOUT):
 
 
 def classify_error(stderr):
-    """Classify error type from stderr."""
+    """Classify error type from stderr.
+
+    Returns (category, error_type) where category is one of:
+      - 'model'          — the LLM produced wrong/broken code
+      - 'infrastructure'  — test harness, API mismatch, or environment issue
+    """
     if not stderr:
-        return "Unknown"
-    for pattern, label in [
+        return "infrastructure", "Unknown"
+
+    # Infrastructure errors: not the model's fault
+    infra_patterns = [
+        ("AccountNotFoundError", "IBM auth required"),
+        ("QiskitRuntimeService", "IBM auth required"),
+        ("active_account", "IBM auth required"),
+        ("IBMNotAuthorizedError", "IBM auth required"),
+        ("SamplerV2.__init__() got an unexpected keyword argument", "Qiskit API mismatch"),
+        ("SamplerV2.__init__() got unexpected keyword", "Qiskit API mismatch"),
+        ("EstimatorV2.__init__() got an unexpected keyword argument", "Qiskit API mismatch"),
+        ("No module named 'qiskit.providers.aer'", "Qiskit API mismatch"),
+        ("No module named 'qiskit.utils'", "Qiskit API mismatch"),
         ("TIMEOUT", "Timeout"),
+    ]
+    for pattern, label in infra_patterns:
+        if pattern in stderr:
+            return "infrastructure", label
+
+    # Model errors: the LLM generated bad code
+    model_patterns = [
         ("AssertionError", "Wrong answer"),
         ("AssertError", "Wrong answer"),
+        ("AssertionError", "Wrong answer"),
+        ("SyntaxError", "Syntax error"),
+        ("IndentationError", "Syntax error"),
         ("ImportError", "Import error"),
         ("ModuleNotFoundError", "Import error"),
         ("AttributeError", "Attribute error"),
-        ("SyntaxError", "Syntax error"),
-        ("IndentationError", "Indentation error"),
         ("NameError", "Name error"),
         ("TypeError", "Type error"),
         ("ValueError", "Value error"),
-    ]:
+    ]
+    for pattern, label in model_patterns:
         if pattern in stderr:
-            return label
-    return "Runtime error"
+            return "model", label
+    return "model", "Runtime error"
 
 
 def run_benchmark(args):
@@ -184,7 +279,10 @@ def run_benchmark(args):
     if args.limit:
         tasks = tasks[: args.limit]
 
+    rag = getattr(args, "rag", False)
     variant = "hard" if args.hard else "standard"
+    if rag:
+        variant += "_rag"
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     model_slug = model.replace("/", "-")
     results_file = RESULTS_DIR / f"results_{variant}_{model_slug}_{timestamp}.json"
@@ -223,7 +321,7 @@ def run_benchmark(args):
         t0 = time.time()
         try:
             completion, input_tokens, output_tokens = call_llm(
-                task["prompt"], hard=args.hard, model=model
+                task["prompt"], hard=args.hard, model=model, rag=rag
             )
         except Exception as e:
             print(f"  API ERROR: {e}")
@@ -304,18 +402,45 @@ def run_benchmark(args):
             p = sum(1 for r in subset if r["passed"])
             print(f"  {diff:>15}: {p}/{len(subset)} = {p/len(subset)*100:.1f}%")
 
-    # Error breakdown
+    # Error breakdown — split infrastructure vs model failures
     failures = [r for r in results if not r["passed"]]
     if failures:
-        error_types = Counter(classify_error(r.get("stderr", "")) for r in failures)
+        classified = [(classify_error(r.get("stderr", "")), r) for r in failures]
+        infra_failures = [(cat, etype, r) for (cat, etype), r in classified if cat == "infrastructure"]
+        model_failures = [(cat, etype, r) for (cat, etype), r in classified if cat == "model"]
+
+        infra_count = len(infra_failures)
+        model_count = len(model_failures)
+        testable = total_done - infra_count
+        adjusted_rate = round(total_pass / testable * 100, 2) if testable else 0
+
         print(f"\n  Error breakdown ({len(failures)} failures):")
-        for err_type, count in error_types.most_common():
-            print(f"    {err_type:>20}: {count}")
+        print(f"    Infrastructure (not model's fault): {infra_count}")
+        infra_types = Counter(etype for _, etype, _ in infra_failures)
+        for etype, count in infra_types.most_common():
+            print(f"      {etype:>25}: {count}")
+        print(f"    Model errors (genuine failures):    {model_count}")
+        model_types = Counter(etype for _, etype, _ in model_failures)
+        for etype, count in model_types.most_common():
+            print(f"      {etype:>25}: {count}")
+
+        print(f"\n  Adjusted Pass@1 (excluding infra): {total_pass}/{testable} = {adjusted_rate}%")
 
         print(f"\n  Failed tasks:")
-        for r in failures:
-            err_type = classify_error(r.get("stderr", ""))
-            print(f"    {r['task_id']} ({r['difficulty']}): {err_type}")
+        for (cat, etype), r in classified:
+            tag = "[INFRA]" if cat == "infrastructure" else "[MODEL]"
+            print(f"    {tag} {r['task_id']} ({r['difficulty']}): {etype}")
+
+    # Compute infra vs model split for saved results
+    if failures:
+        _classified = [(classify_error(r.get("stderr", "")), r) for r in failures]
+        _infra = sum(1 for (cat, _), _ in _classified if cat == "infrastructure")
+        _testable = total_done - _infra
+        _adjusted = round(total_pass / _testable * 100, 2) if _testable else 0
+    else:
+        _infra = 0
+        _testable = total_done
+        _adjusted = round(total_pass / total_done * 100, 2) if total_done else 0
 
     # Save final results
     summary = {
@@ -325,6 +450,9 @@ def run_benchmark(args):
         "total_tasks": total_done,
         "passed": total_pass,
         "pass_rate": round(total_pass / total_done * 100, 2) if total_done else 0,
+        "infrastructure_failures": _infra,
+        "testable_tasks": _testable,
+        "adjusted_pass_rate": _adjusted,
         "total_input_tokens": total_input_tokens,
         "total_output_tokens": total_output_tokens,
         "by_difficulty": {},

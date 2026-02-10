@@ -1,0 +1,32 @@
+{
+  "model": "claude-opus-4-6",
+  "variant": "standard",
+  "timestamp": "20260210_094330",
+  "total_tasks": 1,
+  "passed": 1,
+  "pass_rate": 100.0,
+  "total_input_tokens": 158,
+  "total_output_tokens": 12,
+  "by_difficulty": {
+    "basic": {
+      "total": 1,
+      "passed": 1,
+      "pass_rate": 100.0
+    }
+  },
+  "results": [
+    {
+      "task_id": "qiskitHumanEval/0",
+      "difficulty": "basic",
+      "entry_point": "create_quantum_circuit",
+      "passed": true,
+      "completion": "    qc = QuantumCircuit(n_qubits)\n    return qc\n",
+      "stdout": "BENCHMARK_PASS\n",
+      "stderr": "",
+      "api_time": 3.95,
+      "exec_time": 0.95,
+      "input_tokens": 158,
+      "output_tokens": 12
+    }
+  ]
+}

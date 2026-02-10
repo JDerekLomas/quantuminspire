@@ -103,3 +103,113 @@ body {
   pointer-events: none;
   z-index: 100;
 }
+
+/* Blog prose styling */
+.prose-quantum {
+  color: #cbd5e1;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.prose-quantum h2 {
+  color: #f1f5f9;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.prose-quantum h3 {
+  color: #e2e8f0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-quantum p {
+  margin-bottom: 1.25rem;
+}
+
+.prose-quantum a {
+  color: var(--quantum-accent);
+  text-decoration: none;
+}
+.prose-quantum a:hover {
+  text-decoration: underline;
+}
+
+.prose-quantum strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.prose-quantum em {
+  color: #94a3b8;
+}
+
+.prose-quantum ul, .prose-quantum ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.prose-quantum ul {
+  list-style-type: disc;
+}
+
+.prose-quantum ol {
+  list-style-type: decimal;
+}
+
+.prose-quantum li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-quantum code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  color: var(--quantum-accent);
+}
+
+.prose-quantum table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.prose-quantum thead {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prose-quantum th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.prose-quantum td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.prose-quantum tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.prose-quantum blockquote {
+  border-left: 2px solid var(--quantum-accent);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #94a3b8;
+  font-style: italic;
+}

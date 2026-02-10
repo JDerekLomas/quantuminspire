@@ -171,6 +171,7 @@ const vizExhibits = [
   { href: '/entanglement', title: 'Entanglement Lab', desc: 'Density matrices, partial traces, Bell states. Concurrence and von Neumann entropy.', color: '#ff6b9d', features: '8 states, reduced density matrices, metrics' },
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Watch a qubit oscillate between |0\u27E9 and |1\u27E9 under a driving field. Detuning, damping, Bloch sphere trajectory.', color: '#eab308', features: 'Animated, detuning, T\u2082 dephasing, Bloch sphere' },
   { href: '/interference', title: 'Multi-Slit Interference', desc: 'N-slit diffraction patterns with adjustable geometry and wavelength. Photon-by-photon accumulation mode.', color: '#14b8a6', features: '1-8 slits, visible spectrum, photon mode' },
+  { href: '/gallery', title: 'Visualization Gallery', desc: 'Curated collection of the best quantum visualizations across the web. Interactive demos, open-source tools, and reference implementations.', color: '#f59e0b', features: '20+ tools, live embeds, quality ratings' },
 ]
 
 // ─── Components ──────────────────────────────────────────────────────────────
@@ -260,7 +261,7 @@ function Hero() {
             { value: '62.25%', label: 'Pass@1 on Qiskit HumanEval', color: '#00ff88' },
             { value: '151', label: 'quantum coding tasks benchmarked', color: '#00d4ff' },
             { value: '7', label: 'interactive quantum simulations', color: '#8b5cf6' },
-            { value: '1', label: 'paper replicated autonomously', color: '#ff8c42' },
+            { value: '1', label: 'paper simulated with AI', color: '#ff8c42' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-black font-mono" style={{ color: stat.color }}>
@@ -403,16 +404,16 @@ function VQEReplication() {
     <section className="py-20 px-6 border-t border-white/5">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#ff8c42] mb-3">
-          Paper Replication
+          VQE Simulation
         </h2>
         <p className="text-gray-400 text-sm mb-10 max-w-3xl">
-          Autonomous replication of{' '}
+          AI-assisted simulation inspired by{' '}
           <a href={`https://arxiv.org/abs/${d.arxiv}`} target="_blank" rel="noopener noreferrer" className="text-[#ff8c42] hover:underline">
             Sagastizabal et al. (2019)
           </a>
           {' '}&mdash; symmetry-verified VQE for H&#x2082; from QuTech/TU Delft.
-          Claude Opus 4.6 wrote the full simulation: Hamiltonian construction, variational ansatz,
-          noise model, and parity post-selection error mitigation.
+          Claude Opus 4.6 wrote the simulation code: Hamiltonian construction, variational ansatz,
+          toy noise model, and parity post-selection. Classical simulation only &mdash; not yet validated on quantum hardware.
         </p>
 
         {/* Results chart + summary */}
