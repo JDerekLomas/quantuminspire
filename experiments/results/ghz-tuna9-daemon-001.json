@@ -1,0 +1,42 @@
+{
+  "id": "ghz-tuna9-daemon-001",
+  "type": "ghz_state",
+  "backend": "tuna-9",
+  "submitted": "2026-02-10T17:43:54.660975+00:00",
+  "completed": "2026-02-10T17:45:26.794821+00:00",
+  "parameters": {
+    "shots": 1024,
+    "num_qubits": 3,
+    "qubits": [
+      1,
+      0,
+      2
+    ]
+  },
+  "raw_counts": {
+    "000": 473,
+    "001": 14,
+    "010": 7,
+    "011": 10,
+    "100": 5,
+    "101": 22,
+    "110": 66,
+    "111": 427
+  },
+  "analysis": {
+    "fidelity": 0.8789,
+    "parity_distribution": {
+      "even": 0.5576,
+      "odd": 0.4424
+    },
+    "ghz_population": {
+      "000": 473,
+      "111": 427
+    },
+    "total_shots": 1024,
+    "num_qubits": 3,
+    "interpretation": "3-qubit GHZ fidelity: 87.9%. Even parity: 55.8%, Odd parity: 44.2%."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[3] q\nbit[3] b\n\nH q[1]\nCNOT q[1], q[0]\nCNOT q[0], q[2]\nb = measure q",
+  "errors": null
+}
