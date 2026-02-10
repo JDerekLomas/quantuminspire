@@ -1054,24 +1054,34 @@ export default function ExperimentsPage() {
 
   const pending = queue.filter(q => q.status === 'pending')
 
-  // Group by type, VQE first (most important)
+  // Group by type
+  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume']
   const vqeResults = results.filter(r => r.type === 'vqe_h2')
   const bellResults = results.filter(r => r.type === 'bell_calibration')
   const ghzResults = results.filter(r => r.type === 'ghz_state')
-  const otherResults = results.filter(r => !['vqe_h2', 'bell_calibration', 'ghz_state'].includes(r.type))
+  const rbResults = results.filter(r => r.type === 'rb_1qubit')
+  const qaoaResults = results.filter(r => r.type === 'qaoa_maxcut')
+  const qvResults = results.filter(r => r.type === 'quantum_volume')
+  const otherResults = results.filter(r => !knownTypes.includes(r.type))
 
-  // Find emulator VQE for comparison when showing hardware VQE
-  const vqeEmulator = vqeResults.find(r => isEmulator(r.backend))
-  const vqeHardware = vqeResults.find(r => !isEmulator(r.backend))
+  // Find emulator/hardware pairs for cross-platform comparison
+  function findComparison(typeResults: ExperimentResult[], result: ExperimentResult) {
+    return isEmulator(result.backend)
+      ? typeResults.find(r => !isEmulator(r.backend))
+      : typeResults.find(r => isEmulator(r.backend))
+  }
 
   const groups = [
-    { type: 'vqe_h2', label: 'H\u2082 VQE -- Quantum Chemistry', results: vqeResults, color: '#8b5cf6', description: 'Can a quantum computer calculate the energy of a hydrogen molecule? VQE uses a hybrid quantum-classical loop to find the ground state energy. The gold standard is "chemical accuracy" -- getting within 1.6 milliHartree of the exact answer.' },
-    { type: 'bell_calibration', label: 'Bell State Calibration', results: bellResults, color: '#00d4ff', description: 'The simplest test of quantum entanglement: prepare two qubits in a Bell state, then measure. A perfect device gives 50/50 between |00\u27E9 and |11\u27E9 with nothing else. Any leakage into |01\u27E9 or |10\u27E9 reveals hardware noise.' },
-    { type: 'ghz_state', label: 'GHZ State Preparation', results: ghzResults, color: '#00ff88', description: 'A harder entanglement test: create a 3-qubit GHZ state where all qubits are simultaneously |000\u27E9 and |111\u27E9. Parity violations (odd-parity states appearing) indicate decoherence scaling with qubit count.' },
+    { type: 'vqe_h2', label: 'H\u2082 VQE -- Quantum Chemistry', results: vqeResults, color: '#8b5cf6', description: 'Can a quantum computer calculate the energy of a hydrogen molecule? VQE uses a hybrid quantum-classical loop to find the ground state energy. The gold standard is "chemical accuracy" -- getting within 1.6 milliHartree of the exact answer.', wide: true },
+    { type: 'bell_calibration', label: 'Bell State Calibration', results: bellResults, color: '#00d4ff', description: 'The simplest test of quantum entanglement: prepare two qubits in a Bell state, then measure. A perfect device gives 50/50 between |00\u27E9 and |11\u27E9 with nothing else. Any leakage into |01\u27E9 or |10\u27E9 reveals hardware noise.', wide: false },
+    { type: 'ghz_state', label: 'GHZ State Preparation', results: ghzResults, color: '#00ff88', description: 'A harder entanglement test: create a 3-qubit GHZ state where all qubits are simultaneously |000\u27E9 and |111\u27E9. Parity violations (odd-parity states appearing) indicate decoherence scaling with qubit count.', wide: false },
+    { type: 'rb_1qubit', label: 'Randomized Benchmarking', results: rbResults, color: '#ff8c42', description: 'How good is a single quantum gate? RB applies random sequences of Clifford gates and measures how quickly the signal decays. The decay rate gives the average error per gate -- the fundamental metric for gate quality.', wide: false },
+    { type: 'qaoa_maxcut', label: 'QAOA MaxCut', results: qaoaResults, color: '#ff6b9d', description: 'Can a quantum algorithm beat random guessing at graph optimization? QAOA sweeps variational parameters to find the maximum cut of a triangle graph. The approximation ratio measures how close we get to the classical optimum.', wide: false },
+    { type: 'quantum_volume', label: 'Quantum Volume', results: qvResults, color: '#14b8a6', description: 'A holistic benchmark combining gate fidelity, connectivity, and compiler quality into a single number. QV tests whether the device can reliably execute random circuits of depth = width. Higher is better.', wide: true },
   ]
 
   if (otherResults.length > 0) {
-    groups.push({ type: 'other', label: 'Other Experiments', results: otherResults, color: '#666', description: '' })
+    groups.push({ type: 'other', label: 'Other Experiments', results: otherResults, color: '#666', description: '', wide: false })
   }
 
   return (
@@ -1155,8 +1165,9 @@ export default function ExperimentsPage() {
       {/* Summary Dashboard */}
       {results.length > 0 && (
         <section className="px-6 pb-8">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto space-y-6">
             <SummaryDashboard results={results} />
+            <ComparisonTable results={results} />
           </div>
         </section>
       )}
@@ -1195,9 +1206,6 @@ export default function ExperimentsPage() {
       {groups.map(group => {
         if (group.results.length === 0) return null
 
-        // For VQE, show full-width cards since they have the energy diagram
-        const isVQE = group.type === 'vqe_h2'
-
         return (
           <section key={group.type} className="px-6 pb-12">
             <div className="max-w-6xl mx-auto">
@@ -1210,22 +1218,12 @@ export default function ExperimentsPage() {
                 <p className="text-sm text-gray-300 mb-6 ml-5 max-w-3xl leading-relaxed">{group.description}</p>
               )}
 
-              {isVQE ? (
-                /* VQE: show side-by-side if we have both emulator and hardware */
-                <div className={`grid grid-cols-1 ${group.results.length > 1 ? 'lg:grid-cols-2' : ''} gap-6`}>
-                  {group.results.map(result => {
-                    // Pass comparison: emulator card gets hardware as comparison, and vice versa
-                    const comparison = isEmulator(result.backend) ? vqeHardware : vqeEmulator
-                    return <ResultCard key={result.id} result={result} vqeComparison={comparison} />
-                  })}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {group.results.map(result => (
-                    <ResultCard key={result.id} result={result} />
-                  ))}
-                </div>
-              )}
+              <div className={`grid grid-cols-1 ${group.wide && group.results.length > 1 ? 'lg:grid-cols-2' : group.wide ? '' : 'md:grid-cols-2'} gap-6`}>
+                {group.results.map(result => {
+                  const comp = findComparison(group.results, result)
+                  return <ResultCard key={result.id} result={result} comparison={comp} />
+                })}
+              </div>
             </div>
           </section>
         )

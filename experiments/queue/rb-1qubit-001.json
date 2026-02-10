@@ -1,0 +1,22 @@
+{
+  "id": "rb-1qubit-001",
+  "type": "rb_1qubit",
+  "status": "running",
+  "backend": "qxelarator",
+  "created": "2026-02-10T16:17:31.570905+00:00",
+  "parameters": {
+    "shots": 1024,
+    "qubit": 0,
+    "sequence_lengths": [
+      1,
+      4,
+      8,
+      16,
+      32
+    ],
+    "num_sequences": 5,
+    "seed": 42
+  },
+  "priority": 4,
+  "description": "1-qubit randomized benchmarking: random Clifford sequences to extract gate fidelity."
+}

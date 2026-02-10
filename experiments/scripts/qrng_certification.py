@@ -178,6 +178,22 @@ def bytes_to_bits(data: bytes) -> np.ndarray:
     return bits
 
 
+def von_neumann_debias(bits: np.ndarray) -> np.ndarray:
+    """Von Neumann debiasing: take pairs, output 0 for 01, 1 for 10, discard 00/11.
+
+    This eliminates first-order bias regardless of the underlying probability.
+    Discards ~50-75% of input bits depending on bias severity.
+    """
+    # Reshape into pairs
+    n = len(bits) - (len(bits) % 2)
+    pairs = bits[:n].reshape(-1, 2)
+    # Keep only heterogeneous pairs
+    mask = pairs[:, 0] != pairs[:, 1]
+    kept = pairs[mask]
+    # Output the first bit of each kept pair
+    return kept[:, 0]
+
+
 # ---------------------------------------------------------------------------
 # NIST SP 800-22 Statistical Tests
 # ---------------------------------------------------------------------------
@@ -437,6 +453,33 @@ def run_all_tests(bits: np.ndarray) -> list[dict]:
 # Main
 # ---------------------------------------------------------------------------
 
+def _run_and_report(label: str, bits: np.ndarray, meta: dict, target_bits: int) -> dict:
+    """Run all NIST tests on a bitstream and print results."""
+    bits = bits[:target_bits]
+    print(f"--- Testing: {label} ({len(bits):,} bits) ---")
+
+    if len(bits) < 6272:
+        print(f"  WARNING: Only {len(bits)} bits available (need >=6272 for all tests)")
+
+    tests = run_all_tests(bits)
+    passed = sum(1 for t in tests if t["pass"])
+    total = len(tests)
+    print(f"  {passed}/{total} tests passed")
+    for t in tests:
+        status = "PASS" if t["pass"] else "FAIL"
+        print(f"  [{status}] {t['test']}: p={t['p_value']:.6f}")
+    print()
+
+    return {
+        **meta,
+        "n_bits": len(bits),
+        "tests": tests,
+        "passed": passed,
+        "total": total,
+        "pass_rate": round(passed / total, 4),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description="NIST SP 800-22 Quantum Randomness Certification")
     parser.add_argument("--bits", type=int, default=DEFAULT_BITS, help="Number of bits per source")
@@ -446,109 +489,110 @@ def main():
     args = parser.parse_args()
 
     n_bytes = args.bits // 8
-    sources = {}
+    results = {}
 
-    # Collect samples
     print(f"\n=== NIST SP 800-22 Quantum Randomness Certification ===")
-    print(f"    Sample size: {args.bits:,} bits ({n_bytes:,} bytes) per source\n")
+    print(f"    Target: {args.bits:,} bits ({n_bytes:,} bytes) per source")
+    print(f"    Significance level: alpha = {ALPHA}\n")
 
+    # --- Source 1: ANU QRNG ---
     if not args.skip_anu:
-        print("[1/3] Fetching from ANU QRNG (vacuum fluctuations)...")
+        print("[1/4] Fetching from ANU QRNG (vacuum fluctuations)...")
         t0 = time.time()
         try:
             anu_bytes = fetch_anu_bytes(n_bytes)
-            sources["anu_qrng"] = {
-                "name": "ANU QRNG",
+            elapsed = round(time.time() - t0, 2)
+            print(f"  Done in {elapsed}s\n")
+            bits = bytes_to_bits(anu_bytes)
+            results["anu_qrng"] = _run_and_report("ANU QRNG", bits, {
+                "source": "ANU QRNG",
                 "method": "Vacuum fluctuations of the electromagnetic field",
                 "hardware": "Optical homodyne detection (ANU, Canberra)",
-                "bytes": n_bytes,
-                "fetch_time_s": round(time.time() - t0, 2),
-                "data": anu_bytes,
-            }
-            print(f"  Done in {sources['anu_qrng']['fetch_time_s']}s\n")
+                "fetch_time_s": elapsed,
+            }, args.bits)
         except Exception as e:
             print(f"  FAILED: {e}\n")
 
+    # --- Source 2: Tuna-9 raw ---
+    tuna_raw_bits = None
     if not args.skip_tuna:
-        print("[2/3] Fetching from QI Tuna-9 (spin qubit superposition)...")
+        # Fetch 4x bytes to have enough after von Neumann debiasing (~75% discard)
+        tuna_n_bytes = n_bytes * 5
+        print(f"[2/4] Fetching from QI Tuna-9 ({tuna_n_bytes:,} bytes for raw + debiased)...")
         t0 = time.time()
         try:
-            tuna_bytes = fetch_tuna9_bytes(n_bytes)
-            sources["tuna9"] = {
-                "name": "QI Tuna-9",
-                "method": "Hadamard gate superposition on electron spin qubits",
+            tuna_bytes = fetch_tuna9_bytes(tuna_n_bytes)
+            elapsed = round(time.time() - t0, 2)
+            print(f"  Done in {elapsed}s\n")
+            tuna_raw_bits = bytes_to_bits(tuna_bytes)
+
+            results["tuna9_raw"] = _run_and_report("QI Tuna-9 (raw)", tuna_raw_bits, {
+                "source": "QI Tuna-9 (raw)",
+                "method": "Hadamard gate superposition on electron spin qubits — no post-processing",
                 "hardware": "9-qubit spin processor (QuTech, TU Delft)",
-                "bytes": n_bytes,
-                "fetch_time_s": round(time.time() - t0, 2),
-                "data": tuna_bytes,
-            }
-            print(f"  Done in {sources['tuna9']['fetch_time_s']}s\n")
+                "fetch_time_s": elapsed,
+            }, args.bits)
         except Exception as e:
             print(f"  FAILED: {e}\n")
 
-    print("[3/3] Fetching from qxelarator (local quantum emulator)...")
+    # --- Source 3: Tuna-9 debiased ---
+    if tuna_raw_bits is not None:
+        print("[3/4] Applying von Neumann debiasing to Tuna-9 data...")
+        debiased = von_neumann_debias(tuna_raw_bits)
+        discard_rate = 1 - len(debiased) / len(tuna_raw_bits)
+        print(f"  Input: {len(tuna_raw_bits):,} bits → Output: {len(debiased):,} bits")
+        print(f"  Discard rate: {discard_rate:.1%}\n")
+
+        if len(debiased) >= 6272:
+            results["tuna9_debiased"] = _run_and_report("QI Tuna-9 (von Neumann debiased)", debiased, {
+                "source": "QI Tuna-9 (von Neumann debiased)",
+                "method": "Hadamard + measurement, then von Neumann pair extraction",
+                "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+                "debiasing": "von Neumann (discard same-bit pairs, keep first bit of different pairs)",
+                "raw_bits": len(tuna_raw_bits),
+                "debiased_bits": len(debiased),
+                "discard_rate": round(discard_rate, 4),
+            }, args.bits)
+        else:
+            print(f"  NOT ENOUGH BITS after debiasing ({len(debiased)} < 6272). Skipping tests.\n")
+
+    # --- Source 4: Local emulator ---
+    print("[4/4] Fetching from qxelarator (local quantum emulator)...")
     t0 = time.time()
     emu_bytes = fetch_emulator_bytes(n_bytes)
-    sources["emulator"] = {
-        "name": "qxelarator",
+    elapsed = round(time.time() - t0, 2)
+    print(f"  Done in {elapsed}s\n")
+    bits = bytes_to_bits(emu_bytes)
+    results["emulator"] = _run_and_report("qxelarator", bits, {
+        "source": "qxelarator",
         "method": "Simulated Hadamard + measurement (quantum circuit emulator)",
         "hardware": "Local CPU (qxelarator)",
-        "bytes": n_bytes,
-        "fetch_time_s": round(time.time() - t0, 2),
-        "data": emu_bytes,
-    }
-    print(f"  Done in {sources['emulator']['fetch_time_s']}s\n")
+        "fetch_time_s": elapsed,
+    }, args.bits)
 
-    # Run tests
-    results = {}
-    for key, source in sources.items():
-        print(f"--- Testing: {source['name']} ---")
-        bits = bytes_to_bits(source["data"])[:args.bits]
-        tests = run_all_tests(bits)
-
-        passed = sum(1 for t in tests if t["pass"])
-        total = len(tests)
-        print(f"  {passed}/{total} tests passed")
-        for t in tests:
-            status = "PASS" if t["pass"] else "FAIL"
-            print(f"  [{status}] {t['test']}: p={t['p_value']:.6f}")
-        print()
-
-        results[key] = {
-            "source": source["name"],
-            "method": source["method"],
-            "hardware": source["hardware"],
-            "n_bits": args.bits,
-            "fetch_time_s": source["fetch_time_s"],
-            "tests": tests,
-            "passed": passed,
-            "total": total,
-            "pass_rate": round(passed / total, 4),
-        }
-
-    # Summary
+    # --- Summary ---
     print("=== SUMMARY ===\n")
-    print(f"{'Source':<25} {'Passed':<10} {'Rate':<10} {'Fetch Time':<12}")
-    print("-" * 57)
+    print(f"{'Source':<40} {'Passed':<10} {'Rate':<8}")
+    print("-" * 58)
     for key, r in results.items():
-        print(f"{r['source']:<25} {r['passed']}/{r['total']:<7} {r['pass_rate']:.0%}{'':<6} {r['fetch_time_s']}s")
+        print(f"{r['source']:<40} {r['passed']}/{r['total']:<7} {r['pass_rate']:.0%}")
 
     # Save experiment result
     experiment = {
         "experiment_id": "qrng-certification-001",
         "experiment_type": "qrng-certification",
         "title": "NIST SP 800-22 Quantum Randomness Certification",
-        "description": "Statistical certification of three quantum random sources using NIST SP 800-22 test battery",
+        "description": "Statistical certification of quantum random sources with von Neumann debiasing comparison",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "parameters": {
-            "n_bits": args.bits,
-            "n_bytes": n_bytes,
+            "target_bits": args.bits,
             "alpha": ALPHA,
             "tests": [
                 "Frequency (Monobit)", "Block Frequency", "Runs",
                 "Longest Run of Ones", "Spectral (DFT)", "Serial",
                 "Approximate Entropy", "Cumulative Sums",
             ],
+            "debiasing": "von Neumann pair extraction",
         },
         "results": results,
         "analysis": {
