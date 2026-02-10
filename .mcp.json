@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "qrng": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp-servers/qrng/index.js"]
+    },
+    "qi-circuits": {
+      "type": "stdio",
+      "command": "/Users/dereklomas/quantuminspire/.venv/bin/python",
+      "args": ["mcp-servers/qi-circuits/qi_server.py"]
+    }
+  }
+}
