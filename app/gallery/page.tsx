@@ -275,6 +275,29 @@ const VISUALIZATIONS: Viz[] = [
 
 const CATEGORIES = Array.from(new Set(VISUALIZATIONS.map(v => v.category)))
 
+type OurViz = {
+  name: string
+  href: string
+  description: string
+  concept: string
+  tech: string
+}
+
+const OUR_INTERACTIVES: OurViz[] = [
+  { name: 'Bloch Sphere', href: '/bloch-sphere', concept: 'Single-qubit states', description: 'Apply H, X, Y, Z, S, T gates and watch the state vector rotate in 3D', tech: 'Three.js' },
+  { name: 'State Vector', href: '/state-vector', concept: 'Multi-qubit amplitudes', description: 'Amplitude bars and phase wheels for up to 4 qubits', tech: 'React + SVG' },
+  { name: 'Q-Sphere', href: '/qsphere', concept: 'Multi-qubit geometry', description: 'Qiskit-style Q-sphere with amplitude-sized dots on a Hamming-distance sphere', tech: 'Three.js' },
+  { name: 'Entanglement', href: '/entanglement', concept: 'Two-qubit correlations', description: 'Create Bell states with H+CNOT and see measurement correlations build up', tech: 'React + Canvas' },
+  { name: 'Interference', href: '/interference', concept: 'Wave mechanics', description: 'Constructive and destructive interference of quantum amplitudes', tech: 'React + SVG' },
+  { name: 'Measurement', href: '/measurement', concept: 'Born rule / collapse', description: 'Repeated measurement of superposition states, histogram builds shot by shot', tech: 'React + Canvas' },
+  { name: 'Teleportation', href: '/teleportation', concept: 'Quantum teleportation', description: 'Step through the full protocol: entanglement, Bell measurement, correction', tech: 'React + SVG' },
+  { name: "Grover's Search", href: '/grovers', concept: 'Amplitude amplification', description: 'Watch the marked state amplitude grow with each oracle + diffusion iteration', tech: 'React + SVG' },
+  { name: 'Rabi Oscillations', href: '/rabi', concept: 'Driven qubit dynamics', description: 'Tune drive frequency and amplitude, see resonance and decoherence', tech: 'Three.js + Canvas' },
+  { name: 'Hamiltonians', href: '/hamiltonians', concept: 'Molecular energy', description: 'Explore H2 Pauli decomposition, coefficients, and bond-distance dependence', tech: 'React + Recharts' },
+  { name: 'Ansatz Explorer', href: '/ansatz', concept: 'VQE circuit design', description: 'Adjust variational parameters and see how the ansatz covers Hilbert space', tech: 'React + SVG' },
+  { name: 'Sonification', href: '/sonification', concept: 'Quantum as sound', description: 'Hear the difference between separable and entangled states', tech: 'Web Audio API' },
+]
+
 const qualityColor = {
   exceptional: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/30',
   high: 'text-cyan-400 bg-cyan-400/10 border-cyan-400/30',
@@ -308,10 +331,43 @@ export default function GalleryPage() {
       <div className="max-w-6xl mx-auto px-6 pt-8 pb-4">
         <h1 className="text-2xl font-bold text-white mb-2">Quantum Visualization Gallery</h1>
         <p className="text-sm text-gray-400 max-w-2xl">
-          A curated collection of the best quantum computing visualizations across the web.
-          Interactive demos, publication tools, and open-source libraries &mdash; with links to our
-          own replications where available.
+          Interactive demos we built to make quantum intuitive, plus a curated catalog of
+          the best visualization tools across the web.
         </p>
+      </div>
+
+      {/* Our Interactives */}
+      <div className="max-w-6xl mx-auto px-6 pb-8">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-[#00ff88]/30 to-transparent" />
+          <span className="text-xs font-mono uppercase tracking-widest text-[#00ff88]/70">Our interactives</span>
+          <div className="h-px flex-1 bg-gradient-to-l from-[#00ff88]/30 to-transparent" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {OUR_INTERACTIVES.map(viz => (
+            <Link
+              key={viz.href}
+              href={viz.href}
+              className="group p-4 rounded-lg border border-[#00ff88]/10 bg-[#00ff88]/[0.02] hover:bg-[#00ff88]/[0.06] hover:border-[#00ff88]/25 transition-all"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm font-semibold text-white group-hover:text-[#00ff88] transition-colors">{viz.name}</span>
+                <span className="text-[10px] font-mono text-gray-600">{viz.tech}</span>
+              </div>
+              <span className="block text-[10px] font-mono text-[#00ff88]/60 uppercase tracking-wider mb-1.5">{viz.concept}</span>
+              <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{viz.description}</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* External Tools Section */}
+      <div className="max-w-6xl mx-auto px-6 pb-2">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-[#00d4ff]/30 to-transparent" />
+          <span className="text-xs font-mono uppercase tracking-widest text-[#00d4ff]/70">External tools</span>
+          <div className="h-px flex-1 bg-gradient-to-l from-[#00d4ff]/30 to-transparent" />
+        </div>
       </div>
 
       {/* Category filters */}
