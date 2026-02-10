@@ -10,7 +10,9 @@ export const metadata = {
 }
 
 export default function BlogIndex() {
-  const posts = getAllPosts()
+  const allPosts = getAllPosts()
+  const pinned = allPosts.filter(p => p.pinned)
+  const feed = allPosts.filter(p => !p.pinned)
 
   return (
     <>
@@ -33,22 +35,70 @@ export default function BlogIndex() {
       </nav>
 
       {/* Header */}
-      <section className="pt-28 pb-12 px-6">
+      <section className="pt-28 pb-8 px-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4">
             Research Blog
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl">
-            Notes from the frontier of AI-accelerated quantum computing research.
-            Experiment reports, landscape analysis, and technical deep-dives.
+            Can AI agents systematically replicate quantum computing experiments?
+            We're finding out — running the same algorithms across four backends,
+            testing every error mitigation technique we can find, and publishing everything.
           </p>
         </div>
       </section>
 
-      {/* Posts */}
+      {/* Pinned — Start Here */}
+      {pinned.length > 0 && (
+        <section className="px-6 pb-10">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+              <span className="text-xs font-mono uppercase tracking-widest text-gray-500">Start here</span>
+              <div className="h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
+            </div>
+            <p className="text-sm text-gray-500 text-center mb-6 max-w-xl mx-auto">
+              The context for our empirical work: why AI-accelerated science matters, which papers define the field, and the data behind the hype.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {pinned.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group p-5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/20 transition-all"
+                >
+                  <span
+                    className="inline-block text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded border mb-3"
+                    style={{
+                      color: categoryColors[post.category],
+                      borderColor: `${categoryColors[post.category]}30`,
+                    }}
+                  >
+                    {categoryLabels[post.category]}
+                  </span>
+                  <h3 className="text-sm font-bold text-white group-hover:underline leading-snug mb-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed line-clamp-3">
+                    {post.subtitle || post.excerpt}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Experiment Feed */}
       <section className="px-6 pb-20">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {posts.map((post) => (
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-500">Lab notebook</span>
+            <div className="h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
+          </div>
+          <div className="space-y-6">
+          {feed.map((post) => (
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
@@ -82,6 +132,7 @@ export default function BlogIndex() {
               </div>
             </Link>
           ))}
+          </div>
         </div>
       </section>
 
