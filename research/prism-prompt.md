@@ -1,6 +1,64 @@
 # Prism Prompt: AI-Driven Replication of Quantum Computing Experiments
 
-Copy this into OpenAI Prism (https://prism.openai.com/) to draft the paper. The prompt includes all data — Prism does not need external file access.
+Copy this into OpenAI Prism (https://prism.openai.com/) to draft the paper. All data is publicly available on GitHub — links below.
+
+---
+
+## DATA LINKS (all public on GitHub)
+
+### Organized Dataset (CSV summaries)
+- **Experiment summary**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/dataset/experiment_summary.csv
+- **Hardware comparison**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/dataset/hardware_comparison.csv
+- **Benchmark summary**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/dataset/benchmark_summary.csv
+- **Replication summary**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/dataset/replication_summary.csv
+- **Dataset README**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/dataset/README.md
+
+### Raw Experiment Results (JSON)
+- **Bell state (emulator)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/bell-calibration-001.json
+- **Bell state (IBM)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/bell-calibration-001-ibm.json
+- **Bell state (Tuna-9)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/bell-calibration-001-tuna9.json
+- **GHZ 3q (emulator)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/ghz-003.json
+- **GHZ 3q (IBM)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/ghz-003-ibm.json
+- **GHZ 3q (Tuna-9)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/ghz-003-tuna9.json
+- **VQE H2 (emulator)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-equilibrium-001.json
+- **VQE H2 (IBM Marrakesh)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-equilibrium-001-ibm.json
+- **VQE H2 (IBM Torino)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-equilibrium-002-ibm-torino.json
+- **VQE H2 (Tuna-9)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-equilibrium-001-tuna9.json
+- **VQE H2 bond sweep (emulator)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-h2-sweep-emulator.json
+- **VQE H2 bond sweep (reference)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-h2-sweep-reference.json
+- **HeH+ VQE sweep (Peruzzo)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/peruzzo2014-heh-sweep.json
+- **Quantum Volume**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/qv-001.json
+- **Randomized Benchmarking**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/rb-1qubit-001.json
+- **QAOA MaxCut**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/qaoa-maxcut-001.json
+- **QRNG Certification**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/qrng-certification-001.json
+- **Connectivity Probe (Tuna-9)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/connectivity-probe-001-tuna9.json
+- **Repetition Code (Tuna-9)**: https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/repetition-code-001-tuna9.json
+
+### Paper Replication Reports
+- **Sagastizabal 2019 (JSON)**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-reports/sagastizabal2019.json
+- **Sagastizabal 2019 (analysis)**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-reports/sagastizabal2019.md
+- **Peruzzo 2014 (JSON)**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-reports/peruzzo2014.json
+- **Peruzzo 2014 (analysis)**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-reports/peruzzo2014.md
+- **Cross 2019 (JSON)**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-reports/cross2019.json
+- **Cross 2019 (analysis)**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-reports/cross2019.md
+
+### LLM Benchmark Results
+- **Claude Opus 4.6 (best run)**: https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_claude-opus-4-6_20260210_110315.json
+- **Gemini 3 Flash (best run)**: https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_gemini-3-flash-preview_20260210_094345.json
+- **All benchmark results**: https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results
+
+### Agent Source Code
+- **Experiment daemon**: https://github.com/JDerekLomas/quantuminspire/blob/main/agents/experiment_daemon.py
+- **Replication agent**: https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_agent.py
+- **Replication analyzer**: https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_analyzer.py
+- **Benchmark harness**: https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_harness.py
+- **MCP servers**: https://github.com/JDerekLomas/quantuminspire/tree/main/mcp-servers
+- **Sagastizabal replication script**: https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_sagastizabal.py
+- **Peruzzo replication script**: https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_peruzzo.py
+
+### Research Documents
+- **Research plan**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-research-plan.md
+- **Full repository**: https://github.com/JDerekLomas/quantuminspire
 
 ---
 
