@@ -1,14 +1,17 @@
 {
   "id": "vqe-tuna9-sweep-250",
   "type": "vqe_h2",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T21:00:00Z",
   "parameters": {
     "shots": 4096,
     "bond_distance": 2.5,
     "alpha": -1.3809,
-    "qubits": [2, 4],
+    "qubits": [
+      2,
+      4
+    ],
     "g0": -0.648674,
     "g1": 0.027135,
     "g2": -0.027135,

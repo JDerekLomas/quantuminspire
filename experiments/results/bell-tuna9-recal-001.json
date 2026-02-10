@@ -2,8 +2,8 @@
   "id": "bell-tuna9-recal-001",
   "type": "bell_calibration",
   "backend": "tuna-9",
-  "submitted": "2026-02-10T18:41:07.269906+00:00",
-  "completed": "2026-02-10T18:41:39.258319+00:00",
+  "submitted": "2026-02-10T18:39:49.163784+00:00",
+  "completed": "2026-02-10T18:40:10.350919+00:00",
   "parameters": {
     "shots": 4096,
     "qubits": [
@@ -12,29 +12,27 @@
     ]
   },
   "raw_counts": {
-    "00000": 2034,
-    "00001": 39,
-    "00010": 10,
-    "00100": 54,
-    "00101": 1,
-    "01000": 6,
-    "10000": 397,
-    "10001": 10,
-    "10010": 2,
-    "10100": 1496,
-    "10101": 32,
+    "00000": 1960,
+    "00001": 45,
+    "00010": 12,
+    "00100": 63,
+    "01000": 4,
+    "01001": 1,
+    "10000": 74,
+    "10001": 4,
+    "10100": 1883,
+    "10101": 38,
     "10110": 8,
-    "11000": 3,
     "11100": 4
   },
   "analysis": {
-    "fidelity": 0.886,
-    "parity_leakage": 0.114,
+    "fidelity": 0.9656,
+    "parity_leakage": 0.0344,
     "expected_fidelity": 1.0,
     "total_shots": 4096,
-    "correct_parity": 3629,
-    "wrong_parity": 467,
-    "interpretation": "Bell state fidelity: 88.6%. Good \u2014 11.4% leakage into wrong parity states."
+    "correct_parity": 3955,
+    "wrong_parity": 141,
+    "interpretation": "Bell state fidelity: 96.6%. Excellent \u2014 3.4% leakage into wrong parity states."
   },
   "circuit_cqasm": "version 3.0\nqubit[5] q\nbit[5] b\n\nH q[2]\nCNOT q[2], q[4]\nb = measure q",
   "errors": null

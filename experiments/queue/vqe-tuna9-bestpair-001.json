@@ -1,7 +1,7 @@
 {
   "id": "vqe-tuna9-bestpair-001",
   "type": "vqe_h2",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T20:00:00Z",
   "parameters": {

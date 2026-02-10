@@ -1,0 +1,76 @@
+{
+  "id": "vqe-emulator-sweep-250",
+  "type": "vqe_h2",
+  "backend": "emulator",
+  "submitted": "2026-02-10T18:51:18.005751+00:00",
+  "completed": "2026-02-10T18:51:18.077736+00:00",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 2.5,
+    "alpha": -1.3809,
+    "qubits": [
+      0,
+      1
+    ],
+    "g0": -0.648674,
+    "g1": 0.027135,
+    "g2": -0.027135,
+    "g3": 0.0,
+    "g4": 0.141105,
+    "g5": 0.141105,
+    "fci_energy": -0.936055
+  },
+  "raw_counts": {
+    "z_basis": {
+      "01": 2421.0,
+      "10": 1675.0
+    },
+    "x_basis": {
+      "00": 17.0,
+      "01": 2023.0,
+      "10": 2034.0,
+      "11": 22.0
+    },
+    "y_basis": {
+      "00": 21.0,
+      "01": 2030.0,
+      "10": 2019.0,
+      "11": 26.0
+    }
+  },
+  "analysis": {
+    "energy_hartree": -0.934843,
+    "energy_raw": -0.934843,
+    "energy_postselected": -0.934843,
+    "postselection_keep_fraction": 1.0,
+    "fci_energy": -0.936055,
+    "error_hartree": 0.001212,
+    "error_kcal_mol": 0.76,
+    "chemical_accuracy": true,
+    "expectation_values": {
+      "Z0": -0.1821,
+      "Z1": 0.1821,
+      "Z0Z1": -1.0,
+      "X0X1": -0.981,
+      "Y0Y1": -0.9771
+    },
+    "hamiltonian_coefficients": {
+      "g0": -0.648674,
+      "g1": 0.027135,
+      "g2": -0.027135,
+      "g3": 0.0,
+      "g4": 0.141105,
+      "g5": 0.141105
+    },
+    "bond_distance_angstrom": 2.5,
+    "total_shots_per_basis": {
+      "z": 4096.0,
+      "x": 4096.0,
+      "y": 4096.0
+    },
+    "postselection_z_kept": 4096.0,
+    "interpretation": "VQE energy: -0.9348 Ha (FCI: -0.9361 Ha). Error: 0.8 kcal/mol. Within chemical accuracy. Post-selection kept 100% of Z-basis shots."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\n// Subspace-preserving ansatz: Ry-CNOT-X\n// State = cos(a/2)|10> + sin(a/2)|01>, alpha=-1.380900\nRy(-1.380900) q[0]\nCNOT q[0], q[1]\nX q[0]\n\n// Z-basis measurement\nb = measure q",
+  "errors": null
+}

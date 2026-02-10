@@ -1,7 +1,7 @@
 {
   "id": "rb-tuna9-q2-001",
   "type": "rb_1qubit",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T20:00:00Z",
   "parameters": {
