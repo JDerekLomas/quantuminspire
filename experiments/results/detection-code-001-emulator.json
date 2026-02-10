@@ -1,0 +1,360 @@
+{
+  "id": "detection-code-001-emulator",
+  "type": "detection_code",
+  "backend": "emulator",
+  "submitted": "2026-02-10T17:02:32Z",
+  "completed": "2026-02-10T17:02:32Z",
+  "parameters": {
+    "shots": 4096,
+    "qubit_mapping": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "raw_counts": {
+    "no_error": {
+      "000000": 1964,
+      "001111": 2132
+    },
+    "x_error_d0": {
+      "100001": 2063,
+      "101110": 2033
+    },
+    "x_error_d1": {
+      "100010": 2027,
+      "101101": 2069
+    },
+    "x_error_d2": {
+      "100100": 2010,
+      "101011": 2086
+    },
+    "x_error_d3": {
+      "100111": 2079,
+      "101000": 2017
+    },
+    "y_error_d0": {
+      "110001": 2078,
+      "111110": 2018
+    },
+    "y_error_d1": {
+      "110010": 2078,
+      "111101": 2018
+    },
+    "y_error_d2": {
+      "110100": 2024,
+      "111011": 2072
+    },
+    "y_error_d3": {
+      "110111": 2044,
+      "111000": 2052
+    },
+    "z_error_d0": {
+      "010000": 2007,
+      "011111": 2089
+    },
+    "z_error_d1": {
+      "010000": 2069,
+      "011111": 2027
+    },
+    "z_error_d2": {
+      "010000": 2078,
+      "011111": 2018
+    },
+    "z_error_d3": {
+      "010000": 2043,
+      "011111": 2053
+    }
+  },
+  "analysis": {
+    "variant_results": {
+      "no_error": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X0Z0": 4096
+        },
+        "error_type": "none"
+      },
+      "x_error_d0": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X0Z1": 4096
+        },
+        "error_type": "X_d0"
+      },
+      "x_error_d1": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X0Z1": 4096
+        },
+        "error_type": "X_d1"
+      },
+      "x_error_d2": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X0Z1": 4096
+        },
+        "error_type": "X_d2"
+      },
+      "x_error_d3": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X0Z1": 4096
+        },
+        "error_type": "X_d3"
+      },
+      "y_error_d0": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z1": 4096
+        },
+        "error_type": "Y_d0"
+      },
+      "y_error_d1": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z1": 4096
+        },
+        "error_type": "Y_d1"
+      },
+      "y_error_d2": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z1": 4096
+        },
+        "error_type": "Y_d2"
+      },
+      "y_error_d3": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z1": 4096
+        },
+        "error_type": "Y_d3"
+      },
+      "z_error_d0": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z0": 4096
+        },
+        "error_type": "Z_d0"
+      },
+      "z_error_d1": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z0": 4096
+        },
+        "error_type": "Z_d1"
+      },
+      "z_error_d2": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z0": 4096
+        },
+        "error_type": "Z_d2"
+      },
+      "z_error_d3": {
+        "total_shots": 4096,
+        "detection_rate": 1.0,
+        "syndrome_distribution": {
+          "X1Z0": 4096
+        },
+        "error_type": "Z_d3"
+      }
+    },
+    "overall_detection_rate": 1.0,
+    "false_positive_rate": 0.0,
+    "qubit_mapping": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "code_type": "[[4,2,2]] detection",
+    "num_data_qubits": 4,
+    "num_ancilla_qubits": 2,
+    "interpretation": "[[4,2,2]] detection code: 100.0% error detection rate, 0.0% false positive rate. Excellent detection performance. NN decoder: 76.8% accuracy vs lookup table: 100.0%.",
+    "decoder_comparison": {
+      "nn_accuracy": 0.7679,
+      "nn_accuracy_std": 0.002,
+      "lookup_accuracy": 1.0,
+      "lookup_detailed_accuracy": 0.537,
+      "n_folds": 5,
+      "n_samples": 53248,
+      "n_classes": 13,
+      "class_distribution": {
+        "none": 4096,
+        "X_d0": 4096,
+        "X_d1": 4096,
+        "X_d2": 4096,
+        "X_d3": 4096,
+        "Y_d0": 4096,
+        "Y_d1": 4096,
+        "Y_d2": 4096,
+        "Y_d3": 4096,
+        "Z_d0": 4096,
+        "Z_d1": 4096,
+        "Z_d2": 4096,
+        "Z_d3": 4096
+      },
+      "nn_full_eval": {
+        "accuracy": 0.7692,
+        "per_class": {
+          "X_d0": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "X_d1": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "X_d2": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "X_d3": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Y_d0": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Y_d1": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Y_d2": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Y_d3": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Z_d0": {
+            "precision": 0,
+            "recall": 0.0,
+            "support": 4096
+          },
+          "Z_d1": {
+            "precision": 0.25,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Z_d2": {
+            "precision": 0,
+            "recall": 0.0,
+            "support": 4096
+          },
+          "Z_d3": {
+            "precision": 0,
+            "recall": 0.0,
+            "support": 4096
+          },
+          "none": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          }
+        }
+      },
+      "lookup_full_eval": {
+        "accuracy": 0.537,
+        "per_class": {
+          "X_d0": {
+            "precision": 0.3965,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "X_d1": {
+            "precision": 1.0,
+            "recall": 0.4949,
+            "support": 4096
+          },
+          "X_d2": {
+            "precision": 1.0,
+            "recall": 0.4907,
+            "support": 4096
+          },
+          "X_d3": {
+            "precision": 1.0,
+            "recall": 0.4924,
+            "support": 4096
+          },
+          "Y_d0": {
+            "precision": 0.4004,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Y_d1": {
+            "precision": 1.0,
+            "recall": 0.5073,
+            "support": 4096
+          },
+          "Y_d2": {
+            "precision": 1.0,
+            "recall": 0.4941,
+            "support": 4096
+          },
+          "Y_d3": {
+            "precision": 1.0,
+            "recall": 0.501,
+            "support": 4096
+          },
+          "Z_d0": {
+            "precision": 0.25,
+            "recall": 1.0,
+            "support": 4096
+          },
+          "Z_d1": {
+            "precision": 0,
+            "recall": 0.0,
+            "support": 4096
+          },
+          "Z_d2": {
+            "precision": 0,
+            "recall": 0.0,
+            "support": 4096
+          },
+          "Z_d3": {
+            "precision": 0,
+            "recall": 0.0,
+            "support": 4096
+          },
+          "none": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 4096
+          }
+        }
+      }
+    }
+  },
+  "circuit_cqasm": "13 [[4,2,2]] detection code variants with GHZ codespace prep, XXXX+ZZZZ stabilizers",
+  "errors": null
+}
