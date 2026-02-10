@@ -11,4 +11,5 @@ export interface BlogPost {
   excerpt: string
   content: string // markdown-ish HTML content
   sources: { label: string; url: string }[]
+  pinned?: boolean
 }
