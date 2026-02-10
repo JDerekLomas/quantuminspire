@@ -6,7 +6,14 @@
   "created": "2026-02-10T20:00:00Z",
   "parameters": {
     "qubit": 2,
-    "sequence_lengths": [1, 2, 4, 8, 16, 32],
+    "sequence_lengths": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
     "num_sequences": 5,
     "seed": 42,
     "shots": 1024

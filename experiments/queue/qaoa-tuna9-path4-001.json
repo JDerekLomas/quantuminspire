@@ -1,15 +1,45 @@
 {
   "id": "qaoa-tuna9-path4-001",
   "type": "qaoa_maxcut",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T20:00:00Z",
   "parameters": {
-    "qubits": [5, 2, 4, 6],
-    "edges": [[5, 2], [2, 4], [4, 6]],
+    "qubits": [
+      5,
+      2,
+      4,
+      6
+    ],
+    "edges": [
+      [
+        5,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        6
+      ]
+    ],
     "graph_label": "4node_path",
-    "gamma_values": [0.1, 0.3, 0.5, 0.7, 0.9],
-    "beta_values": [0.1, 0.3, 0.5, 0.7, 0.9],
+    "gamma_values": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "beta_values": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
     "shots": 4096
   },
   "priority": 3,

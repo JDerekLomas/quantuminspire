@@ -1,14 +1,17 @@
 {
   "id": "vqe-tuna9-sweep-050",
   "type": "vqe_h2",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T20:00:00Z",
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.5,
     "alpha": -0.1436,
-    "qubits": [2, 4],
+    "qubits": [
+      2,
+      4
+    ],
     "g0": 0.123163,
     "g1": 0.58308,
     "g2": -0.58308,
@@ -18,6 +21,6 @@
     "fci_energy": -1.05516
   },
   "priority": 4,
-  "research_question": "At R=0.5A (compressed bond), the HF approximation is excellent (g1 dominates, small g4). Does Tuna-9 reproduce this 'easy' regime accurately? This is the simplest point on the PES curve — if hardware fails here, noise is truly fundamental.",
+  "research_question": "At R=0.5A (compressed bond), the HF approximation is excellent (g1 dominates, small g4). Does Tuna-9 reproduce this 'easy' regime accurately? This is the simplest point on the PES curve \u2014 if hardware fails here, noise is truly fundamental.",
   "description": "VQE H2 at R=0.5A (short bond) on qubits [2,4]. Near-HF regime with small correlation. Part of 6-point PES curve to compare with Kandala Fig 2."
 }
