@@ -95,13 +95,11 @@ def query_context7(task_prompt, tokens=CONTEXT7_TOKENS):
         })
         url = f"https://context7.com/api/v2/context?{query}"
         try:
-            req = urllib.request.Request(url, headers={"Accept": "application/json"})
+            req = urllib.request.Request(url)
             with urllib.request.urlopen(req, timeout=10) as resp:
-                data = json.loads(resp.read().decode())
-                if isinstance(data, dict) and data.get("context"):
-                    snippets.append(data["context"])
-                elif isinstance(data, str) and data.strip():
-                    snippets.append(data)
+                text = resp.read().decode()
+                if text.strip():
+                    snippets.append(text.strip())
         except Exception as e:
             # Don't let Context7 failures block the benchmark
             print(f"  [context7 warning: {lib_id}: {e}]")
@@ -318,10 +316,10 @@ def run_benchmark(args):
     if args.limit:
         tasks = tasks[: args.limit]
 
-    rag = getattr(args, "rag", False)
+    rag = getattr(args, "rag", None) or None
     variant = "hard" if args.hard else "standard"
     if rag:
-        variant += "_rag"
+        variant += f"_rag_{rag}"
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     model_slug = model.replace("/", "-")
     results_file = RESULTS_DIR / f"results_{variant}_{model_slug}_{timestamp}.json"

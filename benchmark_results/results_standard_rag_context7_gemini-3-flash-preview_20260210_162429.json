@@ -1,0 +1,36 @@
+{
+  "model": "gemini-3-flash-preview",
+  "variant": "standard_rag_context7",
+  "rag": "context7",
+  "timestamp": "20260210_162429",
+  "total_tasks": 1,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "infrastructure_failures": 1,
+  "testable_tasks": 0,
+  "adjusted_pass_rate": 0,
+  "total_input_tokens": 211,
+  "total_output_tokens": 128,
+  "by_difficulty": {
+    "basic": {
+      "total": 1,
+      "passed": 0,
+      "pass_rate": 0.0
+    }
+  },
+  "results": [
+    {
+      "task_id": "qiskitHumanEval/1",
+      "difficulty": "basic",
+      "entry_point": "run_bell_state_simulator",
+      "passed": false,
+      "completion": "    qc = QuantumCircuit(2)\n    qc.h(0)\n    qc.cx(0, 1)\n    qc.measure_all()\n    \n    backend = AerSimulator()\n    pm = generate_preset_pass_manager(optimization_level=1, backend=backend)\n    isa_circuit = pm.run(qc)\n    \n    sampler = Sampler(backend=backend)\n    job = sampler.run([isa_circuit])\n    result = job.result()\n    \n    return result[0].data.meas.get_counts()",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 31, in <module>\n  File \"<string>\", line 24, in check\n  File \"<string>\", line 17, in run_bell_state_simulator\nTypeError: SamplerV2.__init__() got an unexpected keyword argument 'backend'\n",
+      "api_time": 48.9,
+      "exec_time": 1.44,
+      "input_tokens": 211,
+      "output_tokens": 128
+    }
+  ]
+}
