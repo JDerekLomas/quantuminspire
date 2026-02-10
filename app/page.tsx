@@ -55,6 +55,23 @@ const vqeData = {
   maeNoisy: 0.211460,
   maeSV: 0.106861,
   improvement: 2.0,
+  // Real hardware data
+  hardware: {
+    ibm: {
+      backend: 'ibm_torino',
+      qubits: 133,
+      jobId: 'd65hjrre4kfs73c474sg',
+      note: 'Z-diagonal terms only (partial energy)',
+    },
+    qi: {
+      backend: 'Tuna-9',
+      qubits: 9,
+      jobId: '414342',
+      // Real measurement counts at optimal theta=0.2256
+      counts: { '00': 142, '01': 129, '10': 520, '11': 3305 },
+      evenParity: 3447 / 4096,  // 84.2% kept after post-selection
+    },
+  },
 }
 
 const experiments = [
@@ -85,7 +102,7 @@ const experiments = [
     category: 'Education',
     question: 'Can AI build interactive quantum simulations for teaching?',
     description:
-      'Seven interactive exhibits running a full state-vector quantum simulator in TypeScript. Bloch sphere, state vectors, measurement, Grover\'s search, entanglement, Rabi oscillations, and multi-slit interference \u2014 all computed live, nothing mocked.',
+      'Seven interactive exhibits plus a gallery of 20+ reference visualizations. Full state-vector quantum simulator in TypeScript. Bloch sphere (WebGL 3D), state vectors, measurement, Grover\'s search, entanglement, Rabi oscillations, and multi-slit interference \u2014 all computed live, nothing mocked.',
     highlight: '7 interactive exhibits, real quantum math in the browser',
   },
   {
@@ -171,6 +188,7 @@ const vizExhibits = [
   { href: '/entanglement', title: 'Entanglement Lab', desc: 'Density matrices, partial traces, Bell states. Concurrence and von Neumann entropy.', color: '#ff6b9d', features: '8 states, reduced density matrices, metrics' },
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Watch a qubit oscillate between |0\u27E9 and |1\u27E9 under a driving field. Detuning, damping, Bloch sphere trajectory.', color: '#eab308', features: 'Animated, detuning, T\u2082 dephasing, Bloch sphere' },
   { href: '/interference', title: 'Multi-Slit Interference', desc: 'N-slit diffraction patterns with adjustable geometry and wavelength. Photon-by-photon accumulation mode.', color: '#14b8a6', features: '1-8 slits, visible spectrum, photon mode' },
+  { href: '/qsphere', title: 'Q-Sphere', desc: 'Multi-qubit states on a sphere. Basis states placed by Hamming weight, dot size = amplitude, color = phase.', color: '#e879f9', features: '2-4 qubits, Bell/GHZ/W states, gates, CNOT' },
   { href: '/gallery', title: 'Visualization Gallery', desc: 'Curated collection of the best quantum visualizations across the web. Interactive demos, open-source tools, and reference implementations.', color: '#f59e0b', features: '20+ tools, live embeds, quality ratings' },
 ]
 
@@ -505,8 +523,41 @@ function VQEReplication() {
             matches the expected symmetry sector. For H&#x2082;, this means keeping only even-parity samples
             when measuring Z-diagonal Hamiltonian terms. The technique is <span className="text-white font-medium">most effective near
             equilibrium</span> (up to 3x at R=0.7 &#x212B;) and degrades at large bond distances where
-            electron correlation dominates. Next step: run on real Quantum Inspire hardware.
+            electron correlation dominates.
           </p>
+        </div>
+
+        {/* Real hardware results */}
+        <div className="mt-6 grid md:grid-cols-2 gap-4">
+          <div className="p-5 rounded-xl border border-[#00d4ff20] bg-[#00d4ff05]">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 rounded-full bg-[#00d4ff]" />
+              <span className="text-xs font-mono text-[#00d4ff] uppercase tracking-widest">IBM Quantum &mdash; ibm_torino</span>
+            </div>
+            <div className="text-sm text-gray-300 mb-2">
+              <span className="text-white font-bold">133 qubits</span>, superconducting transmon
+            </div>
+            <div className="text-xs text-gray-400 space-y-1">
+              <div>6 circuits at optimal angles, 4096 shots each</div>
+              <div>Z-diagonal terms measured, ~90% even-parity retention</div>
+              <div className="text-[10px] font-mono text-gray-600">Job: d65hjrre4kfs73c474sg</div>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-xl border border-[#8b5cf620] bg-[#8b5cf605]">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-2 h-2 rounded-full bg-[#8b5cf6]" />
+              <span className="text-xs font-mono text-[#8b5cf6] uppercase tracking-widest">Quantum Inspire &mdash; Tuna-9</span>
+            </div>
+            <div className="text-sm text-gray-300 mb-2">
+              <span className="text-white font-bold">9 qubits</span>, superconducting transmon (TU Delft)
+            </div>
+            <div className="text-xs text-gray-400 space-y-1">
+              <div>At optimal &#x3B8;: |00&#x27E9;=142, |01&#x27E9;=129, |10&#x27E9;=520, |11&#x27E9;=3305</div>
+              <div>84% even-parity &mdash; 16% error leakage filtered by symmetry verification</div>
+              <div className="text-[10px] font-mono text-gray-600">Job: 414342</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
