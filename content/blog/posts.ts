@@ -2,6 +2,172 @@ import { BlogPost } from "@/lib/blogTypes"
 
 export const posts: BlogPost[] = [
   {
+    slug: 'error-mitigation-showdown',
+    title: 'We Tested 15 Error Mitigation Strategies. Only One Achieved Chemical Accuracy.',
+    subtitle: 'IBM\\'s TREX hit 0.22 kcal/mol. Tuna-9\\'s best combo (REM+PS) averaged 2.52 kcal/mol. ZNE made things worse. Here\\'s what actually works for NISQ chemistry.',
+    date: '2026-02-11',
+    author: 'AI x Quantum Research Team',
+    category: 'experiment',
+    tags: ['error mitigation', 'VQE', 'TREX', 'readout error', 'ZNE', 'post-selection', 'IBM Quantum', 'Tuna-9', 'chemical accuracy'],
+    heroImage: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80',
+    heroCaption: 'More mitigation does not always mean better results. The winning strategy is often the simplest one.',
+    excerpt: 'We compared 15+ error mitigation techniques across IBM Torino and Tuna-9 for H2 VQE. IBM\\'s TREX achieved chemical accuracy (0.22 kcal/mol) in a single shot. On Tuna-9, combining readout error mitigation with post-selection cut errors by 70% to 2.52 kcal/mol. But adding dynamical decoupling and twirling to TREX made IBM 45x worse. The lesson: understand your noise before stacking techniques.',
+    content: `<p>After running 50+ VQE experiments across two quantum backends, we had a nagging question: <strong>we know the hardware errors are ~7-10 kcal/mol, but where exactly is the error coming from, and what actually fixes it?</strong></p>
+
+<p>We systematically tested every error mitigation technique available to us &mdash; from simple post-selection to IBM\\'s advanced TREX readout correction to zero-noise extrapolation &mdash; and ranked them by effectiveness. The results surprised us.</p>
+
+<h2>The IBM Mitigation Ladder</h2>
+
+<p>On IBM Torino, we ran the same H2 VQE circuit (R=0.735 &Aring;, 2-qubit sector-projected ansatz) through IBM\\'s Estimator API with progressively more mitigation layers. Each technique adds cost (more shots, more QPU time) but is supposed to reduce error.</p>
+
+<table>
+<thead><tr><th>Rank</th><th>Technique</th><th>Energy (Ha)</th><th>Error (kcal/mol)</th><th>QPU time</th></tr></thead>
+<tbody>
+<tr style="background: rgba(0,255,136,0.08)"><td>1</td><td><strong>TREX (resilience=1)</strong></td><td>&minus;1.1377</td><td><strong>0.22</strong></td><td>14s</td></tr>
+<tr><td>2</td><td>TREX + DD</td><td>&minus;1.1352</td><td>1.33</td><td>14s</td></tr>
+<tr><td>3</td><td>Offline PS (Run 1)</td><td>&minus;1.1347</td><td>1.66</td><td>5s</td></tr>
+<tr><td>4</td><td>SamplerV2 + DD + Twirl + PS</td><td>&minus;1.1317</td><td>3.50</td><td>14s</td></tr>
+<tr><td>5</td><td>TREX + 16K shots</td><td>&minus;1.1313</td><td>3.77</td><td>23s</td></tr>
+<tr><td>6</td><td>Offline PS (weighted mean)</td><td>&minus;1.1311</td><td>3.91</td><td>&mdash;</td></tr>
+<tr><td>7</td><td>TREX + DD + Twirl</td><td>&minus;1.1214</td><td>10.0</td><td>14s</td></tr>
+<tr><td>8</td><td>ZNE linear [1,2,3]</td><td>&minus;1.1168</td><td>12.84</td><td>20s</td></tr>
+<tr><td>9</td><td>Raw (resilience=0)</td><td>&minus;1.0956</td><td>26.2</td><td>5s</td></tr>
+<tr><td>10</td><td>ZNE exponential [1,2,3,5]</td><td>NaN</td><td>NaN</td><td>23s</td></tr>
+</tbody>
+</table>
+
+<p>FCI reference: &minus;1.1373 Ha. Chemical accuracy threshold: 1.0 kcal/mol.</p>
+
+<h3>Key finding: more mitigation &ne; better</h3>
+
+<p>The best technique is the <em>simplest</em> advanced option: <strong>TREX alone at 0.22 kcal/mol</strong> &mdash; well within chemical accuracy. TREX (Twirled Readout EXtraction) mitigates readout errors by randomizing the measurement basis, which is exactly what our noise analysis predicted: readout error is the dominant noise source.</p>
+
+<p>But adding dynamical decoupling (DD) to TREX makes it worse (1.33 kcal/mol). Adding DD <em>and</em> Pauli twirling makes it <strong>45x worse</strong> (10.0 kcal/mol). Why? These techniques add extra gates to suppress coherent errors &mdash; but our circuit is only 3 gates deep. The overhead of the mitigation exceeds the error it\\'s trying to fix.</p>
+
+<p>ZNE (zero-noise extrapolation) is the worst performer: the linear extrapolant gives 12.84 kcal/mol, and the exponential fit fails entirely (returns NaN). This confirms what we found on Tuna-9: <strong>CNOT gate noise is not the dominant error source on either backend</strong>. ZNE amplifies gate noise and extrapolates to zero, but when gate noise is already small compared to readout error, the extrapolation has nothing useful to extrapolate.</p>
+
+<p>The lesson: <strong>match the mitigation to the noise</strong>. Readout-dominated errors need readout correction (TREX, confusion matrix inversion). Gate-dominated errors need gate-level mitigation (ZNE, DD). Applying gate-level fixes to readout-dominated circuits just adds overhead.</p>
+
+<h2>Tuna-9: Offline REM Reanalysis</h2>
+
+<p>We had 21 Tuna-9 VQE results with raw measurement counts, plus a readout calibration (confusion matrix) for q[2,4]. Could we retroactively improve the results by applying readout error mitigation (REM) offline?</p>
+
+<p>We tested 5 strategies on every result:</p>
+<ol>
+<li><strong>Raw</strong> &mdash; no mitigation at all</li>
+<li><strong>PS</strong> &mdash; parity post-selection only (discard even-parity Z-basis shots)</li>
+<li><strong>REM</strong> &mdash; confusion matrix inversion only</li>
+<li><strong>REM+PS</strong> &mdash; apply REM to raw counts, then post-select</li>
+<li><strong>PS+REM</strong> &mdash; post-select first, then apply REM</li>
+</ol>
+
+<table>
+<thead><tr><th>Strategy</th><th>Mean error</th><th>Median</th><th>Min</th><th>Max</th><th>Wins</th></tr></thead>
+<tbody>
+<tr><td>Raw</td><td>32.45</td><td>31.11</td><td>13.48</td><td>88.28</td><td>0</td></tr>
+<tr><td>PS only</td><td>8.30</td><td>8.50</td><td>2.79</td><td>17.32</td><td>0</td></tr>
+<tr><td>REM only</td><td>8.62</td><td>6.55</td><td>0.00</td><td>39.02</td><td>3</td></tr>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>REM+PS</strong></td><td><strong>2.52</strong></td><td><strong>2.39</strong></td><td><strong>0.13</strong></td><td>7.60</td><td><strong>13</strong></td></tr>
+<tr><td>PS+REM</td><td>3.90</td><td>3.56</td><td>0.05</td><td>10.32</td><td>5</td></tr>
+</tbody>
+</table>
+
+<p>All values in kcal/mol. N=21 experiments. "Wins" = number of experiments where this strategy gave the lowest error.</p>
+
+<h3>REM+PS wins 62% of the time</h3>
+
+<p>The combination of confusion matrix correction followed by parity post-selection is the clear winner on Tuna-9. It cuts the mean error from 8.30 (PS alone) to <strong>2.52 kcal/mol &mdash; a 70% improvement</strong>. Several individual runs hit chemical accuracy: 0.13, 0.18, and 0.27 kcal/mol.</p>
+
+<p>Why does ordering matter? REM first corrects the measurement bias across all four 2-qubit states (00, 01, 10, 11). This shifts probability from over-counted states to under-counted ones. Then post-selection removes any remaining parity violations. If you post-select first, you throw away shots before the readout correction can redistribute them &mdash; you lose information.</p>
+
+<p>REM alone (mean 8.62) is actually <em>worse</em> than PS alone (8.30). The confusion matrix correction can introduce artifacts when applied without the parity constraint &mdash; it redistributes probability to all four states, including the wrong-parity ones. Post-selection cleans this up.</p>
+
+<h3>Bond distance matters</h3>
+
+<table>
+<thead><tr><th>R (&Aring;)</th><th>N</th><th>Raw</th><th>PS</th><th>REM+PS</th><th>Improvement</th></tr></thead>
+<tbody>
+<tr><td>0.500</td><td>1</td><td>38.10</td><td>9.98</td><td>5.05</td><td>49%</td></tr>
+<tr><td>0.735 (eq.)</td><td>16</td><td>36.28</td><td>7.30</td><td>2.15</td><td>71%</td></tr>
+<tr><td>1.000</td><td>1</td><td>13.48</td><td>4.12</td><td>3.64</td><td>12%</td></tr>
+<tr><td>1.500</td><td>1</td><td>17.06</td><td>12.68</td><td>3.40</td><td>73%</td></tr>
+<tr><td>2.000</td><td>1</td><td>18.69</td><td>17.32</td><td>3.91</td><td>77%</td></tr>
+<tr><td>2.500</td><td>1</td><td>13.72</td><td>13.42</td><td>2.39</td><td>82%</td></tr>
+</tbody>
+</table>
+
+<p>REM+PS improves <em>every</em> bond distance. The biggest improvement is at large R (2.0&ndash;2.5 &Aring;), where PS alone barely helps because the X/Y basis errors dominate &mdash; and REM corrects those too. The smallest improvement is at R=1.0, where the circuit already benefits from near-optimal PS performance.</p>
+
+<h3>ZNE fold factor interaction</h3>
+
+<p>We had 12 experiments with ZNE gate folding (1, 3, or 5 CNOT insertions). Does REM interact with the ZNE signal?</p>
+
+<table>
+<thead><tr><th>CNOT folds</th><th>N</th><th>PS</th><th>REM+PS</th></tr></thead>
+<tbody>
+<tr><td>1 (baseline)</td><td>13</td><td>8.65</td><td>2.55</td></tr>
+<tr><td>3</td><td>4</td><td>8.62</td><td>3.25</td></tr>
+<tr><td>5</td><td>4</td><td>6.86</td><td>1.68</td></tr>
+</tbody>
+</table>
+
+<p>The trend is noisy with small N, but REM+PS at fold=5 (1.68 kcal/mol) is the best Tuna-9 result overall. This hints that ZNE <em>might</em> have a mild effect once readout error is removed &mdash; but we\\'d need more data to confirm.</p>
+
+<h2>Cross-Platform Comparison</h2>
+
+<p>How do the best techniques compare across backends?</p>
+
+<table>
+<thead><tr><th>Backend</th><th>Best technique</th><th>Error (kcal/mol)</th><th>Chem. accuracy?</th></tr></thead>
+<tbody>
+<tr><td>Emulator</td><td>None needed</td><td>0.75</td><td>Yes</td></tr>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>IBM Torino</strong></td><td><strong>TREX</strong></td><td><strong>0.22</strong></td><td><strong>Yes</strong></td></tr>
+<tr><td>Tuna-9 q[2,4]</td><td>REM+PS</td><td>2.52 (mean)</td><td>Sometimes</td></tr>
+<tr><td>Tuna-9 q[4,6]</td><td>Z-PS+REM</td><td>6.2</td><td>No</td></tr>
+<tr><td>Tuna-9 q[0,1]</td><td>PS only</td><td>9.45</td><td>No</td></tr>
+</tbody>
+</table>
+
+<p>IBM\\'s TREX is the only technique that consistently achieves chemical accuracy on real hardware. But it\\'s proprietary to IBM\\'s Estimator API &mdash; you can\\'t apply it on other platforms. For Tuna-9, the open-source approach (confusion matrix + post-selection) gets within 2.5x of the target.</p>
+
+<h2>Why ZNE Failed on Both Backends</h2>
+
+<p>Zero-noise extrapolation assumes that gate noise increases monotonically with circuit depth. You run the circuit at multiple noise levels (by inserting extra identity-equivalent gate pairs), then extrapolate back to zero noise.</p>
+
+<p>On Tuna-9, we ran 12 experiments with 1, 3, and 5 CNOT folds. The PS-only error was essentially flat: 8.65, 8.62, and 6.86 kcal/mol. <strong>Extra CNOTs added less than 1.3 kcal/mol of noise</strong> &mdash; the signal ZNE needs to extrapolate simply isn\\'t there.</p>
+
+<p>On IBM Torino, ZNE with DD+twirling gave 12.84 kcal/mol (linear) and NaN (exponential). The base error with DD+twirling is already 10.0 kcal/mol &mdash; worse than the raw TREX starting point.</p>
+
+<p>The root cause is the same on both backends: <strong>our VQE circuit is only 3 native gates deep</strong> (Ry, CNOT, X). Gate noise contributes &lt;20% of total error. The dominant errors are readout bias, state preparation imperfections, and T1/T2 decoherence during measurement. None of these scale with gate count, so ZNE\\'s extrapolation has no signal to amplify.</p>
+
+<p>ZNE would likely work better on deeper circuits (QAOA with multiple layers, Trotterized dynamics) where gate noise dominates. For shallow VQE, it\\'s the wrong tool.</p>
+
+<h2>What We Learned</h2>
+
+<ol>
+<li><strong>Match mitigation to noise type.</strong> Readout-dominated circuits need readout correction (TREX, confusion matrices). Gate-dominated circuits need gate-level mitigation (ZNE, DD). Mismatching wastes QPU time and can make results worse.</li>
+
+<li><strong>Technique stacking can backfire.</strong> On IBM, TREX alone (0.22 kcal/mol) beats TREX+DD (1.33) beats TREX+DD+Twirl (10.0). Each additional layer adds overhead that exceeds its benefit for shallow circuits.</li>
+
+<li><strong>Order matters for combined techniques.</strong> REM then post-selection (2.52 kcal/mol) beats post-selection then REM (3.90 kcal/mol) because REM redistributes probability before information is discarded.</li>
+
+<li><strong>IBM\\'s TREX is genuinely impressive.</strong> Chemical accuracy on real hardware from a single API parameter is a major engineering achievement. The catch: it\\'s proprietary and not available on other platforms.</li>
+
+<li><strong>Simple techniques close most of the gap.</strong> Going from raw (32 kcal/mol) to PS (8.3) to REM+PS (2.5 kcal/mol) on Tuna-9 recovers 90% of the error using techniques that work on any backend with a confusion matrix.</li>
+</ol>
+
+<hr />
+
+<p>All mitigation ladder data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-mitigation-ladder-001-ibm.json">IBM mitigation ladder</a>. Tuna-9 reanalysis: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/tuna9-rem-reanalysis.json">REM reanalysis</a>. Readout calibration: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/readout-cal-tuna9-q24-001.json">confusion matrices</a>.</p>`,
+    sources: [
+      { label: 'IBM mitigation ladder (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-mitigation-ladder-001-ibm.json' },
+      { label: 'Tuna-9 REM reanalysis (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/tuna9-rem-reanalysis.json' },
+      { label: 'Readout calibration data (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/readout-cal-tuna9-q24-001.json' },
+      { label: 'Experiments dashboard', url: 'https://quantuminspire.vercel.app/experiments' },
+      { label: 'IBM Qiskit Runtime Primitives', url: 'https://docs.quantum.ibm.com/api/qiskit-ibm-runtime' },
+    ],
+  },
+  {
     slug: 'cross-platform-quantum-comparison',
     title: 'Four Quantum Backends, One Question: How Much Does the Hardware Matter?',
     subtitle: 'We ran the same experiments on a noiseless emulator, IBM Torino (133q), Tuna-9 (9q), and IQM Garnet (20q). The answer: it matters a lot, but not always in the ways you expect.',

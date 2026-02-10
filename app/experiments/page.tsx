@@ -1151,6 +1151,86 @@ function DetectionCodeCard({ result }: { result: ExperimentResult }) {
   )
 }
 
+function MitigationLadderCard({ result }: { result: ExperimentResult }) {
+  const ladder = (result as any).ladder || {}
+  const analysis = result.analysis
+  const ranking = (analysis?.ranking || []) as Array<{label: string; energy: number; error_kcal: number; chemical_accuracy: boolean}>
+  const best = analysis?.best_technique as {label: string; energy: number; error_kcal: number; chemical_accuracy: boolean} | undefined
+
+  return (
+    <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#10b981]/30 transition-colors">
+      <div className="flex items-start justify-between mb-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: typeColors.vqe_mitigation_ladder }} />
+            <span className="text-xs font-mono text-gray-500">{typeLabels.vqe_mitigation_ladder}</span>
+          </div>
+          <h3 className="text-white font-bold">{result.id}</h3>
+          <p className="text-xs text-gray-500 font-mono mt-1">{(result as any).backend} -- {new Date((result as any).timestamp || result.completed).toLocaleDateString()}</p>
+        </div>
+        <div className="flex flex-col items-end gap-1.5">
+          <BackendBadge backend={(result as any).backend} />
+          <StatusPill status="completed" />
+        </div>
+      </div>
+
+      {best && (
+        <div className="mb-4 bg-[#10b981]/5 border border-[#10b981]/20 rounded p-3">
+          <p className="text-[10px] font-mono text-[#10b981]/80 uppercase tracking-wider mb-1">Best Technique</p>
+          <p className="text-lg font-mono font-bold text-[#10b981]">{best.label}</p>
+          <p className="text-sm font-mono text-white">{best.error_kcal} kcal/mol
+            {best.chemical_accuracy && (
+              <span className="ml-2 text-[#00ff88] bg-[#00ff88]/10 px-2 py-0.5 rounded border border-[#00ff88]/20 text-xs">
+                Chemical Accuracy
+              </span>
+            )}
+          </p>
+        </div>
+      )}
+
+      {ranking.length > 0 && (
+        <div>
+          <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Ranked Techniques ({ranking.length})</p>
+          <div className="space-y-1">
+            {ranking.filter(r => !isNaN(r.error_kcal)).map((r, i) => {
+              const maxErr = Math.max(...ranking.filter(x => !isNaN(x.error_kcal)).map(x => x.error_kcal))
+              const barWidth = maxErr > 0 ? (r.error_kcal / maxErr) * 100 : 0
+              const chemAccLine = maxErr > 0 ? (1.0 / maxErr) * 100 : 0
+              return (
+                <div key={r.label} className="relative flex items-center gap-2 text-xs font-mono bg-white/[0.01] rounded px-3 py-1.5 border border-white/[0.03]">
+                  <span className="text-gray-500 w-5 text-right">{i + 1}</span>
+                  <span className="text-gray-300 w-52 truncate" title={r.label}>{r.label}</span>
+                  <div className="flex-1 h-3 rounded-full bg-white/5 overflow-hidden relative">
+                    {/* Chemical accuracy threshold line */}
+                    <div className="absolute top-0 bottom-0 w-px bg-[#00ff88]/40 z-10" style={{ left: `${chemAccLine}%` }} />
+                    <div
+                      className="h-full rounded-full"
+                      style={{
+                        width: `${barWidth}%`,
+                        backgroundColor: r.chemical_accuracy ? '#10b981' : r.error_kcal < 5 ? '#eab308' : '#ff6b9d'
+                      }}
+                    />
+                  </div>
+                  <span className={`w-16 text-right ${r.chemical_accuracy ? 'text-[#10b981]' : r.error_kcal < 5 ? 'text-[#eab308]' : 'text-[#ff6b9d]'}`}>
+                    {r.error_kcal.toFixed(1)}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+          <p className="text-[10px] font-mono text-gray-500 mt-2">
+            Green line = chemical accuracy threshold (1.0 kcal/mol). Values in kcal/mol.
+          </p>
+        </div>
+      )}
+
+      {analysis?.interpretation && (
+        <p className="text-xs text-gray-300 mt-3 leading-relaxed">{analysis.interpretation}</p>
+      )}
+    </div>
+  )
+}
+
 function ResultCard({ result, comparison }: { result: ExperimentResult; comparison?: ExperimentResult }) {
   switch (result.type) {
     case 'bell_calibration':
@@ -1173,6 +1253,8 @@ function ResultCard({ result, comparison }: { result: ExperimentResult; comparis
       return <RepetitionCodeCard result={result} />
     case 'detection_code':
       return <DetectionCodeCard result={result} />
+    case 'vqe_mitigation_ladder':
+      return <MitigationLadderCard result={result} />
     default:
       return (
         <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
@@ -1204,7 +1286,7 @@ export default function ExperimentsPage() {
   const studyIndex = Object.fromEntries(getAllStudies().map(s => [s.type, s.slug]))
 
   // Group by type
-  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume', 'qrng_certification', 'connectivity_probe', 'repetition_code', 'detection_code']
+  const knownTypes = ['vqe_h2', 'bell_calibration', 'ghz_state', 'rb_1qubit', 'qaoa_maxcut', 'quantum_volume', 'qrng_certification', 'connectivity_probe', 'repetition_code', 'detection_code', 'vqe_mitigation_ladder', 'readout_calibration']
   const vqeResults = results.filter(r => r.type === 'vqe_h2')
   const bellResults = results.filter(r => r.type === 'bell_calibration')
   const ghzResults = results.filter(r => r.type === 'ghz_state')
@@ -1215,6 +1297,8 @@ export default function ExperimentsPage() {
   const connectivityResults = results.filter(r => r.type === 'connectivity_probe')
   const repetitionResults = results.filter(r => r.type === 'repetition_code')
   const detectionResults = results.filter(r => r.type === 'detection_code')
+  const mitigationLadderResults = results.filter(r => r.type === 'vqe_mitigation_ladder')
+  const readoutCalResults = results.filter(r => r.type === 'readout_calibration')
   const otherResults = results.filter(r => !knownTypes.includes(r.type))
 
   // Find emulator/hardware pairs for cross-platform comparison
@@ -1235,6 +1319,7 @@ export default function ExperimentsPage() {
     { type: 'connectivity_probe', label: 'Connectivity Probe', results: connectivityResults, color: '#e879f9', description: 'Map CNOT fidelity across all 36 qubit pairs on Tuna-9. The heatmap reveals which physical qubits are best-connected -- essential for choosing where to place error correction codes.', wide: true },
     { type: 'repetition_code', label: '3-Qubit Repetition Code', results: repetitionResults, color: '#22d3ee', description: 'The simplest quantum error correction code: 3 data qubits + 2 syndrome qubits detect and correct single bit-flip errors. Syndrome accuracy measures how well the hardware extracts error information.', wide: true },
     { type: 'detection_code', label: '[[4,2,2]] Error Detection Code', results: detectionResults, color: '#a78bfa', description: 'Four data qubits with XXXX and ZZZZ stabilizers detect any single-qubit error (X, Z, or Y). A neural network decoder trained on hardware syndrome data outperforms simple lookup-table decoding -- haiqu in action.', wide: true },
+    { type: 'vqe_mitigation_ladder', label: 'Error Mitigation Ladder', results: mitigationLadderResults, color: '#10b981', description: 'Systematic comparison of error mitigation techniques for H\u2082 VQE: raw, post-selection, TREX, dynamical decoupling, twirling, and ZNE. Ranked by error in kcal/mol. IBM TREX achieved chemical accuracy (0.22 kcal/mol).', wide: true },
   ]
 
   if (otherResults.length > 0) {

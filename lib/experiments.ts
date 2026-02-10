@@ -94,6 +94,8 @@ export const typeLabels: Record<string, string> = {
   connectivity_probe: 'Connectivity Probe',
   repetition_code: 'Repetition Code',
   detection_code: 'Detection Code',
+  vqe_mitigation_ladder: 'VQE Mitigation Ladder',
+  readout_calibration: 'Readout Calibration',
 }
 
 export const typeColors: Record<string, string> = {
@@ -107,6 +109,8 @@ export const typeColors: Record<string, string> = {
   connectivity_probe: '#e879f9',
   repetition_code: '#22d3ee',
   detection_code: '#a78bfa',
+  vqe_mitigation_ladder: '#10b981',
+  readout_calibration: '#f97316',
 }
 
 // ---------------------------------------------------------------------------
