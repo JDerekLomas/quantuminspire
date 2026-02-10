@@ -1,0 +1,23 @@
+{
+  "id": "vqe-tuna9-rem-004",
+  "type": "vqe_h2",
+  "backend": "tuna-9",
+  "priority": 3,
+  "status": "pending",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "alpha": -0.2234,
+    "qubits": [2, 4],
+    "g0": -0.321124,
+    "g1": 0.397937,
+    "g2": -0.397937,
+    "g3": 0.0,
+    "g4": 0.090466,
+    "g5": 0.090466,
+    "fci_energy": -1.137306,
+    "readout_cal_file": "readout-cal-tuna9-q24-001"
+  },
+  "research_question": "Fourth hybrid PS+REM repetition. Building toward 8-run statistics for mean+SEM of hybrid approach.",
+  "purpose": "Fourth hybrid PS+REM VQE repetition."
+}

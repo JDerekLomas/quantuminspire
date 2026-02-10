@@ -80,13 +80,13 @@
     }
   },
   "analysis": {
-    "energy_hartree": -1.127741,
+    "energy_hartree": -1.129327,
     "energy_raw": -1.056517,
     "energy_postselected": -1.123585,
     "postselection_keep_fraction": 0.9126,
     "fci_energy": -1.137306,
-    "error_hartree": 0.009565,
-    "error_kcal_mol": 6.0,
+    "error_hartree": 0.007979,
+    "error_kcal_mol": 5.01,
     "chemical_accuracy": false,
     "expectation_values": {
       "Z0": -0.9642,
@@ -110,9 +110,11 @@
       "y": 4096
     },
     "postselection_z_kept": 3738,
-    "interpretation": "VQE energy: -1.1277 Ha (FCI: -1.1373 Ha). Error: 6.0 kcal/mol. Outside chemical accuracy. Post-selection kept 91% of Z-basis shots. REM correction: -1.1277 Ha (6.0 kcal/mol).",
+    "interpretation": "VQE energy: -1.1293 Ha (FCI: -1.1373 Ha). Error: 5.0 kcal/mol. Outside chemical accuracy. Post-selection kept 91% of Z-basis shots. Hybrid(PS+REM): -1.1293 Ha (5.0 kcal/mol). Full-REM: -1.1277 Ha (6.0 kcal/mol).",
     "energy_rem": -1.127741,
     "error_rem_kcal_mol": 6.0,
+    "energy_hybrid": -1.129327,
+    "error_hybrid_kcal_mol": 5.01,
     "rem_expectation_values": {
       "Z0": -0.9702,
       "Z1": 0.9541,

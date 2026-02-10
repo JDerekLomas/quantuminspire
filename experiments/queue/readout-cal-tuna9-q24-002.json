@@ -1,0 +1,16 @@
+{
+  "id": "readout-cal-tuna9-q24-002",
+  "type": "readout_calibration",
+  "backend": "tuna-9",
+  "priority": 1,
+  "status": "running",
+  "parameters": {
+    "shots": 4096,
+    "qubits": [
+      2,
+      4
+    ]
+  },
+  "research_question": "Has readout error drifted since first calibration? Compare confusion matrices to assess temporal stability.",
+  "purpose": "Second readout calibration to check for drift over ~1hr timescale."
+}
