@@ -71,17 +71,47 @@ This work makes four contributions:
 
 \subsection{AI Agent Architecture}
 
-All experimental work was performed by Claude Opus 4.6~(Anthropic), operating as an autonomous agent within the Claude Code command-line interface.
-The agent had access to:
-\begin{itemize}
-  \item Python 3.12 with Qiskit 2.1.2, PennyLane 0.44, and the Quantum Inspire SDK 3.5.1;
-  \item MCP (Model Context Protocol) tool servers for direct circuit submission to IBM Quantum and Quantum Inspire hardware;
-  \item The \texttt{qxelarator} local emulator for noiseless simulation;
-  \item File system access for reading papers and writing structured result files.
-\end{itemize}
+All experimental work was performed by Claude Opus 4.6~(Anthropic), operating as an autonomous agent within the Claude Code command-line interface (CLI).
+The agent had access to Python~3.12 with Qiskit~2.1.2, PennyLane~0.44, and the Quantum Inspire SDK~3.5.1, plus the \texttt{qxelarator} local emulator for noiseless simulation.
 
-The agent operated in a loop: (1)~read the target paper's protocol, (2)~generate quantum circuits matching the described experiment, (3)~run on the emulator to validate correctness, (4)~submit to hardware backends, (5)~analyze results and compare to published claims, (6)~classify any discrepancies.
+Hardware access was mediated by three Model Context Protocol (MCP) tool servers---lightweight processes that expose quantum backends as callable tools.
+Each server wraps a vendor SDK: the \texttt{qi-circuits} server exposes Tuna-9 (via \texttt{RemoteBackend}) and the local emulator (via \texttt{LocalBackend}); the \texttt{ibm-quantum} server wraps \texttt{QiskitRuntimeService} for IBM Torino; and the \texttt{qrng} server provides certified quantum random numbers.
+The agent calls these tools by name (e.g., \texttt{qi\_submit\_circuit}, \texttt{ibm\_submit\_circuit}) without knowledge of the underlying SDK implementation, enabling backend-agnostic circuit submission.
+
 No human intervention occurred during circuit design, submission, or analysis; the human role was limited to selecting target papers and reviewing final reports.
+
+\subsection{Replication Pipeline}
+
+Each replication proceeds through five stages (Fig.~\ref{fig:pipeline}):
+
+\begin{enumerate}
+  \item \textbf{Claim extraction.} The agent reads the target paper and populates a structured claims registry (\texttt{replication\_analyzer.py}), recording for each claim: the metric type, published value and uncertainty, figure/table reference, and experimental conditions (bond distance, ansatz depth, error mitigation used).
+  \item \textbf{Circuit generation.} A paper-specific replication script (e.g., \texttt{replicate\_sagastizabal.py}) implements the algorithm---deriving molecular Hamiltonians via Jordan-Wigner or Bravyi-Kitaev transformations, constructing ansatz circuits, and computing optimal variational parameters.
+  \item \textbf{Emulator validation.} Circuits are first run on the noiseless emulator to confirm algorithmic correctness before consuming hardware time. All five papers reproduced exactly on the emulator.
+  \item \textbf{Hardware execution.} An experiment daemon (\texttt{experiment\_daemon.py}, 2{,}700 lines) continuously polls a JSON job queue, generates native-format circuits (OpenQASM~2.0 for IBM, cQASM~3.0 for QI), submits via MCP servers, and stores raw measurement counts with SHA-256 checksums. The daemon handles state recovery (resetting stalled jobs after 15 minutes), process locking, and automatic git commits of results.
+  \item \textbf{Automated comparison.} The replication analyzer loads result files, extracts metrics using claim-specific extractors (handling diverse result formats: VQE energy sweeps, QV nested dictionaries, QAOA approximation ratios), and classifies each discrepancy into one of five failure modes (described below under Failure Taxonomy).
+\end{enumerate}
+
+\begin{figure}[h]
+  \centering
+  \setlength{\unitlength}{1pt}
+  \begin{picture}(230,38)
+    \footnotesize
+    \put(0,12){\framebox(42,18){\shortstack{Paper\\extract}}}
+    \put(42,21){\vector(1,0){8}}
+    \put(50,12){\framebox(42,18){\shortstack{Circuit\\generate}}}
+    \put(92,21){\vector(1,0){8}}
+    \put(100,12){\framebox(42,18){\shortstack{Emulator\\validate}}}
+    \put(142,21){\vector(1,0){8}}
+    \put(150,12){\framebox(42,18){\shortstack{Hardware\\execute}}}
+    \put(192,21){\vector(1,0){8}}
+    \put(200,12){\framebox(42,18){\shortstack{Compare\\classify}}}
+  \end{picture}
+  \caption{Five-stage replication pipeline. Each stage is fully automated; the daemon handles hardware submission and result collection.}
+  \label{fig:pipeline}
+\end{figure}
+
+Each experiment result is stored as a self-contained JSON file with raw measurement counts, circuit description, backend metadata, timestamps, and cryptographic checksums---98 such files comprising 230{,}000+ measurement shots across all backends.
 
 \subsection{Paper Selection}
 
@@ -136,6 +166,33 @@ For each paper, we extracted testable claims---quantitative statements about ene
   \item \textbf{QAOA}: approximation ratio exceeds random assignment ($> 0.5$).
   \item \textbf{RB}: gate fidelity $> 99\%$.
 \end{itemize}
+
+\noindent
+Failure classification goes beyond pass/fail.
+Each discrepancy is assigned to one of five modes: \emph{noise degradation} (hardware noise exceeds signal), \emph{topology constraint} (connectivity prevents the circuit), \emph{compilation artifact} (transpiler alters effective circuit depth), \emph{calibration sensitivity} (results vary between qubit pairs or runs), or \emph{error mitigation dependency} (success requires a specific mitigation technique).
+This taxonomy is applied automatically by the analyzer and refined by human review.
+
+\subsection{Reproducing This Work}
+
+To replicate our replication, a researcher needs: (1)~cloud accounts on IBM Quantum, Quantum Inspire, and/or IQM Resonance (all offer free tiers); (2)~Python~3.12 with the packages listed in \texttt{requirements.txt}; and (3)~the repository itself.
+The minimal workflow is:
+\begin{verbatim}
+  git clone github.com/JDerekLomas/
+    quantuminspire
+  pip install -r requirements.txt
+  # Run a single replication:
+  python replicate_sagastizabal.py
+  # Or queue experiments for the daemon:
+  python agents/experiment_daemon.py
+\end{verbatim}
+Each replication script is self-contained: it derives the Hamiltonian, builds circuits, runs on the emulator, and saves results to \texttt{experiments/results/}.
+Hardware submission requires API credentials but the emulator runs locally with no account needed.
+The replication analyzer can then be run to compare any new results against published claims:
+\begin{verbatim}
+  python agents/replication_analyzer.py \
+    --paper sagastizabal2019
+\end{verbatim}
+All 98 result files from this study are included in the repository, so the comparison and failure classification can be reproduced without hardware access.
 
 % ===================================================================
 \section{Cross-Platform Characterization}
