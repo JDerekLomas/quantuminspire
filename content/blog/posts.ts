@@ -865,6 +865,52 @@ export const posts: BlogPost[] = [
 
 <p>Also notable: Opus 4.6 had only 2 infrastructure failures vs Gemini's 5 (all Context7 429 rate-limit errors in the Gemini run, which was done without an API key). The Opus run used a Context7 API key and had zero rate-limit issues.</p>
 
+<h2>Inside the 34 Unsolvable Tasks</h2>
+
+<p>Both models with Context7 fail 44 tasks each, but 34 of those tasks are shared failures — <strong>neither model with documentation can solve them</strong>. These are the hard ceiling. We classified each by failure mode:</p>
+
+<table>
+<thead><tr><th>Failure Mode</th><th>Count</th><th>%</th><th>What It Means</th></tr></thead>
+<tbody>
+<tr><td><strong>Logic/Algorithm Error</strong></td><td>14</td><td>41%</td><td>Code runs but produces wrong answer</td></tr>
+<tr><td><strong>API Staleness</strong></td><td>9</td><td>26%</td><td>Deprecated APIs that Context7 doesn't cover</td></tr>
+<tr><td><strong>Other Runtime</strong></td><td>10</td><td>29%</td><td>Missing libraries, runtime errors, edge cases</td></tr>
+<tr><td>Type Mismatch</td><td>1</td><td>3%</td><td>Correct approach, wrong return type</td></tr>
+</tbody>
+</table>
+
+<p>The dominant failure is <strong>not API staleness — it's logic errors</strong> (41%). These are tasks where the model understands the API but produces incorrect quantum circuits or misinterprets the task. Examples:</p>
+
+<ul>
+<li><strong>Simon's algorithm</strong> (task 64): Both models misimplement the oracle construction</li>
+<li><strong>Bell state DAG</strong> (task 26): Both miscalculate circuit depth for a 3-qubit bell state</li>
+<li><strong>Operator composition</strong> (task 41): Both get the tensor dimensions wrong ((2,2,2) vs (2,2))</li>
+<li><strong>Backend connection map</strong> (task 97): Both fail to match two-qubit connections from the backend</li>
+</ul>
+
+<p>The 9 remaining API staleness failures are highly specific edge cases that Context7's index doesn't cover: <code>EstimatorV2</code> keyword arguments, <code>ResilienceOptionsV2.dd</code> (dynamical decoupling — very new), the separate <code>qiskit_ibm_transpiler</code> package, and <code>SamplerV2</code> session handling. These represent gaps in the documentation index, not model capability.</p>
+
+<h3>The Ensemble Opportunity</h3>
+
+<p>While both models score 70.9%, they don't fail on the same tasks. Each model uniquely solves 10 tasks the other misses — a perfectly symmetric disagreement. If you could pick the best answer from either model, the <strong>union pass rate is 77.5%</strong> (117/151). The disagreements cluster around logic errors where one model's reasoning happens to align with the test:</p>
+
+<table>
+<thead><tr><th>Task</th><th>Gemini</th><th>Opus</th><th>Failure Type</th></tr></thead>
+<tbody>
+<tr><td>QFT (task 65)</td><td>PASS</td><td>FAIL</td><td>Rotation order</td></tr>
+<tr><td>Conditional circuit (task 88)</td><td>FAIL</td><td>PASS</td><td>Control flow logic</td></tr>
+<tr><td>Product formula (task 112)</td><td>PASS</td><td>FAIL</td><td>Trotter decomposition</td></tr>
+<tr><td>CHSH circuit (task 67)</td><td>FAIL</td><td>PASS</td><td>Measurement basis</td></tr>
+<tr><td>Clifford equivalence (task 110)</td><td>FAIL</td><td>PASS</td><td>Circuit identity</td></tr>
+</tbody>
+</table>
+
+<p>Model diversity is as valuable as better documentation for closing the remaining gap.</p>
+
+<h3>RAG Regressions</h3>
+
+<p>Context7 isn't purely additive. Gemini regressed on 3 tasks (net +13), Opus on 5 tasks (net +11). In these cases, the retrieved documentation <strong>introduced confusion</strong> — the model had the right answer from training data, but Context7 snippets steered it toward a different (incorrect) approach. This is a known RAG failure mode: retrieval precision matters, and irrelevant context can hurt.</p>
+
 <h2>Why Dynamic Beats Static</h2>
 
 <p>The core insight: <strong>relevance filtering is the whole game</strong>. Context7 returns 1-2KB of documentation specifically about the APIs the task is likely to use. The static cheatsheet dumps 3KB about everything. For a task that needs to know how <code>SamplerV2</code> results work, getting a targeted code example of <code>result[0].data.meas.get_counts()</code> is far more useful than a comprehensive document that covers 20 different API changes.</p>
@@ -880,8 +926,7 @@ export const posts: BlogPost[] = [
 <ul>
 <li><strong>Single run per configuration.</strong> We ran each configuration once (Pass@1). Without multiple runs, we can't compute confidence intervals. The true improvement could be anywhere from ~5pp to ~12pp.</li>
 <li><strong>No contamination check.</strong> Context7 retrieves documentation that may contain example code similar to benchmark tasks. We haven't verified whether retrieved snippets overlap with test solutions — a potential source of inflated scores.</li>
-<li><strong>Context7 rate limiting.</strong> 5 of 151 tasks hit Context7's rate limit (HTTP 429) and were treated as infrastructure failures. The adjusted pass rate excluding these is 73.3%.</li>
-<li><strong>Only one model tested with RAG.</strong> We tested Context7 only on Gemini 3 Flash. The Opus 4.6 + Context7 run was blocked by Context7's rate limit. The improvement may be model-dependent.</li>
+<li><strong>Context7 rate limiting.</strong> The Gemini run (without API key) had 5 of 151 tasks hit HTTP 429. The Opus run (with API key) had zero rate-limit issues.</li>
 <li><strong>No Pass@k.</strong> We use Pass@1 (one attempt per task). Standard practice in code generation benchmarks uses Pass@k to account for sampling variance. Our results represent a lower bound.</li>
 <li><strong>No sandboxing.</strong> Generated code executes in a subprocess but not in a fully sandboxed environment.</li>
 </ul>
@@ -900,11 +945,11 @@ export const posts: BlogPost[] = [
 <h2>Next Steps</h2>
 
 <ol>
-<li><strong>Claude Opus 4.6 + Context7</strong> — Run the same experiment once rate limits reset, to see if the improvement generalizes across models.</li>
+<li><strong>Ensemble voting</strong> — The 77.5% union ceiling suggests a simple "pick the best of two models" approach could gain 7pp with no new infrastructure. Even a confidence-weighted vote could help.</li>
+<li><strong>Agentic retry</strong> — Let the model see error messages and try again. 21 of 34 core failures produce assertion errors with informative messages. This is how developers actually work, and how systems like QUASAR achieve 99%+ validity.</li>
+<li><strong>Better retrieval</strong> — 9 core failures are API staleness that Context7 doesn't cover. Augmenting the index with <code>qiskit_ibm_transpiler</code>, <code>ResilienceOptionsV2</code>, and <code>EstimatorV2</code> keyword signatures could push the ceiling higher.</li>
 <li><strong>Pass@3 and confidence intervals</strong> — Multiple runs per configuration to establish statistical significance.</li>
 <li><strong>Contamination audit</strong> — Check whether Context7 retrievals overlap with benchmark test solutions.</li>
-<li><strong>Agentic retry</strong> — Let the model see error messages and try again. This is how developers actually work, and how systems like QUASAR achieve 99%+ validity.</li>
-<li><strong>Fine-grained error analysis</strong> — Map which specific tasks flipped from fail to pass with Context7, and categorize the API changes involved.</li>
 </ol>
 
 <p>All benchmark code and results are open source: <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results">github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results</a></p>
