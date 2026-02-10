@@ -1,0 +1,163 @@
+%apsrev4-2.bst 2019-01-14 (MD) hand-edited version of apsrev4-1.bst
+%Control: key (0)
+%Control: author (8) initials jnrlst
+%Control: editor formatted (1) identically to author
+%Control: production of article title (0) allowed
+%Control: page (0) single
+%Control: year (1) truncated
+%Control: production of eprint (0) enabled
+\begin{thebibliography}{8}%
+\makeatletter
+\providecommand \@ifxundefined [1]{%
+ \@ifx{#1\undefined}
+}%
+\providecommand \@ifnum [1]{%
+ \ifnum #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \@ifx [1]{%
+ \ifx #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \natexlab [1]{#1}%
+\providecommand \enquote  [1]{``#1''}%
+\providecommand \bibnamefont  [1]{#1}%
+\providecommand \bibfnamefont [1]{#1}%
+\providecommand \citenamefont [1]{#1}%
+\providecommand \href@noop [0]{\@secondoftwo}%
+\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+\providecommand \@@startlink[1]{}%
+\providecommand \@@endlink[0]{}%
+\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+\providecommand \urlprefix  [0]{URL }%
+\providecommand \Eprint [0]{\href }%
+\providecommand \doibase [0]{https://doi.org/}%
+\providecommand \selectlanguage [0]{\@gobble}%
+\providecommand \bibinfo  [0]{\@secondoftwo}%
+\providecommand \bibfield  [0]{\@secondoftwo}%
+\providecommand \translation [1]{[#1]}%
+\providecommand \BibitemOpen [0]{}%
+\providecommand \bibitemStop [0]{}%
+\providecommand \bibitemNoStop [0]{.\EOS\space}%
+\providecommand \EOS [0]{\spacefactor3000\relax}%
+\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+\let\auto@bib@innerbib\@empty
+%</preamble>
+\bibitem [{\citenamefont {Baker}(2016)}]{baker2016}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Baker}},\ }\bibfield  {title} {\bibinfo {title} {1,500 scientists lift the
+  lid on reproducibility},\ }\href {https://doi.org/10.1038/533452a} {\bibfield
+   {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo {volume}
+  {533}},\ \bibinfo {pages} {452} (\bibinfo {year} {2016})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Sagastizabal}\ \emph {et~al.}(2019)\citenamefont
+  {Sagastizabal} \emph {et~al.}}]{sagastizabal2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Sagastizabal}} \emph {et~al.},\ }\bibfield  {title} {\bibinfo {title} {Error
+  mitigation by symmetry verification on a superconducting quantum processor},\
+  }\href {https://doi.org/10.1103/PhysRevA.100.010302} {\bibfield  {journal}
+  {\bibinfo  {journal} {Physical Review A}\ }\textbf {\bibinfo {volume}
+  {100}},\ \bibinfo {pages} {010302(R)} (\bibinfo {year} {2019})},\ \bibinfo
+  {note} {arXiv:1902.11258}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kandala}\ \emph {et~al.}(2017)\citenamefont
+  {Kandala}, \citenamefont {Mezzacapo}, \citenamefont {Temme}, \citenamefont
+  {Takita}, \citenamefont {Brink}, \citenamefont {Chow},\ and\ \citenamefont
+  {Gambetta}}]{kandala2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Kandala}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Mezzacapo}},
+  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Temme}}, \bibinfo
+  {author} {\bibfnamefont {M.}~\bibnamefont {Takita}}, \bibinfo {author}
+  {\bibfnamefont {M.}~\bibnamefont {Brink}}, \bibinfo {author} {\bibfnamefont
+  {J.~M.}\ \bibnamefont {Chow}},\ and\ \bibinfo {author} {\bibfnamefont
+  {J.~M.}\ \bibnamefont {Gambetta}},\ }\bibfield  {title} {\bibinfo {title}
+  {Hardware-efficient variational quantum eigensolver for small molecules and
+  quantum magnets},\ }\href {https://doi.org/10.1038/nature23879} {\bibfield
+  {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo {volume} {549}},\
+  \bibinfo {pages} {242} (\bibinfo {year} {2017})},\ \bibinfo {note}
+  {arXiv:1704.05018}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Peruzzo}\ \emph {et~al.}(2014)\citenamefont
+  {Peruzzo}, \citenamefont {McClean}, \citenamefont {Shadbolt}, \citenamefont
+  {Yung}, \citenamefont {Zhou}, \citenamefont {Love}, \citenamefont
+  {Aspuru-Guzik},\ and\ \citenamefont {O'Brien}}]{peruzzo2014}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Peruzzo}}, \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {McClean}},
+  \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {Shadbolt}}, \bibinfo
+  {author} {\bibfnamefont {M.-H.}\ \bibnamefont {Yung}}, \bibinfo {author}
+  {\bibfnamefont {X.-Q.}\ \bibnamefont {Zhou}}, \bibinfo {author}
+  {\bibfnamefont {P.~J.}\ \bibnamefont {Love}}, \bibinfo {author}
+  {\bibfnamefont {A.}~\bibnamefont {Aspuru-Guzik}},\ and\ \bibinfo {author}
+  {\bibfnamefont {J.~L.}\ \bibnamefont {O'Brien}},\ }\bibfield  {title}
+  {\bibinfo {title} {A variational eigenvalue solver on a photonic quantum
+  processor},\ }\href {https://doi.org/10.1038/ncomms5213} {\bibfield
+  {journal} {\bibinfo  {journal} {Nature Communications}\ }\textbf {\bibinfo
+  {volume} {5}},\ \bibinfo {pages} {4213} (\bibinfo {year} {2014})},\ \bibinfo
+  {note} {arXiv:1304.3061}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Cross}\ \emph {et~al.}(2019)\citenamefont {Cross},
+  \citenamefont {Bishop}, \citenamefont {Sheldon}, \citenamefont {Nation},\
+  and\ \citenamefont {Gambetta}}]{cross2019}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~W.}\ \bibnamefont
+  {Cross}}, \bibinfo {author} {\bibfnamefont {L.~S.}\ \bibnamefont {Bishop}},
+  \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Sheldon}}, \bibinfo
+  {author} {\bibfnamefont {P.~D.}\ \bibnamefont {Nation}},\ and\ \bibinfo
+  {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Gambetta}},\ }\bibfield
+  {title} {\bibinfo {title} {Validating quantum computers using randomized
+  model circuits},\ }\href {https://doi.org/10.1103/PhysRevA.100.032328}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review A}\ }\textbf
+  {\bibinfo {volume} {100}},\ \bibinfo {pages} {032328} (\bibinfo {year}
+  {2019})},\ \bibinfo {note} {arXiv:1811.12926}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Harrigan}\ \emph {et~al.}(2021)\citenamefont
+  {Harrigan} \emph {et~al.}}]{harrigan2021}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~P.}\ \bibnamefont
+  {Harrigan}} \emph {et~al.},\ }\bibfield  {title} {\bibinfo {title} {Quantum
+  approximate optimization of non-planar graph problems on a planar
+  superconducting processor},\ }\href
+  {https://doi.org/10.1038/s41567-020-01105-y} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature Physics}\ }\textbf {\bibinfo {volume} {17}},\ \bibinfo
+  {pages} {332} (\bibinfo {year} {2021})},\ \bibinfo {note}
+  {arXiv:2004.04197}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Temme}\ \emph {et~al.}(2017)\citenamefont {Temme},
+  \citenamefont {Bravyi},\ and\ \citenamefont {Gambetta}}]{temme2017}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Temme}}, \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Bravyi}},\ and\
+  \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Gambetta}},\
+  }\bibfield  {title} {\bibinfo {title} {Error mitigation for short-depth
+  quantum circuits},\ }\href {https://doi.org/10.1103/PhysRevLett.119.180509}
+  {\bibfield  {journal} {\bibinfo  {journal} {Physical Review Letters}\
+  }\textbf {\bibinfo {volume} {119}},\ \bibinfo {pages} {180509} (\bibinfo
+  {year} {2017})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kim}\ \emph {et~al.}(2023)\citenamefont {Kim},
+  \citenamefont {Eddins}, \citenamefont {Anand}, \citenamefont {Wei},
+  \citenamefont {van~den Berg}, \citenamefont {Rosenblatt}, \citenamefont
+  {Nayfeh}, \citenamefont {Wu}, \citenamefont {Zaletel}, \citenamefont
+  {Temme},\ and\ \citenamefont {Kandala}}]{kim2023}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Kim}}, \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Eddins}},
+  \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont {Anand}}, \bibinfo
+  {author} {\bibfnamefont {K.~X.}\ \bibnamefont {Wei}}, \bibinfo {author}
+  {\bibfnamefont {E.}~\bibnamefont {van~den Berg}}, \bibinfo {author}
+  {\bibfnamefont {S.}~\bibnamefont {Rosenblatt}}, \bibinfo {author}
+  {\bibfnamefont {H.}~\bibnamefont {Nayfeh}}, \bibinfo {author} {\bibfnamefont
+  {Y.}~\bibnamefont {Wu}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Zaletel}}, \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Temme}},\
+  and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Kandala}},\
+  }\bibfield  {title} {\bibinfo {title} {Evidence for the utility of quantum
+  computing before fault tolerance},\ }\href
+  {https://doi.org/10.1038/s41586-023-06096-3} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature}\ }\textbf {\bibinfo {volume} {618}},\ \bibinfo {pages}
+  {500} (\bibinfo {year} {2023})}\BibitemShut {NoStop}%
+\end{thebibliography}%
