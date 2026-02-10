@@ -1,14 +1,17 @@
 {
   "id": "vqe-tuna9-daemon-001",
   "type": "vqe_h2",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T12:00:00Z",
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.735,
     "alpha": -0.2235,
-    "qubits": [0, 1]
+    "qubits": [
+      0,
+      1
+    ]
   },
   "priority": 3,
   "description": "H2 VQE at equilibrium on Tuna-9 qubits 0-1. 3 measurement bases (Z, X, Y). SDK-direct submission."
