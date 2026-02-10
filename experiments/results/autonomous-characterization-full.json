@@ -6,105 +6,240 @@
   "ai_agent": "Claude Opus 4.6 via MCP",
   "total_hardware_jobs": 33,
   "total_shots": 42000,
-
   "phase1_discovery": {
     "description": "AI started with zero prior knowledge of Tuna-9 topology. Designed and executed probing experiments.",
-
     "step1_single_qubit": {
       "method": "X gate + measure on all qubits, then individual qubit isolation",
-      "jobs": [415259, 415260, 415261, 415262],
+      "jobs": [
+        415259,
+        415260,
+        415261,
+        415262
+      ],
       "shots_per_job": 1024,
       "finding": "All 9 qubits functional",
       "per_qubit_error": {
-        "q0": 0.123, "q1": 0.037, "q2": 0.016, "q3": 0.052,
-        "q4": 0.019, "q5": 0.016, "q6": 0.027, "q7": 0.045, "q8": 0.035
+        "q0": 0.123,
+        "q1": 0.037,
+        "q2": 0.016,
+        "q3": 0.052,
+        "q4": 0.019,
+        "q5": 0.016,
+        "q6": 0.027,
+        "q7": 0.045,
+        "q8": 0.035
       },
-      "ranking": ["q2", "q5", "q4", "q6", "q8", "q1", "q7", "q3", "q0"]
+      "ranking": [
+        "q2",
+        "q5",
+        "q4",
+        "q6",
+        "q8",
+        "q1",
+        "q7",
+        "q3",
+        "q0"
+      ]
     },
-
     "step2_connectivity": {
       "method": "Bell state probe (H + CNOT) on 20 qubit pairs",
-      "jobs_completed": [415274, 415275, 415276, 415277, 415278, 415279, 415283, 415286, 415287, 415291],
-      "jobs_failed": [415273, 415281, 415282, 415284, 415285, 415288, 415289, 415290, 415292, 415293],
+      "jobs_completed": [
+        415274,
+        415275,
+        415276,
+        415277,
+        415278,
+        415279,
+        415283,
+        415286,
+        415287,
+        415291
+      ],
+      "jobs_failed": [
+        415273,
+        415281,
+        415282,
+        415284,
+        415285,
+        415288,
+        415289,
+        415290,
+        415292,
+        415293
+      ],
       "shots_per_job": 1024,
       "key_finding": "Hardware rejects non-connected CNOT pairs with FAILED status, enabling topology discovery through failure analysis",
       "discovered_topology": {
         "edges": [
-          {"pair": "0-1", "fidelity": 0.870},
-          {"pair": "0-2", "fidelity": 0.858},
-          {"pair": "1-3", "fidelity": 0.913},
-          {"pair": "1-4", "fidelity": 0.898},
-          {"pair": "2-4", "fidelity": 0.923},
-          {"pair": "2-5", "fidelity": 0.914},
-          {"pair": "3-6", "fidelity": 0.871},
-          {"pair": "4-6", "fidelity": 0.935},
-          {"pair": "6-8", "fidelity": 0.913},
-          {"pair": "7-8", "fidelity": 0.883}
+          {
+            "pair": "0-1",
+            "fidelity": 0.87
+          },
+          {
+            "pair": "0-2",
+            "fidelity": 0.858
+          },
+          {
+            "pair": "1-3",
+            "fidelity": 0.913
+          },
+          {
+            "pair": "1-4",
+            "fidelity": 0.898
+          },
+          {
+            "pair": "2-4",
+            "fidelity": 0.923
+          },
+          {
+            "pair": "2-5",
+            "fidelity": 0.914
+          },
+          {
+            "pair": "3-6",
+            "fidelity": 0.871
+          },
+          {
+            "pair": "4-6",
+            "fidelity": 0.935
+          },
+          {
+            "pair": "6-8",
+            "fidelity": 0.913
+          },
+          {
+            "pair": "7-8",
+            "fidelity": 0.883
+          }
         ],
         "total_edges": 10,
         "adjacency": {
-          "0": [1, 2], "1": [0, 3, 4], "2": [0, 4, 5],
-          "3": [1, 6], "4": [1, 2, 6], "5": [2],
-          "6": [3, 4, 8], "7": [8], "8": [6, 7]
+          "0": [
+            1,
+            2
+          ],
+          "1": [
+            0,
+            3,
+            4
+          ],
+          "2": [
+            0,
+            4,
+            5
+          ],
+          "3": [
+            1,
+            6
+          ],
+          "4": [
+            1,
+            2,
+            6
+          ],
+          "5": [
+            2
+          ],
+          "6": [
+            3,
+            4,
+            8
+          ],
+          "7": [
+            8
+          ],
+          "8": [
+            6,
+            7
+          ]
         }
       },
       "surprise_finding": "Previous experiments reported q6-8 had no CNOT connectivity. AI discovered 4 new connections: 3-6, 4-6, 6-8, 7-8. The full processor is connected across all 9 qubits."
     },
-
     "step3_noise_characterization": {
       "method": "Bell state tomography (Z, X, Y basis) on best, medium, and worst connections",
       "connections_probed": [
         {
           "pair": "4-6",
           "label": "best",
-          "jobs": [415323, 415324, 415325],
-          "correlators": {"ZZ": 0.945, "XX": 0.902, "YY": -0.896},
+          "jobs": [
+            415323,
+            415324,
+            415325
+          ],
+          "correlators": {
+            "ZZ": 0.945,
+            "XX": 0.902,
+            "YY": -0.896
+          },
           "bell_fidelity": 0.936,
           "noise_type": "dephasing (T2)",
           "depolarizing_rate": 0.065,
-          "signature": "ZZ > XX ≈ |YY| — Z correlations preserved, X/Y degraded"
+          "signature": "ZZ > XX \u2248 |YY| \u2014 Z correlations preserved, X/Y degraded"
         },
         {
           "pair": "2-4",
           "label": "good",
-          "jobs": [415326, 415327, 415328],
-          "correlators": {"ZZ": 0.914, "XX": 0.926, "YY": -0.912},
+          "jobs": [
+            415326,
+            415327,
+            415328
+          ],
+          "correlators": {
+            "ZZ": 0.914,
+            "XX": 0.926,
+            "YY": -0.912
+          },
           "bell_fidelity": 0.938,
           "noise_type": "depolarizing",
           "depolarizing_rate": 0.062,
-          "signature": "All correlators within 1.4% — uniform noise"
+          "signature": "All correlators within 1.4% \u2014 uniform noise"
         },
         {
           "pair": "0-2",
           "label": "worst",
-          "jobs": [415329, 415330, 415332],
-          "correlators": {"ZZ": 0.773, "XX": 0.762, "YY": -0.791},
+          "jobs": [
+            415329,
+            415330,
+            415332
+          ],
+          "correlators": {
+            "ZZ": 0.773,
+            "XX": 0.762,
+            "YY": -0.791
+          },
           "bell_fidelity": 0.832,
           "noise_type": "asymmetric depolarizing",
           "depolarizing_rate": 0.169,
-          "signature": "Dominated by q0 T1 decay — 10% asymmetric bit-flip"
+          "signature": "Dominated by q0 T1 decay \u2014 10% asymmetric bit-flip"
         }
       ]
     }
   },
-
   "phase2_exploitation": {
     "description": "AI designed hardware-aware circuit routing based on discovered topology and noise profile",
     "strategy": "Route GHZ circuits through best qubits (q2,q4,q5,q6,q8) avoiding worst qubit (q0)",
-
     "ghz3_comparison": {
       "naive": {
-        "qubits": [0, 1, 2],
+        "qubits": [
+          0,
+          1,
+          2
+        ],
         "job": 415373,
         "shots": 4096,
         "fidelity": 0.831,
         "correct_00": 1908,
         "correct_11": 1495,
-        "dominant_error": "q0 T1 decay |111>→|011> at 7.1%",
+        "dominant_error": "q0 T1 decay |111>\u2192|011> at 7.1%",
         "why_bad": "Uses q0 (12.3% error) as hub qubit controlling both CNOTs"
       },
       "optimal": {
-        "qubits": [2, 4, 6],
+        "qubits": [
+          2,
+          4,
+          6
+        ],
         "job": 415374,
         "shots": 4096,
         "fidelity": 0.889,
@@ -115,19 +250,30 @@
       },
       "improvement": "+5.8 percentage points"
     },
-
     "ghz5_comparison": {
       "naive": {
-        "qubits": [0, 1, 2, 3, 4],
+        "qubits": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
         "job": 415385,
         "shots": 4096,
-        "fidelity": 0.780,
+        "fidelity": 0.78,
         "correct_00000": 1833,
         "correct_11111": 1360,
-        "dominant_error": "q0 T1 decay |11111>→|11110> at 7.0%"
+        "dominant_error": "q0 T1 decay |11111>\u2192|11110> at 7.0%"
       },
       "optimal": {
-        "qubits": [2, 4, 5, 6, 8],
+        "qubits": [
+          2,
+          4,
+          5,
+          6,
+          8
+        ],
         "job": 415387,
         "shots": 4096,
         "fidelity": 0.838,
@@ -137,13 +283,17 @@
       },
       "improvement": "+5.8 percentage points"
     },
-
     "emulator_baseline": {
-      "ghz3": {"fidelity": 1.0, "note": "Perfect (only sampling noise)"},
-      "ghz5": {"fidelity": 1.0, "note": "Perfect (only sampling noise)"}
+      "ghz3": {
+        "fidelity": 1.0,
+        "note": "Perfect (only sampling noise)"
+      },
+      "ghz5": {
+        "fidelity": 1.0,
+        "note": "Perfect (only sampling noise)"
+      }
     }
   },
-
   "phase3_analysis": {
     "headline_result": "Hardware-aware routing by AI improves GHZ fidelity by 5.8 percentage points, reducing per-qubit error by 33%",
     "effective_per_qubit_error": {
@@ -155,18 +305,20 @@
     },
     "key_findings": [
       "AI discovered the full Tuna-9 topology in 20 Bell-pair probes, finding 4 previously unknown connections",
-      "Hardware failure signals (FAILED jobs) serve as topology information — no documentation needed",
+      "Hardware failure signals (FAILED jobs) serve as topology information \u2014 no documentation needed",
       "The worst qubit (q0, 12.3% error) creates a 7% T1 decay bottleneck in any circuit using it",
       "Noise characterization revealed dephasing on best connections vs depolarizing on worst",
       "Simple routing optimization (avoiding bad qubits) gives 33% per-qubit error reduction",
       "The improvement is consistent across 3-qubit and 5-qubit circuits (+5.8 pp each)",
-      "No error mitigation techniques used — improvement comes purely from qubit selection"
+      "No error mitigation techniques used \u2014 improvement comes purely from qubit selection"
     ],
     "limitations": [
       "Only tested GHZ-type circuits (entanglement-heavy, not algorithmically diverse)",
-      "Tuna-9 topology is small (9 qubits) — larger processors have more routing freedom",
+      "Tuna-9 topology is small (9 qubits) \u2014 larger processors have more routing freedom",
       "Hardware conditions may vary over time (recalibration could change optimal routing)",
-      "AI used exhaustive probing — a smarter strategy could reduce characterization overhead"
+      "AI used exhaustive probing \u2014 a smarter strategy could reduce characterization overhead"
     ]
-  }
+  },
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json"
 }

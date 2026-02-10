@@ -37,5 +37,7 @@
     "error_d2": 0.9463,
     "logical_1": 0.9033,
     "no_error": 0.9626
-  }
+  },
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json"
 }

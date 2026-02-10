@@ -30,5 +30,8 @@
     "interpretation": "Bell state fidelity: 87.3%. Significant noise on Tuna-9 hardware \u2014 12.7% leakage into wrong parity states (|01\u27e9 and |10\u27e9)."
   },
   "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\nH q[0]\nCNOT q[0], q[1]\nb = measure q",
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "53df48f0a7fdac102071df808e2bc832947bc39f98ef44a472dfa9aef4744043",
+  "raw_counts_sha256": "68b21daf1ab2357586d702309c7b52dd6a0c178cbbfa66206aa60d1e582c7bc2"
 }

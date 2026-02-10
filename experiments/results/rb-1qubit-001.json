@@ -120,5 +120,7 @@
     "qubit": 0,
     "interpretation": "1-qubit RB: gate fidelity 99.95%, error per gate 0.0005. Excellent quality."
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "4217c8d3021f2377342dd758b04b52d450f79932ef51a7097aa7f06cd857fb5e"
 }

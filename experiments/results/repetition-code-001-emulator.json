@@ -110,5 +110,8 @@
     "interpretation": "3-qubit repetition code: avg syndrome accuracy 100.0%, logical error rate 0.0% (after majority-vote correction). Code is working \u2014 errors detected and corrected."
   },
   "circuit_cqasm": "6 repetition code variants (3 data + 2 syndrome qubits)",
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "c607b5c9ec34e16c25fbbb41b401f5bb9d6daa8354212667b0af0cdf081cefc5",
+  "raw_counts_sha256": "8c8b1ead5f1b595e5f020a4ea66077b366128f772e29b8ef306a736a429c76ee"
 }

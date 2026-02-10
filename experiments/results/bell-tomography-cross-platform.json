@@ -201,5 +201,8 @@
     "tuna_9_d15": 415242,
     "ibm_tomography": "d65mao0qbmes739d39f0",
     "ibm_depth": "d65mbntbujdc73ctle10"
-  }
+  },
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "edc85bfb1b613f8d59489f85616d7ee7f53ee8b117b8585bfd27906ce98c20d4",
+  "raw_counts_sha256": "0253f5f87d64ad536fdf423309f3ce1b88a58df51385642fbbc21a87067197ea"
 }

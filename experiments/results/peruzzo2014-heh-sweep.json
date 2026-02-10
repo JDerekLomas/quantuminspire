@@ -171,5 +171,6 @@
     "mae_sv_kcal": 39.76,
     "equilibrium_distance": 0.75,
     "num_bond_distances": 11
-  }
+  },
+  "environment": "experiments/environment.json"
 }

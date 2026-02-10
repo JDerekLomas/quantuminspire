@@ -29,5 +29,7 @@
     "p_all_one": 0.46923828125,
     "total_shots": 4096
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "c84e1469f1883ab0b7f7acc77d24bb2524a89f6b0f187cf3a840d9b8d89999ad"
 }

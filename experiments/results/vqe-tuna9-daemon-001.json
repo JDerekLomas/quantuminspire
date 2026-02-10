@@ -67,5 +67,9 @@
     "interpretation": "VQE energy: -1.1222 Ha (FCI: -1.1373 Ha). Error: 9.5 kcal/mol. Outside chemical accuracy. Post-selection kept 83% of Z-basis shots."
   },
   "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\n// Subspace-preserving ansatz: Ry-CNOT-X\n// State = cos(a/2)|10> + sin(a/2)|01>, alpha=-0.223500\nRy(-0.223500) q[0]\nCNOT q[0], q[1]\nX q[0]\n\n// Z-basis measurement\nb = measure q",
-  "errors": null
+  "errors": null,
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "ff89faa43a8d45b16592f0263ceef880ab8399164f03fca019e2f4e0e1c4abbf",
+  "raw_counts_sha256": "c303e6b58622a9ee5f9f3b7fade9756e18e947c0736a28e9b5943ffad5eb4f80"
 }

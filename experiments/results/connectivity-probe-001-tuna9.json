@@ -133,5 +133,8 @@
   "circuit_cqasm": "36 Bell-pair circuits (H+CNOT on each qubit pair)",
   "errors": [
     "30/36 pairs FAILED (non-connected qubit pairs)"
-  ]
+  ],
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "f17854af9f03f76304038ecf977e06b149868e5d80522abbc00d7b94919560d0",
+  "raw_counts_sha256": "61354af6d8fa789dcbb474a666a937bd55abcab88c58a77d98e65c5852967e14"
 }

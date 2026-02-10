@@ -25,5 +25,7 @@
     "total_shots": 4096,
     "interpretation": "Bell state on ibm_torino via MCP: 98.2% fidelity. Slightly lower than ibm_marrakesh (99.0%), likely qubit-dependent."
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "f2923775fe70daee01c741b6adaa187962e7381d1cd4baeb3d6bf9af423656e9"
 }

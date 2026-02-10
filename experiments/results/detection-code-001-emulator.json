@@ -359,5 +359,8 @@
     }
   },
   "circuit_cqasm": "13 [[4,2,2]] detection code variants with GHZ codespace prep, XXXX+ZZZZ stabilizers",
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "bb0992d1adddb70bfc05edf7b9479e01773bd8b8cfcb0f6024639ef92de77e2b",
+  "raw_counts_sha256": "826c4d71104bbf43d64ee081cdfe0fc6ddac4709ead4cf5df3a6c5a36e731635"
 }

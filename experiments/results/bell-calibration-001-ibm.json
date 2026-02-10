@@ -25,5 +25,7 @@
     "wrong_parity": 39,
     "total_shots": 4096
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "e879cd579981e2434c0e228135d06c6263e464d0970ce94a0eea3163c1bb806e"
 }

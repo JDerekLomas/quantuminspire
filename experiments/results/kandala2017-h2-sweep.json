@@ -85,5 +85,7 @@
     "mae_mhartree": 1.5963292776532967e-05,
     "n_distances": 10,
     "n_chemical_accuracy": 10
-  }
+  },
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json"
 }

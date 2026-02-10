@@ -206,7 +206,7 @@ def strip_markdown_fences(text):
 def detect_provider(model):
     """Detect API provider from model name."""
     if model.startswith("claude-"):
-        return "claude-cli"
+        return "anthropic"
     return "google"
 
 
@@ -237,21 +237,40 @@ def call_llm(prompt, hard=False, model=MODEL, rag=False, task_id=None, context7_
             f"(indented, no signature, no imports):\n\n```python\n{prompt}\n```"
         )
 
-    if provider == "claude-cli":
-        full_prompt = f"{system}\n\n{user_msg}"
-        result = subprocess.run(
-            ["claude", "-p", full_prompt, "--model", model, "--output-format", "text"],
-            capture_output=True,
-            text=True,
-            timeout=120,
-        )
-        if result.returncode != 0:
-            raise RuntimeError(f"claude CLI error: {result.stderr[:200]}")
-        text = result.stdout
-        text = strip_markdown_fences(text)
-        # CLI doesn't report token counts; estimate from char length
-        input_tokens = len(full_prompt) // 4
-        output_tokens = len(text) // 4
+    if provider == "anthropic":
+        api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+        if api_key and anthropic is not None:
+            # Use SDK directly if API key available
+            client = anthropic.Anthropic(api_key=api_key)
+            response = client.messages.create(
+                model=model,
+                max_tokens=MAX_TOKENS,
+                system=system,
+                messages=[{"role": "user", "content": user_msg}],
+                temperature=0,
+            )
+            text = response.content[0].text
+            text = strip_markdown_fences(text)
+            input_tokens = response.usage.input_tokens
+            output_tokens = response.usage.output_tokens
+        else:
+            # Fall back to claude CLI (pipe via stdin to handle long prompts)
+            full_prompt = f"{system}\n\n{user_msg}"
+            result = subprocess.run(
+                ["claude", "-p", "-", "--model", model, "--output-format", "text"],
+                input=full_prompt,
+                capture_output=True,
+                text=True,
+                timeout=120,
+            )
+            if result.returncode != 0:
+                raise RuntimeError(f"claude CLI error: {result.stderr[:200]}")
+            text = result.stdout
+            if not text.strip():
+                raise RuntimeError(f"claude CLI returned empty output (stderr: {result.stderr[:200]})")
+            text = strip_markdown_fences(text)
+            input_tokens = len(full_prompt) // 4
+            output_tokens = len(text) // 4
     else:
         client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
         response = client.models.generate_content(

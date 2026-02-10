@@ -33,5 +33,7 @@
     "num_qubits": 3,
     "interpretation": "3-qubit GHZ on ibm_torino via MCP: 93.8% fidelity. Lower than ibm_marrakesh (98.1%), suggesting qubit-pair-dependent CNOT error rates. Still well above Tuna-9 (85.4%)."
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "4729cb8452ca3f374895ee723ea13b46b4397e7158ded48df8bd7d98b52538b8"
 }

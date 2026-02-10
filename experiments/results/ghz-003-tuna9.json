@@ -41,5 +41,8 @@
     "interpretation": "3-qubit GHZ fidelity: 86.6% on Tuna-9. Significant noise with 13.4% leakage into non-GHZ states. Asymmetry between |000\u27e9 (48.4%) and |111\u27e9 (38.2%) suggests qubit-dependent error rates."
   },
   "circuit_cqasm": "version 3.0\nqubit[3] q\nbit[3] b\n\nH q[0]\nCNOT q[0], q[1]\nCNOT q[0], q[2]\nb = measure q",
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "dcbba9eeed38b8e8e6a51392dbce8c73aa5c0c09ffceb6bcaaa7cc615855f0e1",
+  "raw_counts_sha256": "ccdc0e3145dc855a342acd92225d86ec454180bf021c73dd728e37e14f7c9b4b"
 }

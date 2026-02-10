@@ -1660,5 +1660,7 @@
     "graph": "triangle",
     "interpretation": "QAOA MaxCut on triangle: best approximation ratio 87.4% at gamma=1.00, beta=0.20. Classical optimum: 2 edges cut."
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "5c505a6be1c4b3e2cd43319fcf1b4be7f05d1c824f1cb1c8ed7f7619b9b2587e"
 }

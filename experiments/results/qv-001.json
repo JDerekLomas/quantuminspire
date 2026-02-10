@@ -121,5 +121,8 @@
     "interpretation": "Quantum Volume: 8. n=2: PASS (heavy=77.2%). n=3: PASS (heavy=85.1%)"
   },
   "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\n// QV circuit: n=2, circuit=0\n// Layer 0\nRz(4.424237) q[0]\nRy(1.297664) q[0]\nRz(5.410326) q[0]\nRz(2.657316) q[1]\nRy(1.793073) q[1]\nRz(5.227973) q[1]\nCNOT q[0], q[1]\nRz(0.074223) q[0]\nRy(0.525476) q[0]\nRz(4.448806) q[1]\nRy(1.462129) q[1]\n// Layer 1\nRz(0.259822) q[0]\nRy(1.096424) q[0]\nRz(4.872983) q[0]\nRz(3.333507) q[1]\nRy(0.725563) q[1]\nRz(5.769010) q[1]\nCNOT q[0], q[1]\nRz(5.816017) q[0]\nRy(0.317308) q[0]\nRz(0.616970) q[1]\nRy(1.715462) q[1]\n\nb = measure q",
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "d4af3ed1029c4399337b059b07a60ab95d5462800a1e8ce1b66cd26d1e0f6dad",
+  "raw_counts_sha256": "98097daba27d2a370dc6c7c367f441420df11d2bb521b0422299590d376a287c"
 }

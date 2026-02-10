@@ -55,5 +55,7 @@
     },
     "total_shots_per_basis": 4096
   },
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "efc183582972ff48cf2796585264cf2d4dd682661412ad691a5234d72e473349"
 }

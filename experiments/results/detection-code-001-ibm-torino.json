@@ -1222,5 +1222,7 @@
     }
   },
   "circuit_cqasm": null,
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "d3235dea01db13232387ce667e039fe0de22481a5007d0267f4d9b5ca898413c"
 }

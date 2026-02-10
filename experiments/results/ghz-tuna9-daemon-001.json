@@ -38,5 +38,9 @@
     "interpretation": "3-qubit GHZ fidelity: 87.9%. Even parity: 55.8%, Odd parity: 44.2%."
   },
   "circuit_cqasm": "version 3.0\nqubit[3] q\nbit[3] b\n\nH q[1]\nCNOT q[1], q[0]\nCNOT q[0], q[2]\nb = measure q",
-  "errors": null
+  "errors": null,
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "2ba576a59effdc56db11361e31214a67630aea87bb3e2836f97719439b2b801f",
+  "raw_counts_sha256": "5705f50ea658b85ccd6101ced5b989d5e0772b8e365f34cb4e47c9166d570fdb"
 }

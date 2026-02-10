@@ -64,5 +64,8 @@
     "interpretation": "VQE energy: -1.1385 Ha (FCI: -1.1373 Ha). Error: 0.75 kcal/mol. Within chemical accuracy."
   },
   "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\n// Subspace-preserving ansatz: Ry-CNOT-X\n// State = cos(a/2)|10> + sin(a/2)|01>\nRy(-0.223539) q[0]\nCNOT q[0], q[1]\nX q[0]\n\n// Z-basis measurement\nb = measure q",
-  "errors": null
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "a3bc142fd812aedb6ba0fdc23de2d596f9ac762302c12995693868d7ce5e64c7",
+  "raw_counts_sha256": "d44776ec4c1b1e4c1d60d101624c383eb1af65c6325d853e48c8dc5b8e79f893"
 }

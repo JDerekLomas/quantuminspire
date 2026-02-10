@@ -27,5 +27,9 @@
     "interpretation": "Bell state fidelity: 89.3%. Good \u2014 10.7% leakage into wrong parity states."
   },
   "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\nH q[0]\nCNOT q[0], q[1]\nb = measure q",
-  "errors": null
+  "errors": null,
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json",
+  "circuit_cqasm_sha256": "53df48f0a7fdac102071df808e2bc832947bc39f98ef44a472dfa9aef4744043",
+  "raw_counts_sha256": "e9de45efc470cbb20d528307d6afaecdd6fb6451b9084f991e67734d7bc13632"
 }
