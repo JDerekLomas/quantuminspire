@@ -1,0 +1,26 @@
+{
+  "id": "vqe-emulator-sweep-200",
+  "type": "vqe_h2",
+  "status": "pending",
+  "backend": "emulator",
+  "created": "2026-02-10T21:00:00Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 2.0,
+    "alpha": -1.1333,
+    "qubits": [
+      0,
+      1
+    ],
+    "g0": -0.662537,
+    "g1": 0.060628,
+    "g2": -0.060628,
+    "g3": 0.0,
+    "g4": 0.129569,
+    "g5": 0.129569,
+    "fci_energy": -0.948641
+  },
+  "priority": 5,
+  "research_question": "Emulator baseline at R=2.0A. What is the pure shot noise error for 4096 shots? Comparing with Tuna-9 isolates hardware noise contribution.",
+  "description": "VQE H2 at R=2.0A on emulator. Shot noise baseline for PES comparison."
+}

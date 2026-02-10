@@ -1,0 +1,23 @@
+{
+  "id": "vqe-tuna9-sweep-250",
+  "type": "vqe_h2",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T21:00:00Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 2.5,
+    "alpha": -1.3809,
+    "qubits": [2, 4],
+    "g0": -0.648674,
+    "g1": 0.027135,
+    "g2": -0.027135,
+    "g3": 0.0,
+    "g4": 0.141105,
+    "g5": 0.141105,
+    "fci_energy": -0.936055
+  },
+  "priority": 4,
+  "research_question": "At R=2.5A (deep dissociation), the state is nearly maximally entangled (alpha=-1.38). Z0/Z1 terms vanish while X0X1/Y0Y1 dominate completely. Does the error plateau, or does X/Y basis noise cause unbounded error growth?",
+  "description": "VQE H2 at R=2.5A on qubits [2,4]. Deep dissociation. The state is almost entirely |Bell>. g1=0.027 (tiny Z contribution), g4=0.141 (large X/Y). Pure test of X/Y basis measurement fidelity."
+}
