@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "id": "variance-analysis-001",
+  "type": "variance_analysis",
+  "description": "Run-to-run variance measurement: same circuits submitted twice to same backends",
+  "timestamp": "2026-02-11T00:30:00Z",
+  "ibm_vqe": {
+    "backend": "ibm_torino",
+    "circuit": "Ry(-0.2235) -> CNOT(0,1) -> X(0)",
+    "shots_per_basis": 4096,
+    "original": {
+      "job_ids": {
+        "z": "d65n0gbe4kfs73cvkisg",
+        "x": "d65n0gre4kfs73cvkitg",
+        "y": "d65n0hbe4kfs73cvkivg"
+      },
+      "raw_counts": {
+        "z": {
+          "01": 3973,
+          "10": 59,
+          "00": 21,
+          "11": 43
+        },
+        "x": {
+          "00": 802,
+          "10": 1276,
+          "11": 722,
+          "01": 1296
+        },
+        "y": {
+          "10": 1209,
+          "00": 813,
+          "11": 832,
+          "01": 1242
+        }
+      },
+      "expectation_values": {
+        "Z0": -0.96094,
+        "Z1": 0.9502,
+        "Z0Z1": -0.96875,
+        "X0X1": -0.25586,
+        "Y0Y1": -0.19678
+      },
+      "energy_hartree": -1.1226,
+      "error_kcal_mol": 9.24
+    },
+    "rerun": {
+      "job_ids": {
+        "z": "d65nb9oqbmes739d4ffg",
+        "x": "d65nbadbujdc73ctmie0",
+        "y": "d65nbahv6o8c73d37700"
+      },
+      "raw_counts": {
+        "z": {
+          "01": 3933,
+          "00": 19,
+          "10": 68,
+          "11": 76
+        },
+        "x": {
+          "11": 757,
+          "01": 1305,
+          "10": 1215,
+          "00": 819
+        },
+        "y": {
+          "10": 1236,
+          "00": 864,
+          "01": 1184,
+          "11": 812
+        }
+      },
+      "expectation_values": {
+        "Z0": -0.95752,
+        "Z1": 0.92969,
+        "Z0Z1": -0.95361,
+        "X0X1": -0.23047,
+        "Y0Y1": -0.18164
+      },
+      "energy_hartree": -1.1094,
+      "error_kcal_mol": 17.51
+    },
+    "variance": {
+      "energy_delta_hartree": 0.0132,
+      "energy_delta_kcal_mol": 8.28,
+      "expectation_deltas": {
+        "Z0": 0.00342,
+        "Z1": -0.02051,
+        "Z0Z1": 0.01514,
+        "X0X1": 0.02539,
+        "Y0Y1": 0.01514
+      }
+    },
+    "fci_reference": -1.1373
+  },
+  "tuna9_qv": {
+    "backend": "tuna-9",
+    "shots_per_circuit": 1024,
+    "num_circuits": 5,
+    "seed": 123,
+    "original_job_ids": {
+      "n2": [
+        415379,
+        415380,
+        415381,
+        415382,
+        415384
+      ],
+      "n3": [
+        415389,
+        415390,
+        415391,
+        415393,
+        415394
+      ]
+    },
+    "rerun_job_ids": {
+      "n2": [
+        415445,
+        415448,
+        415450,
+        415452,
+        415453
+      ],
+      "n3": [
+        415454,
+        415456,
+        415458,
+        415460,
+        415461
+      ]
+    },
+    "n2": {
+      "original": {
+        "per_circuit": [
+          0.826,
+          0.676,
+          0.701,
+          0.655,
+          0.604
+        ],
+        "mean": 0.692,
+        "std": 0.083
+      },
+      "rerun": {
+        "per_circuit": [
+          0.828,
+          0.73,
+          0.708,
+          0.663,
+          0.625
+        ],
+        "mean": 0.711,
+        "std": 0.077
+      }
+    },
+    "n3": {
+      "original": {
+        "per_circuit": [
+          0.863,
+          0.763,
+          0.922,
+          0.701,
+          0.813
+        ],
+        "mean": 0.812,
+        "std": 0.086
+      },
+      "rerun": {
+        "per_circuit": [
+          0.87,
+          0.776,
+          0.924,
+          0.682,
+          0.807
+        ],
+        "mean": 0.812,
+        "std": 0.092
+      }
+    },
+    "qv_original": 8,
+    "qv_rerun": 8
+  },
+  "environment": "experiments/environment.json"
+}

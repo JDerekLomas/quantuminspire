@@ -1,0 +1,478 @@
+{
+  "schema_version": "1.0",
+  "id": "peruzzo2014-ibm-torino",
+  "type": "peruzzo2014_replication",
+  "backend": "ibm-torino",
+  "backend_qubits": 133,
+  "submitted": "2026-02-10T18:18:19Z",
+  "completed": "2026-02-10T18:19:19Z",
+  "parameters": {
+    "shots": 4096,
+    "job_id": "d65ncqoqbmes739d4h30",
+    "bond_distances": [
+      0.5,
+      0.75,
+      1.0,
+      1.25,
+      1.5,
+      1.75,
+      2.0,
+      2.25,
+      2.5,
+      2.75,
+      3.0
+    ],
+    "molecule": "HeH+",
+    "basis": "STO-3G",
+    "n_qubits": 2,
+    "ansatz": "Ry-CNOT-X (sector-projected)"
+  },
+  "raw_counts": {},
+  "analysis": {
+    "sweep_results": [
+      {
+        "bond_distance": 0.5,
+        "energy_measured": -2.458913,
+        "fci_energy": -2.640714590488258,
+        "hf_energy": -2.631665109619672,
+        "optimal_energy_2q": -2.640623,
+        "error_hartree": 0.181802,
+        "error_kcal_mol": 114.08,
+        "chemical_accuracy": false,
+        "alpha": -0.108172,
+        "expectation_values": {
+          "Z0": -0.8801,
+          "Z1": 0.8801,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0703,
+          "Y0Y1": -0.0503
+        },
+        "postselection_keep_fraction": 0.8428,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3245,
+            "10": 207,
+            "00": 370,
+            "11": 274
+          },
+          "x_basis": {
+            "01": 1074,
+            "00": 1042,
+            "11": 862,
+            "10": 1118
+          },
+          "y_basis": {
+            "10": 1188,
+            "00": 1005,
+            "01": 963,
+            "11": 940
+          }
+        }
+      },
+      {
+        "bond_distance": 0.75,
+        "energy_measured": -2.700915,
+        "fci_energy": -2.8461872839647278,
+        "hf_energy": -2.836446514916097,
+        "optimal_energy_2q": -2.845874,
+        "error_hartree": 0.145272,
+        "error_kcal_mol": 91.16,
+        "chemical_accuracy": false,
+        "alpha": -0.127328,
+        "expectation_values": {
+          "Z0": -0.8725,
+          "Z1": 0.8725,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0859,
+          "Y0Y1": -0.0728
+        },
+        "postselection_keep_fraction": 0.835,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3202,
+            "00": 372,
+            "10": 218,
+            "11": 304
+          },
+          "x_basis": {
+            "01": 1056,
+            "11": 852,
+            "10": 1168,
+            "00": 1020
+          },
+          "y_basis": {
+            "11": 907,
+            "00": 992,
+            "01": 1000,
+            "10": 1197
+          }
+        }
+      },
+      {
+        "bond_distance": 1.0,
+        "energy_measured": -2.728097,
+        "fci_energy": -2.860205122579803,
+        "hf_energy": -2.8529210783245977,
+        "optimal_energy_2q": -2.859724,
+        "error_hartree": 0.132108,
+        "error_kcal_mol": 82.9,
+        "chemical_accuracy": false,
+        "alpha": -0.116022,
+        "expectation_values": {
+          "Z0": -0.8665,
+          "Z1": 0.8665,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0947,
+          "Y0Y1": -0.0649
+        },
+        "postselection_keep_fraction": 0.8413,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3216,
+            "00": 379,
+            "10": 230,
+            "11": 271
+          },
+          "x_basis": {
+            "01": 1138,
+            "00": 1011,
+            "11": 843,
+            "10": 1104
+          },
+          "y_basis": {
+            "10": 1222,
+            "00": 978,
+            "01": 959,
+            "11": 937
+          }
+        }
+      },
+      {
+        "bond_distance": 1.25,
+        "energy_measured": -2.710575,
+        "fci_energy": -2.841379054075542,
+        "hf_energy": -2.8377298235624453,
+        "optimal_energy_2q": -2.841057,
+        "error_hartree": 0.130804,
+        "error_kcal_mol": 82.08,
+        "chemical_accuracy": false,
+        "alpha": -0.082643,
+        "expectation_values": {
+          "Z0": -0.8651,
+          "Z1": 0.8651,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0361,
+          "Y0Y1": -0.0605
+        },
+        "postselection_keep_fraction": 0.8472,
+        "raw_counts": {
+          "z_basis": {
+            "00": 348,
+            "01": 3236,
+            "11": 278,
+            "10": 234
+          },
+          "x_basis": {
+            "01": 1006,
+            "11": 906,
+            "10": 1116,
+            "00": 1068
+          },
+          "y_basis": {
+            "11": 957,
+            "10": 1192,
+            "00": 967,
+            "01": 980
+          }
+        }
+      },
+      {
+        "bond_distance": 1.5,
+        "energy_measured": -2.715534,
+        "fci_energy": -2.824682676189804,
+        "hf_energy": -2.823449750033749,
+        "optimal_energy_2q": -2.824584,
+        "error_hartree": 0.109148,
+        "error_kcal_mol": 68.49,
+        "chemical_accuracy": false,
+        "alpha": -0.047812,
+        "expectation_values": {
+          "Z0": -0.8898,
+          "Z1": 0.8898,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0181,
+          "Y0Y1": -0.0381
+        },
+        "postselection_keep_fraction": 0.8416,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3257,
+            "00": 363,
+            "11": 286,
+            "10": 190
+          },
+          "x_basis": {
+            "00": 1094,
+            "11": 917,
+            "01": 997,
+            "10": 1088
+          },
+          "y_basis": {
+            "10": 1173,
+            "11": 952,
+            "00": 1018,
+            "01": 953
+          }
+        }
+      },
+      {
+        "bond_distance": 1.75,
+        "energy_measured": -2.705776,
+        "fci_energy": -2.815191701228876,
+        "hf_energy": -2.814897063913006,
+        "optimal_energy_2q": -2.815176,
+        "error_hartree": 0.109415,
+        "error_kcal_mol": 68.66,
+        "chemical_accuracy": false,
+        "alpha": -0.023318,
+        "expectation_values": {
+          "Z0": -0.8934,
+          "Z1": 0.8934,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0112,
+          "Y0Y1": -0.0122
+        },
+        "postselection_keep_fraction": 0.8381,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3250,
+            "11": 267,
+            "00": 396,
+            "10": 183
+          },
+          "x_basis": {
+            "00": 1107,
+            "10": 1092,
+            "11": 918,
+            "01": 979
+          },
+          "y_basis": {
+            "10": 1159,
+            "01": 914,
+            "11": 971,
+            "00": 1052
+          }
+        }
+      },
+      {
+        "bond_distance": 2.0,
+        "energy_measured": -2.68664,
+        "fci_energy": -2.810780099134376,
+        "hf_energy": -2.810725834824041,
+        "optimal_energy_2q": -2.810779,
+        "error_hartree": 0.124141,
+        "error_kcal_mol": 77.9,
+        "chemical_accuracy": false,
+        "alpha": -0.009979,
+        "expectation_values": {
+          "Z0": -0.8828,
+          "Z1": 0.8828,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0015,
+          "Y0Y1": -0.0308
+        },
+        "postselection_keep_fraction": 0.8418,
+        "raw_counts": {
+          "z_basis": {
+            "11": 271,
+            "00": 377,
+            "01": 3246,
+            "10": 202
+          },
+          "x_basis": {
+            "00": 1145,
+            "10": 1072,
+            "11": 900,
+            "01": 979
+          },
+          "y_basis": {
+            "10": 1147,
+            "00": 1024,
+            "11": 961,
+            "01": 964
+          }
+        }
+      },
+      {
+        "bond_distance": 2.25,
+        "energy_measured": -2.670297,
+        "fci_energy": -2.808937881696673,
+        "hf_energy": -2.8089294960677513,
+        "optimal_energy_2q": -2.808938,
+        "error_hartree": 0.138641,
+        "error_kcal_mol": 87.0,
+        "chemical_accuracy": false,
+        "alpha": -0.003901,
+        "expectation_values": {
+          "Z0": -0.8728,
+          "Z1": 0.8728,
+          "Z0Z1": -1.0,
+          "X0X1": 0.0103,
+          "Y0Y1": 0.0205
+        },
+        "postselection_keep_fraction": 0.8445,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3239,
+            "10": 220,
+            "11": 292,
+            "00": 345
+          },
+          "x_basis": {
+            "11": 925,
+            "01": 950,
+            "10": 1077,
+            "00": 1144
+          },
+          "y_basis": {
+            "01": 885,
+            "00": 1061,
+            "10": 1121,
+            "11": 1029
+          }
+        }
+      },
+      {
+        "bond_distance": 2.5,
+        "energy_measured": -2.684843,
+        "fci_energy": -2.808209985626129,
+        "hf_energy": -2.8082088471132822,
+        "optimal_energy_2q": -2.80821,
+        "error_hartree": 0.123367,
+        "error_kcal_mol": 77.41,
+        "chemical_accuracy": false,
+        "alpha": -0.001427,
+        "expectation_values": {
+          "Z0": -0.8891,
+          "Z1": 0.8891,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0044,
+          "Y0Y1": 0.0142
+        },
+        "postselection_keep_fraction": 0.8413,
+        "raw_counts": {
+          "z_basis": {
+            "01": 3255,
+            "11": 324,
+            "00": 326,
+            "10": 191
+          },
+          "x_basis": {
+            "01": 982,
+            "11": 923,
+            "10": 1075,
+            "00": 1116
+          },
+          "y_basis": {
+            "11": 1003,
+            "10": 1140,
+            "01": 879,
+            "00": 1074
+          }
+        }
+      },
+      {
+        "bond_distance": 2.75,
+        "energy_measured": -2.668617,
+        "fci_energy": -2.8079344726497077,
+        "hf_energy": -2.8079343345591066,
+        "optimal_energy_2q": -2.807934,
+        "error_hartree": 0.139317,
+        "error_kcal_mol": 87.42,
+        "chemical_accuracy": false,
+        "alpha": -0.000495,
+        "expectation_values": {
+          "Z0": -0.877,
+          "Z1": 0.877,
+          "Z0Z1": -1.0,
+          "X0X1": 0.0088,
+          "Y0Y1": 0.0278
+        },
+        "postselection_keep_fraction": 0.8293,
+        "raw_counts": {
+          "z_basis": {
+            "10": 209,
+            "01": 3188,
+            "00": 389,
+            "11": 310
+          },
+          "x_basis": {
+            "11": 957,
+            "00": 1109,
+            "10": 1080,
+            "01": 950
+          },
+          "y_basis": {
+            "10": 1101,
+            "00": 1102,
+            "01": 890,
+            "11": 1003
+          }
+        }
+      },
+      {
+        "bond_distance": 3.0,
+        "energy_measured": -2.678176,
+        "fci_energy": -2.807834895538406,
+        "hf_energy": -2.8078348804626083,
+        "optimal_energy_2q": -2.807835,
+        "error_hartree": 0.129659,
+        "error_kcal_mol": 81.36,
+        "chemical_accuracy": false,
+        "alpha": -0.000161,
+        "expectation_values": {
+          "Z0": -0.8871,
+          "Z1": 0.8871,
+          "Z0Z1": -1.0,
+          "X0X1": -0.0127,
+          "Y0Y1": 0.0078
+        },
+        "postselection_keep_fraction": 0.8518,
+        "raw_counts": {
+          "z_basis": {
+            "10": 197,
+            "01": 3292,
+            "00": 343,
+            "11": 264
+          },
+          "x_basis": {
+            "00": 1102,
+            "10": 1123,
+            "01": 951,
+            "11": 920
+          },
+          "y_basis": {
+            "11": 1012,
+            "10": 1167,
+            "00": 1052,
+            "01": 865
+          }
+        }
+      }
+    ],
+    "summary": {
+      "mae_kcal_mol": 83.5,
+      "n_chemical_accuracy": 0,
+      "n_total": 11,
+      "best_distance": 1.5,
+      "best_error_kcal": 68.49,
+      "worst_distance": 0.5,
+      "worst_error_kcal": 114.08
+    },
+    "interpretation": "HeH+ VQE bond sweep on IBM Torino: 0/11 distances within chemical accuracy (1.6 kcal/mol). MAE = 83.50 kcal/mol. 2-qubit sector-projected ansatz with pre-optimized parameters. Post-selection retains ~80-90% of Z-basis shots. Reproduces the potential energy surface shape from Peruzzo 2014."
+  },
+  "circuit_cqasm": null,
+  "errors": null,
+  "environment": "experiments/environment.json",
+  "raw_counts_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+}

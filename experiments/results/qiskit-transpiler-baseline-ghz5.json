@@ -1,0 +1,73 @@
+{
+  "id": "qiskit-transpiler-baseline-ghz5",
+  "type": "ghz_state",
+  "backend": "tuna-9",
+  "submitted": "2026-02-10T19:13:56+00:00",
+  "completed": "2026-02-10T19:14:06+00:00",
+  "parameters": {
+    "shots": 4096,
+    "num_qubits": 5,
+    "qubits": [
+      5,
+      2,
+      4,
+      6,
+      8
+    ],
+    "routing_method": "qiskit_transpiler_optimization_level_3",
+    "comparison_to": "autonomous-characterization AI routing"
+  },
+  "analysis": {
+    "fidelity": 0.86,
+    "ghz_population": {
+      "00000": 1882,
+      "11111": 1641
+    },
+    "total_shots": 4096,
+    "num_qubits": 5,
+    "cnot_chain": "5->2->4->6->8 (all valid connections)",
+    "interpretation": "5-qubit GHZ via Qiskit transpiler routing: 86.0% fidelity. Same qubit set as AI ([5,2,4,6,8] vs [2,4,5,6,8]) but valid CNOT chain. AI circuit used invalid pairs (q4-q5, q5-q6 not connected)."
+  },
+  "comparison": {
+    "naive_routing": {
+      "qubits": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "fidelity": 0.806,
+      "job": 415385
+    },
+    "ai_routing": {
+      "qubits": [
+        2,
+        4,
+        5,
+        6,
+        8
+      ],
+      "fidelity": 0.867,
+      "job": 415387,
+      "note": "Used invalid CNOT pairs (q4-q5, q5-q6). Succeeded once (hardware auto-routing?) but FAILED on re-submission (job 415436). Non-reproducible."
+    },
+    "qiskit_routing": {
+      "qubits": [
+        5,
+        2,
+        4,
+        6,
+        8
+      ],
+      "fidelity": 0.86,
+      "job": 415434,
+      "note": "Valid CNOT chain through all connected pairs. Deterministic across 20 transpiler seeds."
+    },
+    "conclusion": "Qiskit transpiler achieves same fidelity as AI routing (86.0% vs 86.7%) with valid circuits. For 3-qubit GHZ, AI and Qiskit choose identical routing [2,4,6]. The AI adds no measurable routing advantage over Qiskit optimization_level=3 when given the same topology/error data."
+  },
+  "job_id": 415434,
+  "errors": null,
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json"
+}
