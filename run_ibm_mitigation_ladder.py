@@ -416,7 +416,11 @@ def connect_ibm():
 def transpile_for_estimator(qc, backend):
     """Transpile circuit for EstimatorV2 (ISA circuit)."""
     from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
-    pm = generate_preset_pass_manager(optimization_level=3, backend=backend)
+    pm = generate_preset_pass_manager(
+        optimization_level=3,
+        backend=backend,
+        translation_method='translator',
+    )
     isa_circuit = pm.run(qc)
     print(f"  Transpiled: depth={isa_circuit.depth()}, ops={dict(isa_circuit.count_ops())}")
     return isa_circuit
@@ -513,8 +517,9 @@ def run_sampler_job(backend, circuits, label, shots=16384, dd=False, twirl=False
         sampler.options.twirling.enable_gates = True
         sampler.options.twirling.num_randomizations = 32
 
-    transpiled = transpile([circuits['z'], circuits['x'], circuits['y']],
-                           backend=backend, optimization_level=3)
+    from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+    _pm = generate_preset_pass_manager(optimization_level=3, backend=backend, translation_method='translator')
+    transpiled = [_pm.run(c) for c in [circuits['z'], circuits['x'], circuits['y']]]
 
     job = sampler.run(transpiled, shots=shots)
     job_id = job.job_id()
