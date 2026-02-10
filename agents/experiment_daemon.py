@@ -21,6 +21,8 @@ import time
 import signal
 import math
 import random as _random_module
+import os
+import fcntl
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -33,19 +35,54 @@ PROJECT_DIR = AGENTS_DIR.parent
 QUEUE_DIR = PROJECT_DIR / "experiments" / "queue"
 RESULTS_DIR = PROJECT_DIR / "experiments" / "results"
 LOG_FILE = AGENTS_DIR / "experiment_daemon.log"
+LOCK_FILE = AGENTS_DIR / "experiment_daemon.lock"
 VENV_BIN = PROJECT_DIR / ".venv" / "bin"
 
 DEFAULT_INTERVAL = 300  # 5 minutes between checks
+STALE_RUNNING_TIMEOUT = 900  # 15 min — auto-reset "running" experiments
+
+# Session ID for disambiguating log lines from concurrent processes
+_SESSION_ID = f"{os.getpid()}"
 
 
 # ─── Logging ─────────────────────────────────────────────────────────────────
 
 def log(msg):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    line = f"[{ts}] {msg}"
+    line = f"[{ts}] [{_SESSION_ID}] {msg}"
     print(line)
     with open(LOG_FILE, "a") as f:
         f.write(line + "\n")
+
+
+# ─── Process Lock ────────────────────────────────────────────────────────────
+
+_lock_fd = None
+
+
+def acquire_lock():
+    """Acquire an exclusive file lock to prevent concurrent daemon instances."""
+    global _lock_fd
+    _lock_fd = open(LOCK_FILE, "w")
+    try:
+        fcntl.flock(_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        _lock_fd.write(f"{os.getpid()}\n")
+        _lock_fd.flush()
+        return True
+    except OSError:
+        _lock_fd.close()
+        _lock_fd = None
+        return False
+
+
+def release_lock():
+    """Release the process lock."""
+    global _lock_fd
+    if _lock_fd:
+        fcntl.flock(_lock_fd, fcntl.LOCK_UN)
+        _lock_fd.close()
+        _lock_fd = None
+        LOCK_FILE.unlink(missing_ok=True)
 
 
 # ─── Queue Management ────────────────────────────────────────────────────────
@@ -62,6 +99,43 @@ def load_queue():
         except (json.JSONDecodeError, KeyError) as e:
             log(f"WARN: Skipping malformed queue file {f.name}: {e}")
     return experiments
+
+
+def recover_stale_running():
+    """Reset experiments stuck in 'running' for longer than STALE_RUNNING_TIMEOUT.
+
+    This handles daemon crashes or killed processes that leave experiments
+    in 'running' state with no result file.
+    """
+    queue = load_queue()
+    now = datetime.now(timezone.utc)
+    recovered = 0
+
+    for exp in queue:
+        if exp.get("status") != "running":
+            continue
+
+        # Check if a result file already exists (experiment actually completed)
+        result_file = RESULTS_DIR / f"{exp['id']}.json"
+        if result_file.exists():
+            update_queue_status(exp, "completed")
+            log(f"RECOVER: {exp['id']} has result file — marking completed")
+            recovered += 1
+            continue
+
+        # Check how long it's been running based on file mtime
+        queue_file = Path(exp["_file"])
+        mtime = datetime.fromtimestamp(queue_file.stat().st_mtime, tz=timezone.utc)
+        age_seconds = (now - mtime).total_seconds()
+
+        if age_seconds > STALE_RUNNING_TIMEOUT:
+            update_queue_status(exp, "pending")
+            log(f"RECOVER: {exp['id']} stuck in 'running' for {age_seconds:.0f}s — reset to pending")
+            recovered += 1
+
+    if recovered:
+        log(f"RECOVER: Reset {recovered} stale experiment(s)")
+    return recovered
 
 
 def get_pending():
@@ -1879,7 +1953,15 @@ def git_commit_results():
         )
         log("GIT: Committed experiment results")
 
-        # Push if remote is configured
+        # Pull then push to avoid rejection from stale remote
+        pull = subprocess.run(
+            ["git", "pull", "--rebase"],
+            capture_output=True, text=True, cwd=str(PROJECT_DIR),
+            timeout=30,
+        )
+        if pull.returncode != 0:
+            log(f"GIT: Pull --rebase failed: {pull.stderr[:200]}")
+
         push = subprocess.run(
             ["git", "push"],
             capture_output=True, text=True, cwd=str(PROJECT_DIR),
@@ -1919,6 +2001,7 @@ def run_daemon(interval=DEFAULT_INTERVAL):
     cycle = 0
     while _running:
         cycle += 1
+        recover_stale_running()
         pending = get_pending()
 
         if pending:
@@ -2099,7 +2182,7 @@ def create_seed_experiments():
 
 def main():
     parser = argparse.ArgumentParser(description="Experiment Daemon — Live Quantum Hardware Pipeline")
-    parser.add_argument("--once", action="store_true", help="Process one pending experiment and exit")
+    parser.add_argument("--once", action="store_true", help="Process all pending experiments and exit")
     parser.add_argument("--daemon", action="store_true", help="Run continuously")
     parser.add_argument("--status", action="store_true", help="Show queue status")
     parser.add_argument("--seed", action="store_true", help="Create seed experiments")
@@ -2132,24 +2215,40 @@ def main():
         return
 
     if args.once:
-        pending = get_pending()
-        if not pending:
-            log("ONCE: No pending experiments")
+        if not acquire_lock():
+            log("ONCE: Another daemon instance is running — exiting")
             return
-        result = run_experiment(pending[0])
-        if result:
-            git_commit_results()
-            log(f"ONCE: Completed {result['id']}")
+        try:
+            recover_stale_running()
+            pending = get_pending()
+            if not pending:
+                log("ONCE: No pending experiments")
+                return
+            log(f"ONCE: {len(pending)} pending experiment(s)")
+            for exp in pending:
+                result = run_experiment(exp)
+                if result:
+                    git_commit_results()
+                    log(f"ONCE: Completed {result['id']}")
+            log("ONCE: Queue drained")
+        finally:
+            release_lock()
         return
 
     if args.daemon:
-        run_daemon(interval=args.interval)
+        if not acquire_lock():
+            log("DAEMON: Another daemon instance is running — exiting")
+            return
+        try:
+            run_daemon(interval=args.interval)
+        finally:
+            release_lock()
         return
 
     # Default: show status
     show_status()
     print("Commands:")
-    print("  --once      Process one pending experiment")
+    print("  --once      Process all pending experiments and exit")
     print("  --daemon    Run continuously")
     print("  --status    Show queue/results status")
     print("  --seed      Create seed experiments")
