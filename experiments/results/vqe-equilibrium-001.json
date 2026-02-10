@@ -1,0 +1,67 @@
+{
+  "id": "vqe-equilibrium-001",
+  "type": "vqe_h2",
+  "backend": "tuna-9",
+  "submitted": "2026-02-10T15:23:13.225463+00:00",
+  "completed": "2026-02-10T15:23:20.699837+00:00",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "theta": 0.2286,
+    "qubits": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "raw_counts": {
+    "z_basis": {
+      "0001": 3902.0,
+      "0010": 194.0
+    },
+    "x_basis": {
+      "0000": 598.0,
+      "0001": 1450.0,
+      "0010": 1476.0,
+      "0011": 572.0
+    },
+    "y_basis": {
+      "0000": 578.0,
+      "0001": 1476.0,
+      "0010": 1499.0,
+      "0011": 543.0
+    }
+  },
+  "analysis": {
+    "energy_hartree": -1.836686,
+    "fci_energy": -1.1373,
+    "error_hartree": 0.699386,
+    "error_kcal_mol": 438.87,
+    "chemical_accuracy": false,
+    "expectation_values": {
+      "Z0": -0.9053,
+      "Z1": 0.9053,
+      "Z0Z1": -1.0,
+      "X0X1": -0.4287,
+      "Y0Y1": -0.4526
+    },
+    "hamiltonian_coefficients": {
+      "g0": -0.4804,
+      "g1": 0.3435,
+      "g2": -0.4347,
+      "g3": 0.5716,
+      "g4": 0.091,
+      "g5": 0.091
+    },
+    "bond_distance_angstrom": 0.735,
+    "total_shots_per_basis": {
+      "z": 4096.0,
+      "x": 4096.0,
+      "y": 4096.0
+    },
+    "interpretation": "VQE energy: -1.8367 Ha (FCI: -1.1373 Ha). Error: 438.9 kcal/mol. Outside chemical accuracy."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[4] q\nbit[4] b\n\n// Prepare HF state |01> in BK basis\nX q[0]\n\n// Ry ansatz: excitation rotation\nCNOT q[0], q[1]\nRy(0.228600) q[0]\nCNOT q[1], q[0]\nRy(-0.228600) q[0]\nCNOT q[1], q[0]\nCNOT q[0], q[1]\n\n// Z-basis measurement\nb = measure q",
+  "errors": null
+}

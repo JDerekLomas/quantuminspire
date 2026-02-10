@@ -1,14 +1,19 @@
 {
   "id": "vqe-equilibrium-001",
   "type": "vqe_h2",
-  "status": "pending",
+  "status": "completed",
   "backend": "tuna-9",
   "created": "2026-02-10T12:00:00Z",
   "parameters": {
     "shots": 4096,
     "bond_distance": 0.735,
     "theta": 0.2286,
-    "qubits": [0, 1, 2, 3]
+    "qubits": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "priority": 3,
   "description": "H2 VQE at equilibrium bond length (0.735 A). Single theta parameter, 3 measurement bases (Z, X, Y). Reconstruct <H> from expectation values."
