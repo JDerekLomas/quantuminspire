@@ -35,22 +35,23 @@
     }
   },
   "analysis": {
-    "energy_hartree": -0.943621208954451,
-    "energy_raw": -0.9166034545360351,
-    "energy_postselected": -0.943621208954451,
-    "postselection_keep_fraction": 0.9716796875,
+    "energy_hartree": -1.097607,
+    "energy_raw": -1.077797,
+    "energy_postselected": -1.097607,
+    "postselection_keep_fraction": 0.9717,
     "fci_energy": -1.137306,
-    "error_hartree": 0.19368479104554892,
-    "error_millihartree": 193.68479104554893,
-    "error_raw_millihartree": 220.70254546396484,
-    "error_kcal_mol": 121.53894954420136,
+    "error_hartree": 0.039699,
+    "error_millihartree": 39.7,
+    "error_raw_millihartree": 59.51,
+    "error_kcal_mol": 24.91,
     "chemical_accuracy": false,
+    "improvement_factor": 1.5,
     "expectation_values": {
-      "Z0": -0.8788944723618091,
-      "Z1": 0.8788944723618091,
+      "Z0": -0.8789,
+      "Z1": 0.8789,
       "Z0Z1": -1.0,
-      "X0X1": -0.412109375,
-      "Y0Y1": -0.43896484375
+      "X0X1": -0.4121,
+      "Y0Y1": -0.439
     },
     "total_shots_per_basis": 4096
   },

@@ -281,7 +281,31 @@
     "code_type": "3-qubit repetition",
     "num_data_qubits": 3,
     "num_syndrome_qubits": 2,
-    "interpretation": "3-qubit repetition code: avg syndrome accuracy 93.2%, logical error rate 2.9% (after majority-vote correction). Code is working \u2014 errors detected and corrected."
+    "interpretation": "3-qubit repetition code: avg syndrome accuracy 93.2%, logical error rate 2.9% (after majority-vote correction). Code is working \u2014 errors detected and corrected.",
+    "decoder_comparison": {
+      "nn_accuracy": 0.9763,
+      "nn_accuracy_std": 0.0029,
+      "lookup_accuracy": 0.9311,
+      "lookup_accuracy_std": 0.0023,
+      "nn_improvement": 0.0452,
+      "n_folds": 5,
+      "n_samples": 20480,
+      "n_classes": 5,
+      "per_class_nn": {
+        "error_d0": 0.9805,
+        "error_d1": 0.9709,
+        "error_d2": 0.9878,
+        "logical_1": 0.988,
+        "no_error": 0.9543
+      },
+      "per_class_lookup": {
+        "error_d0": 0.9434,
+        "error_d1": 0.8999,
+        "error_d2": 0.9463,
+        "logical_1": 0.9033,
+        "no_error": 0.9626
+      }
+    }
   },
   "circuit_cqasm": "6 repetition code variants (3 data + 2 syndrome qubits)",
   "errors": null

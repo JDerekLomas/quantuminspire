@@ -1,0 +1,18 @@
+{
+  "experiment_id": "kandala2017-h2-sweep",
+  "paper": "Kandala et al., Nature 549, 242 (2017)",
+  "arxiv": "1704.05018",
+  "molecule": "H2",
+  "basis": "STO-3G",
+  "mapping": "jordan_wigner",
+  "n_qubits": 4,
+  "ansatz": "hardware_efficient_d1",
+  "n_parameters": 20,
+  "timestamp": "2026-02-10T18:22:10.941656",
+  "results_by_distance": [
+    {
+      "bond_distance": 0.3,
+      "fci_energy": -0.6018037107656871,
+      "vqe_energy": -0.6017927416707645,
+      "error_mhartree": 0.010969094922597122,
+      "chemical_accuracy": 
