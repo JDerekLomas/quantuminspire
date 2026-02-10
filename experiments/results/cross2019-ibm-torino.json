@@ -314,7 +314,7 @@
         "pass": true
       }
     },
-    "interpretation": "Cross 2019 replication on IBM Torino: QV n=2 HOF=69.7% [PASS], QV n=3 HOF=81.0% [PASS], RB gate fidelity=99.99%. Cross-platform: emulator (QV PASS, RB 99.95%), IBM Torino (QV PASS/PASS, RB 99.99%), Tuna-9 (QV PASS/PASS, RB 99.82%)."
+    "interpretation": "Cross 2019 replication on IBM Torino: QV n=2 HOF=69.7% [PASS], QV n=3 HOF=81.0% [PASS], RB gate fidelity=99.99% (note: inflated because IBM transpiler collapses Clifford sequences to depth 1-2 circuits, so RB measures readout error not gate error; survival ~90% flat across all sequence lengths). Cross-platform: emulator (QV PASS, RB 99.95%), IBM Torino (QV PASS/PASS, RB 99.99%*), Tuna-9 (QV PASS/PASS, RB 99.82%)."
   },
   "circuit_cqasm": null,
   "errors": null,
