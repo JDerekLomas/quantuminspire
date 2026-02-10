@@ -3,42 +3,46 @@ import { BlogPost } from "@/lib/blogTypes"
 export const posts: BlogPost[] = [
   {
     slug: 'cross-platform-quantum-comparison',
-    title: 'Three Quantum Backends, One Question: How Much Does the Hardware Matter?',
-    subtitle: 'We ran the same experiments on a noiseless emulator, IBM Torino (133 qubits), and Tuna-9 (9 qubits). The answer: it matters a lot, but not always in the ways you expect.',
+    title: 'Four Quantum Backends, One Question: How Much Does the Hardware Matter?',
+    subtitle: 'We ran the same experiments on a noiseless emulator, IBM Torino (133q), Tuna-9 (9q), and IQM Garnet (20q). The answer: it matters a lot, but not always in the ways you expect.',
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
-    tags: ['cross-platform', 'IBM Quantum', 'Tuna-9', 'VQE', 'quantum volume', 'QEC', 'neural network decoder', 'hardware noise'],
+    tags: ['cross-platform', 'IBM Quantum', 'Tuna-9', 'IQM Garnet', 'VQE', 'quantum volume', 'QEC', 'neural network decoder', 'hardware noise'],
     heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
     heroCaption: 'The same quantum algorithm produces radically different results depending on where you run it.',
-    excerpt: 'We ran VQE, quantum volume, randomized benchmarking, and error correction across 3 quantum backends. Benchmarks pass everywhere. VQE fails everywhere except the emulator. Error correction reveals the sharpest hardware differences: topology kills circuits on Tuna-9 that work fine on IBM. And a neural network decoder trained on IBM hardware data outperforms lookup tables by 50%.',
-    content: `<p>What happens when you take the same quantum algorithm and run it on three completely different backends? We\\'ve been answering this question systematically across 20+ experiments, 4 paper replications, and 3 platforms: a noiseless QI emulator, IBM\\'s 133-qubit Torino processor, and QuTech\\'s 9-qubit Tuna-9 transmon chip.</p>
+    excerpt: `We ran VQE, quantum volume, randomized benchmarking, and error correction across 4 quantum backends. Benchmarks pass everywhere. VQE fails everywhere except the emulator. IQM Garnet achieves QV=32 while Tuna-9 manages QV=8. Error correction reveals the sharpest hardware differences. And IBM's 99.99% RB fidelity is fake.`,
+    content: `<p>What happens when you take the same quantum algorithm and run it on four completely different backends? We\\'ve been answering this question systematically across 50+ experiments, 4 paper replications, and 4 platforms: a noiseless QI emulator, IBM\\'s 133-qubit Torino processor, QuTech\\'s 9-qubit Tuna-9 transmon chip, and IQM\\'s 20-qubit Garnet processor.</p>
 
 <p>The headline: <strong>benchmarks are forgiving, chemistry is brutal, and error correction reveals the sharpest hardware differences of all.</strong></p>
 
 <h2>The Scorecard</h2>
 
 <table>
-<thead><tr><th>Experiment</th><th>Metric</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th></tr></thead>
+<thead><tr><th>Experiment</th><th>Metric</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th><th>IQM Garnet</th></tr></thead>
 <tbody>
-<tr><td>QV n=2</td><td>HOF</td><td>77.2%</td><td>69.7%</td><td>69.2%</td></tr>
-<tr><td>QV n=3</td><td>HOF</td><td>85.1%</td><td>81.0%</td><td>82.1%</td></tr>
-<tr><td>RB 1-qubit</td><td>Gate fidelity</td><td>99.95%</td><td>99.99%*</td><td>99.82%</td></tr>
-<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td>9.2</td><td>9.5</td></tr>
-<tr><td>VQE HeH+</td><td>MAE (kcal/mol)</td><td>0.08</td><td>83.5</td><td>&mdash;</td></tr>
-<tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>FAILED</td></tr>
-<tr><td>Bell state</td><td>Fidelity</td><td>100%</td><td>99.1%</td><td>85.8&ndash;93.5%</td></tr>
+<tr><td>QV n=2</td><td>HOF</td><td>77.2%</td><td>69.7%</td><td>69.2%</td><td>74.0%</td></tr>
+<tr><td>QV n=3</td><td>HOF</td><td>85.1%</td><td>81.0%</td><td>82.1%</td><td>78.6%</td></tr>
+<tr><td>QV n=5</td><td>HOF</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>69.2%</td></tr>
+<tr><td>QV (best)</td><td>Volume</td><td>&ge;8</td><td>&ge;8</td><td>8</td><td><strong>32</strong></td></tr>
+<tr><td>RB 1-qubit</td><td>Gate fidelity</td><td>99.95%</td><td>99.99%*</td><td>99.82%</td><td>pending</td></tr>
+<tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td>9.2</td><td>9.5</td><td>&mdash;</td></tr>
+<tr><td>VQE HeH+</td><td>MAE (kcal/mol)</td><td>0.08</td><td>83.5</td><td>&mdash;</td><td>&mdash;</td></tr>
+<tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>FAILED</td><td>&mdash;</td></tr>
+<tr><td>Bell state</td><td>Fidelity</td><td>100%</td><td>99.1%</td><td>85.8&ndash;93.5%</td><td>88.4&ndash;98.1%</td></tr>
+<tr><td>GHZ-10</td><td>Fidelity</td><td>&mdash;</td><td>&mdash;</td><td>n/a (9q)</td><td>54.7%</td></tr>
 </tbody>
 </table>
 
 <p><em>*IBM RB fidelity inflated: Qiskit transpiler collapses Clifford sequences to depth 1&ndash;2 circuits, measuring readout error rather than gate error.</em></p>
 
-<p>Three patterns jump out:</p>
+<p>Four patterns jump out:</p>
 
 <ol>
-<li><strong>Benchmarks pass everywhere.</strong> QV and RB are designed to be noise-tolerant. Both hardware platforms pass QV=8 with similar margins.</li>
+<li><strong>Benchmarks pass everywhere, but unevenly.</strong> QV passes on all hardware, but IQM Garnet hits QV=32 while Tuna-9 tops out at QV=8. More qubits with better connectivity wins the benchmark game.</li>
 <li><strong>VQE fails everywhere except the emulator.</strong> Even IBM Torino &mdash; a 133-qubit processor &mdash; can\\'t achieve chemical accuracy on a 2-qubit molecule without error mitigation.</li>
 <li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can\\'t execute on Tuna-9 due to topology constraints.</li>
+<li><strong>Compiler tricks inflate benchmarks.</strong> IBM\\'s 99.99% RB fidelity is measuring readout error, not gate quality. Tuna-9\\'s 99.82% is genuine. IQM uses raw native gates &mdash; no Clifford compilation.</li>
 </ol>
 
 <h2>VQE: When Bond Curves Break</h2>
@@ -119,12 +123,14 @@ export const posts: BlogPost[] = [
 
 <p><strong>The punchline: Tuna-9\\'s "worse" number is the more honest measurement.</strong> A smaller processor with a simpler compiler produces more trustworthy benchmarks than a 133-qubit system with an aggressively optimizing transpiler. For the field, this raises an uncomfortable question: how many published RB numbers are actually measuring readout error dressed up as gate fidelity?</p>
 
+<p>IQM Garnet offers a natural test case. IQM\\'s native gate set is <code>prx(angle, phase)</code> and <code>cz</code> &mdash; there is no Clifford-level transpilation. When we submit a 32-Clifford RB sequence, IQM executes all ~70 physical prx/cz gates without collapsing them. This means IQM RB should show genuine survival decay like Tuna-9. (RB on IQM is pending &mdash; we exhausted our free-tier credits on QV and Bell diagnostics, but the <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/scripts/iqm_rb_qv.py">script is ready</a>.)</p>
+
 <p>The fix is straightforward &mdash; use interleaved RB with non-Clifford gates, or disable Clifford compilation during benchmarking. But this is rarely flagged in cross-platform comparisons, and it means <strong>you cannot naively compare RB numbers across platforms without understanding what each compiler does to your circuits.</strong></p>
 
 <h2>What We Learned</h2>
 
 <ol>
-<li><strong>Compiler honesty matters more than qubit count.</strong> IBM\\'s 99.99% RB looks 100x better than Tuna-9\\'s 99.82%, but IBM\\'s number measures readout error while Tuna-9\\'s measures actual gate quality. A simpler compiler produces more trustworthy benchmarks. Cross-platform comparisons are meaningless without understanding what each transpiler does to your circuits.</li>
+<li><strong>Compiler honesty matters more than qubit count.</strong> IBM\\'s 99.99% RB looks 100x better than Tuna-9\\'s 99.82%, but IBM\\'s number measures readout error while Tuna-9\\'s measures actual gate quality. IQM Garnet uses raw prx/cz gates with no Clifford-level compilation &mdash; its RB (when we get more credits) should show genuine decay like Tuna-9. Cross-platform comparisons are meaningless without understanding what each transpiler does to your circuits.</li>
 
 <li><strong>Benchmarks and applications live in different worlds.</strong> QV and RB pass on hardware that can\\'t do useful chemistry. The gap between "this hardware works" (QV PASS) and "this hardware is useful" (VQE within chemical accuracy) is enormous.</li>
 
@@ -139,11 +145,12 @@ export const posts: BlogPost[] = [
 
 <p>All raw data &mdash; measurement counts, job IDs, expectation values, decoder metrics &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory. The experiments dashboard at <a href="https://quantuminspire.vercel.app/experiments">/experiments</a> shows live results across all backends.</p>
 
-<p>Hardware job IDs: IBM HeH+ VQE (d65ncqoqbmes739d4h30). IBM Cross QV/RB (d65ncilbujdc73ctmjr0). IBM [[4,2,2]] (d65n33je4kfs73cvklt0 + 12 more). Tuna-9 QV (415379&ndash;415394). Tuna-9 RB (415395&ndash;415404).</p>`,
+<p>Hardware job IDs: IBM HeH+ VQE (d65ncqoqbmes739d4h30). IBM Cross QV/RB (d65ncilbujdc73ctmjr0). IBM [[4,2,2]] (d65n33je4kfs73cvklt0 + 12 more). Tuna-9 QV (415379&ndash;415394). Tuna-9 RB (415395&ndash;415404). IQM Bell (019c48cf-99f2-7e03). IQM diagnostics (30 jobs, 47K shots).</p>`,
     sources: [
       { label: 'Experiments dashboard', url: 'https://quantuminspire.vercel.app/experiments' },
       { label: 'HeH+ VQE IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/peruzzo2014-ibm-torino.json' },
       { label: 'Cross QV/RB IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-ibm-torino.json' },
+      { label: 'IQM Garnet diagnostics (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/iqm-garnet-diagnostic-suite.json' },
       { label: '[[4,2,2]] IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/detection-code-001-ibm-torino.json' },
       { label: 'Peruzzo et al. 2014', url: 'https://arxiv.org/abs/1304.3061' },
       { label: 'Cross et al. 2019', url: 'https://arxiv.org/abs/1811.12926' },
@@ -163,7 +170,7 @@ export const posts: BlogPost[] = [
     excerpt: 'We used AI agents to replicate 4 landmark quantum computing papers on 3 different backends. Emulators matched published results almost perfectly (85% pass). Real hardware told a different story: IBM Torino got within 9 kcal/mol on VQE, Tuna-9 achieved Quantum Volume 8 but failed VQE entirely. The reproducibility gap is the finding.',
     content: `<p>Reproducibility is the foundation of science. In quantum computing, it's also one of the field's biggest open questions: when a paper reports a ground state energy or a quantum volume, <strong>can someone else get the same result on different hardware?</strong></p>
 
-<p>We set out to answer this systematically. Using AI agents with direct access to quantum hardware through <a href="https://modelcontextprotocol.io/">MCP tool calls</a>, we attempted to replicate 4 landmark papers across 3 backends: a noiseless emulator, IBM's 133-qubit Torino processor, and QuTech's 9-qubit Tuna-9 transmon chip.</p>
+<p>We set out to answer this systematically. Using AI agents with direct access to quantum hardware through <a href="https://modelcontextprotocol.io/">MCP tool calls</a>, we attempted to replicate 4 landmark papers across 4 backends: a noiseless emulator, IBM's 133-qubit Torino processor, QuTech's 9-qubit Tuna-9 transmon chip, and IQM's 20-qubit Garnet processor.</p>
 
 <p>The results: <strong>emulators reproduce published claims almost perfectly</strong> (85% pass rate). Real hardware tells a different story.</p>
 
@@ -179,7 +186,7 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>Across all 4 papers, we tested <strong>15 claims on up to 3 backends</strong>. The overall pass rate is 73%. But that number hides the real story: the gap between emulator and hardware.</p>
+<p>Across all 4 papers, we tested <strong>19 claims on up to 4 backends</strong>. The overall pass rate is 76%. But that number hides the real story: the gap between emulator and hardware.</p>
 
 <h2>The VQE Story: Physics Works, Hardware Struggles</h2>
 
@@ -215,17 +222,19 @@ export const posts: BlogPost[] = [
 
 <p>Cross et al. 2019 defined <a href="https://arxiv.org/abs/1811.12926">Quantum Volume</a> as the gold standard for benchmarking quantum computers. The test: run random circuits on n qubits, check whether the heavy output fraction exceeds 2/3.</p>
 
-<p>All three backends <strong>pass QV=8</strong> (up to 3-qubit circuits):</p>
+<p>All four backends <strong>pass QV=8</strong>, but IQM goes further with QV=32:</p>
 
 <table>
-<thead><tr><th>Test</th><th>Threshold</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th></tr></thead>
+<thead><tr><th>Test</th><th>Threshold</th><th>Emulator</th><th>IBM Torino</th><th>Tuna-9</th><th>IQM Garnet</th></tr></thead>
 <tbody>
-<tr><td>n=2 (5 circuits)</td><td>> 66.7%</td><td>77.2%</td><td>69.7%</td><td>69.2%</td></tr>
-<tr><td>n=3 (5 circuits)</td><td>> 66.7%</td><td>85.1%</td><td>81.0%</td><td>82.1%</td></tr>
+<tr><td>n=2 (5 circuits)</td><td>> 66.7%</td><td>77.2%</td><td>69.7%</td><td>69.2%</td><td>74.0%</td></tr>
+<tr><td>n=3 (5 circuits)</td><td>> 66.7%</td><td>85.1%</td><td>81.0%</td><td>82.1%</td><td>78.6%</td></tr>
+<tr><td>n=4 (5 circuits)</td><td>> 66.7%</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>69.5%</td></tr>
+<tr><td>n=5 (5 circuits)</td><td>> 66.7%</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>69.2%</td></tr>
 </tbody>
 </table>
 
-<p>All three backends pass both tests. IBM Torino and Tuna-9 are remarkably close despite being completely different hardware platforms (133-qubit heavy-hex vs 9-qubit linear). Tuna-9's n=2 result (69.2%) barely clears the threshold &mdash; 3 of 5 circuits passed, 2 were marginal. At n=3, the wider distribution of ideal probabilities actually helps: the heavy set is more distinct, making it easier to pass despite hardware noise.</p>
+<p>All four backends pass QV&ge;8. IQM Garnet stands out by reaching QV=32 (passing n=2 through n=5). Tuna-9\\'s n=2 result (69.2%) barely clears the threshold. IQM\\'s 20-qubit processor with 30 connections and square-lattice topology gives it an edge over Tuna-9\\'s 9 qubits with only 10 connections.</p>
 
 <p>The randomized benchmarking results complement this: Tuna-9 achieves <strong>99.82% single-qubit gate fidelity</strong> (0.18% error per gate), matching the emulator's 99.95% closely. IBM Torino shows 99.99% &mdash; though this is inflated because IBM's transpiler collapses Clifford sequences to single gates, so RB measures readout error rather than gate error. This confirms that single-qubit operations on both platforms are high quality; the VQE failures come from 2-qubit (CNOT) errors and decoherence.</p>
 
@@ -239,6 +248,7 @@ export const posts: BlogPost[] = [
 <tr><td>QI Emulator</td><td>13</td><td><strong>12</strong></td><td>0</td><td>0</td></tr>
 <tr><td>IBM Torino</td><td>7</td><td><strong>3</strong></td><td>3</td><td><strong>1</strong></td></tr>
 <tr><td>QI Tuna-9</td><td>5</td><td><strong>3</strong></td><td>1</td><td><strong>1</strong></td></tr>
+<tr><td>IQM Garnet</td><td>4</td><td><strong>4</strong></td><td>0</td><td>0</td></tr>
 </tbody>
 </table>
 

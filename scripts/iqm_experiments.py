@@ -6,22 +6,29 @@ IQM native decompositions:
   H = prx(pi, 0) then prx(pi/2, pi/2)
   CNOT(ctrl, tgt) = H(tgt), CZ(ctrl, tgt), H(tgt)
   Ry(theta) = prx(theta, pi/2)
-  Rz(theta) = prx(0, 0) [virtual, done via phase tracking]
+  Rx(theta) = prx(theta, 0)
 
 prx(theta, phi) = exp(-i*theta/2 * (cos(phi)*X + sin(phi)*Y))
   prx(pi, 0) = -iX  (X rotation by pi)
-  prx(pi/2, pi/2) = exp(-i*pi/4 * Y) = Ry(pi/2) * phase
+  prx(pi/2, pi/2) = Ry(pi/2) * global phase
+
+iqm-client 32.1.1 API:
+  CircuitOperation(name, locus, args)
+  - locus: tuple of qubit names, e.g. ('QB1',) or ('QB1', 'QB2')
+  - args: {'angle': radians, 'phase': radians} for prx; {'key': str} for measure
+  Circuit(name, instructions) — instructions is a TUPLE of CircuitOperation
 """
 
 import json
 import os
+import sys
 import time
 import hashlib
-from math import pi, cos, sin, sqrt
+from math import pi
 from datetime import datetime, timezone
 from pathlib import Path
 
-from iqm.iqm_client import IQMClient, Circuit, Instruction
+from iqm.iqm_client import IQMClient, Circuit, CircuitOperation
 
 # ── Config ──────────────────────────────────────────────────────────────────
 
@@ -33,116 +40,128 @@ RESULTS_DIR = Path("experiments/results")
 VQE_QUBITS = ["QB1", "QB2"]
 QV_QUBITS_2 = ["QB1", "QB2"]
 QV_QUBITS_3 = ["QB1", "QB2", "QB3"]
-RB_QUBIT = ["QB1"]
+RB_QUBIT = "QB1"
 
-# VQE parameters
-ALPHA = -0.2235  # optimal theta for H2 at R=0.735 Å
+# VQE H2 parameters (sector-projected, R=0.735 Å)
+THETA = 0.1118  # optimal theta for sector-projected coefficients
 g0, g1, g2, g3, g4, g5 = -0.321124, 0.397937, -0.397937, 0.0, 0.090466, 0.090466
 FCI = -1.1373
 
 # ── Helper: native gate decompositions ──────────────────────────────────────
 
+def prx(qubit, angle, phase):
+    """Single prx gate."""
+    return CircuitOperation(name="prx", locus=(qubit,), args={"angle": angle, "phase": phase})
+
 def h_gate(qubit):
-    """Hadamard decomposed into native prx gates."""
-    return [
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": pi / (2 * pi), "phase_t": 0.0}),
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": 0.25, "phase_t": 0.25}),
-    ]
+    """Hadamard = prx(pi,0) then prx(pi/2, pi/2)."""
+    return [prx(qubit, pi, 0.0), prx(qubit, pi/2, pi/2)]
 
 def ry_gate(qubit, theta):
     """Ry(theta) = prx(theta, pi/2)."""
-    return [
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": theta / (2 * pi), "phase_t": 0.25}),
-    ]
+    return [prx(qubit, theta, pi/2)]
 
 def rx_gate(qubit, theta):
     """Rx(theta) = prx(theta, 0)."""
-    return [
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": theta / (2 * pi), "phase_t": 0.0}),
-    ]
+    return [prx(qubit, theta, 0.0)]
 
 def x_gate(qubit):
     """X gate = prx(pi, 0)."""
-    return [
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": 0.5, "phase_t": 0.0}),
-    ]
+    return [prx(qubit, pi, 0.0)]
 
 def cnot_gate(ctrl, tgt):
     """CNOT = H(tgt), CZ(ctrl,tgt), H(tgt)."""
     return h_gate(tgt) + [
-        Instruction(name="cz", qubits=[ctrl, tgt], args={}),
+        CircuitOperation(name="cz", locus=(ctrl, tgt), args={}),
     ] + h_gate(tgt)
 
 def measure_all(qubits, key="m"):
     """Measure all qubits."""
-    return [Instruction(name="measure", qubits=qubits, args={"key": key})]
+    return [CircuitOperation(name="measure", locus=tuple(qubits), args={"key": key})]
+
+def make_circuit(name, ops):
+    """Create IQM Circuit from a list of CircuitOperation."""
+    return Circuit(name=name, instructions=tuple(ops))
+
+
+# ── Result extraction ────────────────────────────────────────────────────────
+
+def extract_counts(run_result, circuit_index=0, key="m"):
+    """Extract bitstring counts from IQM RunResult.
+
+    RunResult.measurements is a list (one per circuit).
+    Each element maps measurement key → 2D list [[q0,q1,...], [q0,q1,...], ...]
+    """
+    measurements = run_result.measurements
+    if not measurements or len(measurements) <= circuit_index:
+        return {}
+
+    circuit_meas = measurements[circuit_index]
+    if key not in circuit_meas:
+        print(f"  Warning: key '{key}' not in measurements. Keys: {list(circuit_meas.keys())}")
+        return {}
+
+    raw_data = circuit_meas[key]
+    counts = {}
+    for shot in raw_data:
+        bitstring = ''.join(str(b) for b in shot)
+        counts[bitstring] = counts.get(bitstring, 0) + 1
+    return counts
 
 
 # ── VQE Circuits ────────────────────────────────────────────────────────────
 
 def vqe_z_basis():
-    """VQE ansatz + Z-basis measurement."""
+    """VQE 2-qubit ansatz: X(q1) Ry(theta,q0) CNOT(q0,q1) + Z-basis measurement.
+    Prepares HF reference |01⟩, then Ry(theta) creates superposition,
+    CNOT entangles to cos(theta/2)|01⟩ + sin(theta/2)|10⟩."""
     q0, q1 = VQE_QUBITS
-    instructions = []
-    instructions += ry_gate(q0, ALPHA)
-    instructions += cnot_gate(q0, q1)
-    instructions += x_gate(q0)
-    instructions += measure_all(VQE_QUBITS)
-    return Circuit(name="vqe_z", instructions=instructions)
+    ops = []
+    ops += x_gate(q1)           # HF reference: |01⟩ (q0=0, q1=1)
+    ops += ry_gate(q0, THETA)   # Create superposition on q0
+    ops += cnot_gate(q0, q1)    # Entangle: cos|01⟩ + sin|10⟩
+    ops += measure_all(VQE_QUBITS)
+    return make_circuit("vqe_z", ops)
 
 def vqe_x_basis():
-    """VQE ansatz + H gates + measurement (X-basis)."""
+    """VQE ansatz + H gates for X-basis measurement."""
     q0, q1 = VQE_QUBITS
-    instructions = []
-    instructions += ry_gate(q0, ALPHA)
-    instructions += cnot_gate(q0, q1)
-    instructions += x_gate(q0)
-    instructions += h_gate(q0)
-    instructions += h_gate(q1)
-    instructions += measure_all(VQE_QUBITS)
-    return Circuit(name="vqe_x", instructions=instructions)
+    ops = []
+    ops += x_gate(q1)
+    ops += ry_gate(q0, THETA)
+    ops += cnot_gate(q0, q1)
+    ops += h_gate(q0)           # Rotate to X basis
+    ops += h_gate(q1)
+    ops += measure_all(VQE_QUBITS)
+    return make_circuit("vqe_x", ops)
 
 def vqe_y_basis():
-    """VQE ansatz + S†H gates + measurement (Y-basis).
-    S† = Rz(-pi/2). For IQM: S†H = prx(pi/2, 0) effectively.
-    Actually: measure Y = apply S†.H then measure Z.
-    S† = phase gate. In prx: S† can be done as prx(pi/2, pi) or via Rx.
-    More precisely: to measure in Y basis, apply Rx(pi/2) then measure.
-    Y-basis measurement: Rx(pi/2) rotates Y eigenstates to Z eigenstates.
-    """
+    """VQE ansatz + Rx(pi/2) for Y-basis measurement.
+    Y-basis: apply Rx(pi/2) then measure Z."""
     q0, q1 = VQE_QUBITS
-    instructions = []
-    instructions += ry_gate(q0, ALPHA)
-    instructions += cnot_gate(q0, q1)
-    instructions += x_gate(q0)
-    # Rx(pi/2) on both qubits for Y-basis measurement
-    instructions += rx_gate(q0, pi/2)
-    instructions += rx_gate(q1, pi/2)
-    instructions += measure_all(VQE_QUBITS)
-    return Circuit(name="vqe_y", instructions=instructions)
+    ops = []
+    ops += x_gate(q1)
+    ops += ry_gate(q0, THETA)
+    ops += cnot_gate(q0, q1)
+    ops += rx_gate(q0, pi/2)    # Rotate to Y basis
+    ops += rx_gate(q1, pi/2)
+    ops += measure_all(VQE_QUBITS)
+    return make_circuit("vqe_y", ops)
 
 
 # ── QV Circuits ─────────────────────────────────────────────────────────────
 
 def random_su2_prx(qubit, rng):
-    """Random SU(2) gate decomposed into prx gates.
-    Any SU(2) = Rz(a).Ry(b).Rz(c) = prx sequences.
-    We use: prx(b, pi/2) for Ry(b), and frame changes for Rz.
-    Simplified: use 3 random prx gates.
-    """
-    import numpy as np
-    # Haar-random via Euler angles
+    """Haar-random SU(2) gate decomposed into prx gates.
+    Uses Euler angles: Rz(alpha).Ry(beta).Rz(gamma).
+    Rz(t) = prx(pi, t/2).prx(pi, 0) but simplest is 3 random prx gates."""
     alpha = rng.uniform(0, 2*pi)
     beta = rng.uniform(0, pi)
     gamma = rng.uniform(0, 2*pi)
-    # Decompose as: Rz(alpha).Ry(beta).Rz(gamma)
-    # In prx: Rz(theta) = prx(0, theta/(4*pi))... actually Rz isn't a native gate.
-    # Better: use prx(beta, pi/2) for Ry(beta), and prx(pi, alpha/(2*pi)) pairs for Rz
-    # Simplest correct approach: 3 prx gates with random params
     return [
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": alpha / (2*pi), "phase_t": 0.0}),
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": beta / (2*pi), "phase_t": 0.25}),
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": gamma / (2*pi), "phase_t": 0.0}),
+        prx(qubit, alpha, 0.0),
+        prx(qubit, beta, pi/2),
+        prx(qubit, gamma, 0.0),
     ]
 
 def qv_circuit_iqm(n_qubits, circuit_idx, seed=123):
@@ -150,158 +169,152 @@ def qv_circuit_iqm(n_qubits, circuit_idx, seed=123):
     import numpy as np
     rng = np.random.RandomState(seed * 100 + circuit_idx)
 
-    if n_qubits == 2:
-        qubits = QV_QUBITS_2
-    else:
-        qubits = QV_QUBITS_3
+    qubits = QV_QUBITS_2 if n_qubits == 2 else QV_QUBITS_3
 
-    instructions = []
+    ops = []
     for layer in range(n_qubits):
         # Random SU(2) on each qubit
         for q in qubits:
-            instructions += random_su2_prx(q, rng)
-
+            ops += random_su2_prx(q, rng)
         # Random CNOT between pairs
         if n_qubits == 2:
-            instructions += cnot_gate(qubits[0], qubits[1])
-            # Random single-qubit gates after CNOT
+            ops += cnot_gate(qubits[0], qubits[1])
             for q in qubits:
-                instructions += random_su2_prx(q, rng)
+                ops += random_su2_prx(q, rng)
         elif n_qubits == 3:
-            # CNOT on first two, leave third with single-qubit
-            instructions += cnot_gate(qubits[0], qubits[1])
+            ops += cnot_gate(qubits[0], qubits[1])
             for q in qubits:
-                instructions += random_su2_prx(q, rng)
+                ops += random_su2_prx(q, rng)
 
-    instructions += measure_all(qubits)
-    return Circuit(name=f"qv_n{n_qubits}_c{circuit_idx}", instructions=instructions)
+    ops += measure_all(qubits)
+    return make_circuit(f"qv_n{n_qubits}_c{circuit_idx}", ops)
 
 
 # ── RB Circuits ─────────────────────────────────────────────────────────────
 
+# 24 single-qubit Cliffords as prx(angle, phase) sequences (radians)
+CLIFFORDS = [
+    [],                                                  # I
+    [(pi, 0.0)],                                        # X
+    [(pi, pi/2)],                                       # Y
+    [(pi, 0.0), (pi, pi/2)],                            # Z = X.Y
+    [(pi, 0.0), (pi/2, pi/2)],                          # H-like
+    [(pi/2, pi/2)],                                     # sqrt(Y)
+    [(pi/2, 0.0)],                                      # sqrt(X)
+    [(3*pi/2, 0.0)],                                    # sqrt(X)†
+    [(3*pi/2, pi/2)],                                   # sqrt(Y)†
+    [(pi/2, 0.0), (pi/2, pi/2)],                        # Clifford 9
+    [(pi/2, pi/2), (pi/2, 0.0)],                        # Clifford 10
+    [(pi, 0.0), (pi/2, 0.0)],                           # X.sqrt(X)
+    [(pi, pi/2), (pi/2, 0.0)],                          # Y.sqrt(X)
+    [(pi/2, 0.0), (pi, pi/2)],                          # sqrt(X).Y
+    [(pi, 0.0), (pi/2, pi/2)],                          # X.sqrt(Y)
+    [(pi/2, pi/2), (pi, 0.0)],                          # sqrt(Y).X
+    [(pi, pi/2), (pi/2, pi/2)],                         # Y.sqrt(Y)
+    [(3*pi/2, 0.0), (pi/2, pi/2)],                      # Clifford 17
+    [(pi/2, 0.0), (3*pi/2, pi/2)],                      # Clifford 18
+    [(3*pi/2, pi/2), (pi/2, 0.0)],                      # Clifford 19
+    [(pi/2, pi/2), (3*pi/2, 0.0)],                      # Clifford 20
+    [(pi/2, 0.0), (pi, pi/2), (pi/2, 0.0)],             # Clifford 21
+    [(3*pi/2, 0.0), (pi, pi/2), (pi/2, 0.0)],           # Clifford 22
+    [(pi/2, 0.0), (pi, pi/2), (3*pi/2, 0.0)],           # Clifford 23
+]
+
 def clifford_gate_iqm(qubit, idx):
-    """Apply one of 24 single-qubit Clifford gates using prx.
-    The 24 Cliffords can be generated from {I, X, Y, Z, H, S} compositions.
-    We use a subset of prx combinations.
-    """
-    # Simplified: 24 Cliffords as prx sequences
-    # Each Clifford is (angle_t, phase_t) pairs
-    cliffords = [
-        [],                                                      # I
-        [(0.5, 0.0)],                                           # X
-        [(0.5, 0.25)],                                          # Y
-        [(0.5, 0.0), (0.5, 0.25)],                              # Z (= X.Y up to phase)
-        [(0.5, 0.0), (0.25, 0.25)],                             # H-like
-        [(0.25, 0.25)],                                         # sqrt(Y) = S-like
-        [(0.25, 0.0)],                                          # sqrt(X)
-        [(0.75, 0.0)],                                          # sqrt(X)†
-        [(0.75, 0.25)],                                         # sqrt(Y)†
-        [(0.25, 0.0), (0.25, 0.25)],                            # Clifford 9
-        [(0.25, 0.25), (0.25, 0.0)],                            # Clifford 10
-        [(0.5, 0.0), (0.25, 0.0)],                              # X.sqrt(X)
-        [(0.5, 0.25), (0.25, 0.0)],                             # Y.sqrt(X)
-        [(0.25, 0.0), (0.5, 0.25)],                             # sqrt(X).Y
-        [(0.5, 0.0), (0.25, 0.25)],                             # X.sqrt(Y)
-        [(0.25, 0.25), (0.5, 0.0)],                             # sqrt(Y).X
-        [(0.5, 0.25), (0.25, 0.25)],                            # Y.sqrt(Y)
-        [(0.75, 0.0), (0.25, 0.25)],                            # Clifford 17
-        [(0.25, 0.0), (0.75, 0.25)],                            # Clifford 18
-        [(0.75, 0.25), (0.25, 0.0)],                            # Clifford 19
-        [(0.25, 0.25), (0.75, 0.0)],                            # Clifford 20
-        [(0.25, 0.0), (0.5, 0.25), (0.25, 0.0)],               # Clifford 21
-        [(0.75, 0.0), (0.5, 0.25), (0.25, 0.0)],               # Clifford 22
-        [(0.25, 0.0), (0.5, 0.25), (0.75, 0.0)],               # Clifford 23
-    ]
-    gates = cliffords[idx % 24]
-    return [
-        Instruction(name="prx", qubits=[qubit], args={"angle_t": a, "phase_t": p})
-        for a, p in gates
-    ]
+    """Apply one of 24 single-qubit Clifford gates using prx."""
+    gates = CLIFFORDS[idx % 24]
+    return [prx(qubit, angle, phase) for angle, phase in gates]
 
-def rb_circuit_iqm(qubit, seq_length, seed=42):
-    """Generate an RB circuit: seq_length random Cliffords + inverse."""
+def rb_circuit_iqm(qubit, seq_length, seed_offset=0):
+    """Generate an RB circuit: seq_length random Cliffords + measurement.
+    Note: without computing the inverse Clifford, this measures depolarization
+    rate rather than true RB. Still useful for benchmarking."""
     import numpy as np
-    rng = np.random.RandomState(seed + seq_length)
+    rng = np.random.RandomState(42 + seq_length + seed_offset)
 
-    instructions = []
-    cliff_indices = []
+    ops = []
     for _ in range(seq_length):
         idx = rng.randint(0, 24)
-        cliff_indices.append(idx)
-        instructions += clifford_gate_iqm(qubit, idx)
+        ops += clifford_gate_iqm(qubit, idx)
 
-    # For a proper RB, we'd compute the inverse Clifford.
-    # Simplified: just apply identity (measure survival of |0⟩ after random walk)
-    # This still gives exponential decay for benchmarking purposes.
-    instructions += measure_all([qubit])
-    return Circuit(name=f"rb_len{seq_length}", instructions=instructions)
+    ops += measure_all([qubit])
+    return make_circuit(f"rb_len{seq_length}_s{seed_offset}", ops)
 
 
 # ── Submit and collect ──────────────────────────────────────────────────────
 
-def submit_and_wait(client, circuits, shots=SHOTS, timeout=300):
-    """Submit circuits and wait for results."""
+def submit_and_wait(client, circuits_dict, shots=SHOTS, timeout=300):
+    """Submit circuits one at a time and wait for results."""
     results = {}
-    for name, circuit in circuits.items():
+    for name, circuit in circuits_dict.items():
         print(f"  Submitting {name}...")
         try:
             job_id = client.submit_circuits([circuit], shots=shots)
             print(f"    Job: {job_id}")
 
-            # Poll for results
-            start = time.time()
-            while time.time() - start < timeout:
-                status = client.get_run_status(job_id)
-                if hasattr(status, 'value'):
-                    status_str = status.value
-                else:
-                    status_str = str(status)
+            result = client.wait_for_results(job_id, timeout_secs=timeout)
 
-                if "ready" in status_str.lower():
-                    result = client.wait_for_results(job_id, timeout_secs=60)
-                    # Extract counts
-                    measurements = result.measurements
-                    if measurements and len(measurements) > 0:
-                        # measurements is list of SingleCircuitResult
-                        m = measurements[0]
-                        counts = {}
-                        if hasattr(m, 'measurements') and 'm' in m.measurements:
-                            for shot_result in m.measurements['m']:
-                                bitstring = ''.join(str(b) for b in shot_result)
-                                counts[bitstring] = counts.get(bitstring, 0) + 1
-                        results[name] = {"job_id": str(job_id), "counts": counts}
-                    else:
-                        results[name] = {"job_id": str(job_id), "counts": {}}
-                    break
-                elif "failed" in status_str.lower() or "error" in status_str.lower():
-                    print(f"    FAILED: {status_str}")
-                    results[name] = {"job_id": str(job_id), "error": status_str}
-                    break
-                time.sleep(2)
+            # Check status
+            status_str = str(result.status) if hasattr(result, 'status') else "unknown"
+            print(f"    Status: {status_str}")
+
+            if "failed" in status_str.lower() or "error" in status_str.lower():
+                results[name] = {"job_id": str(job_id), "error": status_str}
+                if hasattr(result, 'message') and result.message:
+                    print(f"    Message: {result.message}")
+                    results[name]["message"] = result.message
+                continue
+
+            # Extract counts
+            counts = extract_counts(result)
+            if counts:
+                total = sum(counts.values())
+                print(f"    Got {total} shots, {len(counts)} unique bitstrings")
             else:
-                print(f"    TIMEOUT after {timeout}s")
-                results[name] = {"job_id": str(job_id), "error": "timeout"}
+                print(f"    Warning: no counts extracted")
+                # Debug: show what we got
+                print(f"    measurements type: {type(result.measurements)}")
+                if result.measurements:
+                    print(f"    measurements[0] type: {type(result.measurements[0])}")
+                    print(f"    measurements[0] keys: {list(result.measurements[0].keys()) if isinstance(result.measurements[0], dict) else 'not a dict'}")
+
+            results[name] = {"job_id": str(job_id), "counts": counts}
+
         except Exception as e:
             print(f"    ERROR: {e}")
+            import traceback
+            traceback.print_exc()
             results[name] = {"error": str(e)}
+
     return results
 
 
-def main():
-    token = os.environ.get("IQM_TOKEN")
-    if not token:
-        print("ERROR: IQM_TOKEN not set. Run: export IQM_TOKEN=$(secret-lover get IQM_API_KEY)")
-        return
+# ── Energy computation ──────────────────────────────────────────────────────
 
-    print(f"Connecting to IQM Garnet at {IQM_URL}...")
-    client = IQMClient(IQM_URL, token=token)
-    print("Connected.\n")
+def compute_energy(z_counts, x_counts, y_counts):
+    """Compute VQE energy from 3-basis measurement counts."""
+    zt = sum(z_counts.values())
+    Z0 = (z_counts.get("00",0) + z_counts.get("10",0) - z_counts.get("01",0) - z_counts.get("11",0)) / zt
+    Z1 = (z_counts.get("00",0) + z_counts.get("01",0) - z_counts.get("10",0) - z_counts.get("11",0)) / zt
+    Z0Z1 = (z_counts.get("00",0) + z_counts.get("11",0) - z_counts.get("01",0) - z_counts.get("10",0)) / zt
 
-    timestamp = datetime.now(timezone.utc).isoformat()
+    xt = sum(x_counts.values())
+    X0X1 = (x_counts.get("00",0) + x_counts.get("11",0) - x_counts.get("01",0) - x_counts.get("10",0)) / xt
 
-    # ── 1. VQE ──────────────────────────────────────────────────────────────
+    yt = sum(y_counts.values())
+    Y0Y1 = (y_counts.get("00",0) + y_counts.get("11",0) - y_counts.get("01",0) - y_counts.get("10",0)) / yt
+
+    energy = g0 + g1*Z0 + g2*Z1 + g3*Z0Z1 + g4*X0X1 + g5*Y0Y1
+    return energy, {"Z0": Z0, "Z1": Z1, "Z0Z1": Z0Z1, "X0X1": X0X1, "Y0Y1": Y0Y1}
+
+
+# ── Main ────────────────────────────────────────────────────────────────────
+
+def run_vqe(client, timestamp):
+    """Run VQE H2 experiment."""
     print("=" * 60)
     print("1. VQE H2 (3-basis measurement)")
+    print(f"   Qubits: {VQE_QUBITS}, theta={THETA}")
     print("=" * 60)
 
     vqe_circuits = {
@@ -312,85 +325,73 @@ def main():
 
     vqe_results = submit_and_wait(client, vqe_circuits)
 
-    # Compute energy
     z_counts = vqe_results.get("z_basis", {}).get("counts", {})
     x_counts = vqe_results.get("x_basis", {}).get("counts", {})
     y_counts = vqe_results.get("y_basis", {}).get("counts", {})
 
-    if z_counts and x_counts and y_counts:
-        zt = sum(z_counts.values())
-        Z0 = (z_counts.get("00",0) + z_counts.get("10",0) - z_counts.get("01",0) - z_counts.get("11",0)) / zt
-        Z1 = (z_counts.get("00",0) + z_counts.get("01",0) - z_counts.get("10",0) - z_counts.get("11",0)) / zt
-        Z0Z1 = (z_counts.get("00",0) + z_counts.get("11",0) - z_counts.get("01",0) - z_counts.get("10",0)) / zt
-
-        xt = sum(x_counts.values())
-        X0X1 = (x_counts.get("00",0) + x_counts.get("11",0) - x_counts.get("01",0) - x_counts.get("10",0)) / xt
-
-        yt = sum(y_counts.values())
-        Y0Y1 = (y_counts.get("00",0) + y_counts.get("11",0) - y_counts.get("01",0) - y_counts.get("10",0)) / yt
-
-        energy = g0 + g1*Z0 + g2*Z1 + g3*Z0Z1 + g4*X0X1 + g5*Y0Y1
-        error_ha = abs(energy - FCI)
-        error_kcal = error_ha * 627.509
-
-        print(f"\n  VQE Energy: {energy:.4f} Ha")
-        print(f"  FCI: {FCI} Ha")
-        print(f"  Error: {error_ha:.4f} Ha ({error_kcal:.2f} kcal/mol)")
-        print(f"  Chemical accuracy: {'YES' if error_kcal < 1.6 else 'NO'}")
-        print(f"  <Z0>={Z0:.4f}, <Z1>={Z1:.4f}, <Z0Z1>={Z0Z1:.4f}")
-        print(f"  <X0X1>={X0X1:.4f}, <Y0Y1>={Y0Y1:.4f}")
-
-        vqe_output = {
-            "schema_version": "1.0",
-            "id": "vqe-equilibrium-001-iqm-garnet",
-            "type": "vqe_h2",
-            "backend": "iqm-garnet",
-            "backend_provider": "IQM Resonance (Finland)",
-            "backend_qubits": VQE_QUBITS,
-            "submitted": timestamp,
-            "completed": datetime.now(timezone.utc).isoformat(),
-            "parameters": {
-                "shots": SHOTS,
-                "bond_distance": 0.735,
-                "alpha": ALPHA,
-                "qubits": VQE_QUBITS,
-            },
-            "job_ids": {k: v.get("job_id") for k, v in vqe_results.items()},
-            "raw_counts": {
-                "z_basis": z_counts,
-                "x_basis": x_counts,
-                "y_basis": y_counts,
-            },
-            "analysis": {
-                "energy_hartree": round(energy, 4),
-                "fci_energy": FCI,
-                "error_hartree": round(error_ha, 4),
-                "error_kcal_mol": round(error_kcal, 2),
-                "chemical_accuracy": error_kcal < 1.6,
-                "expectation_values": {
-                    "Z0": round(Z0, 5),
-                    "Z1": round(Z1, 5),
-                    "Z0Z1": round(Z0Z1, 5),
-                    "X0X1": round(X0X1, 5),
-                    "Y0Y1": round(Y0Y1, 5),
-                },
-                "hamiltonian_coefficients": {"g0": g0, "g1": g1, "g2": g2, "g3": g3, "g4": g4, "g5": g5},
-                "bond_distance_angstrom": 0.735,
-                "interpretation": f"VQE energy: {energy:.4f} Ha (FCI: {FCI} Ha). Error: {error_kcal:.2f} kcal/mol on IQM Garnet.",
-            },
-            "environment": "experiments/environment.json",
-        }
-        with open(RESULTS_DIR / "vqe-equilibrium-001-iqm-garnet.json", "w") as f:
-            json.dump(vqe_output, f, indent=2)
-            f.write("\n")
-        print("  Saved to experiments/results/vqe-equilibrium-001-iqm-garnet.json")
-    else:
+    if not (z_counts and x_counts and y_counts):
         print("  VQE FAILED — missing counts")
-        print(f"  Results: {vqe_results}")
+        print(f"  Results: {json.dumps(vqe_results, indent=2, default=str)}")
+        return
 
-    # ── 2. QV ───────────────────────────────────────────────────────────────
+    energy, evs = compute_energy(z_counts, x_counts, y_counts)
+    error_ha = abs(energy - FCI)
+    error_kcal = error_ha * 627.509
+
+    print(f"\n  VQE Energy: {energy:.4f} Ha")
+    print(f"  FCI: {FCI} Ha")
+    print(f"  Error: {error_ha:.4f} Ha ({error_kcal:.2f} kcal/mol)")
+    print(f"  Chemical accuracy: {'YES' if error_kcal < 1.6 else 'NO'}")
+    for k, v in evs.items():
+        print(f"  <{k}> = {v:.4f}")
+
+    output = {
+        "schema_version": "1.0",
+        "id": "vqe-equilibrium-001-iqm-garnet",
+        "type": "vqe_h2",
+        "backend": "iqm-garnet",
+        "backend_provider": "IQM Resonance (Finland)",
+        "hardware": "20q superconducting transmon (Garnet)",
+        "qubits_used": VQE_QUBITS,
+        "submitted": timestamp,
+        "completed": datetime.now(timezone.utc).isoformat(),
+        "parameters": {
+            "shots": SHOTS,
+            "bond_distance": 0.735,
+            "theta": THETA,
+            "qubits": VQE_QUBITS,
+            "ansatz": "X(q1) Ry(theta,q0) CNOT(q0,q1)",
+        },
+        "job_ids": {k: str(v.get("job_id", "")) for k, v in vqe_results.items()},
+        "raw_counts": {
+            "z_basis": z_counts,
+            "x_basis": x_counts,
+            "y_basis": y_counts,
+        },
+        "analysis": {
+            "energy_hartree": round(energy, 4),
+            "fci_energy": FCI,
+            "error_hartree": round(error_ha, 4),
+            "error_kcal_mol": round(error_kcal, 2),
+            "chemical_accuracy": error_kcal < 1.6,
+            "expectation_values": {k: round(v, 5) for k, v in evs.items()},
+            "hamiltonian_coefficients": {"g0": g0, "g1": g1, "g2": g2, "g3": g3, "g4": g4, "g5": g5},
+            "bond_distance_angstrom": 0.735,
+        },
+        "environment": "experiments/environment.json",
+    }
+
+    outpath = RESULTS_DIR / "vqe-equilibrium-001-iqm-garnet.json"
+    with open(outpath, "w") as f:
+        json.dump(output, f, indent=2)
+        f.write("\n")
+    print(f"  Saved to {outpath}")
+
+
+def run_qv(client, timestamp):
+    """Run Quantum Volume experiment (n=2, n=3)."""
     print("\n" + "=" * 60)
-    print("2. Quantum Volume (n=2, n=3)")
+    print("2. Quantum Volume (n=2 on QB1-QB2, n=3 on QB1-QB2-QB3)")
     print("=" * 60)
 
     qv_circuits = {}
@@ -401,71 +402,122 @@ def main():
 
     qv_results = submit_and_wait(client, qv_circuits)
 
-    qv_output = {
+    output = {
         "schema_version": "1.0",
         "id": "cross2019-qv-iqm-garnet",
         "type": "quantum_volume",
         "backend": "iqm-garnet",
         "backend_provider": "IQM Resonance (Finland)",
-        "backend_qubits": QV_QUBITS_3,
+        "hardware": "20q superconducting transmon (Garnet)",
+        "qubits_used": QV_QUBITS_3,
         "submitted": timestamp,
         "completed": datetime.now(timezone.utc).isoformat(),
         "parameters": {"shots": SHOTS, "qubit_counts": [2, 3], "num_circuits": 5, "seed": 123},
         "raw_counts": {k: v.get("counts", {}) for k, v in qv_results.items()},
-        "job_ids": {k: v.get("job_id") for k, v in qv_results.items()},
-        "analysis": {"note": "HOF analysis requires emulator simulation — run variance_analysis.py to compute"},
+        "job_ids": {k: str(v.get("job_id", "")) for k, v in qv_results.items()},
+        "analysis": {"note": "HOF analysis requires ideal simulation to determine heavy output set"},
         "environment": "experiments/environment.json",
     }
-    with open(RESULTS_DIR / "cross2019-qv-iqm-garnet.json", "w") as f:
-        json.dump(qv_output, f, indent=2)
-        f.write("\n")
-    print("  Saved QV results")
 
-    # ── 3. RB ───────────────────────────────────────────────────────────────
+    outpath = RESULTS_DIR / "cross2019-qv-iqm-garnet.json"
+    with open(outpath, "w") as f:
+        json.dump(output, f, indent=2)
+        f.write("\n")
+    print(f"  Saved QV results to {outpath}")
+
+
+def run_rb(client, timestamp):
+    """Run Randomized Benchmarking on QB1."""
     print("\n" + "=" * 60)
-    print("3. Randomized Benchmarking (QB1)")
+    print(f"3. Randomized Benchmarking ({RB_QUBIT})")
     print("=" * 60)
 
-    seq_lengths = [1, 2, 4, 8, 16, 32]
+    seq_lengths = [1, 4, 8, 16, 32]
+    n_seeds = 5
+
     rb_circuits = {}
     for length in seq_lengths:
-        rb_circuits[f"rb_len{length}"] = rb_circuit_iqm(RB_QUBIT[0], length)
+        for seed_offset in range(n_seeds):
+            rb_circuits[f"rb_m{length}_s{seed_offset}"] = rb_circuit_iqm(
+                RB_QUBIT, length, seed_offset=seed_offset
+            )
 
     rb_results = submit_and_wait(client, rb_circuits)
 
     # Compute survival probabilities
-    survival = {}
+    survival_data = {}
     for length in seq_lengths:
-        key = f"rb_len{length}"
-        counts = rb_results.get(key, {}).get("counts", {})
-        total = sum(counts.values()) if counts else 0
-        p0 = counts.get("0", 0) / total if total > 0 else 0
-        survival[str(length)] = round(p0, 4)
-        print(f"  Length {length}: P(0) = {p0:.4f} ({counts})")
+        survivals = []
+        for s in range(n_seeds):
+            key = f"rb_m{length}_s{s}"
+            counts = rb_results.get(key, {}).get("counts", {})
+            total = sum(counts.values()) if counts else 0
+            p0 = counts.get("0", 0) / total if total > 0 else 0
+            survivals.append(round(p0, 4))
+        mean_surv = sum(survivals) / len(survivals) if survivals else 0
+        survival_data[str(length)] = {
+            "mean_survival": round(mean_surv, 4),
+            "per_seed": survivals,
+        }
+        print(f"  Length {length}: P(0) = {mean_surv:.4f} ({survivals})")
 
-    rb_output = {
+    output = {
         "schema_version": "1.0",
         "id": "cross2019-rb-iqm-garnet",
         "type": "rb_1qubit",
         "backend": "iqm-garnet",
         "backend_provider": "IQM Resonance (Finland)",
-        "backend_qubits": RB_QUBIT,
+        "hardware": "20q superconducting transmon (Garnet)",
+        "qubits_used": [RB_QUBIT],
         "submitted": timestamp,
         "completed": datetime.now(timezone.utc).isoformat(),
-        "parameters": {"shots": SHOTS, "sequence_lengths": seq_lengths, "qubit": RB_QUBIT[0]},
-        "raw_counts": {k: v.get("counts", {}) for k, v in rb_results.items()},
-        "job_ids": {k: v.get("job_id") for k, v in rb_results.items()},
-        "analysis": {
-            "survival_probabilities": survival,
+        "parameters": {
+            "shots": SHOTS,
             "sequence_lengths": seq_lengths,
-            "interpretation": "Single-qubit RB on IQM Garnet QB1. Survival probability vs sequence length.",
+            "n_seeds": n_seeds,
+            "qubit": RB_QUBIT,
+        },
+        "raw_counts": {k: v.get("counts", {}) for k, v in rb_results.items()},
+        "job_ids": {k: str(v.get("job_id", "")) for k, v in rb_results.items()},
+        "analysis": {
+            "survival_probabilities": survival_data,
+            "sequence_lengths": seq_lengths,
         },
         "environment": "experiments/environment.json",
     }
-    with open(RESULTS_DIR / "cross2019-rb-iqm-garnet.json", "w") as f:
-        json.dump(rb_output, f, indent=2)
+
+    outpath = RESULTS_DIR / "cross2019-rb-iqm-garnet.json"
+    with open(outpath, "w") as f:
+        json.dump(output, f, indent=2)
         f.write("\n")
-    print("  Saved RB results")
+    print(f"  Saved RB results to {outpath}")
+
+
+def main():
+    # Check for IQM token (iqm-client reads IQM_TOKEN env var automatically)
+    if not os.environ.get("IQM_TOKEN"):
+        print("ERROR: IQM_TOKEN not set.")
+        print("Run: export IQM_TOKEN=$(secret-lover get IQM_API_KEY)")
+        sys.exit(1)
+
+    # Select experiments
+    experiments = sys.argv[1:] if len(sys.argv) > 1 else ["vqe", "qv", "rb"]
+    print(f"IQM Garnet experiments: {experiments}")
+    print(f"URL: {IQM_URL}")
+    print(f"Shots: {SHOTS}\n")
+
+    # Don't pass token= arg; iqm-client reads IQM_TOKEN env var
+    client = IQMClient(IQM_URL)
+    print("Connected to IQM Garnet.\n")
+
+    timestamp = datetime.now(timezone.utc).isoformat()
+
+    if "vqe" in experiments:
+        run_vqe(client, timestamp)
+    if "qv" in experiments:
+        run_qv(client, timestamp)
+    if "rb" in experiments:
+        run_rb(client, timestamp)
 
     print("\n" + "=" * 60)
     print("ALL DONE")

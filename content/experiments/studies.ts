@@ -18,7 +18,7 @@ export const studies: ExperimentStudy[] = [
     type: 'bell_calibration',
     title: 'Bell State Calibration',
     subtitle: 'The simplest test of quantum entanglement across three platforms',
-    abstract: 'We prepare the simplest entangled quantum state -- a Bell pair -- on three different quantum processors and compare how faithfully each one creates it. The emulator is perfect, IBM Marrakesh hits 99%, and Tuna-9 reaches 87%, revealing how noise varies across platforms.',
+    abstract: 'We prepare the simplest entangled quantum state -- a Bell pair -- on four different quantum processors and compare how faithfully each one creates it. The emulator is perfect, IBM Torino hits 99%, IQM Garnet reaches 97.3%, and Tuna-9 ranges from 85-93% depending on qubit pair.',
     status: 'complete',
     researchQuestion:
       'How faithfully can current quantum processors prepare a maximally entangled two-qubit Bell state, and how does noise manifest differently across hardware architectures?',
@@ -109,7 +109,7 @@ export const studies: ExperimentStudy[] = [
     type: 'vqe_h2',
     title: 'H\u2082 Ground State Energy via VQE',
     subtitle: 'Variational quantum chemistry on 2 qubits -- from simulation to hardware',
-    abstract: 'We calculate the ground state energy of a hydrogen molecule using a hybrid quantum-classical algorithm on two qubits. The emulator nails chemical accuracy across the full dissociation curve; real hardware shows how noise pushes energies away from the exact answer.',
+    abstract: 'We calculate the ground state energy of a hydrogen molecule using a hybrid quantum-classical algorithm on two qubits. The emulator nails chemical accuracy across 6 bond distances; Tuna-9 hardware shows 4-17 kcal/mol error that grows at larger bond distances where more entanglement is needed.',
     status: 'complete',
     researchQuestion:
       'Can a 2-qubit variational quantum eigensolver (VQE) calculate the ground state energy of molecular hydrogen within chemical accuracy (1.6 milliHartree), and how does hardware noise affect the result?',
@@ -207,8 +207,8 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
     type: 'rb_1qubit',
     title: 'Randomized Benchmarking',
     subtitle: 'Measuring single-qubit gate fidelity through random Clifford sequences',
-    abstract: 'Randomized benchmarking measures how quickly quantum gate errors accumulate by running random sequences of increasing length. On the emulator, gate fidelity is effectively perfect -- hardware runs will reveal the actual error rate per gate.',
-    status: 'simulation',
+    abstract: 'Randomized benchmarking measures how quickly quantum gate errors accumulate by running random sequences of increasing length. Tuna-9 achieves 99.82% gate fidelity, IBM Torino shows 99.99% (inflated by transpiler optimization), and the emulator is effectively perfect.',
+    status: 'complete',
     researchQuestion:
       'What is the average error per single-qubit Clifford gate, and how does survival probability decay with circuit depth?',
     priorWork: `
@@ -217,14 +217,18 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
 <p>The survival probability decays exponentially with sequence length m as p(m) = A &middot; r^m + B, where r is the depolarizing parameter. The average error per Clifford gate is (1 - r)(1 - 1/d)/d for dimension d = 2^n.</p>
 `,
     method: `
-<p>We run sequences of random single-qubit Clifford gates (from the 24-element Clifford group) at lengths m = 1, 4, 8, 16, 32, followed by the inverse gate to ideally return to |0&rang;. The survival probability at each length is the fraction of shots returning |0&rang;.</p>
+<p>We run sequences of random single-qubit Clifford gates (from the 24-element Clifford group) at lengths m = 1, 4, 8, 16, 32, with 5 random seeds at each length (25 circuits total per backend). The survival probability at each length is the fraction of shots returning |0&rang;.</p>
 
-<p>Currently emulator-only. Hardware runs planned for Tuna-9 and IBM backends.</p>
+<p><strong>Backends tested:</strong> QI emulator (qxelarator), QI Tuna-9 (qubit 2), IBM ibm_torino. 4096 shots per circuit.</p>
 `,
     discussion: `
-<p>On the emulator, gate fidelity is effectively perfect (100%) and the survival probability shows no decay -- as expected for noiseless simulation. This validates the circuit construction and analysis pipeline.</p>
+<p><strong>Tuna-9 (99.82% gate fidelity, 0.18% error per gate):</strong> The survival probability decays cleanly from ~97% at m=1 to ~88% at m=32, showing genuine gate error accumulation. The exponential fit gives a depolarizing parameter p=0.9964, consistent with the error rates of superconducting transmon qubits. This is the most reliable RB result across our platforms.</p>
 
-<p>Hardware results will reveal the actual single-qubit gate error rate, which is the most fundamental metric for characterizing a quantum processor. We expect IBM's processors to show error rates around 10^-4 to 10^-3 per gate.</p>
+<p><strong>IBM Torino (99.99% gate fidelity):</strong> Surprisingly, survival probability is ~90% flat across ALL sequence lengths (m=1 through m=32). This means the IBM transpiler is collapsing random Clifford sequences into depth-1 or depth-2 circuits, so we are measuring readout error (~10%) rather than gate error. The "99.99%" figure is inflated and should not be compared directly with Tuna-9's honest 99.82%.</p>
+
+<p><strong>Emulator (100%):</strong> Perfect gate fidelity as expected for noiseless simulation. Validates the protocol.</p>
+
+<p>Key insight: IBM's aggressive transpilation is good for running algorithms (shorter circuits = less error) but makes RB misleading. To measure true IBM gate fidelity, one would need to disable optimization or use interleaved RB.</p>
 `,
     sources: [
       { label: 'Magesan et al. "Scalable and robust randomized benchmarking" (2011)', url: 'https://doi.org/10.1103/PhysRevLett.106.180504' },
@@ -267,8 +271,8 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
     type: 'quantum_volume',
     title: 'Quantum Volume',
     subtitle: 'A holistic benchmark for quantum processor capability',
-    abstract: 'Quantum volume is a single-number benchmark for overall processor capability. Our emulator passes at all tested sizes (QV 8), establishing the protocol for hardware comparisons.',
-    status: 'simulation',
+    abstract: 'Quantum volume is a single-number benchmark for overall processor capability. All three platforms achieve QV=8: the emulator, IBM Torino, and Tuna-9 all pass the 2/3 heavy output threshold at n=2 and n=3 qubits.',
+    status: 'complete',
     researchQuestion:
       'What quantum volume does the emulator achieve, and what does this metric reveal about the interplay between qubit count, gate fidelity, and connectivity?',
     priorWork: `
@@ -279,14 +283,21 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
 <p>Current leading quantum volumes: IBM (QV 128-512), Quantinuum (QV 2^20 on ion traps).</p>
 `,
     method: `
-<p>We run the standard QV protocol with random SU(4) unitaries at qubit counts n = 2, 3, 4. For each n, we generate random circuits, compute the ideal heavy output set, and measure the heavy output fraction across 1024 shots.</p>
+<p>We run the standard QV protocol with random SU(4) unitaries at qubit counts n = 2 and n = 3. For each n, we generate 5 random circuits, compute the ideal heavy output set via simulation, and measure the heavy output fraction (HOF) across 1024-4096 shots per circuit. QV = 2^n if mean HOF &gt; 2/3.</p>
 
-<p>Currently emulator-only. The emulator should achieve the maximum possible QV given its qubit count.</p>
+<p><strong>Backends tested:</strong> QI emulator, QI Tuna-9 (optimally-routed qubits), IBM ibm_torino. Variance measured via repeated runs on Tuna-9.</p>
 `,
     discussion: `
-<p>On the noiseless emulator, the heavy output fraction is well above the 2/3 threshold at all tested qubit counts, as expected. This validates the QV measurement protocol.</p>
+<p><strong>All three platforms pass QV=8 (n=2 and n=3):</strong></p>
+<ul>
+<li><strong>Emulator:</strong> HOF well above threshold at all sizes (validates protocol)</li>
+<li><strong>IBM Torino:</strong> n=2 HOF=69.7%, n=3 HOF=81.0% (both pass)</li>
+<li><strong>Tuna-9:</strong> n=2 HOF=69.2%, n=3 HOF=82.1% (both pass). Re-run: n=2=71.1%, n=3=81.2% (stable)</li>
+</ul>
 
-<p>Hardware QV measurements will be a key benchmark for comparing Tuna-9 and IBM backends on equal footing. The QV metric is particularly useful because it doesn't depend on a specific application -- it measures raw computational power.</p>
+<p><strong>Key finding on variance:</strong> Tuna-9 QV results are threshold-stable across runs (HOF varies by ~2pp but stays above 2/3). This is important -- it means QV=8 is a reliable characterization, not a lucky fluctuation. IBM also passes consistently.</p>
+
+<p>QV=8 is modest by current standards (IBM Eagle achieves QV 128+, Quantinuum reaches QV 2^20 on ion traps), but it represents the first QV measurement on the QI Tuna-9 platform and validates that the device can run structured random circuits correctly.</p>
 `,
     sources: [
       { label: 'Cross et al. "Validating quantum computers using randomized model circuits" (2019)', url: 'https://doi.org/10.1103/PhysRevA.100.032328' },
