@@ -100,3 +100,50 @@ export const typeColors: Record<string, string> = {
   qaoa_maxcut: '#ff6b9d',
   quantum_volume: '#14b8a6',
 }
+
+// ---------------------------------------------------------------------------
+// VQE Sweep Data (bond-distance scan)
+// ---------------------------------------------------------------------------
+
+export interface SweepPoint {
+  bond_distance: number
+  energy_measured: number
+  energy_exact: number
+  fci_energy: number
+  hf_energy: number
+  error_kcal: number
+  alpha: number
+  shots: number
+  raw_counts?: Record<string, any>
+  coefficients?: Record<string, number>
+}
+
+export interface SweepReference {
+  bond_distance: number
+  fci_energy: number
+  hf_energy: number
+  vqe_optimal_energy: number
+  theta_optimal: number
+  error_vs_fci_kcal: number
+  coefficients: Record<string, number>
+}
+
+export function getSweepEmulator(): SweepPoint[] {
+  const file = path.join(RESULTS_DIR, 'vqe-h2-sweep-emulator.json')
+  if (!fs.existsSync(file)) return []
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf-8'))
+  } catch {
+    return []
+  }
+}
+
+export function getSweepReference(): SweepReference[] {
+  const file = path.join(RESULTS_DIR, 'vqe-h2-sweep-reference.json')
+  if (!fs.existsSync(file)) return []
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf-8'))
+  } catch {
+    return []
+  }
+}

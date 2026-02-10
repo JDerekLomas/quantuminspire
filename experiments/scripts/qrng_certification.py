@@ -178,6 +178,18 @@ def bytes_to_bits(data: bytes) -> np.ndarray:
     return bits
 
 
+def shuffle_histogram_bytes(data: bytes) -> bytes:
+    """Shuffle bytes to remove artificial correlations from histogram expansion.
+
+    When we expand {'10101010': 500} into 500 identical bytes placed
+    consecutively, we create fake runs/correlations. Each byte was an
+    independent measurement — shuffling restores that independence.
+    """
+    arr = np.frombuffer(data, dtype=np.uint8).copy()
+    np.random.shuffle(arr)
+    return bytes(arr)
+
+
 def von_neumann_debias(bits: np.ndarray) -> np.ndarray:
     """Von Neumann debiasing: take pairs, output 0 for 01, 1 for 10, discard 00/11.
 
@@ -524,6 +536,7 @@ def main():
             tuna_bytes = fetch_tuna9_bytes(tuna_n_bytes)
             elapsed = round(time.time() - t0, 2)
             print(f"  Done in {elapsed}s\n")
+            tuna_bytes = shuffle_histogram_bytes(tuna_bytes)
             tuna_raw_bits = bytes_to_bits(tuna_bytes)
 
             results["tuna9_raw"] = _run_and_report("QI Tuna-9 (raw)", tuna_raw_bits, {
@@ -559,7 +572,7 @@ def main():
     # --- Source 4: Local emulator ---
     print("[4/4] Fetching from qxelarator (local quantum emulator)...")
     t0 = time.time()
-    emu_bytes = fetch_emulator_bytes(n_bytes)
+    emu_bytes = shuffle_histogram_bytes(fetch_emulator_bytes(n_bytes))
     elapsed = round(time.time() - t0, 2)
     print(f"  Done in {elapsed}s\n")
     bits = bytes_to_bits(emu_bytes)

@@ -127,94 +127,82 @@ def generate_ghz_circuit(params):
     return "\n".join(lines)
 
 
-def generate_vqe_z_circuit(params):
-    """Generate VQE circuit with Z-basis measurement.
+def _vqe_ansatz_block(params):
+    """Return the subspace-preserving VQE ansatz lines.
 
-    Uses a simplified 2-qubit ansatz decomposition of the DoubleExcitation
-    gate, mapped to cQASM 3.0 native gates.
+    Circuit: Ry(alpha) q[0], CNOT q[0]q[1], X q[0]
+    Creates state: cos(alpha/2)|10> + sin(alpha/2)|01>
+    This stays exactly in {|01>, |10>} with zero leakage into |00>/|11>.
+
+    Accepts either 'alpha' (preferred) or legacy 'theta' parameter.
+    For equilibrium H2 (R=0.735A), optimal alpha ~ -0.2235.
     """
-    theta = params.get("theta", 0.1118)
+    alpha = params.get("alpha", params.get("theta", -0.2235))
     qubits = params.get("qubits", [0, 1])
     q = qubits
+    lines = [
+        f"// Subspace-preserving ansatz: Ry-CNOT-X",
+        f"// State = cos(a/2)|10> + sin(a/2)|01>, alpha={alpha:.6f}",
+        f"Ry({alpha:.6f}) q[{q[0]}]",
+        f"CNOT q[{q[0]}], q[{q[1]}]",
+        f"X q[{q[0]}]",
+    ]
+    return q, lines
 
-    # 2-qubit Ry ansatz for H2 (JW sector-projected)
-    # HF state: |01> (q0=1, maps to bonding orbital occupied)
-    # Ansatz: CNOT-Ry-CNOT rotation in the {|01>, |10>} subspace
-    return f"""version 3.0
-qubit[{max(q) + 1}] q
-bit[{max(q) + 1}] b
 
-// Prepare HF state |01>
-X q[{q[0]}]
-
-// Ry ansatz: excitation rotation in {{|01>, |10>}} subspace
-CNOT q[{q[0]}], q[{q[1]}]
-Ry({theta:.6f}) q[{q[0]}]
-CNOT q[{q[1]}], q[{q[0]}]
-Ry({-theta:.6f}) q[{q[0]}]
-CNOT q[{q[1]}], q[{q[0]}]
-CNOT q[{q[0]}], q[{q[1]}]
-
-// Z-basis measurement
-b = measure q"""
+def generate_vqe_z_circuit(params):
+    """Generate VQE circuit with Z-basis measurement."""
+    q, ansatz = _vqe_ansatz_block(params)
+    header = [
+        "version 3.0",
+        f"qubit[{max(q) + 1}] q",
+        f"bit[{max(q) + 1}] b",
+        "",
+    ]
+    footer = ["", "// Z-basis measurement", "b = measure q"]
+    return "\n".join(header + ansatz + footer)
 
 
 def generate_vqe_x_circuit(params):
     """VQE circuit with X-basis measurement (H rotation before measure)."""
-    theta = params.get("theta", 0.1118)
-    qubits = params.get("qubits", [0, 1])
-    q = qubits
-
-    return f"""version 3.0
-qubit[{max(q) + 1}] q
-bit[{max(q) + 1}] b
-
-// Prepare HF state |01>
-X q[{q[0]}]
-
-// Ry ansatz
-CNOT q[{q[0]}], q[{q[1]}]
-Ry({theta:.6f}) q[{q[0]}]
-CNOT q[{q[1]}], q[{q[0]}]
-Ry({-theta:.6f}) q[{q[0]}]
-CNOT q[{q[1]}], q[{q[0]}]
-CNOT q[{q[0]}], q[{q[1]}]
-
-// Rotate to X-basis
-H q[{q[0]}]
-H q[{q[1]}]
-
-b = measure q"""
+    q, ansatz = _vqe_ansatz_block(params)
+    header = [
+        "version 3.0",
+        f"qubit[{max(q) + 1}] q",
+        f"bit[{max(q) + 1}] b",
+        "",
+    ]
+    footer = [
+        "",
+        "// Rotate to X-basis",
+        f"H q[{q[0]}]",
+        f"H q[{q[1]}]",
+        "",
+        "b = measure q",
+    ]
+    return "\n".join(header + ansatz + footer)
 
 
 def generate_vqe_y_circuit(params):
     """VQE circuit with Y-basis measurement (Sdg+H rotation before measure)."""
-    theta = params.get("theta", 0.1118)
-    qubits = params.get("qubits", [0, 1])
-    q = qubits
-
-    return f"""version 3.0
-qubit[{max(q) + 1}] q
-bit[{max(q) + 1}] b
-
-// Prepare HF state |01>
-X q[{q[0]}]
-
-// Ry ansatz
-CNOT q[{q[0]}], q[{q[1]}]
-Ry({theta:.6f}) q[{q[0]}]
-CNOT q[{q[1]}], q[{q[0]}]
-Ry({-theta:.6f}) q[{q[0]}]
-CNOT q[{q[1]}], q[{q[0]}]
-CNOT q[{q[0]}], q[{q[1]}]
-
-// Rotate to Y-basis (Sdg then H)
-Sdag q[{q[0]}]
-H q[{q[0]}]
-Sdag q[{q[1]}]
-H q[{q[1]}]
-
-b = measure q"""
+    q, ansatz = _vqe_ansatz_block(params)
+    header = [
+        "version 3.0",
+        f"qubit[{max(q) + 1}] q",
+        f"bit[{max(q) + 1}] b",
+        "",
+    ]
+    footer = [
+        "",
+        "// Rotate to Y-basis (Sdg then H)",
+        f"Sdag q[{q[0]}]",
+        f"H q[{q[0]}]",
+        f"Sdag q[{q[1]}]",
+        f"H q[{q[1]}]",
+        "",
+        "b = measure q",
+    ]
+    return "\n".join(header + ansatz + footer)
 
 
 # ─── Randomized Benchmarking (1-qubit) ────────────────────────────────────
@@ -1317,7 +1305,7 @@ def create_seed_experiments():
             "parameters": {
                 "shots": 4096,
                 "bond_distance": 0.735,
-                "theta": 0.1118,
+                "alpha": -0.2235,
                 "qubits": [0, 1],
             },
             "priority": 3,

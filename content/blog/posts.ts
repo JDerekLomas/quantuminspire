@@ -488,16 +488,16 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
     ],
   },
   {
-    slug: 'ai-meets-quantum-papers',
-    title: 'AI Meets Quantum: The Papers Reshaping the Field',
-    subtitle: 'From neural QEC decoders to autonomous quantum agents, AI is becoming quantum computing\'s missing ingredient',
+    slug: 'ai-meets-quantum',
+    title: 'AI Meets Quantum Computing: The Papers That Matter',
+    subtitle: 'Neural decoders, autonomous quantum agents, and AI circuit optimizers \u2014 a researcher\'s guide to the intersection',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'landscape',
-    tags: ['AlphaQubit', 'QUASAR', 'QEC', 'AI agents', 'circuit optimization', 'papers'],
+    tags: ['AlphaQubit', 'QUASAR', 'QEC', 'AI agents', 'circuit optimization', 'hardware', 'quantum advantage'],
     heroImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80',
-    heroCaption: 'AI and quantum computing are converging — and the research papers tell the story.',
-    excerpt: 'A survey of the most important papers at the intersection of AI and quantum computing: neural decoders that outperform classical algorithms, agents that write quantum code, and ML systems that optimize circuits for real hardware.',
+    heroCaption: 'AI and quantum computing are converging \u2014 and the research papers tell the story.',
+    excerpt: 'Neural decoders, autonomous quantum agents, and AI circuit optimizers: a researcher\'s guide to the most important papers and results at the intersection of AI and quantum computing.',
     content: `
 <p>The intersection of AI and quantum computing is no longer speculative. A wave of papers from 2024-2026 demonstrates concrete, measurable results: AI systems that decode quantum errors faster than classical algorithms, write valid quantum circuits from natural-language descriptions, and optimize experiments on real hardware. Here's our guide to the papers that matter.</p>
 
@@ -799,7 +799,7 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 
 <p>This is a closed-loop system: AI designs the experiment, robots execute it, results flow back to the AI, which designs the next round. No human in the loop for the experimental design. Ginkgo is already selling the optimized reaction mix through their reagents store.</p>
 
-<p>For quantum computing, this is a preview. Quantum experiments are even more amenable to automation — the entire workflow is digital. Our own <a href="/blog/autonomous-research-agents">agent infrastructure</a> is a rudimentary version of what Ginkgo built, but for quantum circuits instead of protein synthesis.</p>
+<p>For quantum computing, this is a preview. Quantum experiments are even more amenable to automation — the entire workflow is digital. Our own agent infrastructure is a rudimentary version of what Ginkgo built, but for quantum circuits instead of protein synthesis.</p>
 
 <h2>The Tools: OpenAI Prism and the Platform War</h2>
 
@@ -839,7 +839,7 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 
 <h2>Andrew White and the "Scientific Taste" Problem</h2>
 
-<p>Andrew White — computational chemist at the University of Washington who created ChemCrow (the first chemistry LLM agent, which triggered a <em>White House briefing</em> on AI biosecurity), co-founder of <strong>Future House</strong> and <strong>Edison Scientific</strong> — addressed this problem directly on the <a href="https://www.latent.space/p/automating-science-world-models-scientific">Latent Space podcast</a>.</p>
+<p>Andrew White — computational chemist at the University of Washington who led the ChemCrow project (the first chemistry LLM agent, which triggered a <em>White House briefing</em> on AI biosecurity), co-founder of <strong>Future House</strong> and <strong>Edison Scientific</strong> — addressed this problem directly on the <a href="https://www.latent.space/p/automating-science-world-models-scientific">Latent Space podcast</a>.</p>
 
 <p>His autonomous research system <strong>Kosmos</strong> runs up to 12 hours per session, performing ~200 agent rollouts, executing ~42,000 lines of code, and reading ~1,500 papers per run. Independent scientists found 79.4% of statements in Kosmos reports to be accurate. Collaborators reported a single 20-cycle run performed the equivalent of 6 months of their own research.</p>
 
@@ -1037,7 +1037,7 @@ b = measure q"""
 
 <h2>How This Connects to the AI x Quantum Thesis</h2>
 
-<p>Our <a href="/blog/autonomous-research-agents">agent architecture</a> is designed around a core insight: quantum computing experiments are <em>inherently digital</em>. Unlike chemistry or biology, there's no wet lab — you design a circuit, submit it through an API, and get measurement data back. This makes quantum computing uniquely suited to AI-driven research.</p>
+<p>Our agent architecture is designed around a core insight: quantum computing experiments are <em>inherently digital</em>. Unlike chemistry or biology, there's no wet lab — you design a circuit, submit it through an API, and get measurement data back. This makes quantum computing uniquely suited to AI-driven research.</p>
 
 <p>The MCP servers are the bridge between AI capability and quantum hardware access. They transform Claude from a code-writing assistant into a <strong>quantum experimentalist</strong> — one that can run experiments 24/7, systematically explore parameter spaces, and never forget a result.</p>
 
@@ -1051,7 +1051,7 @@ b = measure q"""
 <li>Repeat</li>
 </ol>
 
-<p>This is the same pattern as <a href="/blog/methods-of-ai-science">self-driving laboratories</a> in chemistry and biology — but quantum computing can move faster because the entire workflow is software.</p>
+<p>This is the same pattern as self-driving laboratories in chemistry and biology — but quantum computing can move faster because the entire workflow is software.</p>
 
 <h2>Technical Details</h2>
 
