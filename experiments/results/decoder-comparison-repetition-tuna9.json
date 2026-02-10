@@ -1,0 +1,41 @@
+{
+  "dataset": "repetition-code-001-tuna9",
+  "backend": "tuna-9",
+  "n_samples": 20480,
+  "n_classes": 5,
+  "class_distribution": {
+    "error_d0": 4096,
+    "error_d1": 4096,
+    "error_d2": 4096,
+    "logical_1": 4096,
+    "no_error": 4096
+  },
+  "features": [
+    "d0",
+    "d1",
+    "d2",
+    "s0",
+    "s1"
+  ],
+  "nn_cv_accuracy": 0.9763,
+  "nn_cv_std": 0.0029,
+  "lookup_cv_accuracy": 0.9311,
+  "lookup_cv_std": 0.0023,
+  "nn_improvement_over_lookup": 0.0452,
+  "nn_full_accuracy": 0.9763,
+  "lookup_full_accuracy": 0.9311,
+  "per_class_nn": {
+    "error_d0": 0.9805,
+    "error_d1": 0.9709,
+    "error_d2": 0.9878,
+    "logical_1": 0.988,
+    "no_error": 0.9543
+  },
+  "per_class_lookup": {
+    "error_d0": 0.9434,
+    "error_d1": 0.8999,
+    "error_d2": 0.9463,
+    "logical_1": 0.9033,
+    "no_error": 0.9626
+  }
+}
