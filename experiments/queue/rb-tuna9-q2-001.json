@@ -1,0 +1,17 @@
+{
+  "id": "rb-tuna9-q2-001",
+  "type": "rb_1qubit",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T20:00:00Z",
+  "parameters": {
+    "qubit": 2,
+    "sequence_lengths": [1, 2, 4, 8, 16, 32],
+    "num_sequences": 5,
+    "seed": 42,
+    "shots": 1024
+  },
+  "priority": 2,
+  "research_question": "What is the single-qubit gate fidelity of Tuna-9's best qubit (q2, 1.6% readout error)? Does low readout error predict low gate error? This establishes a per-qubit noise baseline for interpreting all other experiments.",
+  "description": "Randomized benchmarking on qubit 2 (best readout). 6 sequence lengths x 5 seeds = 30 circuits. Extracts average gate error rate via exponential decay fit."
+}

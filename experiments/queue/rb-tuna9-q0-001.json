@@ -1,0 +1,17 @@
+{
+  "id": "rb-tuna9-q0-001",
+  "type": "rb_1qubit",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T20:00:00Z",
+  "parameters": {
+    "qubit": 0,
+    "sequence_lengths": [1, 2, 4, 8, 16, 32],
+    "num_sequences": 5,
+    "seed": 42,
+    "shots": 1024
+  },
+  "priority": 2,
+  "research_question": "How much worse is Tuna-9's noisiest qubit (q0, 12.3% readout error) compared to q2 (1.6%)? If the gate error ratio matches the readout error ratio, noise is dominated by measurement. If not, gate errors are qubit-dependent.",
+  "description": "Randomized benchmarking on qubit 0 (worst readout). Same protocol as rb-tuna9-q2-001 for direct comparison. 30 circuits total."
+}

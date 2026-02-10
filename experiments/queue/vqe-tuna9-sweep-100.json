@@ -1,0 +1,23 @@
+{
+  "id": "vqe-tuna9-sweep-100",
+  "type": "vqe_h2",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T20:00:00Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 1.0,
+    "alpha": -0.3522,
+    "qubits": [2, 4],
+    "g0": -0.531051,
+    "g1": 0.267529,
+    "g2": -0.267529,
+    "g3": 0.0,
+    "g4": 0.098395,
+    "g5": 0.098395,
+    "fci_energy": -1.10115
+  },
+  "priority": 4,
+  "research_question": "At R=1.0A (slightly stretched), correlation increases (alpha=-0.35 vs -0.22 at equilibrium). Does the VQE error grow as the state moves away from HF? Comparing hardware error at R=0.5, 0.735, 1.0 reveals whether noise or correlation dominates.",
+  "description": "VQE H2 at R=1.0A on qubits [2,4]. Moderate correlation regime. Part of PES sweep."
+}

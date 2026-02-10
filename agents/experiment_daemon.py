@@ -472,16 +472,21 @@ def analyze_rb(all_counts, params):
 # ─── QAOA MaxCut (3 qubits, triangle) ─────────────────────────────────────
 
 def generate_qaoa_circuits(params):
-    """Generate QAOA MaxCut circuits for a 3-qubit triangle graph.
+    """Generate QAOA MaxCut circuits for an arbitrary graph.
 
     Single QAOA layer with a sweep of gamma/beta parameters.
+    Accepts 'edges' param for custom graph topology (list of [q_a, q_b] pairs).
+    Defaults to triangle on first 3 qubits for backward compatibility.
     """
     qubits = params.get("qubits", [0, 1, 2])
     _default_sweep = [round(0.1 + 0.1 * i, 1) for i in range(10)]  # 0.1..1.0
     gamma_values = params.get("gamma_values", _default_sweep)
     beta_values = params.get("beta_values", _default_sweep)
-    # Triangle edges
-    edges = [(qubits[0], qubits[1]), (qubits[1], qubits[2]), (qubits[0], qubits[2])]
+    # Graph edges: custom or default triangle
+    if "edges" in params:
+        edges = [tuple(e) for e in params["edges"]]
+    else:
+        edges = [(qubits[0], qubits[1]), (qubits[1], qubits[2]), (qubits[0], qubits[2])]
 
     circuits = {}
     for gi, gamma in enumerate(gamma_values):
@@ -518,28 +523,42 @@ def generate_qaoa_circuits(params):
 
 
 def analyze_qaoa(all_counts, params):
-    """Analyze QAOA MaxCut results for triangle graph.
+    """Analyze QAOA MaxCut results for arbitrary graph.
 
     Computes approximation ratio vs classical optimum.
+    Accepts 'edges' param for custom graph topology.
     """
     qubits = params.get("qubits", [0, 1, 2])
     _default_sweep = [round(0.1 + 0.1 * i, 1) for i in range(10)]
     gamma_values = params.get("gamma_values", _default_sweep)
     beta_values = params.get("beta_values", _default_sweep)
     n = len(qubits)
-    edges = [(0, 1), (1, 2), (0, 2)]  # triangle
+    if "edges" in params:
+        edges = [tuple(e) for e in params["edges"]]
+    else:
+        edges = [(qubits[0], qubits[1]), (qubits[1], qubits[2]), (qubits[0], qubits[2])]
+    max_qubit = max(max(e) for e in edges)
+    n_bits = max_qubit + 1
 
     def cut_value(bitstring):
-        """Count edges cut by this assignment."""
-        bits = bitstring[-n:]
+        """Count edges cut by this assignment using physical qubit indices."""
+        bits = bitstring.zfill(n_bits)
         cut = 0
-        for i, j in edges:
-            if bits[-(i + 1)] != bits[-(j + 1)]:
+        for q_a, q_b in edges:
+            if bits[-(q_a + 1)] != bits[-(q_b + 1)]:
                 cut += 1
         return cut
 
-    # Classical optimum for triangle: max cut = 2 (e.g., 010, 101)
-    classical_max = 2
+    # Brute-force classical max cut
+    classical_max = 0
+    for assignment in range(2**n):
+        cut = 0
+        for q_a, q_b in edges:
+            idx_a = qubits.index(q_a) if q_a in qubits else 0
+            idx_b = qubits.index(q_b) if q_b in qubits else 0
+            if ((assignment >> idx_a) & 1) != ((assignment >> idx_b) & 1):
+                cut += 1
+        classical_max = max(classical_max, cut)
 
     # Compute expected cut value for each (gamma, beta) point
     heatmap = {}
@@ -575,9 +594,10 @@ def analyze_qaoa(all_counts, params):
         "gamma_values": gamma_values,
         "beta_values": beta_values,
         "num_qubits": n,
-        "graph": "triangle",
+        "graph": params.get("graph_label", f"{n}node_{len(edges)}edge"),
+        "edges": [[q_a, q_b] for q_a, q_b in edges],
         "interpretation": (
-            f"QAOA MaxCut on triangle: best approximation ratio {best_ratio:.1%} "
+            f"QAOA MaxCut ({n} nodes, {len(edges)} edges): best approximation ratio {best_ratio:.1%} "
             f"at gamma={best_params[0]:.2f}, beta={best_params[1]:.2f}. "
             f"Classical optimum: {classical_max} edges cut."
         ),
@@ -1707,12 +1727,13 @@ def analyze_vqe(all_counts, params):
     R = params.get("bond_distance", 0.735)
 
     # H2 Hamiltonian coefficients (STO-3G, 2-qubit, JW + sector projection)
-    g0 = -0.321124
-    g1 = 0.397937
-    g2 = -0.397937
-    g3 = 0.0
-    g4 = 0.090466
-    g5 = 0.090466
+    # Accept per-distance coefficients from params, defaults for R=0.735
+    g0 = params.get("g0", -0.321124)
+    g1 = params.get("g1", 0.397937)
+    g2 = params.get("g2", -0.397937)
+    g3 = params.get("g3", 0.0)
+    g4 = params.get("g4", 0.090466)
+    g5 = params.get("g5", 0.090466)
 
     def expectation_from_counts(counts, total):
         """Compute <Z0>, <Z1>, <Z0Z1> from bitstring counts."""
@@ -1760,7 +1781,7 @@ def analyze_vqe(all_counts, params):
         energy_ps = energy_raw
         ps_z0, ps_z1, ps_z0z1 = exp_z0, exp_z1, exp_z0z1
 
-    fci_energy = -1.1373
+    fci_energy = params.get("fci_energy", -1.1373)
 
     return {
         "energy_hartree": round(energy_ps, 6),

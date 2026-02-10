@@ -1,0 +1,18 @@
+{
+  "id": "qaoa-tuna9-path4-001",
+  "type": "qaoa_maxcut",
+  "status": "pending",
+  "backend": "tuna-9",
+  "created": "2026-02-10T20:00:00Z",
+  "parameters": {
+    "qubits": [5, 2, 4, 6],
+    "edges": [[5, 2], [2, 4], [4, 6]],
+    "graph_label": "4node_path",
+    "gamma_values": [0.1, 0.3, 0.5, 0.7, 0.9],
+    "beta_values": [0.1, 0.3, 0.5, 0.7, 0.9],
+    "shots": 4096
+  },
+  "priority": 3,
+  "research_question": "Can Tuna-9 produce a meaningful QAOA landscape for MaxCut? This is the first optimization algorithm on Tuna-9. For a 4-node path graph, the classical optimum is 3 edges cut. Does the hardware landscape show structure matching the ideal gamma~0.39, beta~0.79 optimum?",
+  "description": "QAOA depth-1 on 4-node path [5,2,4,6]. All edges physically connected (91.4%, 92.3%, 93.5% Bell fidelity). 5x5 gamma/beta sweep = 25 circuits, 4096 shots each. First optimization algorithm on Tuna-9 hardware."
+}

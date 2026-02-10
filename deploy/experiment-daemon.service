@@ -4,8 +4,6 @@ After=network.target
 
 [Service]
 Type=simple
-User=qi
-Group=qi
 WorkingDirectory=/opt/quantuminspire
 ExecStart=/opt/quantuminspire/.venv/bin/python agents/experiment_daemon.py --daemon --interval 300
 Restart=on-failure
@@ -13,8 +11,7 @@ RestartSec=60
 StandardOutput=journal
 StandardError=journal
 
-# QI auth config location
-Environment=HOME=/home/qi
+Environment=HOME=/root
 Environment=PYTHONUNBUFFERED=1
 
 [Install]
