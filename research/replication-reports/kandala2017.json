@@ -11,7 +11,8 @@
   },
   "generated": "2026-02-10T18:28:00.385360",
   "backends_tested": [
-    "emulator"
+    "emulator",
+    "ibm_torino"
   ],
   "comparisons": [
     {
@@ -30,6 +31,15 @@
           "failure_description": "Replication matches published results within error bars",
           "severity": "none",
           "error_kcal_mol": 0.7
+        },
+        "ibm_torino": {
+          "measured_value": -1.1226,
+          "discrepancy": 0.0147,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "Hardware noise degrades Z correlations by 3-5%. Correct ansatz state maintained.",
+          "severity": "medium",
+          "error_kcal_mol": 9.22
         }
       }
     },
@@ -48,6 +58,10 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "ibm_torino": {
+          "status": "no_data",
+          "note": "IBM hardware run was single-point only (R=0.735 A), not full curve"
         }
       }
     },
@@ -66,19 +80,29 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "ibm_torino": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "9.22 kcal/mol error — hardware noise prevents chemical accuracy but qualitative behavior correct",
+          "severity": "medium"
         }
       }
     }
   ],
   "summary": {
-    "total_claims_tested": 3,
+    "total_claims_tested": 5,
     "successes": 3,
-    "success_rate": 1.0,
+    "success_rate": 0.6,
     "failure_mode_counts": {
-      "success": 3
+      "success": 3,
+      "partial_noise": 2
     },
     "backends_tested": [
-      "emulator"
+      "emulator",
+      "ibm_torino"
     ]
   }
 }

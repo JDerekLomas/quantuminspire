@@ -1,0 +1,51 @@
+{
+  "submitted": "2026-02-10T23:00:00Z",
+  "ibm_vqe_kandala": {
+    "backend": "ibm_torino",
+    "shots": 4096,
+    "theta": 0.1118,
+    "jobs": {
+      "z_basis": "d65mu01v6o8c73d36o60",
+      "x_basis": "d65mu0hv6o8c73d36o7g",
+      "y_basis": "d65mu0oqbmes739d40rg"
+    },
+    "coefficients": {
+      "g0": -0.321124,
+      "g1": 0.397937,
+      "g2": -0.397937,
+      "g3": 0.0,
+      "g4": 0.090466,
+      "g5": 0.090466
+    },
+    "fci_energy": -1.1373
+  },
+  "tuna9_cross2019": {
+    "backend": "tuna-9",
+    "backend_type_id": 6,
+    "shots": 1024,
+    "qv_jobs": {
+      "qv_n2_c0": 415379,
+      "qv_n2_c1": 415380,
+      "qv_n2_c2": 415381,
+      "qv_n2_c3": 415382,
+      "qv_n2_c4": 415384,
+      "qv_n3_c0": 415389,
+      "qv_n3_c1": 415390,
+      "qv_n3_c2": 415391,
+      "qv_n3_c3": 415393,
+      "qv_n3_c4": 415394
+    },
+    "rb_jobs": {
+      "rb_m1_s0": 415395,
+      "rb_m1_s1": 415396,
+      "rb_m1_s2": 415397,
+      "rb_m1_s3": 415398,
+      "rb_m1_s4": 415399,
+      "rb_m8_s0": 415400,
+      "rb_m8_s1": 415401,
+      "rb_m8_s2": 415402,
+      "rb_m32_s0": 415403,
+      "rb_m32_s1": 415404
+    }
+  }
+}

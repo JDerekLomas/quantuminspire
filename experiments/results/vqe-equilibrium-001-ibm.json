@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "id": "vqe-equilibrium-001-ibm",
+  "type": "vqe_h2",
+  "backend": "ibm_torino",
+  "backend_qubits": [0, 1],
+  "job_ids": {
+    "z_basis": "d65n0gbe4kfs73cvkisg",
+    "x_basis": "d65n0gre4kfs73cvkitg",
+    "y_basis": "d65n0hbe4kfs73cvkivg"
+  },
+  "submitted": "2026-02-11T00:15:00Z",
+  "completed": "2026-02-11T00:15:30Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "alpha": -0.2235,
+    "qubits": [0, 1]
+  },
+  "raw_counts": {
+    "z_basis": {"01": 3973, "10": 59, "00": 21, "11": 43},
+    "x_basis": {"00": 802, "10": 1276, "11": 722, "01": 1296},
+    "y_basis": {"10": 1209, "00": 813, "11": 832, "01": 1242}
+  },
+  "analysis": {
+    "energy_hartree": -1.1226,
+    "fci_energy": -1.1373,
+    "error_hartree": 0.0147,
+    "error_kcal_mol": 9.22,
+    "chemical_accuracy": false,
+    "expectation_values": {
+      "Z0": -0.9609,
+      "Z1": 0.9502,
+      "Z0Z1": -0.9688,
+      "X0X1": -0.2559,
+      "Y0Y1": -0.1968
+    },
+    "hamiltonian_coefficients": {
+      "g0": -0.321124,
+      "g1": 0.397937,
+      "g2": -0.397937,
+      "g3": 0.0,
+      "g4": 0.090466,
+      "g5": 0.090466
+    },
+    "bond_distance_angstrom": 0.735,
+    "total_shots_per_basis": {"z": 4096, "x": 4096, "y": 4096},
+    "interpretation": "VQE energy: -1.1226 Ha (FCI: -1.1373 Ha). Error: 9.22 kcal/mol. Not chemical accuracy — hardware noise degrades Z correlations by ~3-5%."
+  },
+  "circuit_qasm": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nry(-0.2235) q[0];\ncx q[0],q[1];\nx q[0];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];",
+  "errors": null
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "id": "vqe-h2-sagastizabal-ibm",
+  "type": "vqe_h2",
+  "backend": "ibm_torino",
+  "backend_qubits": [0, 1],
+  "submitted": "2026-02-10T23:15:00Z",
+  "completed": "2026-02-10T23:16:00Z",
+  "parameters": {
+    "shots": 4096,
+    "bond_distance": 0.735,
+    "ansatz": "RY-CNOT (2-qubit sector-projected)",
+    "theta_optimal": 3.3651,
+    "hamiltonian": {
+      "g0": -0.321124, "g1": 0.397937, "g2": -0.397937,
+      "g3": 0.0, "g4": 0.090466, "g5": 0.090466
+    }
+  },
+  "raw_counts": {
+    "zz_basis": {"00": 23, "01": 3969, "10": 67, "11": 37},
+    "xx_basis": {"00": 841, "01": 1272, "10": 1223, "11": 760},
+    "yy_basis": {"00": 794, "01": 1232, "10": 1284, "11": 786}
+  },
+  "analysis": {
+    "expectation_values": {
+      "Z0": -0.9561, "Z1": 0.9492, "Z0Z1": -0.9707,
+      "X0X1": -0.2183, "Y0Y1": -0.2285
+    },
+    "energy_hartree": -1.1197,
+    "fci_energy": -1.1373,
+    "error_hartree": 0.0176,
+    "error_kcal_mol": 11.0,
+    "chemical_accuracy": false,
+    "interpretation": "IBM Torino H2 VQE: -1.1197 Ha, 11.0 kcal/mol error. Hardware noise degrades result but correct sector and qualitative behavior observed."
+  },
+  "job_ids": {
+    "zz_basis": "d65n175bujdc73ctm7q0",
+    "xx_basis": "d65n17je4kfs73cvkjug",
+    "yy_basis": "d65n17pv6o8c73d36sag"
+  }
+}

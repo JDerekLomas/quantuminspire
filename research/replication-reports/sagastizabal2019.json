@@ -12,7 +12,8 @@
   "generated": "2026-02-10T18:28:00.382938",
   "backends_tested": [
     "emulator",
-    "tuna9"
+    "tuna9",
+    "ibm_torino"
   ],
   "comparisons": [
     {
@@ -40,6 +41,15 @@
           "failure_description": "Hardware noise overwhelms the signal",
           "severity": "high",
           "error_kcal_mol": 83.35
+        },
+        "ibm_torino": {
+          "measured_value": -1.1226,
+          "discrepancy": 0.0147,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "Hardware noise degrades Z correlations by 3-5%. Correct parity sector maintained.",
+          "severity": "medium",
+          "error_kcal_mol": 9.22
         }
       }
     },
@@ -84,6 +94,14 @@
           "failure_mode": "partial_noise",
           "failure_description": "Hardware noise degrades result but qualitative behavior preserved",
           "severity": "medium"
+        },
+        "ibm_torino": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "Hardware noise degrades result but qualitative behavior preserved",
+          "severity": "medium"
         }
       }
     }
@@ -99,7 +117,8 @@
     },
     "backends_tested": [
       "emulator",
-      "tuna9"
+      "tuna9",
+      "ibm_torino"
     ]
   }
 }

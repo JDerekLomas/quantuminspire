@@ -12,7 +12,8 @@
   "generated": "2026-02-10T18:28:00.388643",
   "backends_tested": [
     "emulator",
-    "emulator_rb"
+    "emulator_rb",
+    "tuna9"
   ],
   "comparisons": [
     {
@@ -30,6 +31,15 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "tuna9": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none",
+          "heavy_output_fraction": 0.692
         }
       }
     },
@@ -48,6 +58,15 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "tuna9": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none",
+          "heavy_output_fraction": 0.821
         }
       }
     },
@@ -66,6 +85,14 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "tuna9": {
+          "measured_value": 0.9982,
+          "discrepancy": 0.0082,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Replication matches published results within error bars",
+          "severity": "none"
         }
       }
     }
@@ -79,7 +106,8 @@
     },
     "backends_tested": [
       "emulator",
-      "emulator_rb"
+      "emulator_rb",
+      "tuna9"
     ]
   }
 }
