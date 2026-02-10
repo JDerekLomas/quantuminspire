@@ -1,7 +1,7 @@
 {
   "id": "bell-tuna9-daemon-001",
   "type": "bell_calibration",
-  "status": "running",
+  "status": "failed",
   "backend": "tuna-9",
   "created": "2026-02-10T12:00:00Z",
   "parameters": {
