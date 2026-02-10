@@ -25,7 +25,7 @@ export const studies: ExperimentStudy[] = [
     priorWork: `
 <p>The Bell state |&Phi;+&rang; = (|00&rang; + |11&rang;) / &radic;2 is the foundational building block of quantum entanglement, first described by John Bell in 1964 to test local hidden variable theories. In practice, Bell state preparation serves as the most basic calibration benchmark for any quantum processor: if a device cannot reliably produce this two-qubit state, it cannot run more complex algorithms.</p>
 
-<p>Modern superconducting quantum processors typically achieve Bell state fidelities of 99-99.9% on their best qubit pairs. IBM's Eagle and Heron processors routinely demonstrate &gt;99% fidelity, while newer architectures like Quantum Inspire's Tuna-9 (a spin-qubit/transmon hybrid) are still being characterized. The key question is not whether entanglement works -- it does -- but how the <em>noise signature</em> differs between platforms.</p>
+<p>Modern superconducting quantum processors typically achieve Bell state fidelities of 99-99.9% on their best qubit pairs. IBM's Eagle and Heron processors routinely demonstrate &gt;99% fidelity, while newer architectures like Quantum Inspire's Tuna-9 (a superconducting transmon processor) are still being characterized. The key question is not whether entanglement works -- it does -- but how the <em>noise signature</em> differs between platforms.</p>
 
 <p>A perfect Bell state produces only |00&rang; and |11&rang; outcomes (50/50). Any leakage into |01&rang; or |10&rang; directly measures decoherence and gate errors. This makes Bell calibration the ideal first experiment for a new quantum backend.</p>
 `,

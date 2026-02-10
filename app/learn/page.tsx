@@ -28,7 +28,7 @@ const GLOSSARY: GlossaryEntry[] = [
   // Fundamentals
   {
     term: 'Qubit',
-    definition: 'The basic unit of quantum information. Unlike a classical bit (0 or 1), a qubit can exist in a superposition of both states simultaneously. Physically realized as spin qubits (Tuna-9), superconducting circuits (IBM), trapped ions, or photons.',
+    definition: 'The basic unit of quantum information. Unlike a classical bit (0 or 1), a qubit can exist in a superposition of both states simultaneously. Physically realized as superconducting transmons (IBM, Tuna-9), spin qubits (QuTech Spin-2+), trapped ions, or photons.',
     category: 'fundamentals',
     vizLink: { label: 'Bloch Sphere', href: '/bloch-sphere' },
     related: ['Superposition', 'Bloch sphere'],
@@ -236,7 +236,7 @@ const GLOSSARY: GlossaryEntry[] = [
   // Hardware
   {
     term: 'Spin qubit',
-    definition: 'A qubit encoded in the spin state of an electron confined in a semiconductor quantum dot. Used by QuTech/Quantum Inspire (Tuna-9 processor, 9 qubits). Advantages: small size, long coherence in silicon, compatibility with existing semiconductor fabrication.',
+    definition: 'A qubit encoded in the spin state of an electron confined in a semiconductor quantum dot. Used by QuTech/Quantum Inspire (Spin-2+ processor). Note: Tuna-9 uses superconducting transmon qubits, not spin qubits. Advantages: small size, long coherence in silicon, compatibility with existing semiconductor fabrication.',
     category: 'hardware',
     related: ['T1', 'T2', 'Qubit'],
   },

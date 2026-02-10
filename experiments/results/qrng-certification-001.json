@@ -32,8 +32,8 @@
       "tuna9_raw": {
         "label": "Tuna-9 (raw)",
         "source": "QI Tuna-9 (raw)",
-        "method": "Hadamard gate superposition on electron spin qubits \u2014 no post-processing",
-        "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+        "method": "Hadamard gate superposition on superconducting transmon qubits \u2014 no post-processing",
+        "hardware": "9-qubit superconducting transmon processor (QuTech, TU Delft)",
         "fetch_time_s": 65.54,
         "n_bits": 20000,
         "passed": 1,
@@ -88,7 +88,7 @@
         "label": "Tuna-9 (debiased)",
         "source": "QI Tuna-9 (von Neumann debiased)",
         "method": "Hadamard + measurement, then von Neumann pair extraction",
-        "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+        "hardware": "9-qubit superconducting transmon processor (QuTech, TU Delft)",
         "debiasing": "von Neumann (discard same-bit pairs, keep first bit of different pairs)",
         "raw_bits": 100000,
         "debiased_bits": 25130,
@@ -198,6 +198,6 @@
     },
     "conclusion": "Raw Tuna-9 output shows significant hardware bias (48.1% ones vs 50% expected), failing 7/8 NIST tests. Von Neumann debiasing completely fixes this: debiased output passes all 8 tests, statistically indistinguishable from ideal randomness. The 75% bit discard rate is the expected cost of debiasing.",
     "key_finding": "Von Neumann debiasing transforms biased quantum hardware output into NIST-certified random numbers",
-    "interpretation": "Tuna-9's spin qubits have a measurable bias toward |0\u27e9 (48.1% ones vs 50%). Von Neumann pair extraction eliminates this first-order bias at a 75% bit cost, achieving 8/8 NIST SP 800-22 test passes. This validates our QRNG MCP server's debiasing pipeline for production use."
+    "interpretation": "Tuna-9's transmon qubits have a measurable bias toward |0\u27e9 (48.1% ones vs 50%). Von Neumann pair extraction eliminates this first-order bias at a 75% bit cost, achieving 8/8 NIST SP 800-22 test passes. This validates our QRNG MCP server's debiasing pipeline for production use."
   }
 }

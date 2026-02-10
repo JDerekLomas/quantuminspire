@@ -198,7 +198,7 @@ export const posts: BlogPost[] = [
 
 <h3>AlphaTensor-Quantum: RL for Circuit Optimization</h3>
 
-<p><a href="https://arxiv.org/abs/2402.14396">AlphaTensor-Quantum</a> (<em>Nature Machine Intelligence</em>, 2025) uses deep RL to <strong>halve T-gate counts</strong> in some circuits. T-gates are the most expensive gates in fault-tolerant computing, so this directly reduces overhead for cryptography and quantum chemistry circuits.</p>
+<p><a href="https://arxiv.org/abs/2402.14396">AlphaTensor-Quantum</a> (<em>Nature Machine Intelligence</em>, 2025) uses deep RL to <strong>reduce T-gate counts by up to 47%</strong> in some circuits. T-gates are the most expensive gates in fault-tolerant computing, so this directly reduces overhead for cryptography and quantum chemistry circuits.</p>
 
 <h2>The Hardware Landscape</h2>
 
@@ -208,7 +208,7 @@ export const posts: BlogPost[] = [
 <tr><td><strong>Superconducting</strong></td><td>Google, IBM, Rigetti, IQM</td><td><a href="https://www.nature.com/articles/s41586-024-08449-y">Google Willow</a>: 105q, first exponential error suppression, logical memory 2.4x beyond breakeven</td><td>Short coherence (~68us), cryogenic cooling</td></tr>
 <tr><td><strong>Trapped Ions</strong></td><td>Quantinuum, IonQ</td><td><a href="https://www.quantinuum.com/blog/introducing-helios-the-most-accurate-quantum-computer-in-the-world">Helios</a>: 98q, X-junction, 99.921% two-qubit fidelity</td><td>Slower gates, scaling past hundreds</td></tr>
 <tr><td><strong>Neutral Atoms</strong></td><td>QuEra, Atom Computing</td><td><a href="https://www.prnewswire.com/news-releases/quera-computing-marks-record-2025-as-the-year-of-fault-tolerance-and-over-230m-of-new-capital-to-accelerate-industrial-deployment-302635960.html">3,000-qubit array</a>, 2+ hours operation, up to 96 logical qubits</td><td>Atom loss, readout fidelity</td></tr>
-<tr><td><strong>Photonic</strong></td><td>PsiQuantum, Xanadu</td><td>PsiQuantum $1B raise; SHYPS qLDPC codes: 20x fewer physical qubits than surface codes</td><td>Photon loss, non-deterministic gates</td></tr>
+<tr><td><strong>Photonic</strong></td><td>PsiQuantum, Xanadu, Photonic Inc.</td><td>PsiQuantum $1B raise; Photonic Inc. SHYPS qLDPC codes: 20x fewer physical qubits than surface codes</td><td>Photon loss, non-deterministic gates</td></tr>
 <tr><td><strong>Spin Qubits</strong></td><td>QuTech/TU Delft, Intel</td><td><a href="https://qutech.nl/2025/11/27/from-complexity-to-control-a-10-spin-qubit-array-in-germanium/">10-qubit germanium</a> &gt;99% fidelity; <a href="https://www.nature.com/articles/s41586-025-09531-9">industrial 300mm wafers</a> &gt;99% (Nature 2025)</td><td>Short coherence, but CMOS compatibility is the long bet</td></tr>
 <tr><td><strong>Topological</strong></td><td>Microsoft</td><td><a href="https://azure.microsoft.com/en-us/blog/quantum/2025/02/19/microsoft-unveils-majorana-1-the-worlds-first-quantum-processor-powered-by-topological-qubits/">Majorana 1</a>: 8 topological qubits, tetron architecture</td><td>No gate operations demonstrated; scientific community remains skeptical about whether these are truly topological</td></tr>
 </tbody>
@@ -226,7 +226,7 @@ export const posts: BlogPost[] = [
 
 <h2>Where Quantum Inspire Fits</h2>
 
-<p><a href="https://qutech.nl/2025/02/25/quantum-inspire-2-0-is-live-with-updated-software-and-hardware/">Quantum Inspire 2.0</a> offers Starmon-7, Tuna-5, and Tuna-9 superconducting backends plus emulators, with an open architecture integrated with the SURF supercomputer. Having both spin qubits and superconducting qubits on one platform makes QI uniquely valuable for comparative studies \u2014 exactly the kind of work AI agents can automate.</p>
+<p><a href="https://qutech.nl/2025/02/25/quantum-inspire-2-0-is-live-with-updated-software-and-hardware/">Quantum Inspire 2.0</a> offers superconducting backends (Tuna-9) plus emulators, with an open architecture integrated with the SURF supercomputer. QuTech develops both spin qubits and superconducting qubits, and QI aims to offer both modalities \u2014 making it uniquely valuable for comparative studies, exactly the kind of work AI agents can automate.</p>
 
 <p>Our <a href="/blog/quantum-mcp-servers">MCP servers</a> connect Claude directly to QI hardware, enabling autonomous experiment execution. This is the same pattern as k-agents, but with frontier LLMs and real European quantum hardware.</p>
 
@@ -641,7 +641,7 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 <h3>1. Hamiltonian Construction</h3>
 <p>The H&#8322; molecular Hamiltonian in the STO-3G basis, transformed via Bravyi-Kitaev reduction to a 2-qubit operator:</p>
 <p><code>H = g&#8320;II + g&#8321;ZI + g&#8322;IZ + g&#8323;ZZ + g&#8324;XX + g&#8325;YY</code></p>
-<p>The agent correctly identified that the coefficients (g&#8320; through g&#8325;) are functions of the bond distance, and tabulated them from the O'Malley et al. reference data for 29 bond distances from 0.2 to 3.0 Angstroms.</p>
+<p>The agent correctly identified that the coefficients (g&#8320; through g&#8325;) are functions of the bond distance, and tabulated them from the O'Malley et al. reference data for 12 bond distances from 0.3 to 2.5 Angstroms.</p>
 
 <h3>2. Ansatz Circuit</h3>
 <p>A single-parameter exchange rotation in the {|01&#10217;, |10&#10217;} subspace — a parity-preserving ansatz that keeps the state within the correct symmetry sector. The agent decomposed this into RXX(&#952;) and RYY(&#952;) rotations, matching the paper's approach.</p>
@@ -693,14 +693,14 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
   {
     slug: 'quantum-mcp-servers',
     title: 'Giving Claude Direct Access to Quantum Hardware',
-    subtitle: 'MCP servers that let Claude Code generate random numbers from vacuum fluctuations (with Tuna-9 spin qubit fallback) and submit circuits to real quantum processors',
+    subtitle: 'MCP servers that let Claude Code generate random numbers from vacuum fluctuations (with Tuna-9 superconducting qubit fallback) and submit circuits to real quantum processors',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'technical',
     tags: ['MCP', 'Claude Code', 'Quantum Inspire', 'QRNG', 'tooling', 'infrastructure'],
     heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80',
     heroCaption: 'Bridging AI and quantum hardware through the Model Context Protocol.',
-    excerpt: 'We built two MCP servers that give Claude Code direct access to quantum resources: true random numbers with automatic fallback from ANU vacuum fluctuations to Tuna-9 spin qubits, plus circuit execution on Quantum Inspire hardware. Here\'s how they work and why this matters for AI-accelerated quantum research.',
+    excerpt: 'We built two MCP servers that give Claude Code direct access to quantum resources: true random numbers with automatic fallback from ANU vacuum fluctuations to Tuna-9 superconducting qubits, plus circuit execution on Quantum Inspire hardware. Here\'s how they work and why this matters for AI-accelerated quantum research.',
     content: `
 <p>One of the most powerful ideas in the AI-for-science movement is <strong>closing the feedback loop</strong> — giving AI agents direct access to experimental tools so they can design, execute, and analyze experiments without human intermediation. We just took a concrete step toward this for quantum computing.</p>
 
@@ -734,11 +734,11 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 
 <ol>
 <li><strong>ANU QRNG</strong> (primary) — Measures vacuum fluctuations of the electromagnetic field at the Australian National University. Optical quantum source, ~200ms latency.</li>
-<li><strong>QI Tuna-9</strong> (fallback) — Applies Hadamard gates to electron spin qubits on real quantum hardware at TU Delft, then measures. Each measurement collapses a superposition into a truly random bit. ~3 second latency.</li>
+<li><strong>QI Tuna-9</strong> (fallback) — Applies Hadamard gates to superconducting transmon qubits on real quantum hardware at TU Delft, then measures. Each measurement collapses a superposition into a truly random bit. ~3 second latency.</li>
 <li><strong>qxelarator</strong> (last resort) — Local quantum circuit emulator. Instant but pseudorandom.</li>
 </ol>
 
-<p>When the ANU API is unavailable (which happens — we observed intermittent 500 errors during testing), the server automatically submits an 8-qubit Hadamard circuit to Tuna-9. Each shot produces one random byte from real spin qubit measurements in a Dutch lab. This is a textbook quantum random number generator, just running on actual hardware instead of a classroom whiteboard.</p>
+<p>When the ANU API is unavailable (which happens — we observed intermittent 500 errors during testing), the server automatically submits an 8-qubit Hadamard circuit to Tuna-9. Each shot produces one random byte from real superconducting qubit measurements in a Dutch lab. This is a textbook quantum random number generator, just running on actual hardware instead of a classroom whiteboard.</p>
 
 <p>The server exposes five tools:</p>
 
@@ -753,11 +753,11 @@ Sagastizabal et al., <em>Physical Review A</em> 100, 010302 (2019)<br/>
 </tbody>
 </table>
 
-<p>Every response includes a <code>source</code> field so you always know which quantum system generated your random numbers. In our testing, we compared all three sources on identical requests — the distributions are uniform across the board, but the Tuna-9 numbers come from actual electron spin measurements rather than photon detection.</p>
+<p>Every response includes a <code>source</code> field so you always know which quantum system generated your random numbers. In our testing, we compared all three sources on identical requests — the distributions are uniform across the board, but the Tuna-9 numbers come from actual superconducting transmon measurements rather than photon detection.</p>
 
 <h3>Why two quantum sources?</h3>
 
-<p>The ANU QRNG and Tuna-9 use fundamentally different quantum phenomena: <strong>optical vacuum fluctuations</strong> vs. <strong>spin qubit superposition</strong>. Having both available means the QRNG server is resilient to outages on either platform, and researchers can compare randomness from different physical sources — which matters for foundations-of-physics experiments.</p>
+<p>The ANU QRNG and Tuna-9 use fundamentally different quantum phenomena: <strong>optical vacuum fluctuations</strong> vs. <strong>superconducting transmon superposition</strong>. Having both available means the QRNG server is resilient to outages on either platform, and researchers can compare randomness from different physical sources — which matters for foundations-of-physics experiments.</p>
 
 <h2>Server 2: Quantum Inspire Circuit Execution</h2>
 
@@ -1006,7 +1006,7 @@ b = measure q"""
 <p>The AI agent had access to three tools:</p>
 <ul>
 <li><code>qi_run_local</code> &mdash; a local quantum emulator (qxelarator)</li>
-<li><code>qi_submit_circuit</code> &mdash; QuTech's Tuna-9 spin qubit processor (9 qubits)</li>
+<li><code>qi_submit_circuit</code> &mdash; QuTech's Tuna-9 superconducting transmon processor (9 qubits)</li>
 <li><code>ibm_submit_circuit</code> &mdash; IBM's Torino superconducting processor (133 qubits)</li>
 </ul>
 
@@ -1098,7 +1098,7 @@ b = measure q"""
 <li><strong>Zero code files.</strong> Every circuit was designed in conversation and submitted through MCP tool calls.</li>
 <li><strong>Iterative reasoning.</strong> The depth-scaling experiment was designed in response to tomography results. The transpiler discovery was handled on the fly.</li>
 <li><strong>Cross-platform in one session.</strong> The same AI compared three backends simultaneously, something that normally requires separate scripts, accounts, and analysis pipelines.</li>
-<li><strong>Real hardware.</strong> These are production quantum processors &mdash; IBM's 133-qubit Torino and QuTech's 9-qubit Tuna-9 spin qubit device.</li>
+<li><strong>Real hardware.</strong> These are production quantum processors &mdash; IBM's 133-qubit Torino and QuTech's 9-qubit Tuna-9 superconducting transmon device.</li>
 </ul>
 
 <p>The closest analogy is Ginkgo Bioworks' autonomous protein experiments with GPT-5 &mdash; but for quantum circuits instead of wet labs. The quantum domain is actually easier to automate: the entire experimental loop is digital, circuits execute in seconds, and results are immediately interpretable.</p>

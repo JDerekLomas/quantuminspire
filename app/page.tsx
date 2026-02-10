@@ -14,8 +14,8 @@ const benchmarkData = {
   outputTokens: 12339,
   byDifficulty: [
     { level: 'Basic', total: 79, passed: 52, rate: 65.82 },
-    { level: 'Intermediate', total: 67, passed: 41, rate: 61.19 },
-    { level: 'Difficult', total: 5, passed: 1, rate: 20.0 },
+    { level: 'Intermediate', total: 67, passed: 42, rate: 62.69 },
+    { level: 'Difficult', total: 5, passed: 0, rate: 0.0 },
   ],
   errorBreakdown: [
     { type: 'Wrong answer', count: 13, desc: 'Logically incorrect output' },
@@ -60,14 +60,14 @@ const vqeData = {
     ibm: {
       backend: 'ibm_torino',
       qubits: 133,
-      jobId: 'd65hjrre4kfs73c474sg',
-      note: 'Z-diagonal terms only (partial energy)',
+      jobId: 'd65lsrje4kfs73cvjb6g',
+      note: 'Full 3-basis measurement (Z, X, Y)',
     },
     qi: {
       backend: 'Tuna-9',
       qubits: 9,
       jobId: '414342',
-      // Real measurement counts at optimal theta=0.2256
+      // Real measurement counts at optimal theta=0.1118
       counts: { '00': 142, '01': 129, '10': 520, '11': 3305 },
       evenParity: 3447 / 4096,  // 84.2% kept after post-selection
     },
@@ -93,7 +93,7 @@ const experiments = [
     question: 'Can AI write correct quantum simulation code from a paper reference?',
     description:
       'Simulation of symmetry-verified VQE for H\u2082 inspired by Sagastizabal et al. (QuTech). Claude Opus 4.6 wrote the Hamiltonian construction, ansatz circuit, toy noise model, and symmetry verification \u2014 300 lines of PennyLane code. Runs in classical simulation, not on quantum hardware.',
-    highlight: '29 bond distances, 3 measurement bases, 2x noise reduction via symmetry verification',
+    highlight: '12 bond distances, 3 measurement bases, 2x noise reduction via symmetry verification',
   },
   {
     id: 'viz-zoo',
@@ -102,8 +102,8 @@ const experiments = [
     category: 'Education',
     question: 'Can AI build interactive quantum simulations for teaching?',
     description:
-      'Seven interactive exhibits plus a gallery of 20+ reference visualizations. Full state-vector quantum simulator in TypeScript. Bloch sphere (WebGL 3D), state vectors, measurement, Grover\'s search, entanglement, Rabi oscillations, and multi-slit interference \u2014 all computed live, nothing mocked.',
-    highlight: '7 interactive exhibits, real quantum math in the browser',
+      'Nine interactive exhibits plus a gallery of 20+ reference visualizations. Full state-vector quantum simulator in TypeScript. Bloch sphere (WebGL 3D), state vectors, measurement, Grover\'s search, entanglement, teleportation, Rabi oscillations, multi-slit interference, and Q-Sphere \u2014 all computed live, nothing mocked.',
+    highlight: '9 interactive exhibits, real quantum math in the browser',
   },
   {
     id: 'circuit-optimization',
@@ -112,7 +112,7 @@ const experiments = [
     category: 'Optimization',
     question: 'Can AI find shorter circuits than algorithmic transpilers?',
     description:
-      'LLM-optimized circuits vs Qiskit transpiler for Quantum Inspire hardware topologies (Starmon-7, Tuna-5/9). Measuring gate count, depth, and fidelity.',
+      'LLM-optimized circuits vs Qiskit transpiler for Quantum Inspire hardware topologies (Tuna-9). Measuring gate count, depth, and fidelity.',
     highlight: null,
   },
   {
@@ -279,7 +279,7 @@ function Hero() {
             { value: '62.25%', label: 'Pass@1 on Qiskit HumanEval', color: '#00ff88' },
             { value: '151', label: 'quantum coding tasks benchmarked', color: '#00d4ff' },
             { value: '9', label: 'interactive quantum simulations', color: '#8b5cf6' },
-            { value: '3', label: 'papers replicated with AI', color: '#ff8c42' },
+            { value: '4', label: 'papers replicated with AI', color: '#ff8c42' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-black font-mono" style={{ color: stat.color }}>
@@ -490,7 +490,7 @@ function VQEReplication() {
               <div className="space-y-1 text-[10px] font-mono text-gray-400">
                 <div>4 qubits (Jordan-Wigner)</div>
                 <div>PennyLane + OpenFermion/PySCF</div>
-                <div>8192 shots, 12 bond distances</div>
+                <div>8192 shots per point, 12 bond distances</div>
                 <div>Parity post-selection on Z terms</div>
               </div>
             </div>
@@ -515,7 +515,7 @@ function VQEReplication() {
             Full hardware results (IBM, Tuna-9) &rarr;
           </Link>
           <Link href="/replications" className="text-xs font-mono text-[#ff8c42] hover:underline">
-            Paper replications (3 papers, 13 claims) &rarr;
+            Paper replications (4 papers, 16+ claims) &rarr;
           </Link>
         </div>
       </div>
@@ -578,8 +578,8 @@ function AgentInfrastructure() {
           Agent-Based Research Infrastructure
         </h2>
         <p className="text-gray-400 text-sm mb-10 max-w-3xl">
-          Specialized AI agents that continuously run experiments, analyze results,
-          and propose new research directions. 3 of 5 agents are implemented and operational.
+          Specialized AI agents for running experiments, analyzing results,
+          and proposing new research directions. 3 of 5 agents are implemented.
         </p>
 
         {/* Pipeline */}
@@ -702,7 +702,7 @@ function ResearchContext() {
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { name: 'Quantum Inspire', desc: 'Starmon-7, Tuna-5/9 hardware', color: '#00d4ff' },
+              { name: 'Quantum Inspire', desc: 'Tuna-9 superconducting hardware', color: '#00d4ff' },
               { name: 'Qiskit 2.1 + Aer', desc: 'Circuits, simulation, noise', color: '#8b5cf6' },
               { name: 'PennyLane 0.44', desc: 'Variational algorithms & autodiff', color: '#00ff88' },
               { name: 'OpenSquirrel', desc: 'cQASM 3.0 compilation', color: '#ff8c42' },
@@ -748,7 +748,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <div className="text-xs text-gray-500 font-mono">
-            TU Delft / QuTech / Quantum Inspire &mdash; 2025
+            TU Delft / QuTech / Quantum Inspire &mdash; 2026
           </div>
           <div className="flex gap-4 text-xs text-gray-500 font-mono">
             <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">

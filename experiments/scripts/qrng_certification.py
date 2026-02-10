@@ -4,7 +4,7 @@ Generates random bitstreams from three quantum sources and runs
 a battery of statistical tests to certify randomness quality:
 
 1. ANU QRNG — vacuum fluctuation measurements (optical)
-2. QI Tuna-9 — spin qubit superposition (real hardware)
+2. QI Tuna-9 — superconducting transmon superposition (real hardware)
 3. qxelarator — local quantum circuit emulator
 
 Each test produces a p-value. p > 0.01 → sequence passes (looks random).
@@ -69,7 +69,7 @@ def fetch_anu_bytes(n_bytes: int, retries: int = 3) -> bytes:
 
 
 def fetch_tuna9_bytes(n_bytes: int) -> bytes:
-    """Generate random bytes from Tuna-9 spin qubits via Hadamard circuits."""
+    """Generate random bytes from Tuna-9 superconducting qubits via Hadamard circuits."""
     from quantuminspire.sdk.models.cqasm_algorithm import CqasmAlgorithm
     from quantuminspire.sdk.models.job_options import JobOptions
     from quantuminspire.util.api.remote_backend import RemoteBackend
@@ -541,8 +541,8 @@ def main():
 
             results["tuna9_raw"] = _run_and_report("QI Tuna-9 (raw)", tuna_raw_bits, {
                 "source": "QI Tuna-9 (raw)",
-                "method": "Hadamard gate superposition on electron spin qubits — no post-processing",
-                "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+                "method": "Hadamard gate superposition on superconducting transmon qubits — no post-processing",
+                "hardware": "9-qubit superconducting transmon processor (QuTech, TU Delft)",
                 "fetch_time_s": elapsed,
             }, args.bits)
         except Exception as e:
@@ -560,7 +560,7 @@ def main():
             results["tuna9_debiased"] = _run_and_report("QI Tuna-9 (von Neumann debiased)", debiased, {
                 "source": "QI Tuna-9 (von Neumann debiased)",
                 "method": "Hadamard + measurement, then von Neumann pair extraction",
-                "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+                "hardware": "9-qubit superconducting transmon processor (QuTech, TU Delft)",
                 "debiasing": "von Neumann (discard same-bit pairs, keep first bit of different pairs)",
                 "raw_bits": len(tuna_raw_bits),
                 "debiased_bits": len(debiased),

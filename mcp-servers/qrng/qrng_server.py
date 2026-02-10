@@ -2,10 +2,10 @@
 
 Three quantum random sources with automatic fallback:
 1. ANU QRNG — vacuum fluctuation measurements (optical, ~200ms)
-2. QI Tuna-9 — spin qubit superposition + von Neumann debiasing (~3s)
+2. QI Tuna-9 — superconducting transmon superposition + von Neumann debiasing (~3s)
 3. qxelarator — local quantum circuit emulator (instant, pseudorandom)
 
-When ANU is unavailable, the server falls back to Tuna-9 spin qubits:
+When ANU is unavailable, the server falls back to Tuna-9 superconducting qubits:
 Hadamard gates create superposition, measurement collapses to random bits,
 then von Neumann debiasing corrects hardware bias (~48% vs 50% ones).
 
@@ -226,7 +226,7 @@ def _get_random_uint8s(count: int) -> tuple[list[int], str]:
     # Source 2: Tuna-9 real hardware
     try:
         data = _fetch_tuna9_uint8s(count)
-        return data, "QI Tuna-9 (spin qubit superposition)"
+        return data, "QI Tuna-9 (superconducting transmon superposition)"
     except Exception as e:
         logger.warning(f"Tuna-9 failed: {e}")
 
@@ -258,7 +258,7 @@ def _get_random_uint16s(count: int) -> tuple[list[int], str]:
 @mcp.tool()
 def quantum_random_int(count: int = 1, max: str = "255") -> str:
     """Get true quantum random integers. Primary source: ANU QRNG (vacuum
-    fluctuations). Falls back to QI Tuna-9 spin qubits, then local emulator.
+    fluctuations). Falls back to QI Tuna-9 superconducting qubits, then local emulator.
 
     Args:
         count: How many random integers to generate (1-1024)
@@ -396,7 +396,7 @@ def _method_for_source(source: str) -> str:
     if "ANU" in source:
         return "Vacuum fluctuations of the electromagnetic field"
     if "Tuna" in source:
-        return "Hadamard gate on spin qubits + von Neumann debiasing (NIST-certified 8/8)"
+        return "Hadamard gate on superconducting transmon qubits + von Neumann debiasing (NIST-certified 8/8)"
     return "Simulated quantum circuit (Hadamard + measurement)"
 
 

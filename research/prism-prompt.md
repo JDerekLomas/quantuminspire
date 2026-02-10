@@ -139,7 +139,7 @@ Error analysis of 57 failures: 13 wrong answers (23%), 11 syntax errors, 9 Sampl
 
 #### 4. QRNG Certification
 
-Tuna-9 spin qubits produce random numbers with 48.1% ones (biased). After von Neumann debiasing (75% bit discard), all 8 NIST SP 800-22 tests pass (p > 0.01 for all).
+Tuna-9 superconducting qubits produce random numbers with 48.1% ones (biased). After von Neumann debiasing (75% bit discard), all 8 NIST SP 800-22 tests pass (p > 0.01 for all).
 
 #### 5. Additional Experiments (emulator only)
 

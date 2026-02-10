@@ -864,6 +864,7 @@ function RepetitionCodeCard({ result }: { result: ExperimentResult }) {
   const analysis = result.analysis
   const emu = isEmulator(result.backend)
   const variants = analysis.variant_results as Record<string, any> | undefined
+  const decoder = analysis.decoder_comparison as Record<string, any> | undefined
 
   return (
     <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#22d3ee]/30 transition-colors">
@@ -932,6 +933,52 @@ function RepetitionCodeCard({ result }: { result: ExperimentResult }) {
                   )
                 })}
               </div>
+            </div>
+          )}
+
+          {/* Decoder comparison (NN vs Lookup) */}
+          {decoder && (
+            <div className="bg-white/[0.02] rounded p-4 border border-white/[0.03]">
+              <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-3">AI Decoder vs Lookup Table</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs font-mono text-gray-500 mb-1">NN Decoder (MLP)</p>
+                  <p className="text-xl font-mono font-bold text-[#22d3ee]">
+                    {((decoder.nn_accuracy || 0) * 100).toFixed(1)}%
+                  </p>
+                  <p className="text-[10px] font-mono text-gray-600">
+                    {decoder.n_folds}-fold CV, {decoder.n_samples?.toLocaleString()} samples
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-mono text-gray-500 mb-1">Lookup Table</p>
+                  <p className="text-xl font-mono font-bold text-gray-300">
+                    {((decoder.lookup_accuracy || 0) * 100).toFixed(1)}%
+                  </p>
+                  <p className="text-[10px] font-mono text-gray-600">
+                    Syndrome-based classification
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 space-y-1">
+                {[
+                  { label: 'NN', value: decoder.nn_accuracy || 0, color: '#22d3ee' },
+                  { label: 'Lookup', value: decoder.lookup_accuracy || 0, color: '#666' },
+                ].map(d => (
+                  <div key={d.label} className="flex items-center gap-2 text-xs font-mono">
+                    <span className="text-gray-500 w-16">{d.label}</span>
+                    <div className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${d.value * 100}%`, backgroundColor: d.color }} />
+                    </div>
+                    <span style={{ color: d.color }}>{(d.value * 100).toFixed(1)}%</span>
+                  </div>
+                ))}
+              </div>
+              {decoder.nn_improvement && (
+                <p className="text-[10px] font-mono text-[#22d3ee] mt-2">
+                  +{(decoder.nn_improvement * 100).toFixed(1)}% improvement from neural network decoder
+                </p>
+              )}
             </div>
           )}
         </div>
