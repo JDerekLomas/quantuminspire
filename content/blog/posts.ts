@@ -1437,7 +1437,36 @@ b = measure q"""
 
 <p>All measurements were taken on February 10, 2026, on QuTech's Tuna-9 superconducting transmon processor. The complete raw data &mdash; all measurement counts, job IDs, correlators, and analysis &mdash; is stored at <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/autonomous-characterization-full.json">experiments/results/autonomous-characterization-full.json</a>.</p>
 
-<p>Hardware job IDs: Single-qubit probes (415259&ndash;415262), connectivity mapping (415273&ndash;415293), noise tomography (415323&ndash;415332), GHZ comparison (415373, 415374, 415385, 415387).</p>`,
+<p>Hardware job IDs: Single-qubit probes (415259&ndash;415262), connectivity mapping (415273&ndash;415293), noise tomography (415323&ndash;415332), GHZ comparison (415373, 415374, 415385, 415387).</p>
+
+<h2>Editorial: What a Transpiler Baseline Revealed</h2>
+
+<p><em>Added February 10, 2026. After publishing this post, we ran the experiment that the Limitations section admitted was missing: a comparison to Qiskit's built-in transpiler. The results require an honest correction.</em></p>
+
+<p>We gave Qiskit's transpiler (<code>optimization_level=3</code>) the same topology and error data that the AI had discovered, then asked it to route the same GHZ circuits. The results:</p>
+
+<table>
+<thead><tr><th>Routing</th><th>Qubits</th><th>5q GHZ Fidelity</th><th>Valid Circuit?</th></tr></thead>
+<tbody>
+<tr><td>Naive</td><td>[0,1,2,3,4]</td><td>80.6%</td><td>Yes</td></tr>
+<tr><td>AI</td><td>[2,4,5,6,8]</td><td>86.7%</td><td><strong>No</strong> &mdash; used q4&harr;q5, q5&harr;q6 (not connected)</td></tr>
+<tr><td>Qiskit <code>opt_level=3</code></td><td>[5,2,4,6,8]</td><td>86.0%</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<p>Three findings that change the story:</p>
+
+<ol>
+<li><strong>The AI's 5-qubit circuit was invalid.</strong> It picked the right qubits but generated a CNOT chain through pairs that aren't physically connected (q4&harr;q5, q5&harr;q6). The original submission happened to succeed &mdash; likely because the hardware auto-routed the invalid gates &mdash; but when we re-submitted the same circuit, it failed. The 83.8% result was not reproducible.</li>
+<li><strong>The Qiskit transpiler matches the AI's performance.</strong> Given the same error data, Qiskit deterministically chose [5,2,4,6,8] with a valid CNOT chain and achieved 86.0% fidelity. For 3-qubit GHZ, the AI and Qiskit chose the <em>identical</em> routing: [2,4,6].</li>
+<li><strong>The improvement over naive routing is real, but it's not an AI advantage.</strong> The +5.8pp gain comes from basic qubit selection &mdash; avoid q[0], prefer high-fidelity connections. Any transpiler with calibration data does this automatically.</li>
+</ol>
+
+<p>So what <em>is</em> the AI's actual contribution? Not the routing &mdash; the <strong>characterization</strong>. The AI discovered the topology, measured error rates, and identified noise types from scratch. A transpiler needs this data as input; the AI generated it. The genuine value is in Phase 1 (discovery), not Phase 2 (exploitation). We should have framed it that way from the start.</p>
+
+<p>We're leaving the original post intact above as a record of what we initially claimed, and this correction as a record of what we found when we checked our work. This is what honest research looks like &mdash; you run the baseline, and sometimes it humbles you.</p>
+
+<p><em>Transpiler baseline data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/qiskit-transpiler-baseline-ghz5.json">qiskit-transpiler-baseline-ghz5.json</a>. Hardware jobs: Qiskit routing (415434, COMPLETED), AI re-submission (415436, FAILED).</em></p>`,
     sources: [
       { label: 'Full experiment data (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/autonomous-characterization-full.json' },
       { label: 'Previous experiment: AI runs quantum hardware', url: '/blog/ai-runs-quantum-experiment' },
