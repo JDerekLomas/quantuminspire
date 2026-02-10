@@ -2,11 +2,10 @@
   "experiment_id": "qrng-certification-001",
   "experiment_type": "qrng-certification",
   "title": "NIST SP 800-22 Quantum Randomness Certification",
-  "description": "Statistical certification of three quantum random sources using NIST SP 800-22 test battery",
-  "timestamp": "2026-02-10T16:15:12.446643+00:00",
+  "description": "Statistical certification of quantum random sources with von Neumann debiasing comparison",
+  "timestamp": "2026-02-10T16:18:59.165177+00:00",
   "parameters": {
-    "n_bits": 20000,
-    "n_bytes": 2500,
+    "target_bits": 20000,
     "alpha": 0.01,
     "tests": [
       "Frequency (Monobit)",
@@ -17,72 +16,148 @@
       "Serial",
       "Approximate Entropy",
       "Cumulative Sums"
-    ]
+    ],
+    "debiasing": "von Neumann pair extraction"
   },
   "results": {
-    "tuna9": {
-      "source": "QI Tuna-9",
-      "method": "Hadamard gate superposition on electron spin qubits",
+    "tuna9_raw": {
+      "source": "QI Tuna-9 (raw)",
+      "method": "Hadamard gate superposition on electron spin qubits \u2014 no post-processing",
       "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+      "fetch_time_s": 64.37,
       "n_bits": 20000,
-      "fetch_time_s": 15.39,
       "tests": [
         {
           "test": "Frequency (Monobit)",
-          "statistic": 5.4871486220076084,
-          "p_value": 4.0847345087940545e-08,
+          "statistic": 9.305525240414966,
+          "p_value": 1.3333168392421376e-20,
           "pass": "False",
-          "ones_fraction": 0.4806
+          "ones_fraction": 0.4671
         },
         {
           "test": "Block Frequency",
           "block_size": 128,
           "n_blocks": 156,
-          "statistic": 1716.0625,
-          "p_value": 1.3193679499487574e-260,
+          "statistic": 1801.0,
+          "p_value": 1.9494861807187136e-277,
           "pass": "False"
         },
         {
           "test": "Runs",
           "p_value": 0.0,
           "pass": false,
-          "note": "Pre-test failed: pi=0.4806, tau=0.0141"
+          "note": "Pre-test failed: pi=0.4671, tau=0.0141"
         },
         {
           "test": "Longest Run of Ones",
           "block_size": 8,
-          "statistic": 13.670206816039022,
-          "p_value": 0.0033902252815124875,
+          "statistic": 30.426108580916768,
+          "p_value": 1.1226549041869073e-06,
           "pass": "False"
         },
         {
           "test": "Spectral (DFT)",
           "threshold": 244.77468306808166,
           "expected_below": 9500.0,
-          "observed_below": 9430,
-          "statistic": -4.542199791661351,
-          "p_value": 5.567024236928021e-06,
-          "pass": "False"
+          "observed_below": 9463,
+          "statistic": -2.4008770327352855,
+          "p_value": 0.016355831694273883,
+          "pass": "True"
         },
         {
           "test": "Serial (m=2)",
-          "del1": 30.927999999999884,
-          "del2": 0.8191999999980908,
-          "p_value": 1.923402303584729e-07,
+          "del1": 88.00399999999718,
+          "del2": 1.4111999999950058,
+          "p_value": 7.76558552855733e-20,
           "p_value2": 1.0,
           "pass": "False"
         },
         {
           "test": "Approximate Entropy (m=4)",
-          "approximate_entropy": 0.6921135401856877,
-          "statistic": 41.34561497030287,
-          "p_value": 0.0004936400100126833,
+          "approximate_entropy": 0.6905804505138482,
+          "statistic": 102.66920184388351,
+          "p_value": 1.0922063391980917e-14,
           "pass": "False"
         },
         {
           "test": "Cumulative Sums",
-          "max_excursion": 1239,
-          "p_value": 9.671739515760548e-19,
+          "max_excursion": 1317,
+          "p_value": 6.237251505583119e-21,
+          "pass": "False"
+        }
+      ],
+      "passed": 1,
+      "total": 8,
+      "pass_rate": 0.125
+    },
+    "tuna9_debiased": {
+      "source": "QI Tuna-9 (von Neumann debiased)",
+      "method": "Hadamard + measurement, then von Neumann pair extraction",
+      "hardware": "9-qubit spin processor (QuTech, TU Delft)",
+      "debiasing": "von Neumann (discard same-bit pairs, keep first bit of different pairs)",
+      "raw_bits": 100000,
+      "debiased_bits": 24914,
+      "discard_rate": 0.7509,
+      "n_bits": 20000,
+      "tests": [
+        {
+          "test": "Frequency (Monobit)",
+          "statistic": 2.842569260369921,
+          "p_value": 0.004475150644751765,
+          "pass": "False",
+          "ones_fraction": 0.51005
+        },
+        {
+          "test": "Block Frequency",
+          "block_size": 128,
+          "n_blocks": 156,
+          "statistic": 2986.46875,
+          "p_value": 0.0,
+          "pass": "False"
+        },
+        {
+          "test": "Runs",
+          "observed_runs": 9018,
+          "expected_runs": 9995.9599,
+          "statistic": 9018.0,
+          "p_value": 1.5450424405289885e-43,
+          "pass": "False"
+        },
+        {
+          "test": "Longest Run of Ones",
+          "block_size": 8,
+          "statistic": 1344.6975458516624,
+          "p_value": 2.9458659468490644e-291,
+          "pass": "False"
+        },
+        {
+          "test": "Spectral (DFT)",
+          "threshold": 244.77468306808166,
+          "expected_below": 9500.0,
+          "observed_below": 9350,
+          "statistic": -9.733285267845751,
+          "p_value": 2.1745410845311145e-22,
+          "pass": "False"
+        },
+        {
+          "test": "Serial (m=2)",
+          "del1": 200.9449999999997,
+          "del2": 192.86479999999938,
+          "p_value": 2.319250543138048e-44,
+          "p_value2": 1.0,
+          "pass": "False"
+        },
+        {
+          "test": "Approximate Entropy (m=4)",
+          "approximate_entropy": 0.4484523133112903,
+          "statistic": 9787.794689946199,
+          "p_value": 0.0,
+          "pass": "False"
+        },
+        {
+          "test": "Cumulative Sums",
+          "max_excursion": 428,
+          "p_value": 0.004949414657860757,
           "pass": "False"
         }
       ],
@@ -94,67 +169,67 @@
       "source": "qxelarator",
       "method": "Simulated Hadamard + measurement (quantum circuit emulator)",
       "hardware": "Local CPU (qxelarator)",
+      "fetch_time_s": 0.37,
       "n_bits": 20000,
-      "fetch_time_s": 0.31,
       "tests": [
         {
           "test": "Frequency (Monobit)",
-          "statistic": 0.6929646455628166,
-          "p_value": 0.48833173881147696,
+          "statistic": 0.3959797974644666,
+          "p_value": 0.6921199319709661,
           "pass": "True",
-          "ones_fraction": 0.49755
+          "ones_fraction": 0.4986
         },
         {
           "test": "Block Frequency",
           "block_size": 128,
           "n_blocks": 156,
-          "statistic": 2053.65625,
-          "p_value": 0.0,
+          "statistic": 1838.75,
+          "p_value": 6.101997321303402e-285,
           "pass": "False"
         },
         {
           "test": "Runs",
-          "observed_runs": 10016,
-          "expected_runs": 9999.759900000001,
-          "statistic": 10016.0,
-          "p_value": 0.8183441585695341,
+          "observed_runs": 10104,
+          "expected_runs": 9999.921600000001,
+          "statistic": 10104.0,
+          "p_value": 0.14104723865809657,
           "pass": "True"
         },
         {
           "test": "Longest Run of Ones",
           "block_size": 8,
-          "statistic": 2.6580221457468003,
-          "p_value": 0.4474081897857801,
+          "statistic": 1.4903022152922762,
+          "p_value": 0.6845103760223816,
           "pass": "True"
         },
         {
           "test": "Spectral (DFT)",
           "threshold": 244.77468306808166,
           "expected_below": 9500.0,
-          "observed_below": 9563,
-          "statistic": 4.087979812495216,
-          "p_value": 4.351460092072194e-05,
+          "observed_below": 9541,
+          "statistic": 2.6604313065445058,
+          "p_value": 0.007804064459502244,
           "pass": "False"
         },
         {
           "test": "Serial (m=2)",
-          "del1": 0.5313999999998487,
-          "del2": 0.051199999998061685,
-          "p_value": 0.7666690937325374,
+          "del1": 2.319999999999709,
+          "del2": 2.163199999999051,
+          "p_value": 0.3134861808826509,
           "p_value2": 1.0,
           "pass": true
         },
         {
           "test": "Approximate Entropy (m=4)",
-          "approximate_entropy": 0.6929574447876705,
-          "statistic": 7.589430890990734,
-          "p_value": 0.9601604016317757,
+          "approximate_entropy": 0.6928044058087224,
+          "statistic": 13.710990048916294,
+          "p_value": 0.6202346664039329,
           "pass": "True"
         },
         {
           "test": "Cumulative Sums",
-          "max_excursion": 1805,
-          "p_value": 1.314512138059715e-37,
+          "max_excursion": 1671,
+          "p_value": 1.6181555180020463e-32,
           "pass": "False"
         }
       ],
@@ -164,6 +239,6 @@
     }
   },
   "analysis": {
-    "conclusion": "QI Tuna-9: 0/8 tests passed \u2014 significant deviations from randomness detected. | qxelarator: 5/8 tests passed \u2014 significant deviations from randomness detected."
+    "conclusion": "QI Tuna-9 (raw): 1/8 tests passed \u2014 significant deviations from randomness detected. | QI Tuna-9 (von Neumann debiased): 0/8 tests passed \u2014 significant deviations from randomness detected. | qxelarator: 5/8 tests passed \u2014 significant deviations from randomness detected."
   }
 }
