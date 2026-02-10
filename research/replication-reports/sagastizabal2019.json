@@ -38,7 +38,7 @@
           "discrepancy": 0.0048,
           "within_published_error": false,
           "failure_mode": "partial_noise",
-          "failure_description": "Best result: q[2,4] with Z-parity post-selection achieves 3.0 kcal/mol. Three qubit pairs tested: q[0,1]=9.45, q[4,6]=6.2 (with REM), q[2,4]=3.04 kcal/mol. Qubit selection provides 3.1x improvement (q[0,1] vs q[2,4]). Post-selection keeps 96% of shots.",
+          "failure_description": "Best result: q[2,4] with Z-parity post-selection achieves 3.0 kcal/mol. Four qubit pairs tested: q[0,1]=9.45, q[4,6]=6.2 (with REM), q[2,4]=3.04, q[6,8]=3.60 kcal/mol. Qubit selection provides 3.1x improvement (q[0,1] vs q[2,4]). Post-selection keeps 96% of shots.",
           "severity": "low",
           "error_kcal_mol": 3.04,
           "qubit_pair": [2, 4],
@@ -46,7 +46,8 @@
           "all_qubit_pairs": {
             "q01": {"measured_value": -1.1222, "error_kcal_mol": 9.45, "bell_fidelity": 0.870, "postselection_keep": 0.826},
             "q24": {"measured_value": -1.1325, "error_kcal_mol": 3.04, "bell_fidelity": 0.923, "postselection_keep": 0.961},
-            "q46": {"measured_value": -1.1274, "error_kcal_mol": 6.2, "bell_fidelity": 0.935, "postselection_keep": null, "mitigation": "Z-PS + readout error mitigation"}
+            "q46": {"measured_value": -1.1274, "error_kcal_mol": 6.2, "bell_fidelity": 0.935, "postselection_keep": null, "mitigation": "Z-PS + readout error mitigation"},
+            "q68": {"measured_value": -1.13156, "error_kcal_mol": 3.60, "bell_fidelity": 0.913, "postselection_keep": 0.962}
           }
         },
         "ibm_torino": {
