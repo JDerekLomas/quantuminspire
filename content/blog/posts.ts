@@ -903,6 +903,100 @@ export const posts: BlogPost[] = [
     ],
   },
   {
+    slug: 'seeing-quantum',
+    title: 'Seeing Quantum: Why Visualization Is the Missing Layer',
+    subtitle: 'Bloch spheres, Q-spheres, circuit editors, and 12 interactive demos we built to make quantum intuitive',
+    date: '2026-02-10',
+    author: 'AI x Quantum Research Team',
+    category: 'landscape',
+    pinned: true,
+    tags: ['visualization', 'Bloch sphere', 'education', 'Three.js', 'interactive', 'gallery'],
+    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&q=80',
+    heroCaption: 'You cannot debug what you cannot see.',
+    excerpt: "Quantum computing has a representation problem. The math is abstract, the hardware is invisible, and the errors are statistical. We surveyed 20+ visualization tools, built 12 interactive demos, and learned that the best way to understand a qubit is to watch it move.",
+    content: `<p>Quantum computing has a representation problem. Classical bits are easy to picture: on or off, 0 or 1. But a qubit lives on the surface of a sphere, entangled states exist in spaces no human has ever seen, and the errors that plague real hardware are statistical patterns buried in thousands of measurement shots. <strong>You cannot debug what you cannot see.</strong></p>
+
+<p>We started the haiqu project wanting to run experiments on real quantum hardware. But we quickly realized that interpreting results &mdash; understanding <em>why</em> a VQE energy was 7 kcal/mol off, or why a Bell state fidelity dropped from 96% to 87% on different qubits &mdash; required seeing the quantum states, not just reading the numbers. So we surveyed the field and built our own tools.</p>
+
+<h2>The Visualization Landscape</h2>
+
+<p>We cataloged <strong><a href="/gallery">20+ quantum visualization tools</a></strong> across the web, from research prototypes to production platforms. A few stand out:</p>
+
+<table>
+<thead><tr><th>Tool</th><th>What It Does</th><th>Why It Matters</th></tr></thead>
+<tbody>
+<tr><td><strong><a href="https://algassert.com/quirk">Quirk</a></strong></td><td>Drag-and-drop circuit editor with real-time state display</td><td>The gold standard. URL-shareable circuits, up to 16 qubits. Every quantum educator uses it.</td></tr>
+<tr><td><strong><a href="https://bloch.kherb.io/">Blochy</a></strong></td><td>Publication-quality Bloch sphere with time evolution</td><td>Shows how gates rotate qubits. Exportable for papers.</td></tr>
+<tr><td><strong><a href="https://quantumflytrap.com/virtual-lab/">Quantum Flytrap</a></strong></td><td>Optical table with beam splitters and detectors</td><td>Entanglement you can touch. Published at CHI 2022.</td></tr>
+<tr><td><strong><a href="https://q-ctrl.com/black-opal">Black Opal</a></strong></td><td>350+ interactive quantum activities</td><td>The gold standard for educational UX. University-adopted worldwide.</td></tr>
+<tr><td><strong><a href="https://github.com/fh-igd-iet/qcvis">QCVIS</a></strong></td><td>State bar plots, Q-sphere, state cube (4D)</td><td>Four different ways to see multi-qubit states. Oklab color space for perceptual accuracy.</td></tr>
+</tbody>
+</table>
+
+<p>The full catalog is in our <strong><a href="/gallery">Visualization Gallery</a></strong> &mdash; 20 tools, filterable by category, with live previews for most.</p>
+
+<h2>What We Built: 12 Interactive Demos</h2>
+
+<p>Reading about Bloch spheres is one thing. Dragging a qubit across one is another. We built interactive Three.js and React demos for every core concept in quantum computing:</p>
+
+<table>
+<thead><tr><th>Demo</th><th>Concept</th><th>What You Can Do</th></tr></thead>
+<tbody>
+<tr><td><strong><a href="/bloch-sphere">Bloch Sphere</a></strong></td><td>Single-qubit states</td><td>Apply H, X, Y, Z, S, T gates and watch the state vector rotate in 3D</td></tr>
+<tr><td><strong><a href="/state-vector">State Vector</a></strong></td><td>Multi-qubit amplitudes</td><td>See amplitude bars and phase wheels for up to 4 qubits</td></tr>
+<tr><td><strong><a href="/qsphere">Q-Sphere</a></strong></td><td>Multi-qubit geometry</td><td>Qiskit-style Q-sphere with amplitude-sized dots on a Hamming-distance sphere</td></tr>
+<tr><td><strong><a href="/entanglement">Entanglement</a></strong></td><td>Two-qubit correlations</td><td>Create Bell states with H+CNOT and see measurement correlations</td></tr>
+<tr><td><strong><a href="/interference">Interference</a></strong></td><td>Wave mechanics</td><td>Visualize constructive and destructive interference of amplitudes</td></tr>
+<tr><td><strong><a href="/measurement">Measurement</a></strong></td><td>Born rule / collapse</td><td>Repeated measurement of superposition states, histogram builds up</td></tr>
+<tr><td><strong><a href="/teleportation">Teleportation</a></strong></td><td>Quantum teleportation protocol</td><td>Step through the protocol: entanglement, Bell measurement, correction</td></tr>
+<tr><td><strong><a href="/grovers">Grover's Algorithm</a></strong></td><td>Amplitude amplification</td><td>Watch the marked state grow with each oracle + diffusion step</td></tr>
+<tr><td><strong><a href="/rabi">Rabi Oscillations</a></strong></td><td>Driven qubit dynamics</td><td>Tune drive frequency and amplitude, see resonance on the Bloch sphere</td></tr>
+<tr><td><strong><a href="/hamiltonians">Hamiltonians</a></strong></td><td>H2 molecular Hamiltonian</td><td>Explore Pauli decomposition, coefficient values, bond-distance dependence</td></tr>
+<tr><td><strong><a href="/ansatz">Ansatz Explorer</a></strong></td><td>VQE circuit design</td><td>Adjust variational parameters and see how the ansatz covers the Hilbert space</td></tr>
+<tr><td><strong><a href="/sonification">Sonification</a></strong></td><td>Quantum states as sound</td><td>Hear the difference between separable and entangled states</td></tr>
+</tbody>
+</table>
+
+<h2>What Visualization Taught Us About Our Experiments</h2>
+
+<p>The demos aren't just educational &mdash; they directly informed our experimental work:</p>
+
+<ul>
+<li><strong>The Bloch sphere explains readout error.</strong> When we saw that Tuna-9's dominant noise is dephasing (T2 decay around the equator), it became obvious why Z-basis measurement is more reliable than X/Y: dephasing doesn't affect the poles, only the equator. This predicted our finding that <a href="/blog/error-mitigation-showdown">post-selection works well for Z-basis but not X/Y</a>.</li>
+
+<li><strong>The state vector view explains VQE sensitivity.</strong> Our <a href="/hamiltonians">Hamiltonian explorer</a> shows that the H2 ground state at R=0.735 A is ~94% |01&rang; + ~6% entangled correction. The entangled piece is tiny &mdash; which means the variational angle is small (0.11 rad), and any noise in the X/Y basis measurements gets amplified into large energy errors.</li>
+
+<li><strong>The Q-sphere explains GHZ fragility.</strong> A perfect GHZ-5 state has exactly 2 dots on the Q-sphere (|00000&rang; and |11111&rang;). On Tuna-9, we see probability leaking to neighboring Hamming-distance shells &mdash; each leaked dot represents a bit-flip error on one qubit. The visual immediately shows <em>which qubits</em> are flipping.</li>
+</ul>
+
+<h2>The Visualization Gap</h2>
+
+<p>Despite the excellent tools available, there's a gap in the field: <strong>almost no one visualizes experimental results</strong>. Papers show circuit diagrams and histograms, but rarely show the quantum states those circuits produce on real hardware. Error mitigation papers show before/after numbers but not the noise patterns in the raw data.</p>
+
+<p>Our <a href="/experiments">experiment dashboard</a> attempts to fill this gap. Every experiment result includes interactive energy diagrams, fidelity comparisons, and raw count breakdowns. The <a href="/platforms">cross-platform comparison</a> page shows the same algorithms running on four different backends side by side.</p>
+
+<p>The next frontier is real-time visualization during experiment execution &mdash; watching quantum states evolve shot by shot as they come off the hardware. We're not there yet, but the infrastructure is in place.</p>
+
+<h2>Explore</h2>
+
+<ul>
+<li><strong><a href="/gallery">Visualization Gallery</a></strong> &mdash; 20+ cataloged tools with live previews</li>
+<li><strong><a href="/bloch-sphere">Start with the Bloch Sphere</a></strong> &mdash; the best first step into quantum visualization</li>
+<li><strong><a href="/experiments">Experiment Dashboard</a></strong> &mdash; real hardware results with interactive charts</li>
+<li><strong><a href="/learn">Learning Path</a></strong> &mdash; structured progression through quantum concepts</li>
+</ul>
+`,
+    sources: [
+      { label: 'Visualization Gallery (20+ tools)', url: 'https://quantuminspire.vercel.app/gallery' },
+      { label: 'Quirk — drag-and-drop circuit editor', url: 'https://algassert.com/quirk' },
+      { label: 'QCVIS — multi-view state visualization (Fraunhofer)', url: 'https://github.com/fh-igd-iet/qcvis' },
+      { label: 'Quantum Flytrap Virtual Lab (CHI 2022)', url: 'https://quantumflytrap.com/virtual-lab/' },
+      { label: 'Black Opal — Q-CTRL education platform', url: 'https://q-ctrl.com/black-opal' },
+      { label: 'VENUS — novel entanglement representation (EuroVis 2023)', url: 'https://arxiv.org/abs/2303.08366' },
+      { label: 'ShorVis — integrated Shor visualization (IEEE VIS 2019)', url: 'https://ieeexplore.ieee.org/document/8719175/' },
+    ],
+  },
+  {
     slug: 'llms-write-quantum-code',
     title: 'Can LLMs Write Quantum Code? We Tested 151 Tasks',
     subtitle: 'Gemini 3 Flash scores 62.25% and Claude Opus 4.6 scores 63.6% — but the failures are more interesting than the passes',
