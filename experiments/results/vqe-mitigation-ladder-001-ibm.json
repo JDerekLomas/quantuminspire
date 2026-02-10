@@ -1,0 +1,249 @@
+{
+  "schema_version": "1.0",
+  "id": "vqe-mitigation-ladder-001-ibm",
+  "type": "vqe_mitigation_ladder",
+  "backend": "ibm_torino",
+  "timestamp": "2026-02-10T19:09:53.349361+00:00",
+  "parameters": {
+    "molecule": "H2",
+    "bond_distance": 0.735,
+    "basis_set": "STO-3G",
+    "theta": -0.2235,
+    "fci_energy": -1.1373,
+    "coefficients": {
+      "g0": -0.321124,
+      "g1": 0.397937,
+      "g2": -0.397937,
+      "g3": 0.0,
+      "g4": 0.090466,
+      "g5": 0.090466
+    },
+    "ansatz": "Ry(theta, q0) -> CNOT(q0,q1) -> X(q0)"
+  },
+  "ladder": {
+    "phase_0_offline": {
+      "phase": "phase_0_offline",
+      "description": "Reanalysis of 3 existing IBM VQE datasets with parity post-selection + bootstrap CIs",
+      "per_run": [
+        {
+          "name": "Run 1 (equilibrium-001)",
+          "shots": 4096,
+          "energy_raw": -1.122583,
+          "error_raw_kcal": 9.24,
+          "energy_postselected": -1.134654,
+          "error_postselected_kcal": 1.66,
+          "postselection_keep_fraction": 0.9844,
+          "expectation_values_raw": {
+            "Z0": -0.96094,
+            "Z1": 0.9502,
+            "Z0Z1": -0.96875,
+            "X0X1": -0.25586,
+            "Y0Y1": -0.19678
+          },
+          "expectation_values_postselected": {
+            "Z0": -0.97073,
+            "Z1": 0.97073,
+            "Z0Z1": -1.0,
+            "X0X1": -0.25586,
+            "Y0Y1": -0.19678
+          },
+          "bootstrap_postselected": {
+            "mean": -1.1346450028686896,
+            "std": 0.003572542633920349,
+            "ci_95_low": -1.14155581423988,
+            "ci_95_high": -1.1274847806500663,
+            "n_valid": 10000
+          },
+          "bootstrap_raw": {
+            "mean": -1.1225756352796388,
+            "std": 0.0038095529626784143,
+            "ci_95_low": -1.129957903405762,
+            "ci_95_high": -1.114907004968262,
+            "n_valid": 10000
+          },
+          "fci_within_95ci": true,
+          "job_ids": {
+            "z_basis": "d65n0gbe4kfs73cvkisg",
+            "x_basis": "d65n0gre4kfs73cvkitg",
+            "y_basis": "d65n0hbe4kfs73cvkivg"
+          }
+        },
+        {
+          "name": "Run 2 (variance rerun)",
+          "shots": 4096,
+          "energy_raw": -1.109395,
+          "error_raw_kcal": 17.51,
+          "energy_postselected": -1.127227,
+          "error_postselected_kcal": 6.32,
+          "postselection_keep_fraction": 0.9768,
+          "expectation_values_raw": {
+            "Z0": -0.95752,
+            "Z1": 0.92969,
+            "Z0Z1": -0.95361,
+            "X0X1": -0.23047,
+            "Y0Y1": -0.18164
+          },
+          "expectation_values_postselected": {
+            "Z0": -0.96601,
+            "Z1": 0.96601,
+            "Z0Z1": -1.0,
+            "X0X1": -0.23047,
+            "Y0Y1": -0.18164
+          },
+          "bootstrap_postselected": {
+            "mean": -1.1272273618546818,
+            "std": 0.0037371432695881297,
+            "ci_95_low": -1.1344468673196124,
+            "ci_95_high": -1.1198907790631754,
+            "n_valid": 10000
+          },
+          "bootstrap_raw": {
+            "mean": -1.109400856369043,
+            "std": 0.004070195324925363,
+            "ci_95_low": -1.117229391687012,
+            "ci_95_high": -1.1013487080932618,
+            "n_valid": 10000
+          },
+          "fci_within_95ci": false,
+          "job_ids": {
+            "z": "d65nb9oqbmes739d4ffg",
+            "x": "d65nbadbujdc73ctmie0",
+            "y": "d65nbahv6o8c73d37700"
+          }
+        },
+        {
+          "name": "Run 3 (sagastizabal)",
+          "shots": 4096,
+          "energy_raw": -1.119721,
+          "error_raw_kcal": 11.03,
+          "energy_postselected": -1.130992,
+          "error_postselected_kcal": 3.96,
+          "postselection_keep_fraction": 0.9854,
+          "expectation_values_raw": {
+            "Z0": -0.95605,
+            "Z1": 0.94922,
+            "Z0Z1": -0.9707,
+            "X0X1": -0.21826,
+            "Y0Y1": -0.22852
+          },
+          "expectation_values_postselected": {
+            "Z0": -0.9668,
+            "Z1": 0.9668,
+            "Z0Z1": -1.0,
+            "X0X1": -0.21826,
+            "Y0Y1": -0.22852
+          },
+          "bootstrap_postselected": {
+            "mean": -1.1310376094460715,
+            "std": 0.003729222235491879,
+            "ci_95_low": -1.1381195842181613,
+            "ci_95_high": -1.1235604087034325,
+            "n_valid": 10000
+          },
+          "bootstrap_raw": {
+            "mean": -1.1197610407552245,
+            "std": 0.003937956016627613,
+            "ci_95_low": -1.1273445035644534,
+            "ci_95_high": -1.1119387762207031,
+            "n_valid": 10000
+          },
+          "fci_within_95ci": true,
+          "job_ids": {
+            "zz_basis": "d65n175bujdc73ctm7q0",
+            "xx_basis": "d65n17je4kfs73cvkjug",
+            "yy_basis": "d65n17pv6o8c73d36sag"
+          }
+        }
+      ],
+      "combined": {
+        "total_shots_per_basis": 12288,
+        "energy_raw": -1.117233,
+        "error_raw_kcal": 12.59,
+        "energy_postselected": -1.130961,
+        "error_postselected_kcal": 3.98,
+        "postselection_keep_fraction": 0.9822,
+        "bootstrap_postselected": {
+          "mean": -1.1309742175688222,
+          "std": 0.002117065059964536,
+          "ci_95_low": -1.1351713056906416,
+          "ci_95_high": -1.1269011788356258,
+          "n_valid": 10000
+        },
+        "weighted_mean": -1.13107,
+        "weighted_std": 0.002123,
+        "weighted_error_kcal": 3.91
+      },
+      "ibm_minutes_used": 0
+    }
+  },
+  "analysis": {
+    "ranking": [
+      {
+        "label": "P0: Run 1 (equilibrium-001) (PS)",
+        "energy": -1.134654,
+        "error_kcal": 1.66,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Weighted mean (PS)",
+        "energy": -1.13107,
+        "error_kcal": 3.91,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Run 3 (sagastizabal) (PS)",
+        "energy": -1.130992,
+        "error_kcal": 3.96,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Combined 3 runs (PS)",
+        "energy": -1.130961,
+        "error_kcal": 3.98,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Run 2 (variance rerun) (PS)",
+        "energy": -1.127227,
+        "error_kcal": 6.32,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Run 1 (equilibrium-001) (raw)",
+        "energy": -1.122583,
+        "error_kcal": 9.24,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Run 3 (sagastizabal) (raw)",
+        "energy": -1.119721,
+        "error_kcal": 11.03,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      },
+      {
+        "label": "P0: Run 2 (variance rerun) (raw)",
+        "energy": -1.109395,
+        "error_kcal": 17.51,
+        "chemical_accuracy": false,
+        "job_id": "offline"
+      }
+    ],
+    "best_technique": {
+      "label": "P0: Run 1 (equilibrium-001) (PS)",
+      "energy": -1.134654,
+      "error_kcal": 1.66,
+      "chemical_accuracy": false,
+      "job_id": "offline"
+    },
+    "chemical_accuracy_achieved": false,
+    "interpretation": "Best: P0: Run 1 (equilibrium-001) (PS) at 1.66 kcal/mol. Worst: P0: Run 2 (variance rerun) (raw) at 17.51 kcal/mol. No technique achieved chemical accuracy. Gap: 0.66 kcal/mol from best result. "
+  },
+  "environment": "experiments/environment.json"
+}

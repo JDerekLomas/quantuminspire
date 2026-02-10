@@ -228,10 +228,10 @@ function Nav() {
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
           <span className="font-mono font-bold text-white tracking-wider text-sm">
-            AI x Quantum
+            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span>
           </span>
           <span className="text-[10px] font-mono text-gray-500 hidden sm:block">
-            TU Delft / Quantum Inspire
+            TU Delft / QuTech
           </span>
         </div>
         <div className="flex gap-6 text-xs font-mono text-gray-500">
@@ -289,8 +289,8 @@ function Hero() {
           {[
             { value: '62.25%', label: 'Pass@1 on Qiskit HumanEval', color: '#00ff88' },
             { value: '151', label: 'quantum coding tasks benchmarked', color: '#00d4ff' },
-            { value: '9', label: 'interactive quantum simulations', color: '#8b5cf6' },
-            { value: '4', label: 'papers replicated with AI', color: '#ff8c42' },
+            { value: '10', label: 'interactive quantum simulations', color: '#8b5cf6' },
+            { value: '5', label: 'papers replicated with AI', color: '#ff8c42' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-black font-mono" style={{ color: stat.color }}>
@@ -424,7 +424,7 @@ function VQEReplication() {
           </a>
           {' '}&mdash; symmetry-verified VQE for H&#x2082; from QuTech/TU Delft.
           Claude Opus 4.6 wrote the simulation code: Hamiltonian construction, variational ansatz,
-          toy noise model, and parity post-selection. Classical simulation only &mdash; not yet validated on quantum hardware.
+          noise model, and parity post-selection. Validated on IBM Torino (9.2 kcal/mol) and Tuna-9 (6.2 kcal/mol with Z-PS+REM).
         </p>
 
         {/* Results chart + summary */}
@@ -526,7 +526,7 @@ function VQEReplication() {
             Full hardware results (IBM, Tuna-9) &rarr;
           </Link>
           <Link href="/replications" className="text-xs font-mono text-[#ff8c42] hover:underline">
-            Paper replications (4 papers, 16+ claims) &rarr;
+            Paper replications (5 papers, 19 claims) &rarr;
           </Link>
         </div>
       </div>
@@ -590,7 +590,7 @@ function AgentInfrastructure() {
         </h2>
         <p className="text-gray-400 text-sm mb-10 max-w-3xl">
           Specialized AI agents for running experiments, analyzing results,
-          and proposing new research directions. 3 of 5 agents are implemented.
+          and proposing new research directions. 4 of 5 agents are implemented.
         </p>
 
         {/* Pipeline */}
@@ -713,10 +713,10 @@ function ResearchContext() {
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { name: 'Quantum Inspire', desc: 'Tuna-9 superconducting hardware', color: '#00d4ff' },
-              { name: 'Qiskit 2.1 + Aer', desc: 'Circuits, simulation, noise', color: '#8b5cf6' },
-              { name: 'PennyLane 0.44', desc: 'Variational algorithms & autodiff', color: '#00ff88' },
-              { name: 'OpenSquirrel', desc: 'cQASM 3.0 compilation', color: '#ff8c42' },
+              { name: 'Quantum Inspire', desc: 'Tuna-9 (9q superconducting)', color: '#00d4ff' },
+              { name: 'IBM Quantum', desc: 'Torino (133q superconducting)', color: '#8b5cf6' },
+              { name: 'IQM Garnet', desc: '20q superconducting transmon', color: '#00ff88' },
+              { name: 'Qiskit 2.1 + PennyLane', desc: 'Circuits, VQE, autodiff', color: '#ff8c42' },
               { name: 'Claude Opus 4.6', desc: 'Autonomous coding agent', color: '#ff6b9d' },
               { name: 'Gemini 3 Flash', desc: 'Benchmark evaluation', color: '#94a3b8' },
               { name: 'Three.js', desc: '3D quantum visualization', color: '#00d4ff' },
@@ -759,7 +759,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <div className="text-xs text-gray-500 font-mono">
-            TU Delft / QuTech / Quantum Inspire &mdash; 2026
+            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
           </div>
           <div className="flex gap-4 text-xs text-gray-500 font-mono">
             <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">

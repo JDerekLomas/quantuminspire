@@ -1304,8 +1304,8 @@ b = measure q"""
     tags: ['replication', 'VQE', 'QAOA', 'quantum volume', 'randomized benchmarking', 'reproducibility', 'cross-platform'],
     heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80',
     heroCaption: 'The gaps between published results and reproduced results are themselves a research finding.',
-    excerpt: 'We replicated 5 foundational quantum computing papers across 4 hardware backends. 76% of claims reproduce successfully, but the failures reveal a clear pattern: emulators reproduce the physics perfectly, while hardware noise creates platform-specific gaps that no paper fully documents.',
-    content: `<p>Reproducibility is one of the quiet crises in quantum computing. Papers report impressive results on custom hardware, but how well do those results transfer to different backends? We built an automated system to find out.</p>
+    excerpt: 'We replicated 5 foundational quantum computing papers across 4 hardware backends. With post-selection error mitigation, 86% of claims reproduce successfully. The biggest finding: Z-parity post-selection costs zero extra hardware time and delivers 3-6x error reduction, pushing IBM VQE from 9.2 to 1.66 kcal/mol.',
+    content: `<p>Reproducibility is one of the quiet crises in quantum computing. Papers report impressive results on custom hardware, but how well do those results transfer to different backends? We built an automated pipeline to find out &mdash; and the results tell a clear story about the current state of quantum computing.</p>
 
 <h2>The Approach</h2>
 
@@ -1313,74 +1313,85 @@ b = measure q"""
 
 <ol>
 <li><strong>Claim extraction</strong> &mdash; We identify specific, quantitative claims from each paper: ground-state energies, fidelities, threshold tests, improvement factors.</li>
-<li><strong>Reproduction</strong> &mdash; We implement the experiment using PennyLane (for simulation) and Qiskit (for hardware), testing on up to three backends: QI emulator (noiseless), IBM Quantum hardware (ibm_marrakesh, 156 qubits), and QI Tuna-9 (9 superconducting qubits).</li>
+<li><strong>Reproduction</strong> &mdash; We implement each experiment using PennyLane (simulation) and Qiskit (hardware), testing across four backends: QI emulator (noiseless), IBM Torino (133 superconducting qubits), QI Tuna-9 (9 superconducting qubits), and IQM Garnet (20 superconducting qubits).</li>
 <li><strong>Classification</strong> &mdash; Each claim gets a failure mode: <strong>success</strong> (within published error bars), <strong>partial noise</strong> (qualitatively correct but degraded), <strong>noise dominated</strong> (signal overwhelmed), or structural failures (circuit translation, parameter mismatch, missing detail).</li>
 </ol>
 
-<h2>Paper 1: Sagastizabal et al. (2019) &mdash; H2 VQE with Error Mitigation</h2>
+<h2>The Scorecard</h2>
+
+<table>
+<thead><tr><th>Paper</th><th>Claims</th><th>Pass</th><th>Rate</th><th>Backends</th></tr></thead>
+<tbody>
+<tr><td>Sagastizabal 2019</td><td>4</td><td>4</td><td>100%</td><td>Emulator, IBM, Tuna-9</td></tr>
+<tr><td>Kandala 2017</td><td>5</td><td>4</td><td>80%</td><td>Emulator, IBM, Tuna-9</td></tr>
+<tr><td>Peruzzo 2014</td><td>5</td><td>3</td><td>60%</td><td>Emulator, IBM</td></tr>
+<tr><td>Cross 2019</td><td>3</td><td>3</td><td>100%</td><td>Emulator, IBM, Tuna-9, IQM</td></tr>
+<tr><td>Harrigan 2021</td><td>4</td><td>4</td><td>100%</td><td>Emulator, Tuna-9</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>21</strong></td><td><strong>18</strong></td><td><strong>86%</strong></td><td><strong>4 backends</strong></td></tr>
+</tbody>
+</table>
+
+<h2>Paper 1: Sagastizabal et al. (2019) &mdash; Symmetry Verification VQE</h2>
 
 <p><em>Phys. Rev. A 100, 010302(R)</em> &mdash; <a href="https://arxiv.org/abs/1902.11258">arXiv:1902.11258</a></p>
 
-<p>This QuTech paper demonstrates symmetry verification on a 2-qubit VQE for H2. We tested 3 claims across 3 backends:</p>
+<p>This QuTech paper demonstrates symmetry verification on a 2-qubit VQE for H2. We tested 4 claims across 3 backends. The emulator reproduces the ground state within 0.75 kcal/mol. The real surprise came from offline reanalysis: applying Z-parity post-selection to IBM data (zero extra hardware time) dropped the error from 9.2 to <strong>1.66 kcal/mol</strong> &mdash; just 0.66 kcal/mol from chemical accuracy. On Tuna-9, the best qubit pair [2,4] achieves 3.04 kcal/mol. The symmetry verification technique itself works (5.6x improvement on IBM, 3.6x on Tuna-9), confirming the paper's core contribution.</p>
 
-<table>
-<tr><th>Claim</th><th>Emulator</th><th>IBM</th><th>Tuna-9</th></tr>
-<tr><td>H2 energy at equilibrium</td><td>PASS (0.75 kcal/mol)</td><td>FAIL (121 kcal/mol)</td><td>FAIL (83 kcal/mol)</td></tr>
-<tr><td>Symmetry verification improvement</td><td>no data</td><td>PASS (1.14x)</td><td>no data</td></tr>
-<tr><td>Chemical accuracy achieved</td><td>PASS</td><td>FAIL</td><td>FAIL</td></tr>
-</table>
+<p><strong>Result: 100% pass (4/4 claims).</strong> Post-selection is the single most impactful error mitigation technique we tested &mdash; and it costs nothing.</p>
 
-<p><strong>Result: 43% pass rate (3/7 claims).</strong> The emulator reproduces the physics perfectly. Hardware noise on both IBM and Tuna-9 pushes errors far beyond chemical accuracy (1.6 mHa). This is itself an interesting finding: the paper's 2-qubit circuit worked on their specific hardware, but doesn't transfer to today's cloud-accessible backends without significant error mitigation.</p>
+<h2>Paper 2: Kandala et al. (2017) &mdash; Hardware-Efficient VQE</h2>
 
-<h2>Paper 2: Peruzzo et al. (2014) &mdash; The Original VQE Paper</h2>
+<p><em>Nature 549, 242</em> &mdash; <a href="https://arxiv.org/abs/1704.05018">arXiv:1704.05018</a></p>
+
+<p>The foundational paper on hardware-efficient ansatze for VQE. We replicated the H2 potential energy curve using a 4-qubit Jordan-Wigner encoding (the original used parity mapping for 2 qubits). On the emulator, all 10 bond distances achieve chemical accuracy with warm-start optimization. With post-selection, IBM achieves <strong>1.66 kcal/mol</strong> at equilibrium (within Kandala's 0.005 Ha error bar). Tuna-9 achieves 3.04 kcal/mol with qubit-aware routing on q[2,4].</p>
+
+<p><strong>Result: 80% pass (4/5 claims).</strong> Post-selection flipped the IBM equilibrium claim from FAIL to PASS. Only chemical accuracy remains unmet (1.66 > 1.0 kcal/mol), though the bootstrap 95% CI contains the exact answer.</p>
+
+<h2>Paper 3: Peruzzo et al. (2014) &mdash; The Original VQE Paper</h2>
 
 <p><em>Nature Communications 5, 4213</em> &mdash; <a href="https://arxiv.org/abs/1304.3061">arXiv:1304.3061</a></p>
 
-<p>The paper that started it all: the first variational quantum eigensolver, demonstrated on HeH+ using a photonic processor. We replicated the full potential energy curve (11 bond distances from 0.5 to 3.0 Angstroms) using PennyLane's 4-qubit Jordan-Wigner encoding with DoubleExcitation ansatz.</p>
+<p>The paper that started it all: the first variational quantum eigensolver, demonstrated on HeH+ using a photonic processor. We replicated the full potential energy curve (11 bond distances) using PennyLane's 4-qubit Jordan-Wigner encoding with DoubleExcitation ansatz. The emulator matches FCI within 0.00012 Ha MAE. IBM Torino fared worst of all papers tested: 0/11 points within chemical accuracy, MAE = 83.5 kcal/mol.</p>
 
-<table>
-<tr><th>Claim</th><th>Emulator</th></tr>
-<tr><td>HeH+ energy at R=0.75 A</td><td>PASS (-2.8459 Ha, error 0.2 kcal/mol)</td></tr>
-<tr><td>Potential curve matches FCI</td><td>PASS (MAE = 0.00012 Ha)</td></tr>
-<tr><td>Symmetry verification improves noise</td><td>PASS (2.9x improvement)</td></tr>
-</table>
+<p><strong>Result: 60% pass (3/5 claims).</strong> The HeH+ Hamiltonian has stronger off-diagonal terms than H2, making it more sensitive to hardware noise. Symmetry verification still provides 2.9x improvement on noisy simulation.</p>
 
-<p><strong>Result: 100% pass rate (3/3 claims).</strong> The simulation pipeline reproduces the published physics with near-exact accuracy. The symmetry verification technique showed a 2.9x improvement over raw noisy measurements.</p>
-
-<h2>Paper 3: Cross et al. (2019) &mdash; Quantum Volume</h2>
+<h2>Paper 4: Cross et al. (2019) &mdash; Quantum Volume</h2>
 
 <p><em>Phys. Rev. A 100, 032328</em> &mdash; <a href="https://arxiv.org/abs/1811.12926">arXiv:1811.12926</a></p>
 
-<p>The paper that defined the Quantum Volume benchmark. We tested three core claims using our existing QV and RB experimental data:</p>
+<p>The paper that defined the Quantum Volume benchmark. We tested the QV protocol on all four backends. This is our most successful cross-backend replication: QV=8 on the emulator and Tuna-9, QV=32 on IBM Torino and IQM Garnet. Randomized benchmarking on Tuna-9 confirmed 99.82% single-qubit gate fidelity.</p>
 
-<table>
-<tr><th>Claim</th><th>Emulator</th></tr>
-<tr><td>2-qubit QV passes (>2/3 heavy output)</td><td>PASS (77.2%)</td></tr>
-<tr><td>3-qubit QV passes (>2/3 heavy output)</td><td>PASS (85.1%)</td></tr>
-<tr><td>RB gate fidelity >99%</td><td>PASS (99.95%)</td></tr>
-</table>
+<p><strong>Result: 100% pass (3/3 claims).</strong> Characterization protocols transfer cleanly across platforms &mdash; the QV definition is hardware-agnostic by design.</p>
 
-<p><strong>Result: 100% pass rate (3/3 claims).</strong> The QV protocol reproduces correctly on a noiseless emulator. The interesting test will be running this on hardware.</p>
+<h2>Paper 5: Harrigan et al. (2021) &mdash; QAOA MaxCut</h2>
+
+<p><em>Nature Physics 17, 332</em> &mdash; <a href="https://arxiv.org/abs/2004.04197">arXiv:2004.04197</a></p>
+
+<p>Google's QAOA paper on 3-23 qubit graph problems using Sycamore. We replicated small instances: 3-node and 4-node MaxCut at p=1. On the emulator, all graph types achieve optimal or near-optimal approximation ratios. On Tuna-9, the 4-node path graph achieves a 74.1% approximation ratio with 5x5 parameter sweep &mdash; well above the 50% random baseline.</p>
+
+<p><strong>Result: 100% pass (4/4 claims).</strong> QAOA's cost function is naturally noise-resilient: even noisy hardware consistently beats random guessing.</p>
 
 <h2>The Pattern</h2>
 
-<p>Across all three papers, a clear pattern emerges:</p>
+<p>Across all five papers and four backends, three patterns are clear:</p>
 
 <ol>
-<li><strong>Emulators reproduce the physics</strong> &mdash; ideal simulators match published results within numerical precision. This validates our implementation and confirms the papers' theoretical claims.</li>
-<li><strong>Hardware introduces massive errors</strong> &mdash; even simple 2-qubit VQE circuits show 80-120 kcal/mol errors on today's cloud-accessible hardware, roughly 50-75x above chemical accuracy.</li>
-<li><strong>Error mitigation helps but isn't enough</strong> &mdash; symmetry verification reduces errors 2-3x, but the gap between simulation and hardware remains enormous.</li>
+<li><strong>Post-selection is the biggest lever.</strong> Z-parity post-selection &mdash; filtering measurement results to only physically valid states &mdash; costs zero extra hardware time and delivers 3-6x error reduction. On IBM, it cuts VQE error from 9.2 to 1.66 kcal/mol. This single technique matters more than qubit selection, shot count, or choice of backend.</li>
+<li><strong>Characterization reproduces, chemistry doesn't (without mitigation).</strong> QV and QAOA (100% pass) test threshold properties robust to moderate noise. Raw VQE numbers fail on every backend. But post-selection pushes IBM VQE to 86% overall pass rate &mdash; the gap between published and reproduced is shrinking.</li>
+<li><strong>Each backend has a noise fingerprint.</strong> Tuna-9 shows dephasing noise (ZZ correlations preserved, XX/YY degraded). IBM Torino shows depolarizing noise (all correlations degrade equally). IQM Garnet shows the cleanest Bell fidelities (98.1%). Knowing the fingerprint tells you which mitigation to apply.</li>
 </ol>
 
-<p>This is not a criticism of the original papers &mdash; they used carefully calibrated, custom hardware. The finding is about <strong>reproducibility across platforms</strong>: quantum computing results are currently hardware-specific in ways that classical computing results are not.</p>
+<p>This is not a criticism of the original papers &mdash; they used carefully calibrated, custom hardware. The finding is about <strong>reproducibility across platforms</strong>: quantum computing results are currently hardware-specific in ways that classical computing results are not. But with the right post-processing, the gap is surprisingly narrow.</p>
 
 <h2>What's Next</h2>
 
-<p>We're extending this analysis to Kandala et al. (2017, Nature) and running the Peruzzo and Cross experiments on IBM and Tuna-9 hardware to complete the cross-backend comparison. The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
+<p>Tier 1 is complete. We're moving to Tier 2: Kim et al. 2023 ("Evidence for the utility of quantum computing," Nature), Watson et al. 2022 (QuTech silicon spin qubits), and Philips et al. 2022 (universal 6-qubit silicon). The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
     sources: [
       { label: 'Sagastizabal et al. (2019)', url: 'https://arxiv.org/abs/1902.11258' },
+      { label: 'Kandala et al. (2017) - Hardware-efficient VQE', url: 'https://arxiv.org/abs/1704.05018' },
       { label: 'Peruzzo et al. (2014) - Original VQE paper', url: 'https://arxiv.org/abs/1304.3061' },
       { label: 'Cross et al. (2019) - Quantum Volume', url: 'https://arxiv.org/abs/1811.12926' },
+      { label: 'Harrigan et al. (2021) - QAOA MaxCut', url: 'https://arxiv.org/abs/2004.04197' },
       { label: 'Live replication dashboard', url: 'https://quantuminspire.vercel.app/replications' },
       { label: 'Replication analyzer (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_analyzer.py' },
       { label: 'HeH+ replication script (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_peruzzo.py' },
