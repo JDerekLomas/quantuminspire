@@ -1,0 +1,31 @@
+{
+  "id": "bell-tuna9-daemon-001",
+  "type": "bell_calibration",
+  "backend": "tuna-9",
+  "submitted": "2026-02-10T17:38:52.935023+00:00",
+  "completed": "2026-02-10T17:42:16.241053+00:00",
+  "parameters": {
+    "shots": 1024,
+    "qubits": [
+      0,
+      1
+    ]
+  },
+  "raw_counts": {
+    "00": 501,
+    "01": 32,
+    "10": 78,
+    "11": 413
+  },
+  "analysis": {
+    "fidelity": 0.8926,
+    "parity_leakage": 0.1074,
+    "expected_fidelity": 1.0,
+    "total_shots": 1024,
+    "correct_parity": 914,
+    "wrong_parity": 110,
+    "interpretation": "Bell state fidelity: 89.3%. Good \u2014 10.7% leakage into wrong parity states."
+  },
+  "circuit_cqasm": "version 3.0\nqubit[2] q\nbit[2] b\n\nH q[0]\nCNOT q[0], q[1]\nb = measure q",
+  "errors": null
+}

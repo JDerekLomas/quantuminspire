@@ -1,0 +1,71 @@
+{
+  "experiment": "autonomous-connectivity-discovery",
+  "timestamp": "2026-02-10T17:30:00Z",
+  "backend": "tuna-9",
+  "method": "Bell state probe (H + CNOT) on all qubit pairs, 1024 shots each",
+  "research_context": "Phase 1 of AI-autonomous hardware characterization. No prior topology knowledge assumed.",
+  "phase1_single_qubit": {
+    "method": "X gate + measure, 1024 shots",
+    "jobs": [415259, 415260, 415261, 415262],
+    "per_qubit_error_rates": {
+      "q0": 0.123,
+      "q1": 0.037,
+      "q2": 0.016,
+      "q3": 0.052,
+      "q4": 0.019,
+      "q5": 0.016,
+      "q6": 0.027,
+      "q7": 0.045,
+      "q8": 0.035
+    },
+    "finding": "All 9 qubits functional. Best: q2/q5 (1.6%). Worst: q0 (12.3%)."
+  },
+  "phase1_connectivity": {
+    "connected_pairs": [
+      {"pair": "0-1", "job": 415276, "bell_fidelity": 0.870, "counts_00": 502, "counts_11": 389},
+      {"pair": "0-2", "job": 415277, "bell_fidelity": 0.858, "counts_00": 466, "counts_11": 413},
+      {"pair": "1-3", "job": 415278, "bell_fidelity": 0.913, "counts_00": 487, "counts_11": 448},
+      {"pair": "1-4", "job": 415274, "bell_fidelity": 0.898, "counts_00": 492, "counts_11": 428},
+      {"pair": "2-4", "job": 415279, "bell_fidelity": 0.923, "counts_00": 494, "counts_11": 451},
+      {"pair": "2-5", "job": 415275, "bell_fidelity": 0.914, "counts_00": 500, "counts_11": 436},
+      {"pair": "3-6", "job": 415283, "bell_fidelity": 0.871, "counts_00": 463, "counts_11": 429},
+      {"pair": "4-6", "job": 415291, "bell_fidelity": 0.935, "counts_00": 495, "counts_11": 462},
+      {"pair": "6-8", "job": 415287, "bell_fidelity": 0.913, "counts_00": 481, "counts_11": 454},
+      {"pair": "7-8", "job": 415286, "bell_fidelity": 0.883, "counts_00": 488, "counts_11": 416}
+    ],
+    "disconnected_pairs_tested": [
+      {"pair": "1-2", "job": 415273, "status": "FAILED"},
+      {"pair": "3-4", "job": 415281, "status": "FAILED"},
+      {"pair": "4-5", "job": 415282, "status": "FAILED"},
+      {"pair": "5-6", "job": 415284, "status": "FAILED"},
+      {"pair": "6-7", "job": 415285, "status": "FAILED"},
+      {"pair": "0-3", "job": 415288, "status": "FAILED"},
+      {"pair": "0-5", "job": 415289, "status": "FAILED"},
+      {"pair": "3-5", "job": 415290, "status": "FAILED"},
+      {"pair": "5-8", "job": 415292, "status": "FAILED"},
+      {"pair": "0-8", "job": 415293, "status": "FAILED"}
+    ],
+    "total_edges": 10,
+    "topology_adjacency": {
+      "0": [1, 2],
+      "1": [0, 3, 4],
+      "2": [0, 4, 5],
+      "3": [1, 6],
+      "4": [1, 2, 6],
+      "5": [2],
+      "6": [3, 4, 8],
+      "7": [8],
+      "8": [6, 7]
+    },
+    "qubit_degrees": {"0": 2, "1": 3, "2": 3, "3": 2, "4": 3, "5": 1, "6": 3, "7": 1, "8": 2}
+  },
+  "key_discoveries": [
+    "ALL 9 qubits are connected — prior knowledge said q6-8 were non-functional for 2-qubit gates",
+    "4 previously unknown connections discovered: 3-6 (87.1%), 4-6 (93.5%), 6-8 (91.3%), 7-8 (88.3%)",
+    "Best connection: q4-q6 at 93.5% Bell fidelity",
+    "Worst connection: q0-q2 at 85.8% Bell fidelity",
+    "Hardware rejects non-connected CNOT pairs (FAILED status), enabling topology discovery via failure analysis",
+    "q0 has highest single-qubit error (12.3%) and is involved in the two worst connections"
+  ],
+  "topology_ascii": "q[5]--q[2]--q[0]--q[1]--q[3]\n        |           |      |\n        +---q[4]----+      q[6]--q[8]--q[7]\n             |             |\n             +-------------+"
+}
