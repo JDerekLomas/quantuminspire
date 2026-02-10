@@ -11,11 +11,13 @@ export const metadata = {
 // ---------------------------------------------------------------------------
 
 function isEmulator(backend: string): boolean {
+  if (!backend) return false
   const lower = backend.toLowerCase()
   return lower.includes('emulator') || lower.includes('qxelarator')
 }
 
 function backendLabel(backend: string): { label: string; isHw: boolean } {
+  if (!backend) return { label: 'Unknown', isHw: false }
   if (backend.toLowerCase().includes('ibm')) return { label: 'IBM Hardware', isHw: true }
   if (backend.toLowerCase().includes('emulator') || backend.toLowerCase().includes('qxelarator'))
     return { label: 'QI Emulator', isHw: false }
