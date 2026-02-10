@@ -63,9 +63,16 @@ function CountsBar({ counts, total }: { counts: Record<string, number>; total: n
   )
 }
 
+function flatCounts(raw: Record<string, any>): Record<string, number> {
+  // Handle both flat counts {"00": 512} and nested {"z_basis": {"00": 512}}
+  const first = Object.values(raw)[0]
+  if (typeof first === 'object' && first !== null) return first as Record<string, number>
+  return raw as Record<string, number>
+}
+
 function BellCard({ result }: { result: ExperimentResult }) {
   const analysis = result.analysis
-  const counts = result.raw_counts as Record<string, number>
+  const counts = flatCounts(result.raw_counts)
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
   return (
     <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#00d4ff]/30 transition-colors">
@@ -95,7 +102,7 @@ function BellCard({ result }: { result: ExperimentResult }) {
 
 function GHZCard({ result }: { result: ExperimentResult }) {
   const analysis = result.analysis
-  const counts = result.raw_counts as Record<string, number>
+  const counts = flatCounts(result.raw_counts)
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
   return (
     <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 hover:border-[#00ff88]/30 transition-colors">
