@@ -5,78 +5,370 @@
   "backend": "iqm-garnet",
   "backend_provider": "IQM Resonance (Finland)",
   "backend_qubits": 20,
-  "submitted": "2026-02-10T19:00:00Z",
-  "completed": "2026-02-10T19:30:00Z",
+  "submitted": "2026-02-10T18:47:37.872283+00:00",
+  "completed": "2026-02-10T18:50:20.862392+00:00",
   "parameters": {
-    "shots": 4096,
-    "qv_qubits": ["QB14", "QB15", "QB16", "QB11", "QB10"],
+    "shots": 1024,
+    "rb_qubit": "QB1",
+    "qv_qubits_2": [
+      "QB1",
+      "QB2"
+    ],
+    "qv_qubits_3": [
+      "QB1",
+      "QB2",
+      "QB3"
+    ],
     "n_qv_circuits": 5,
-    "qv_source": "iqm-garnet-diagnostic-suite.json"
+    "n_rb_seeds": 5,
+    "rb_sequence_lengths": [
+      1,
+      4,
+      8,
+      16,
+      32
+    ],
+    "qv_seed": 42
   },
-  "raw_counts": {},
+  "raw_counts": {
+    "rb_m1_s0": {
+      "0": 1015,
+      "1": 9
+    },
+    "rb_m1_s1": {
+      "0": 508,
+      "1": 516
+    },
+    "rb_m1_s2": {
+      "1": 1012,
+      "0": 12
+    },
+    "rb_m1_s3": {
+      "0": 1021,
+      "1": 3
+    },
+    "rb_m1_s4": {
+      "0": 537,
+      "1": 487
+    },
+    "rb_m4_s0": {
+      "0": 1008,
+      "1": 16
+    },
+    "rb_m4_s1": {
+      "0": 1007,
+      "1": 17
+    },
+    "rb_m4_s2": {
+      "1": 874,
+      "0": 150
+    },
+    "rb_m4_s3": {
+      "1": 491,
+      "0": 533
+    },
+    "rb_m4_s4": {
+      "1": 994,
+      "0": 30
+    },
+    "rb_m8_s0": {
+      "1": 997,
+      "0": 27
+    },
+    "rb_m8_s1": {
+      "1": 482,
+      "0": 542
+    },
+    "rb_m8_s2": {
+      "0": 840,
+      "1": 184
+    },
+    "rb_m8_s3": {
+      "0": 498,
+      "1": 526
+    },
+    "rb_m8_s4": {
+      "1": 998,
+      "0": 26
+    },
+    "rb_m16_s0": {
+      "0": 179,
+      "1": 845
+    },
+    "rb_m16_s1": {
+      "0": 839,
+      "1": 185
+    },
+    "rb_m16_s2": {
+      "1": 838,
+      "0": 186
+    },
+    "rb_m16_s3": {
+      "1": 544,
+      "0": 480
+    },
+    "rb_m16_s4": {
+      "1": 508,
+      "0": 516
+    },
+    "rb_m32_s0": {
+      "0": 803,
+      "1": 221
+    },
+    "rb_m32_s1": {
+      "1": 702,
+      "0": 322
+    },
+    "rb_m32_s2": {
+      "0": 444,
+      "1": 580
+    },
+    "rb_m32_s3": {
+      "1": 711,
+      "0": 313
+    },
+    "rb_m32_s4": {
+      "0": 755,
+      "1": 269
+    },
+    "qv_n2_c0": {
+      "00": 386,
+      "10": 502,
+      "01": 105,
+      "11": 31
+    },
+    "qv_n2_c1": {
+      "00": 548,
+      "10": 417,
+      "01": 18,
+      "11": 41
+    },
+    "qv_n2_c2": {
+      "01": 618,
+      "10": 114,
+      "00": 225,
+      "11": 67
+    },
+    "qv_n2_c3": {
+      "11": 229,
+      "10": 371,
+      "01": 233,
+      "00": 191
+    },
+    "qv_n2_c4": {
+      "10": 657,
+      "11": 204,
+      "00": 56,
+      "01": 107
+    },
+    "qv_n3_c0": {
+      "011": 276,
+      "111": 343,
+      "001": 58,
+      "010": 102,
+      "110": 125,
+      "100": 34,
+      "101": 70,
+      "000": 16
+    },
+    "qv_n3_c1": {
+      "101": 290,
+      "010": 84,
+      "011": 161,
+      "100": 146,
+      "001": 151,
+      "111": 104,
+      "000": 46,
+      "110": 42
+    },
+    "qv_n3_c2": {
+      "001": 236,
+      "100": 177,
+      "101": 150,
+      "000": 266,
+      "111": 52,
+      "110": 47,
+      "011": 49,
+      "010": 47
+    },
+    "qv_n3_c3": {
+      "101": 320,
+      "001": 382,
+      "111": 144,
+      "011": 119,
+      "100": 15,
+      "010": 6,
+      "000": 28,
+      "110": 10
+    },
+    "qv_n3_c4": {
+      "100": 266,
+      "110": 271,
+      "000": 230,
+      "010": 218,
+      "101": 18,
+      "111": 6,
+      "011": 6,
+      "001": 9
+    }
+  },
+  "job_ids": {
+    "rb_m1_s0": "019c48e1-6a29-7bb0-99f2-3f8f37f3c9aa",
+    "rb_m1_s1": "019c48e1-7c1e-7221-b564-7175d2c6acc6",
+    "rb_m1_s2": "019c48e1-8d48-7e21-8b86-f2ab33fc24eb",
+    "rb_m1_s3": "019c48e1-9ec4-7391-81a0-b7d0890ea345",
+    "rb_m1_s4": "019c48e1-b133-7d11-91ca-6fbe979d91aa",
+    "rb_m4_s0": "019c48e1-c32a-7d21-815c-3b11cda07d7b",
+    "rb_m4_s1": "019c48e1-d769-7571-8773-34e00bedfca1",
+    "rb_m4_s2": "019c48e1-e9f1-7911-9948-bace1ea75712",
+    "rb_m4_s3": "019c48e1-fc4d-70e1-afdd-d68092623cf7",
+    "rb_m4_s4": "019c48e2-0ddd-7823-8246-9ff8734d8e4e",
+    "rb_m8_s0": "019c48e2-1f97-77e2-b71c-3c1df94a0dcb",
+    "rb_m8_s1": "019c48e2-3508-75b1-9e01-0f09bf98a024",
+    "rb_m8_s2": "019c48e2-49cb-74e2-bd18-9219e4ce31fb",
+    "rb_m8_s3": "019c48e2-5d07-7391-85e6-6588336ee13d",
+    "rb_m8_s4": "019c48e2-6e37-7242-ab3d-9279b98c3a00",
+    "rb_m16_s0": "019c48e2-7f6f-7b12-bb16-4f1fde309c58",
+    "rb_m16_s1": "019c48e2-904c-7743-bc93-f7ded02d8cb1",
+    "rb_m16_s2": "019c48e2-a2e9-7c33-a8b1-c571ac52bdcf",
+    "rb_m16_s3": "019c48e2-b550-71f0-9fab-76a42293d879",
+    "rb_m16_s4": "019c48e2-c67b-7281-a753-3380405d1ac9",
+    "rb_m32_s0": "019c48e2-d7d5-7dc0-b61f-13c1a2d9723e",
+    "rb_m32_s1": "019c48e2-ea0f-71f0-a6ab-30fa92c98e27",
+    "rb_m32_s2": "019c48e2-fbc0-70b1-93ef-67bac0a07969",
+    "rb_m32_s3": "019c48e3-0d02-72d0-8a88-0a8359f649f0",
+    "rb_m32_s4": "019c48e3-1e35-78a1-a88f-1958e4ed07b0",
+    "qv_n2_c0": "019c48e3-30a9-7351-97dc-170922346c06",
+    "qv_n2_c1": "019c48e3-430d-7c80-9862-d5a746103395",
+    "qv_n2_c2": "019c48e3-564e-7580-a4bf-6a6d5f74ba45",
+    "qv_n2_c3": "019c48e3-6811-7ff0-beb6-3206b29fa14c",
+    "qv_n2_c4": "019c48e3-7949-7322-8b0b-36a556f190dc",
+    "qv_n3_c0": "019c48e3-8a08-7c13-8dd4-95eed4c46373",
+    "qv_n3_c1": "019c48e3-9c0d-7711-898f-5dd084827254",
+    "qv_n3_c2": "019c48e3-b1e0-72c0-ba70-bd429a569c31",
+    "qv_n3_c3": "019c48e3-c32b-7151-b58a-6d27ccac2933",
+    "qv_n3_c4": "019c48e3-d4d0-7942-8592-848b341289e7"
+  },
   "analysis": {
     "quantum_volume": {
       "n2": {
-        "mean_hof": 0.740,
+        "mean_hof": 0.757,
+        "std_hof": 0.1428,
+        "per_circuit_hof": [
+          0.5928,
+          0.9424,
+          0.8232,
+          0.5859,
+          0.8408
+        ],
         "passes_threshold": true,
-        "threshold": 0.6667,
-        "trials": 5
+        "threshold": 0.6666666666666666
       },
       "n3": {
-        "mean_hof": 0.786,
-        "passes_threshold": true,
-        "threshold": 0.6667,
-        "trials": 5
-      },
-      "n4": {
-        "mean_hof": 0.695,
-        "passes_threshold": true,
-        "threshold": 0.6667,
-        "trials": 5
-      },
-      "n5": {
-        "mean_hof": 0.692,
-        "passes_threshold": true,
-        "threshold": 0.6667,
-        "trials": 5
-      },
-      "quantum_volume": 32
+        "mean_hof": 0.635,
+        "std_hof": 0.2646,
+        "per_circuit_hof": [
+          0.2168,
+          0.6846,
+          0.4756,
+          0.8359,
+          0.9619
+        ],
+        "passes_threshold": false,
+        "threshold": 0.6666666666666666
+      }
     },
     "randomized_benchmarking": {
-      "status": "pending_credits",
-      "note": "IQM Resonance free-tier credits exhausted (30/month). RB circuits generated with proper inverse Cliffords (24-element group) and ZYZ decomposition to prx gates. Script ready at scripts/iqm_rb_qv.py — will run when credits refresh."
+      "sequence_lengths": [
+        1,
+        4,
+        8,
+        16,
+        32
+      ],
+      "data": {
+        "1": {
+          "mean_survival": 0.6041,
+          "std_survival": 0.3669,
+          "per_seed": [
+            0.9912,
+            0.4961,
+            0.0117,
+            0.9971,
+            0.5244
+          ]
+        },
+        "4": {
+          "mean_survival": 0.5328,
+          "std_survival": 0.4025,
+          "per_seed": [
+            0.9844,
+            0.9834,
+            0.1465,
+            0.5205,
+            0.0293
+          ]
+        },
+        "8": {
+          "mean_survival": 0.3775,
+          "std_survival": 0.3093,
+          "per_seed": [
+            0.0264,
+            0.5293,
+            0.8203,
+            0.4863,
+            0.0254
+          ]
+        },
+        "16": {
+          "mean_survival": 0.4297,
+          "std_survival": 0.2389,
+          "per_seed": [
+            0.1748,
+            0.8193,
+            0.1816,
+            0.4688,
+            0.5039
+          ]
+        },
+        "32": {
+          "mean_survival": 0.5151,
+          "std_survival": 0.2062,
+          "per_seed": [
+            0.7842,
+            0.3145,
+            0.4336,
+            0.3057,
+            0.7373
+          ]
+        }
+      },
+      "fit": {
+        "A": -220.401201,
+        "p": 1.000007,
+        "B": 220.910611,
+        "error_per_clifford": -3e-06,
+        "gate_fidelity": 1.000003,
+        "fidelity_percent": 100.0003
+      }
     },
     "claims": {
       "qv_2qubit": {
         "published": "HOF > 2/3",
-        "measured": 0.740,
+        "measured": 0.757,
         "pass": true
       },
       "qv_3qubit": {
         "published": "HOF > 2/3",
-        "measured": 0.786,
-        "pass": true
-      },
-      "qv_4qubit": {
-        "published": "HOF > 2/3",
-        "measured": 0.695,
-        "pass": true
-      },
-      "qv_5qubit": {
-        "published": "HOF > 2/3",
-        "measured": 0.692,
-        "pass": true
+        "measured": 0.635,
+        "pass": false
       },
       "rb_gate_fidelity": {
         "published": "0.99 +/- 0.01",
-        "measured": null,
-        "pass": null,
-        "note": "Pending credits"
+        "measured": 1.000003,
+        "pass": true
       }
-    },
-    "interpretation": "Cross 2019 replication on IQM Garnet: QV=32 (n=2 HOF=74.0%, n=3 HOF=78.6%, n=4 HOF=69.5%, n=5 HOF=69.2% — all PASS). This is 4x Tuna-9's QV=8 and matches IBM Torino at comparable qubit counts. RB pending (credits exhausted). IQM submits raw prx/cz gates without Clifford-level compilation, so RB should show genuine survival decay like Tuna-9 rather than IBM's flat-line artifact."
+    }
   },
-  "circuit_cqasm": null,
-  "errors": null,
   "environment": "experiments/environment.json"
 }

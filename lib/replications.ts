@@ -152,7 +152,7 @@ export const PAPER_PIPELINE: Array<{
     authors: 'Harrigan et al.',
     journal: 'Nature Physics 17, 332 (2021)',
     arxiv: '2004.04197',
-    status: 'in_progress',
+    status: 'completed',
     qubits: 23,
     type: 'QAOA',
   },

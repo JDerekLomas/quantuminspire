@@ -10,32 +10,36 @@ export const metadata = {
 const platforms = [
   { id: 'tuna9', name: 'Tuna-9', provider: 'Quantum Inspire / QuTech', qubits: 9, edges: 10, maxDeg: 3, topology: 'Irregular tree', native: 'H, CNOT', color: '#00d4ff', qv: 8 },
   { id: 'garnet', name: 'IQM Garnet', provider: 'IQM Resonance', qubits: 20, edges: 29, maxDeg: 4, topology: 'Square lattice', native: 'PRX, CZ', color: '#f59e0b', qv: 32 },
-  { id: 'ibm', name: 'IBM Torino', provider: 'IBM Quantum', qubits: 133, edges: 'Heavy-hex', maxDeg: 3, topology: 'Heavy-hex', native: 'ECR, CX', color: '#8b5cf6', qv: null },
+  { id: 'ibm', name: 'IBM Torino', provider: 'IBM Quantum', qubits: 133, edges: 'Heavy-hex', maxDeg: 3, topology: 'Heavy-hex', native: 'CZ, SX, RZ', color: '#8b5cf6', qv: 32 },
 ]
 
 const bellData = [
-  { label: 'Best pair',   tuna9: 97.0, garnet: 98.1, ibm: 99.1 },
-  { label: 'Worst pair',  tuna9: 85.8, garnet: 88.4, ibm: 98.0 },
-  { label: 'Average',     tuna9: 90.8, garnet: 94.7, ibm: 98.5 },
+  { label: 'Best pair',   tuna9: 93.5, garnet: 98.1, ibm: 86.5 },
+  { label: 'Worst pair',  tuna9: 85.8, garnet: 88.4, ibm: 86.5 },
+  { label: 'Average',     tuna9: 90.2, garnet: 94.7, ibm: 86.5 },
 ]
 
 const ghzData = [
-  { n: 3, label: 'GHZ-3',  tuna9: 88.9, garnet: 93.9, ibm: 98.1 },
-  { n: 5, label: 'GHZ-5',  tuna9: 83.8, garnet: 81.8, ibm: null },
-  { n: 10, label: 'GHZ-10', tuna9: null, garnet: 54.7, ibm: null },
+  { n: 3, label: 'GHZ-3',  tuna9: 88.9, garnet: 93.9, ibm: 82.9 },
+  { n: 5, label: 'GHZ-5',  tuna9: 83.8, garnet: 81.8, ibm: 76.6 },
+  { n: 10, label: 'GHZ-10', tuna9: null, garnet: 54.7, ibm: 62.2 },
+  { n: 20, label: 'GHZ-20', tuna9: null, garnet: null, ibm: 34.3 },
+  { n: 50, label: 'GHZ-50', tuna9: null, garnet: null, ibm: 8.5 },
 ]
 
 const noiseData = {
   tuna9:  { pair: 'q4-q6 (best)', ZZ: 0.945, XX: 0.902, YY: 0.896, type: 'Dephasing' },
   garnet: { pair: 'QB14-QB15 (mid)', ZZ: 0.975, XX: 0.949, YY: 0.881, type: 'Dephasing' },
-  ibm:    { pair: 'TBD', ZZ: null, XX: null, YY: null, type: 'Pending' },
+  ibm:    { pair: 'Default pair', ZZ: 0.729, XX: 0.704, YY: 0.675, type: 'Depolarizing' },
 }
 
 const qvData = [
-  { n: 2, tuna9: 0.692, garnet: 0.740 },
-  { n: 3, tuna9: 0.821, garnet: 0.786 },
-  { n: 4, tuna9: null,  garnet: 0.695 },
-  { n: 5, tuna9: null,  garnet: 0.692 },
+  { n: 2, tuna9: 0.692, garnet: 0.740, ibm: 0.698 },
+  { n: 3, tuna9: 0.821, garnet: 0.786, ibm: 0.736 },
+  { n: 4, tuna9: null,  garnet: 0.695, ibm: 0.706 },
+  { n: 5, tuna9: null,  garnet: 0.692, ibm: 0.676 },
+  { n: 6, tuna9: null,  garnet: null,  ibm: 0.602 },
+  { n: 7, tuna9: null,  garnet: null,  ibm: 0.620 },
 ]
 
 /* ────────────────────────── components ────────────────────────── */
@@ -72,7 +76,7 @@ function BellComparisonChart() {
   const colors = { tuna9: '#00d4ff', garnet: '#f59e0b', ibm: '#8b5cf6' }
 
   const xScale = (v: number) => padL + ((v - 80) / 20) * chartW
-  const gridLines = [80, 85, 90, 95, 100]
+  const gridLines = [80, 85, 90, 95, 100] as const
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
@@ -110,16 +114,17 @@ function BellComparisonChart() {
 }
 
 function GHZScalingChart() {
-  const W = 640, H = 320
+  const W = 640, H = 360
   const padL = 60, padR = 30, padT = 30, padB = 50
   const chartW = W - padL - padR
   const chartH = H - padT - padB
 
-  const xScale = (n: number) => padL + ((n - 2) / 9) * chartW
-  const yScale = (f: number) => padT + ((100 - f) / 60) * chartH // 40% to 100%
+  // Log scale for x-axis (3 to 50 qubits)
+  const xScale = (n: number) => padL + (Math.log(n / 3) / Math.log(50 / 3)) * chartW
+  const yScale = (f: number) => padT + ((100 - f) / 100) * chartH // 0% to 100%
 
   const colors = { tuna9: '#00d4ff', garnet: '#f59e0b', ibm: '#8b5cf6' }
-  const yGrid = [40, 50, 60, 70, 80, 90, 100]
+  const yGrid = [0, 20, 40, 60, 80, 100]
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
@@ -131,8 +136,8 @@ function GHZScalingChart() {
         </g>
       ))}
       {/* X labels */}
-      {[3, 5, 10].map(n => (
-        <text key={n} x={xScale(n)} y={H - padB + 20} fill="#6b7280" fontSize="11" fontFamily="monospace" textAnchor="middle">{n} qubits</text>
+      {[3, 5, 10, 20, 50].map(n => (
+        <text key={n} x={xScale(n)} y={H - padB + 20} fill="#6b7280" fontSize="11" fontFamily="monospace" textAnchor="middle">{n}q</text>
       ))}
       {/* Tuna-9 line */}
       <polyline
@@ -156,11 +161,15 @@ function GHZScalingChart() {
           <text x={xScale(d.n) + 8} y={yScale(d.garnet!) - 10} fill={colors.garnet} fontSize="10" fontFamily="monospace">{d.garnet}%</text>
         </g>
       ))}
-      {/* IBM point */}
+      {/* IBM line */}
+      <polyline
+        points={ghzData.filter(d => d.ibm).map(d => `${xScale(d.n)},${yScale(d.ibm!)}`).join(' ')}
+        fill="none" stroke={colors.ibm} strokeWidth={2}
+      />
       {ghzData.filter(d => d.ibm).map(d => (
         <g key={`i${d.n}`}>
           <circle cx={xScale(d.n)} cy={yScale(d.ibm!)} r={5} fill={colors.ibm} />
-          <text x={xScale(d.n)} y={yScale(d.ibm!) - 10} fill={colors.ibm} fontSize="10" fontFamily="monospace" textAnchor="middle">{d.ibm}%</text>
+          <text x={xScale(d.n)} y={yScale(d.ibm!) + 16} fill={colors.ibm} fontSize="10" fontFamily="monospace" textAnchor="middle">{d.ibm}%</text>
         </g>
       ))}
       {/* Legend */}

@@ -10,12 +10,24 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug)
   if (!post) return { title: 'Not Found' }
   return {
-    title: `${post.title} — AI x Quantum`,
+    title: post.title,
     description: post.excerpt,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: 'article',
+      publishedTime: post.date,
+      authors: [post.author],
+      tags: post.tags,
+      images: post.heroImage ? [post.heroImage] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
       images: post.heroImage ? [post.heroImage] : [],
     },
   }
@@ -30,8 +42,25 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
   const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: { '@type': 'Organization', name: post.author },
+    publisher: { '@type': 'Organization', name: 'AI x Quantum — TU Delft' },
+    url: `https://haiqu.org/blog/${post.slug}`,
+    ...(post.heroImage && { image: post.heroImage }),
+    keywords: post.tags.join(', '),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">

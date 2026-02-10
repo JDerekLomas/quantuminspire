@@ -1,0 +1,113 @@
+{
+  "experiment": "cross-platform-diagnostic-suite",
+  "backend": "ibm-torino",
+  "backend_details": {
+    "provider": "IBM Quantum",
+    "processor": "Torino (Heron r2)",
+    "qubits": 133,
+    "topology": "heavy-hex",
+    "native_gates": ["cz", "sx", "rz"],
+    "max_degree": 3
+  },
+  "timestamp": "2026-02-10T19:50:00Z",
+  "total_jobs": 2,
+  "total_shots": 143360,
+  "qpu_seconds": 44,
+  "job_ids": {
+    "diagnostic": "d65nrere4kfs73cvleqg",
+    "quantum_volume": "d65nrure4kfs73cvlfc0"
+  },
+  "bell_state": {
+    "z_basis": {
+      "counts": {"00": 1891, "11": 1650, "01": 247, "10": 308},
+      "fidelity_direct": 0.865,
+      "correlator_ZZ": 0.729
+    },
+    "x_basis": {
+      "counts": {"00": 1793, "11": 1697, "01": 259, "10": 347},
+      "correlator_XX": 0.704
+    },
+    "y_basis": {
+      "counts": {"00": 305, "11": 360, "01": 1670, "10": 1761},
+      "correlator_YY": -0.675
+    },
+    "tomographic_fidelity": 0.777,
+    "noise_type": "depolarizing",
+    "depolarizing_rate": 0.223,
+    "note": "Default transpiler qubit placement (opt_level=1), not cherry-picked"
+  },
+  "ghz_results": {
+    "ghz3": {
+      "qubits": 3,
+      "fidelity": 0.829,
+      "depth": 12,
+      "cz_gates": 2,
+      "shots": 4096,
+      "counts_000": 1851,
+      "counts_111": 1545,
+      "per_qubit_error": 0.061
+    },
+    "ghz5": {
+      "qubits": 5,
+      "fidelity": 0.766,
+      "depth": 20,
+      "cz_gates": 4,
+      "shots": 4096,
+      "counts_00000": 1787,
+      "counts_11111": 1349,
+      "per_qubit_error": 0.052
+    },
+    "ghz10": {
+      "qubits": 10,
+      "fidelity": 0.622,
+      "depth": 40,
+      "cz_gates": 9,
+      "shots": 4096,
+      "counts_0000000000": 1492,
+      "counts_1111111111": 1054,
+      "per_qubit_error": 0.046
+    },
+    "ghz20": {
+      "qubits": 20,
+      "fidelity": 0.343,
+      "depth": 80,
+      "cz_gates": 19,
+      "shots": 4096,
+      "counts_all_zeros": 888,
+      "counts_all_ones": 518,
+      "per_qubit_error": 0.052
+    },
+    "ghz50": {
+      "qubits": 50,
+      "fidelity": 0.085,
+      "depth": 200,
+      "cz_gates": 49,
+      "shots": 4096,
+      "counts_all_zeros": 313,
+      "counts_all_ones": 34,
+      "per_qubit_error": 0.048,
+      "note": "50-qubit GHZ — largest entangled state in this project"
+    }
+  },
+  "quantum_volume": {
+    "n2": {"hof": 0.698, "pass": true, "trials": 5},
+    "n3": {"hof": 0.736, "pass": true, "trials": 5},
+    "n4": {"hof": 0.706, "pass": true, "trials": 5},
+    "n5": {"hof": 0.676, "pass": true, "trials": 5},
+    "n6": {"hof": 0.602, "pass": false, "trials": 5},
+    "n7": {"hof": 0.620, "pass": false, "trials": 5},
+    "quantum_volume": 32,
+    "note": "Using opt_level=1 transpilation. Published Torino QV is higher with full optimization + error mitigation."
+  },
+  "key_findings": [
+    "IBM Torino achieves QV=32 with basic transpilation — same as IQM Garnet despite 6.7x more qubits",
+    "Bell fidelity 86.5% (default qubits) — lower than IQM's best but IBM didn't cherry-pick qubits",
+    "Noise is depolarizing: ZZ=0.729, XX=0.704, |YY|=0.675 — all correlators within 5%",
+    "GHZ scales predictably: per-qubit error 4.6-6.1% across 3-50 qubit circuits",
+    "GHZ-50 achieves 8.5% fidelity — first 50-qubit entangled state in this project",
+    "GHZ-20 at 34.3% shows IBM's scale advantage — not possible on 9q or 20q processors",
+    "Total QPU time: 44 seconds for 38 circuits and 143K shots — efficient batching works"
+  ],
+  "schema_version": "1.0",
+  "environment": "experiments/environment.json"
+}

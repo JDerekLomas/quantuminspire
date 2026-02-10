@@ -12,8 +12,9 @@
   "generated": "2026-02-10T18:28:00.388643",
   "backends_tested": [
     "emulator",
-    "emulator_rb",
-    "tuna9"
+    "tuna9",
+    "ibm_torino",
+    "iqm_garnet"
   ],
   "comparisons": [
     {
@@ -40,6 +41,24 @@
           "failure_description": "Replication matches published results within error bars",
           "severity": "none",
           "heavy_output_fraction": 0.692
+        },
+        "ibm_torino": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "QV n=2 HOF=69.7%, passes 2/3 threshold",
+          "severity": "none",
+          "heavy_output_fraction": 0.6971
+        },
+        "iqm_garnet": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "QV n=2 HOF=75.7%, passes 2/3 threshold",
+          "severity": "none",
+          "heavy_output_fraction": 0.757
         }
       }
     },
@@ -67,6 +86,24 @@
           "failure_description": "Replication matches published results within error bars",
           "severity": "none",
           "heavy_output_fraction": 0.821
+        },
+        "ibm_torino": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "QV n=3 HOF=81.0%, passes 2/3 threshold",
+          "severity": "none",
+          "heavy_output_fraction": 0.8102
+        },
+        "iqm_garnet": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "QV n=3 HOF=63.5%, below 2/3 threshold. High variance across circuits (21.7%-96.2%). IQM Garnet native gates (prx, cz) require more decomposition for random unitaries.",
+          "severity": "medium",
+          "heavy_output_fraction": 0.635
         }
       }
     },
@@ -93,6 +130,24 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "ibm_torino": {
+          "measured_value": 0.9999,
+          "discrepancy": 0.0099,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "99.99% gate fidelity. Note: inflated because IBM transpiler collapses Clifford sequences to depth 1-2 circuits, so RB measures readout error not gate error. Survival ~90% flat across all sequence lengths.",
+          "severity": "none",
+          "note": "Compilation artifact — not true gate fidelity"
+        },
+        "iqm_garnet": {
+          "measured_value": 1.0,
+          "discrepancy": 0.01,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "RB fit gives anomalous >100% fidelity due to high variance across seeds (some near 0%, some near 100%). IQM native gate decomposition may not preserve Clifford identity at m=1. Technically passes but result is unreliable.",
+          "severity": "low",
+          "note": "Anomalous fit — high seed-to-seed variance suggests compilation issues"
         }
       }
     }
@@ -106,8 +161,10 @@
     },
     "backends_tested": [
       "emulator",
-      "emulator_rb",
-      "tuna9"
-    ]
+      "tuna9",
+      "ibm_torino",
+      "iqm_garnet"
+    ],
+    "notes": "Cross-platform comparison: QV=8 on emulator, Tuna-9, and IBM Torino. IQM Garnet passes QV n=2 but fails n=3 (high variance). RB on IBM Torino and IQM Garnet both show compilation artifacts — Clifford sequences get optimized away, making survival rates insensitive to sequence length. Tuna-9 RB (99.82%) is most reliable since cQASM compiler preserves gate structure."
   }
 }

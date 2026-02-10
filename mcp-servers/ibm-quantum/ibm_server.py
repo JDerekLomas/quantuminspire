@@ -97,8 +97,17 @@ def ibm_submit_circuit(
         else:
             backend = service.least_busy(operational=True, min_num_qubits=num_qubits)
 
-        # Transpile with high optimization
-        transpiled = transpile(circuit, backend=backend, optimization_level=3)
+        # Transpile — use coupling_map + basis_gates to avoid backend plugin issues
+        try:
+            transpiled = transpile(circuit, backend=backend, optimization_level=1)
+        except Exception:
+            # Fallback: extract topology manually to bypass ibm_dynamic_circuits plugin
+            transpiled = transpile(
+                circuit,
+                coupling_map=backend.coupling_map,
+                basis_gates=list(backend.operation_names),
+                optimization_level=1,
+            )
 
         # Submit via SamplerV2
         sampler = SamplerV2(backend)

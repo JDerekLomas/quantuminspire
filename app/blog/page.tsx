@@ -2,8 +2,11 @@ import Link from 'next/link'
 import { getAllPosts, categoryColors, categoryLabels } from '@/lib/blog'
 
 export const metadata = {
-  title: 'Blog — AI x Quantum',
+  title: 'Research Blog',
   description: 'Research notes, experiment reports, and landscape analysis from the AI x Quantum project at TU Delft.',
+  alternates: {
+    canonical: '/blog',
+  },
 }
 
 export default function BlogIndex() {

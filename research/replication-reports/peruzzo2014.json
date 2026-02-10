@@ -11,7 +11,8 @@
   },
   "generated": "2026-02-10T18:28:00.386637",
   "backends_tested": [
-    "emulator"
+    "emulator",
+    "ibm_torino"
   ],
   "comparisons": [
     {
@@ -30,6 +31,15 @@
           "failure_description": "Replication matches published results within error bars",
           "severity": "none",
           "error_kcal_mol": 0.2
+        },
+        "ibm_torino": {
+          "measured_value": -2.700915,
+          "discrepancy": 0.145272,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "HeH+ at R=0.75A on IBM Torino: 91.16 kcal/mol error. 2-qubit sector-projected ansatz with Z-parity post-selection retains ~84% of shots. X0X1/Y0Y1 correlators severely degraded by hardware noise.",
+          "severity": "high",
+          "error_kcal_mol": 91.16
         }
       }
     },
@@ -48,6 +58,17 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "ibm_torino": {
+          "measured_value": 0.1331,
+          "discrepancy": 0.1331,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "11 bond distances tested, 0/11 within chemical accuracy. MAE=83.5 kcal/mol. Curve shape qualitatively correct but uniformly shifted up by ~0.12 Ha due to noise. Best R=1.5A (68.5 kcal/mol), worst R=0.5A (114.1 kcal/mol).",
+          "severity": "high",
+          "error_kcal_mol_mae": 83.5,
+          "n_chemical_accuracy": 0,
+          "n_total": 11
         }
       }
     },
@@ -66,19 +87,26 @@
           "failure_mode": "success",
           "failure_description": "Replication matches published results within error bars",
           "severity": "none"
+        },
+        "ibm_torino": {
+          "status": "not_tested",
+          "note": "Post-selection applied but no raw vs mitigated comparison computed for IBM run"
         }
       }
     }
   ],
   "summary": {
-    "total_claims_tested": 3,
+    "total_claims_tested": 5,
     "successes": 3,
-    "success_rate": 1.0,
+    "success_rate": 0.6,
     "failure_mode_counts": {
-      "success": 3
+      "success": 3,
+      "partial_noise": 2
     },
     "backends_tested": [
-      "emulator"
-    ]
+      "emulator",
+      "ibm_torino"
+    ],
+    "notes": "IBM Torino results from job d65ncqoqbmes739d4h30. 11 bond distances (0.5-3.0A), all fail chemical accuracy. HeH+ is harder than H2 on hardware because optimal theta varies more across bond distances, and small X0X1/Y0Y1 correlator signals are lost in noise."
   }
 }

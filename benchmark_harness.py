@@ -214,6 +214,7 @@ def call_llm(prompt, hard=False, model=MODEL, rag=False, task_id=None, context7_
     """Send a task prompt to the LLM and get the completion."""
     provider = detect_provider(model)
     system = SYSTEM_PROMPT_HARD if hard else SYSTEM_PROMPT
+    docs = None
 
     if rag == "cheatsheet":
         cheatsheet = load_cheatsheet()
@@ -287,7 +288,7 @@ def call_llm(prompt, hard=False, model=MODEL, rag=False, task_id=None, context7_
         input_tokens = response.usage_metadata.prompt_token_count or 0
         output_tokens = response.usage_metadata.candidates_token_count or 0
 
-    return text, input_tokens, output_tokens
+    return text, input_tokens, output_tokens, docs if rag == "context7" else None
 
 
 def ensure_indented(code, indent="    "):
@@ -468,7 +469,7 @@ def run_benchmark(args):
         # Call LLM
         t0 = time.time()
         try:
-            completion, input_tokens, output_tokens = call_llm(
+            completion, input_tokens, output_tokens, rag_docs = call_llm(
                 task["prompt"], hard=args.hard, model=model, rag=rag,
                 task_id=task_id, context7_cache=context7_cache
             )
@@ -518,6 +519,8 @@ def run_benchmark(args):
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
         }
+        if rag_docs:
+            result["rag_docs"] = rag_docs[:3000]
         results.append(result)
 
         if passed:
