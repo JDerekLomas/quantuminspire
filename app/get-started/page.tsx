@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 export const metadata = {
   title: 'Get Started — Quantum Vibe Coding with Claude Code',
@@ -163,6 +164,7 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
 export default function GetStartedPage() {
   return (
     <main className="min-h-screen text-gray-200">
+      <Nav section="vibe code" />
       {/* Header */}
       <section className="border-b border-white/5 px-6 py-16">
         <div className="max-w-4xl mx-auto">

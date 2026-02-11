@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 // ============================================================
 // Scroll-driven reveal
@@ -961,6 +962,7 @@ function StepScale() {
 export default function SeePage() {
   return (
     <div className="min-h-screen bg-[#060610] text-white">
+      <Nav />
       <div className="max-w-5xl mx-auto px-6 pt-8 pb-4">
         <Link href="/listen" className="text-sm text-gray-600 hover:text-gray-400 transition-colors inline-block">
           &larr; back to Listen

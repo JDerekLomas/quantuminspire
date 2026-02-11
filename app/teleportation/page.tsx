@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import {
   zeroState, applySingleQubitGate, applyCNOT, probabilities, amplitudeInfo,
   basisLabel, H_GATE, X_GATE, Z_GATE, Ry, Rz, projectAndCollapse,
@@ -648,6 +649,7 @@ export default function TeleportationPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Nav />
       {/* Header */}
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">&larr; zoo</Link>

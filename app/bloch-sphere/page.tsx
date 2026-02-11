@@ -2,6 +2,7 @@
 
 import { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Line, Html } from '@react-three/drei'
 import * as THREE from 'three'
@@ -206,6 +207,7 @@ export default function BlochSpherePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0a0a1a]">
+      <Nav />
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">&larr; zoo</Link>
         <span className="text-sm font-semibold text-[#00d4ff]">Bloch Sphere</span>

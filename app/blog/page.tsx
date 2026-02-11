@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import { getAllPosts, categoryColors, categoryLabels } from '@/lib/blog'
 
 export const metadata = {
@@ -16,23 +17,7 @@ export default function BlogIndex() {
 
   return (
     <>
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></span>
-            </Link>
-            <span className="text-gray-600 font-mono">/</span>
-            <span className="text-sm font-mono text-gray-400">blog</span>
-          </div>
-          <div className="flex gap-6 text-xs font-mono text-gray-500">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-          </div>
-        </div>
-      </nav>
+      <Nav section="blog" />
 
       {/* Header */}
       <section className="pt-28 pb-8 px-6">

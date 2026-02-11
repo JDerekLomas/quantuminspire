@@ -1,5 +1,6 @@
 'use client'
 
+import Nav from '@/components/Nav'
 import dynamic from 'next/dynamic'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
@@ -40,6 +41,7 @@ export default function WP44Page() {
 
   return (
     <div className="min-h-screen">
+      <Nav />
       {/* ============================================ */}
       {/* HERO */}
       {/* ============================================ */}

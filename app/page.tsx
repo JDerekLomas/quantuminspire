@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -68,33 +69,7 @@ const agentArchitecture = [
 
 // ─── Components ──────────────────────────────────────────────────────────────
 
-function Nav() {
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-          <span className="font-mono font-bold text-white tracking-wider text-sm">
-            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span>
-          </span>
-          <span className="text-[10px] font-mono text-gray-500 hidden sm:block">
-            TU Delft / QuTech
-          </span>
-        </div>
-        <div className="flex gap-6 text-xs font-mono text-gray-500">
-          <a href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</a>
-          <a href="/replications" className="hover:text-[#ff8c42] transition-colors">Replications</a>
-          <a href="/learn" className="hover:text-[#8b5cf6] transition-colors">Learn</a>
-          <a href="/get-started" className="hover:text-[#00d4ff] transition-colors">Get Started</a>
-          <a href="/sonification" className="hover:text-[#e879f9] transition-colors">Listen</a>
-          <a href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</a>
-          <a href="/wp44" className="hover:text-[#ff6b9d] transition-colors hidden sm:block">WP4.4</a>
-          <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-        </div>
-      </div>
-    </nav>
-  )
-}
+// Nav imported from @/components/Nav
 
 // ─── ACT 1: The Machine is Running ──────────────────────────────────────────
 

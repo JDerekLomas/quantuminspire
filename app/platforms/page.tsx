@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 export const metadata = {
   title: 'Three Chips, One Suite — Cross-Platform Quantum Comparison',
@@ -309,19 +310,7 @@ function QVComparison() {
 export default function PlatformsPage() {
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* nav */}
-      <nav className="fixed top-0 z-50 w-full bg-black/80 backdrop-blur border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="text-sm font-mono font-bold tracking-wider hover:text-[#00d4ff]"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></Link>
-          <div className="flex gap-6 text-xs font-mono text-gray-400">
-            <Link href="/experiments" className="hover:text-white">Experiments</Link>
-            <Link href="/replications" className="hover:text-white">Replications</Link>
-            <Link href="/platforms" className="text-white">Platforms</Link>
-            <Link href="/sonification" className="hover:text-white">Listen</Link>
-            <Link href="/blog" className="hover:text-white">Blog</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav section="platforms" />
 
       <main className="max-w-6xl mx-auto px-6 pt-24 pb-20 space-y-16">
         {/* Hero */}

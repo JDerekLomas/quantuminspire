@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 const modules = [
   {
@@ -50,6 +51,7 @@ const modules = [
 export default function HowQubitsWorkIndexPage() {
   return (
     <div className="min-h-screen bg-[#0a0a1a] text-white">
+      <Nav />
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">
           &larr; zoo

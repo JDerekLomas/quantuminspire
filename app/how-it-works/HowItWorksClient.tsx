@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import { AudioProvider, MuteButton, useAudio } from './components/AudioEngine'
 import ScrollScene from './components/ScrollScene'
 import ActOne from './components/ActOne'
@@ -67,6 +68,7 @@ function ProgressIndicator() {
 function Content() {
   return (
     <div className="min-h-screen bg-black text-white">
+      <Nav />
       <AudioInitOverlay />
       <MuteButton />
       <ProgressIndicator />
@@ -77,9 +79,13 @@ function Content() {
           <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
             How It Works
           </h1>
-          <p className="text-gray-400 text-lg max-w-lg mx-auto mb-8">
+          <p className="text-gray-400 text-lg max-w-lg mx-auto mb-2">
             A quantum computer is an orchestra of artificial atoms, controlled by microwaves,
             racing against decoherence.
+          </p>
+          <p className="text-gray-500 text-sm max-w-md mx-auto mb-8">
+            This page explains the physics from first principles — one concept at a time,
+            with sound and animation driven by real hardware data.
           </p>
           <div className="animate-bounce text-gray-500 text-sm font-mono">scroll to begin</div>
         </div>
@@ -118,11 +124,14 @@ function Content() {
       <div className="h-screen flex items-center justify-center text-center px-6">
         <div className="space-y-6 max-w-lg">
           <p className="text-gray-400 text-lg">
-            That's a quantum computer. Superconducting circuits playing notes, controlled by microwaves,
-            entangled by coupling, erased by noise.
+            Resonance lets you control individual qubits. Coupling lets you entangle them.
+            Together, they let you compose quantum algorithms — choreographed sequences of
+            microwave pulses that explore exponentially many states at once.
           </p>
           <p className="text-gray-500 text-sm">
-            Everything you just heard corresponds to real physics on real hardware.
+            That's how you simulate a molecule's energy levels, optimize a supply chain, or
+            crack problems that would take classical computers longer than the age of the universe.
+            The physics you just heard is real. The challenge is making it last long enough to be useful.
           </p>
           <div className="flex gap-4 justify-center mt-8">
             <Link

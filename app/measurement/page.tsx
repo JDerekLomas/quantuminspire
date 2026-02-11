@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import {
   zeroState, applySingleQubitGate, applyCNOT, measure, probabilities,
   basisLabel, numQubits, H_GATE, X_GATE,
@@ -277,6 +278,7 @@ export default function MeasurementPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Nav />
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">&larr; zoo</Link>
         <span className="text-sm font-semibold text-[#00ff88]">Measurement Lab</span>

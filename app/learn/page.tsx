@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 export const metadata: Metadata = {
   title: 'Learn — Quantum Computing Glossary',
@@ -346,26 +347,7 @@ export default function LearnPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a1a] text-white">
-      <nav className="border-b border-white/5 bg-[#0a0a1a]/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm">
-                <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span>
-              </span>
-            </Link>
-            <span className="text-gray-600 font-mono text-xs">/</span>
-            <span className="text-gray-400 font-mono text-xs">Learn</span>
-          </div>
-          <div className="flex gap-6 text-xs font-mono text-gray-500">
-            <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>
-            <Link href="/sonification" className="hover:text-[#e879f9] transition-colors">Listen</Link>
-            <Link href="/blog" className="hover:text-[#ff6b9d] transition-colors">Blog</Link>
-            <Link href="/gallery" className="hover:text-[#8b5cf6] transition-colors">Viz Gallery</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav section="Learn" />
 
       <div className="max-w-5xl mx-auto px-6 py-16">
         {/* Header */}

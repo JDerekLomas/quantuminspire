@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import { notFound } from 'next/navigation'
 import { getPostBySlug, getAllPosts, categoryColors, categoryLabels } from '@/lib/blog'
 
@@ -61,23 +62,7 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" />
-              <span className="font-mono font-bold text-white tracking-wider text-sm"><span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span></span>
-            </Link>
-            <span className="text-gray-600 font-mono">/</span>
-            <Link href="/blog" className="text-sm font-mono text-gray-400 hover:text-white transition-colors">blog</Link>
-          </div>
-          <div className="flex gap-6 text-xs font-mono text-gray-500">
-            <Link href="/blog" className="hover:text-white transition-colors">All Posts</Link>
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-          </div>
-        </div>
-      </nav>
+      <Nav section="blog" />
 
       {/* Hero */}
       <article className="pt-24 pb-20">

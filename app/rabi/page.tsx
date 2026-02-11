@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import { computeHeatmapValue, rabiBloch, rabiBlochXY, rabiP1, rabiSigmaZ, type RabiViewId } from '@/lib/rabi'
 import { VIEW_CONFIGS, RECIPES } from '@/lib/visualization/rabiConfig'
 
@@ -535,6 +536,7 @@ export default function RabiPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Nav />
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">&larr; zoo</Link>
         <span className="text-sm font-semibold text-[#fde725]">Rabi Chevron</span>

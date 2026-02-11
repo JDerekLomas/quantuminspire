@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 import {
   zeroState, applySingleQubitGate, applyCNOT, probabilities, amplitudeInfo,
   basisLabel, numQubits, H_GATE, X_GATE, Y_GATE, Z_GATE, S_GATE, T_GATE,
@@ -168,6 +169,7 @@ export default function StateVectorPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Nav />
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">&larr; zoo</Link>
         <span className="text-sm font-semibold text-[#8b5cf6]">State Vector Explorer</span>

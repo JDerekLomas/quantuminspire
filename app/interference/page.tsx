@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Nav from '@/components/Nav'
 
 // N-slit interference pattern:
 // I(theta) = |single-slit envelope|^2 * |multi-slit interference|^2
@@ -359,6 +360,7 @@ export default function InterferencePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Nav />
       <div className="bg-[#0a0a1a]/80 backdrop-blur-md border-b border-white/5 px-4 h-12 flex items-center gap-4">
         <Link href="/" className="text-xs font-mono text-gray-500 hover:text-white transition-colors">&larr; zoo</Link>
         <span className="text-sm font-semibold" style={{ color: lightColor }}>Multi-Slit Interference</span>
