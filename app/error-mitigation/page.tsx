@@ -931,6 +931,7 @@ export default function ErrorMitigationPage() {
           <h2 className="text-2xl font-bold mb-6 text-white">Explore More</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
+              { href: '/noise', label: 'Noise Channels', desc: 'T₁/T₂ decay and error budgets' },
               { href: '/hamiltonians', label: 'H₂ Hamiltonian', desc: 'The molecule behind these experiments' },
               { href: '/resonance', label: 'Resonance', desc: 'Why qubits respond to specific frequencies' },
               { href: '/ansatz', label: 'Ansatz Explorer', desc: 'The circuits we\'re mitigating' },

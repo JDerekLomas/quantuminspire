@@ -290,6 +290,23 @@ export default function GroversPage() {
               <p>4. Repeat ~&#x03C0;/4 &middot; &#x221A;N times for maximum probability</p>
             </div>
           </div>
+
+          {/* Related */}
+          <div className="pt-3 mt-3 border-t border-white/5">
+            <span className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">Related</span>
+            <div className="mt-2 space-y-1">
+              {[
+                { href: '/interference', label: 'Interference' },
+                { href: '/state-vector', label: 'State Vectors' },
+                { href: '/measurement', label: 'Measurement' },
+                { href: '/explore', label: 'All Tools' },
+              ].map(l => (
+                <Link key={l.href} href={l.href} className="block text-xs text-gray-500 hover:text-white transition-colors py-0.5">
+                  {l.label} &rarr;
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
