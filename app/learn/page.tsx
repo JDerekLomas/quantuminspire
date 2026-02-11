@@ -177,8 +177,9 @@ const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'QAOA (Quantum Approximate Optimization Algorithm)',
-    definition: 'A variational algorithm for combinatorial optimization problems like MaxCut. Alternates between a problem Hamiltonian and a mixer Hamiltonian with tunable parameters. Performance improves with more layers (depth p) but requires more optimization.',
+    definition: 'A variational algorithm for combinatorial optimization problems like MaxCut. Alternates between a problem Hamiltonian and a mixer Hamiltonian with tunable parameters. Performance improves with more layers (depth p) but requires more optimization. Our Tuna-9 QAOA achieved 74.1% approximation ratio on a 4-node MaxCut problem.',
     category: 'algorithms',
+    expLink: { label: 'QAOA MaxCut results', href: '/experiments/qaoa-maxcut' },
     related: ['VQE', 'MaxCut', 'Approximation ratio'],
   },
   {
@@ -301,9 +302,44 @@ const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'Error mitigation',
-    definition: 'Classical post-processing techniques to reduce the effect of noise without full error correction. Includes zero-noise extrapolation (run at multiple noise levels, extrapolate to zero), probabilistic error cancellation, and readout error correction. Practical for near-term devices.',
+    definition: 'Classical post-processing techniques to reduce the effect of noise without full error correction. Includes zero-noise extrapolation (run at multiple noise levels, extrapolate to zero), probabilistic error cancellation, and readout error correction. Practical for near-term devices. We tested 15+ techniques — TREX and REM+PS achieved chemical accuracy.',
     category: 'techniques',
-    related: ['Error correction', 'Decoherence'],
+    expLink: { label: '15 techniques ranked', href: '/blog/error-mitigation-showdown' },
+    related: ['Error correction', 'Decoherence', 'TREX', 'Post-selection', 'Readout error mitigation'],
+  },
+  {
+    term: 'TREX (Twirled Readout EXtraction)',
+    definition: "IBM's readout error mitigation technique. Randomizes the measurement basis across shots to average out readout bias, then classically corrects the expectation values. Available via IBM's Estimator API at resilience_level=1. Achieved 0.22 kcal/mol on H2 VQE — the best hardware result in our experiments.",
+    category: 'techniques',
+    expLink: { label: 'IBM TREX results', href: '/blog/error-mitigation-showdown' },
+    related: ['Readout error', 'Error mitigation', 'Chemical accuracy'],
+  },
+  {
+    term: 'Post-selection',
+    definition: 'Discarding measurement shots that violate a known symmetry. For H2 VQE, the ground state has odd parity (one qubit in |0>, one in |1>), so even-parity shots (|00> or |11> in Z-basis) are noise and can be thrown away. Keeps 95-97% of shots on good qubit pairs. Simple, effective, but only works when you know the symmetry.',
+    category: 'techniques',
+    expLink: { label: 'Post-selection vs other techniques', href: '/blog/error-mitigation-showdown' },
+    related: ['Error mitigation', 'Parity'],
+  },
+  {
+    term: 'Readout error mitigation (REM)',
+    definition: 'Calibrating a confusion matrix (how often |0> is read as 1 and vice versa), then applying its inverse to correct measurement distributions. Requires separate calibration circuits. Most effective when combined with post-selection: apply REM first to correct readout bias, then post-select on parity. Our REM+PS achieved 0.92 kcal/mol on Tuna-9.',
+    category: 'techniques',
+    expLink: { label: 'REM+PS on Tuna-9', href: '/blog/error-mitigation-showdown' },
+    related: ['Readout error', 'Error mitigation', 'Post-selection'],
+  },
+  {
+    term: 'Zero-noise extrapolation (ZNE)',
+    definition: 'An error mitigation technique that intentionally amplifies gate noise (by repeating gates), measures at multiple noise levels, and extrapolates to the zero-noise limit. Effective when gate noise dominates. We found ZNE ineffective on both Tuna-9 and IBM for shallow VQE circuits because >80% of error is readout, not gates.',
+    category: 'techniques',
+    expLink: { label: 'Why ZNE failed', href: '/blog/error-mitigation-showdown' },
+    related: ['Error mitigation', 'Circuit depth'],
+  },
+  {
+    term: 'Dynamical decoupling (DD)',
+    definition: 'Inserting sequences of identity-equivalent gate pairs during idle periods to refocus unwanted interactions with the environment. Effective against low-frequency noise and crosstalk. On IBM, adding DD to TREX made results worse for our 3-gate VQE circuit — the overhead exceeded the benefit.',
+    category: 'techniques',
+    related: ['Decoherence', 'Error mitigation', 'T2'],
   },
   {
     term: 'Quantum error correction (QEC)',
@@ -437,15 +473,26 @@ export default function LearnPage() {
                 >
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <h3 className="text-white font-semibold">{entry.term}</h3>
-                    {entry.vizLink && (
-                      <Link
-                        href={entry.vizLink.href}
-                        className="flex-shrink-0 px-2.5 py-1 rounded-md text-[10px] font-mono border transition-all hover:bg-[#8b5cf6]/10"
-                        style={{ borderColor: '#8b5cf640', color: '#8b5cf6' }}
-                      >
-                        Try it: {entry.vizLink.label}
-                      </Link>
-                    )}
+                    <div className="flex gap-2 shrink-0">
+                      {entry.vizLink && (
+                        <Link
+                          href={entry.vizLink.href}
+                          className="px-2.5 py-1 rounded-md text-[10px] font-mono border transition-all hover:bg-[#8b5cf6]/10"
+                          style={{ borderColor: '#8b5cf640', color: '#8b5cf6' }}
+                        >
+                          Try it: {entry.vizLink.label}
+                        </Link>
+                      )}
+                      {entry.expLink && (
+                        <Link
+                          href={entry.expLink.href}
+                          className="px-2.5 py-1 rounded-md text-[10px] font-mono border transition-all hover:bg-[#00ff88]/10"
+                          style={{ borderColor: '#00ff8840', color: '#00ff88' }}
+                        >
+                          Data: {entry.expLink.label}
+                        </Link>
+                      )}
+                    </div>
                   </div>
                   <p className="text-gray-400 text-sm leading-relaxed">{entry.definition}</p>
                   {entry.related && entry.related.length > 0 && (
