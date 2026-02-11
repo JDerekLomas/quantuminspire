@@ -9,23 +9,20 @@ const researchHighlights = [
   { href: '/replications', label: 'Paper Replications', detail: '6 papers, 27 claims, 93% pass' },
   { href: '/experiments', label: 'Live Experiments', detail: '100+ runs across 3 chips' },
   { href: '/platforms', label: 'Platform Comparison', detail: 'Tuna-9 vs Garnet vs Torino' },
-  { href: '/methodology', label: 'Methodology', detail: 'Process, prompts & sessions' },
   { href: '/blog', label: 'Research Blog', detail: '14 posts documenting discoveries' },
 ]
 
-const learnHighlights = [
-  { href: '/bloch-sphere', label: 'Bloch Sphere', detail: '3D state exploration' },
-  { href: '/measurement', label: 'Measurement Lab', detail: 'Born rule in real time' },
-  { href: '/entanglement', label: 'Entanglement Lab', detail: 'Bell states & density matrices' },
-  { href: '/how-qubits-work', label: 'How Qubits Work', detail: '6-part physics series' },
+const exploreHighlights = [
+  { href: '/see', label: 'See', detail: 'Scroll-driven qubit tour' },
   { href: '/listen', label: 'Listen', detail: 'Quantum states as sound' },
-  { href: '/learn', label: 'All tools & glossary', detail: '14 interactives, 40+ terms' },
+  { href: '/how-qubits-work', label: 'How Qubits Work', detail: '6-part physics series' },
+  { href: '/explore', label: 'All tools & simulations', detail: '14 interactives + glossary' },
 ]
 
-const vibeCodingHighlights = [
+const buildHighlights = [
   { href: '/get-started', label: 'Setup Guide', detail: 'Claude Code + 3 quantum backends' },
-  { href: '/methodology', label: 'Methodology', detail: '349 prompts, 5-phase workflow' },
   { href: '/get-started#silent-bugs', label: '8 Silent Bugs', detail: 'Traps that ruin results silently' },
+  { href: '/get-started#prompts', label: 'Prompt Archaeology', detail: '349 prompts from 445 sessions' },
   { href: '/wp44', label: 'Research Program', detail: 'WP4.4 at TU Delft' },
 ]
 
@@ -51,6 +48,20 @@ function Hero() {
           build interactive tools that make quantum accessible, and prove that
           anyone can do quantum science through natural language.
         </p>
+        <div className="flex justify-center gap-4 mb-6">
+          <Link
+            href="/see"
+            className="px-6 py-3 rounded-lg text-sm font-mono font-bold bg-[#8b5cf6]/10 border border-[#8b5cf6]/30 text-[#8b5cf6] hover:bg-[#8b5cf6]/20 hover:scale-[1.02] transition-all"
+          >
+            Start with See &rarr;
+          </Link>
+          <Link
+            href="/listen"
+            className="px-6 py-3 rounded-lg text-sm font-mono font-bold bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white hover:scale-[1.02] transition-all"
+          >
+            Listen
+          </Link>
+        </div>
         <p className="text-sm font-mono text-gray-600 tracking-wide">
           <span className="text-gray-500">h</span>
           <span className="gradient-text font-bold">AI</span>
@@ -157,22 +168,22 @@ function Pillars() {
           ctaHref="/research"
         />
         <PillarCard
-          title="The Tools"
-          subtitle="Learn"
-          description="14 interactive simulations built by AI — Bloch spheres, entanglement labs, sonification. Every number computed live, nothing mocked."
+          title="The Creations"
+          subtitle="Explore"
+          description="Scroll-driven tours, sonification, interactive simulations, and physics modules. Every visualization, every sound — created by AI."
           color="#8b5cf6"
           stats={[
             { value: '14', label: 'interactives' },
             { value: '6', label: 'physics modules' },
-            { value: '40+', label: 'concepts' },
+            { value: '2', label: 'experiences' },
           ]}
-          highlights={learnHighlights}
+          highlights={exploreHighlights}
           cta="Start exploring"
-          ctaHref="/learn"
+          ctaHref="/explore"
         />
         <PillarCard
           title="The Method"
-          subtitle="Quantum VibeCoding"
+          subtitle="Build"
           description="Describe what you want in natural language. AI writes the circuits, submits to hardware, analyzes the results. You can do this too."
           color="#00d4ff"
           stats={[
@@ -180,9 +191,9 @@ function Pillars() {
             { value: '349', label: 'prompts' },
             { value: '8', label: 'pitfalls' },
           ]}
-          highlights={vibeCodingHighlights}
+          highlights={buildHighlights}
           cta="Try it yourself"
-          ctaHref="/quantum-vibecoding"
+          ctaHref="/get-started"
         />
       </div>
     </section>
