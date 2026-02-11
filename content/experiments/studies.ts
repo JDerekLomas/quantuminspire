@@ -109,7 +109,7 @@ export const studies: ExperimentStudy[] = [
     type: 'vqe_h2',
     title: 'H\u2082 Ground State Energy via VQE',
     subtitle: 'Variational quantum chemistry on 2 qubits -- from simulation to hardware',
-    abstract: 'We calculate the ground state energy of a hydrogen molecule using a hybrid quantum-classical algorithm on two qubits. The emulator nails chemical accuracy across 6 bond distances; Tuna-9 hardware shows 4-17 kcal/mol error that grows at larger bond distances where more entanglement is needed.',
+    abstract: 'We calculate the ground state energy of molecular hydrogen using a 2-qubit VQE on four quantum processors. Chemical accuracy achieved on IBM Torino (0.22 kcal/mol with TREX) and QI Tuna-9 (0.92 kcal/mol with hybrid PS+REM). IQM Garnet reaches 14.26 kcal/mol after fixing a platform-specific CNOT decomposition error. The emulator nails chemical accuracy across 14 bond distances.',
     status: 'complete',
     researchQuestion:
       'Can a 2-qubit variational quantum eigensolver (VQE) calculate the ground state energy of molecular hydrogen within chemical accuracy (1.6 milliHartree), and how does hardware noise affect the result?',
@@ -136,13 +136,15 @@ H = g&lt;sub&gt;0&lt;/sub&gt;I + g&lt;sub&gt;1&lt;/sub&gt;Z&lt;sub&gt;0&lt;/sub&
 <p><strong>Dissociation curve:</strong> The emulator sweeps 14 bond distances from 0.3 to 3.0 &Aring; with 65,536 shots each, using pre-computed optimal &theta; values at each distance.</p>
 `,
     discussion: `
-<p><strong>Emulator (-1.1385 Ha, 0.75 kcal/mol error):</strong> Within chemical accuracy at equilibrium. The small residual error comes from finite shot noise (statistical sampling) rather than any algorithmic limitation. The full dissociation curve shows chemical accuracy at all 14 bond distances, correctly capturing both the equilibrium well and the dissociation limit where Hartree-Fock fails.</p>
+<p><strong>Emulator (0.75 kcal/mol):</strong> Within chemical accuracy at equilibrium and across all 14 bond distances, correctly capturing the equilibrium well and dissociation limit.</p>
 
-<p><strong>IBM ibm_torino (-1.0956 Ha, 26.2 kcal/mol error):</strong> Well outside chemical accuracy. The ~0.04 Ha error is dominated by gate noise in the CNOT operation and readout errors. This is a first-run result using only Z-basis measurements -- the full 3-basis protocol would improve accuracy. IBM's error mitigation techniques (ZNE, PEC) could further reduce this gap.</p>
+<p><strong>IBM Torino (0.22 kcal/mol with TREX):</strong> Chemical accuracy achieved using Qiskit's EstimatorV2 with resilience_level=1 (twirled readout error extinction). This is a 119x improvement over raw measurement (26.2 kcal/mol). Adding dynamical decoupling or gate twirling makes TREX <em>worse</em> -- a counterintuitive finding that "more mitigation" is not always better.</p>
 
-<p><strong>QI Tuna-9:</strong> Shows similar noise-induced energy elevation, with parity leakage into wrong states. The hardware result demonstrates that while the VQE circuit is simple (1 variational parameter, 2 qubits), achieving chemical accuracy on real hardware remains challenging.</p>
+<p><strong>QI Tuna-9 (0.92 kcal/mol with PS+REM):</strong> Chemical accuracy achieved via a hybrid approach: post-selection catches gate leakage in Z-basis measurements, while readout error mitigation (confusion matrix inversion) corrects readout bias in X/Y-basis measurements. Validated on two independent qubit pairs: q[2,4] (0.92) and q[6,8] (1.32 kcal/mol).</p>
 
-<p>The key insight: VQE's variational nature means the measured energy is always <em>above</em> the true ground state (by the variational principle). Hardware noise pushes the energy even higher. This asymmetry is useful -- we know the direction of the error -- but reaching chemical accuracy requires either better hardware or active error mitigation.</p>
+<p><strong>IQM Garnet (14.26 kcal/mol with PS+REM):</strong> Not chemical accuracy despite very low readout error (1.1-1.3%). Gate and decoherence noise dominate on Garnet, making readout-focused mitigation insufficient. An initial attempt gave 60 kcal/mol due to an IQM-specific CNOT decomposition error: the textbook H&middot;CZ&middot;H decomposition fails because IQM's Hadamard differs from standard by a phase that flips X/Y correlator signs. Using R<sub>y</sub>(&pi;/2)&middot;CZ&middot;R<sub>y</sub>(-&pi;/2) fixed this.</p>
+
+<p><strong>Key insight:</strong> The dominant error source determines which mitigation works. IBM: readout error (TREX wins). Tuna-9: readout error (PS+REM wins). IQM Garnet: gate error (readout mitigation alone insufficient). Platform-specific gate decompositions can introduce subtle phase errors invisible to standard tests.</p>
 `,
     sources: [
       { label: 'Peruzzo et al. "A variational eigenvalue solver on a photonic quantum processor" (2014)', url: 'https://doi.org/10.1038/ncomms5213' },

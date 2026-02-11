@@ -138,7 +138,7 @@ Kim~\cite{kim2023} & Utility-scale circuits & 2023 & 3 \\
 \end{ruledtabular}
 \end{table}
 
-\noindent *Kim~\cite{kim2023} tested on emulator only (9-qubit kicked Ising subset).
+\noindent *Kim~\cite{kim2023} used a 9-qubit subset of the original 127-qubit experiment.
 
 \subsection{Hardware Platforms}
 
@@ -321,7 +321,7 @@ Both failures occurred on hardware platforms due to noise, not due to errors in 
 
 \begin{table*}
 \caption{Replication scorecard. \PASS{} = claim replicated within stated criteria, \FAIL{} = claim not met, --- = not tested.
-Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only, $^d$PS+REM hybrid, $^e$emulator only.}
+Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only, $^d$PS+REM hybrid.}
 \label{tab:replication}
 \begin{ruledtabular}
 \footnotesize
@@ -360,11 +360,11 @@ Paper & Claim & Emulator & Tuna-9 & Garnet/Torino & All \\
   & Tree subgraph & --- & \PASS & --- & \PASS \\
 \midrule
 \multirow{3}{*}{Kim~\cite{kim2023}}
-  & Kicked Ising dynamics & \PASS$^e$ & --- & --- & \PASS \\
-  & ZNE improves accuracy & \PASS$^e$ (14.1$\times$) & --- & --- & \PASS \\
-  & 9-qubit scaling & \PASS$^e$ & --- & --- & \PASS \\
+  & Kicked Ising dynamics & \PASS & \PASS & \PASS$^c$ & \PASS \\
+  & ZNE improves accuracy & \PASS{} (14.1$\times$) & \PASS{} (2.3$\times$) & \PASS{} (1.3$\times$)$^{a,c}$ & \PASS \\
+  & 9-qubit scaling & \PASS & \PASS & \PASS$^c$ & \PASS \\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{26/26} & \textbf{21/23} & \textbf{17/19} & \textbf{25/27} \\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{26/26} & \textbf{24/26} & \textbf{20/22} & \textbf{25/27} \\
 \end{tabular}
 \end{ruledtabular}
 \end{table*}
@@ -384,6 +384,13 @@ A second qubit pair q[6,8] also passes at $1.32\kcalmol$.
   \caption{H$_2$ potential energy surface. Exact FCI values (black), emulator (grey dashed, nearly indistinguishable), Tuna-9 with post-selection (blue), and IBM Torino with TREX (green diamond, single point at $R = 0.735$\,\AA{} within the chemical accuracy band). Hardware error increases at large $R$ where entanglement gates amplify noise.}
   \label{fig:vqe}
 \end{figure}
+
+IQM Garnet, tested with the same hybrid PS+REM approach, achieves $14.26\kcalmol$---an order of magnitude worse than Tuna-9 despite having lower readout error (1.1\% vs.\ 9.2\% on Tuna-9's best qubit).
+The dominant error source on Garnet is gate noise rather than readout, making confusion-matrix-based REM insufficient.
+An initial attempt produced $60.34\kcalmol$ due to a CNOT decomposition error specific to IQM's native gate set: the standard textbook decomposition $\text{CNOT} = H \cdot CZ \cdot H$ fails on IQM because IQM's Hadamard gate ($\text{prx}(\pi,0) \cdot \text{prx}(\pi/2,\pi/2)$) differs from the standard $H$ by a global phase of $-i$, which becomes a \emph{relative} phase of $-1$ on $|00\rangle$ when composed as $H \cdot CZ \cdot H$.
+This negates the $\langle XX \rangle$ and $\langle YY \rangle$ correlators, producing the wrong VQE energy.
+The correct decomposition uses $R_y(\pi/2) \cdot CZ \cdot R_y(-\pi/2)$, yielding a $4.2\times$ error reduction.
+This platform-specific gate decomposition subtlety is not documented in IQM's public materials and was discovered through systematic debugging of sign-flipped expectation values.
 
 HeH$^+$, however, proves far more challenging.
 The molecular Hamiltonian has a $|g_1|/|g_4|$ ratio of 7.8 (vs.\ 4.4 for H$_2$), meaning single-qubit $Z$ errors are amplified $\sim$20$\times$ relative to the entanglement signal.
@@ -440,7 +447,11 @@ On Tuna-9, post-selection alone gives $\sim$7$\kcalmol$ mean error. Readout erro
 
 \subsection{Kim et al.\ (2023): Utility-Scale Circuits}
 
-We replicated the kicked Ising dynamics from Kim et al.~\cite{kim2023} on the 9-qubit emulator (a scaled-down version of the original 127-qubit experiment). The emulator reproduces the expected magnetization dynamics, and ZNE via gate folding provides a $14.1\times$ improvement in accuracy over noisy simulation---consistent with the paper's demonstration that ZNE enables meaningful computation beyond classical simulability thresholds.
+We replicated the kicked Ising dynamics from Kim et al.~\cite{kim2023} on a 9-qubit scaled-down version of the original 127-qubit experiment, testing on emulator, IBM Torino, and QI Tuna-9.
+On the emulator, ZNE via gate folding provides a $14.1\times$ improvement in accuracy.
+On IBM Torino with TREX (6 Trotter depths, 5 $\theta$ values), ZNE gives a $1.3\times$ improvement---modest because TREX already handles readout errors, and gate noise accumulates rapidly with circuit depth (up to 180 CZ gates at depth 10).
+On Tuna-9 hardware (all 9 qubits, 10 edges), ZNE achieves $2.3\times$ mean improvement, with striking position-dependent error: qubit~0 retains 95.1\% magnetization at depth 5, while qubit~8 retains only 2.5\%---consistent with Tuna-9's asymmetric topology where peripheral qubits suffer more decoherence.
+This confirms the paper's central claim that ZNE enables useful quantum computation, while revealing that the improvement factor is circuit-depth dependent: $14.1\times$ (emulator noise model) $> 2.3\times$ (Tuna-9) $> 1.3\times$ (IBM with TREX), consistent with our finding that TREX is most effective for shallow circuits where readout error dominates.
 
 % ===================================================================
 \section{Failure Taxonomy}
