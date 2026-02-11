@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import QubitDot from './QubitDot'
 import { useAudio } from './AudioEngine'
 import { ghzToHz, HARDWARE_FREQS, lorentzian, F0 } from '../lib/scroll-physics'
+import InfoBox from './InfoBox'
 
 function subScene(globalProgress: number, numScenes: number): [number, number] {
   const idx = Math.min(numScenes - 1, Math.floor(globalProgress * numScenes))
@@ -13,16 +14,32 @@ function subScene(globalProgress: number, numScenes: number): [number, number] {
 
 const TUNA9 = HARDWARE_FREQS.tuna9
 
+// Tuna-9 topology: connected pairs with Bell fidelity
+const TUNA9_EDGES: [number, number, number][] = [
+  [0, 1, 87.0], [0, 2, 85.8], [1, 3, 91.3], [1, 4, 89.8],
+  [2, 4, 92.3], [2, 5, 91.4], [3, 6, 87.1], [4, 6, 93.5],
+  [6, 8, 91.3], [7, 8, 88.3],
+]
+
+// Layout positions for topology graph (normalized 0-1)
+const TUNA9_POS: Record<number, [number, number]> = {
+  0: [0.1, 0.15], 1: [0.35, 0.15], 3: [0.6, 0.15],
+  2: [0.1, 0.55], 4: [0.35, 0.55], 6: [0.6, 0.55], 8: [0.85, 0.55],
+  5: [0.1, 0.9], 7: [0.85, 0.9],
+}
+
 // ─── Scene 1: Frequency Ruler ────────────────────────────────────────────────
 function FrequencyRuler({ progress }: { progress: number }) {
   const visibleCount = Math.min(9, Math.ceil(progress * 10))
+  const showTopology = progress > 0.85
 
   return (
     <div className="flex flex-col items-center gap-6">
       <h2 className="text-2xl font-bold text-white/90 mb-2">Act III: The Orchestra</h2>
       <p className="text-sm text-gray-400 max-w-md text-center">
-        A real quantum computer has many qubits, each at a different frequency.
-        This is the Tuna-9 chip — 9 transmon qubits.
+        A real quantum computer is an ensemble of qubits, each deliberately tuned to a different
+        frequency so they can be individually controlled. This is QuTech's Tuna-9 — a 9-qubit
+        transmon chip that we've been running experiments on throughout this project.
       </p>
       <div className="relative w-full max-w-lg h-32">
         {/* Frequency axis */}
@@ -33,7 +50,6 @@ function FrequencyRuler({ progress }: { progress: number }) {
         {/* Qubit dots */}
         {TUNA9.slice(0, visibleCount).map((qd, i) => {
           const xPct = ((qd.freq - 4.9) / (6.9 - 4.9)) * 100
-          const delay = i * 0.05
           return (
             <div
               key={qd.q}
@@ -51,10 +67,53 @@ function FrequencyRuler({ progress }: { progress: number }) {
           )
         })}
       </div>
-      {visibleCount >= 9 && (
+
+      {/* Topology graph — appears once all qubits visible */}
+      {showTopology && (
+        <div className="w-full max-w-sm" style={{ opacity: Math.min(1, (progress - 0.85) * 7) }}>
+          <p className="text-[11px] font-mono text-gray-500 text-center mb-2">
+            chip topology — not all qubits are connected
+          </p>
+          <svg viewBox="0 0 300 160" className="w-full h-auto">
+            {/* Edges */}
+            {TUNA9_EDGES.map(([a, b, fid]) => {
+              const [x1, y1] = TUNA9_POS[a]
+              const [x2, y2] = TUNA9_POS[b]
+              const brightness = (fid - 80) / 20
+              return (
+                <line
+                  key={`${a}-${b}`}
+                  x1={x1 * 300} y1={y1 * 160}
+                  x2={x2 * 300} y2={y2 * 160}
+                  stroke={`rgba(0,212,255,${0.2 + brightness * 0.5})`}
+                  strokeWidth={1 + brightness * 1.5}
+                />
+              )
+            })}
+            {/* Nodes */}
+            {Object.entries(TUNA9_POS).map(([q, [x, y]]) => (
+              <g key={q}>
+                <circle cx={x * 300} cy={y * 160} r={10} fill="#111" stroke="#00d4ff" strokeWidth={1.5} />
+                <text x={x * 300} y={y * 160 + 3.5} textAnchor="middle" fill="#00d4ff" fontSize="8" fontFamily="monospace">
+                  Q{q}
+                </text>
+              </g>
+            ))}
+          </svg>
+        </div>
+      )}
+
+      {visibleCount >= 9 && !showTopology && (
         <p className="text-[11px] font-mono text-gray-500">
           9 qubits, 9 frequencies, 9 notes in a chord
         </p>
+      )}
+      {showTopology && (
+        <InfoBox title="Explore the hardware" link={{ href: '/platforms', label: 'Compare 3 quantum chips' }}>
+          Tuna-9 has 10 connections between 9 qubits. The best pair (Q4-Q6) achieves 93.5% Bell state fidelity.
+          We've characterized the full topology using autonomous experiments.
+          Connectivity matters: non-adjacent qubits need SWAP gates, which add noise.
+        </InfoBox>
       )}
     </div>
   )
@@ -119,8 +178,9 @@ function SelectiveAddressing({ progress }: { progress: number }) {
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-sm text-gray-400 max-w-md text-center">
-        Each qubit has a unique frequency. To control one, send a pulse at its resonance —
-        the others don't respond.
+        Because each qubit resonates at a different frequency, you can address them individually —
+        like calling someone by name in a crowd. Send a microwave pulse at 5.12 GHz and only that
+        qubit responds. The others ignore it completely.
       </p>
       <canvas ref={canvasRef} style={{ width: 500, height: 180 }} className="rounded" />
       <p className="text-[11px] font-mono text-gray-500">
@@ -246,12 +306,15 @@ function PulseSequence({ progress }: { progress: number }) {
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-sm text-gray-400 max-w-md text-center">
-        A quantum circuit is a sequence of microwave pulses — a piano roll where each note
-        is a gate applied to a specific qubit.
+        Every gate is a microwave pulse sent at a qubit's resonant frequency. The pulse duration
+        sets the rotation: a pi pulse flips the qubit (X gate), a half-pi pulse creates superposition
+        (H gate), and a partial rotation gives you Ry. Two-qubit gates like CNOT work differently —
+        you drive one qubit at the <em>other</em> qubit's frequency, activating the coupling between them.
+        A quantum algorithm is the full score: which qubit, which gate, in what order.
       </p>
       <canvas ref={canvasRef} style={{ width: 500, height: 200 }} className="rounded" />
       <p className="text-[11px] font-mono text-gray-500">
-        Pulses = gates, frequencies = qubits, timing = circuit depth
+        Same frequency, different duration = different gate. Different frequency = different qubit.
       </p>
     </div>
   )
@@ -278,7 +341,9 @@ function Scale({ progress }: { progress: number }) {
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-sm text-gray-400 max-w-md text-center">
-        The orchestra grows. More qubits, more frequencies, more possibilities.
+        The orchestra grows. Each generation of chips adds more qubits — and with them,
+        exponentially more quantum states to work with. 9 qubits can represent 512 states simultaneously.
+        133 qubits? More states than atoms in the visible universe.
       </p>
       <div className="text-center mb-2">
         <span className="text-lg font-bold font-mono" style={{ color }}>{count} qubits</span>
@@ -378,6 +443,12 @@ function Coda({ progress }: { progress: number }) {
           <p className="text-gray-500 text-sm">
             That's why error correction, mitigation, and fast gates all matter.
           </p>
+          <InfoBox title="How we fight decoherence" link={{ href: '/replications', label: 'See error mitigation results' }}>
+            T1 (energy relaxation) sets the absolute limit — typically 50-200 &micro;s on current hardware.
+            T2 (dephasing) is often shorter. We use error mitigation techniques like TREX, post-selection,
+            and readout correction to extract accurate results despite noise.
+            On IBM Torino, TREX achieved 0.22 kcal/mol — chemical accuracy for H2.
+          </InfoBox>
         </div>
       )}
     </div>

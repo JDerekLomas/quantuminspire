@@ -1,0 +1,43 @@
+{
+  "experiment": "kim2023_ising_tuna9",
+  "jobs": {
+    "d1_f1": null,
+    "d3_f1": null,
+    "d5_f1": null,
+    "d1_f3": null,
+    "d3_f3": null
+  },
+  "parameters": {
+    "d1_f1": {
+      "name": "d1_f1",
+      "n_steps": 1,
+      "fold": 1,
+      "theta_h": 0.0
+    },
+    "d3_f1": {
+      "name": "d3_f1",
+      "n_steps": 3,
+      "fold": 1,
+      "theta_h": 0.0
+    },
+    "d5_f1": {
+      "name": "d5_f1",
+      "n_steps": 5,
+      "fold": 1,
+      "theta_h": 0.0
+    },
+    "d1_f3": {
+      "name": "d1_f3",
+      "n_steps": 1,
+      "fold": 3,
+      "theta_h": 0.0
+    },
+    "d3_f3": {
+      "name": "d3_f3",
+      "n_steps": 3,
+      "fold": 3,
+      "theta_h": 0.0
+    }
+  },
+  "shots": 4096
+}

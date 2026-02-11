@@ -6,6 +6,7 @@ import QubitDot from './QubitDot'
 import WavCanvas from './WavCanvas'
 import { useAudio } from './AudioEngine'
 import { avoidedCrossing, ghzToHz } from '../lib/scroll-physics'
+import InfoBox from './InfoBox'
 
 function subScene(globalProgress: number, numScenes: number): [number, number] {
   const idx = Math.min(numScenes - 1, Math.floor(globalProgress * numScenes))
@@ -21,7 +22,9 @@ function TwoQubits({ progress }: { progress: number }) {
     <div className="flex flex-col items-center gap-6" style={{ opacity }}>
       <h2 className="text-2xl font-bold text-white/90 mb-2">Act II: Two Notes</h2>
       <p className="text-sm text-gray-400 max-w-md text-center">
-        Two qubits, two frequencies. A capacitor couples them — the interaction strength is g.
+        Now add a second qubit at a slightly different frequency. On the chip, a capacitor
+        between them creates a coupling — they can feel each other's state. The coupling
+        strength g determines how strongly they interact.
       </p>
       <div className="flex items-center gap-16">
         {/* Qubit A */}
@@ -151,8 +154,9 @@ function AvoidedCrossingScene({ progress }: { progress: number }) {
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-sm text-gray-400 max-w-md text-center">
-        Tune the qubits toward each other. Their levels don't cross —
-        they repel. The gap is twice the coupling strength.
+        What happens when we tune their frequencies closer together? The energy levels don't simply
+        cross — they repel each other, leaving a gap. This "avoided crossing" is the signature of
+        quantum coupling. The minimum gap equals twice the coupling strength (2g).
       </p>
       <canvas ref={canvasRef} style={{ width: 400, height: 250 }} className="rounded" />
       <p className="text-[11px] font-mono text-gray-500">
@@ -170,8 +174,9 @@ function Entanglement({ progress }: { progress: number }) {
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-sm text-gray-400 max-w-md text-center">
-        At the right moment, a pulse creates entanglement — the qubits share a single quantum state.
-        Neither has a definite value alone.
+        By carefully timing a pulse when the qubits are coupled, we can entangle them — creating
+        a shared quantum state where neither qubit has a definite value on its own. They become
+        one system described by a single wavefunction.
       </p>
       <div className="flex items-center gap-8">
         <QubitDot
@@ -209,6 +214,11 @@ function Entanglement({ progress }: { progress: number }) {
           <p className="text-[11px] text-gray-500 mt-1">Bell state — maximally entangled</p>
         </div>
       )}
+      <InfoBox title="What is entanglement?" link={{ href: '/experiments', label: 'See Bell experiment results' }}>
+        Entanglement means two qubits share a quantum state that can't be described as two separate states.
+        Measuring one instantly determines the other — not because of a signal, but because there was only ever
+        one shared state. On real hardware, we verify this with Bell experiments (we measured 96.6% fidelity on Tuna-9).
+      </InfoBox>
     </div>
   )
 }
@@ -228,8 +238,9 @@ function Measurement({ progress }: { progress: number }) {
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-sm text-gray-400 max-w-md text-center">
-        Measure the entangled pair. The superposition collapses — but the outcomes are correlated.
-        If one is |0&#x27E9;, the other is always |0&#x27E9; too.
+        When we measure the entangled pair, the superposition collapses into a definite outcome.
+        But the results are perfectly correlated: if one qubit is |0&#x27E9;, the other is always |0&#x27E9; too.
+        We never see |01&#x27E9; or |10&#x27E9;. This correlation is the resource that makes quantum computing powerful.
       </p>
       <div className="flex items-center gap-8">
         <QubitDot
@@ -284,6 +295,8 @@ function useActTwoAudio(scene: number, progress: number) {
   const osc2Ref = useRef<OscillatorNode | null>(null)
   const gain1Ref = useRef<GainNode | null>(null)
   const gain2Ref = useRef<GainNode | null>(null)
+  const collapsedRef = useRef(false)
+  const prevSceneRef = useRef(0)
 
   const ensureOscs = useCallback(() => {
     const ctx = getCtx()
@@ -324,13 +337,22 @@ function useActTwoAudio(scene: number, progress: number) {
     ensureOscs()
   }, [initialized, ensureOscs])
 
+  // Reset collapse flag when entering scene 4
+  useEffect(() => {
+    if (scene === 4 && prevSceneRef.current !== 4) {
+      collapsedRef.current = false
+    }
+    prevSceneRef.current = scene
+  }, [scene])
+
   useEffect(() => {
     const ctx = getCtx()
+    const mg = getMasterGain()
     const osc1 = osc1Ref.current
     const osc2 = osc2Ref.current
     const g1 = gain1Ref.current
     const g2 = gain2Ref.current
-    if (!ctx || !osc1 || !osc2 || !g1 || !g2) return
+    if (!ctx || !mg || !osc1 || !osc2 || !g1 || !g2) return
 
     const now = ctx.currentTime
     const g = 30 // MHz coupling
@@ -367,12 +389,38 @@ function useActTwoAudio(scene: number, progress: number) {
         g2.gain.setTargetAtTime(0.15, now, 0.05)
       }
     } else if (scene === 4) {
-      // Measurement: chord cuts to single tone
+      // Measurement: collapse sound + chord cuts to correlated tone
       const measured = progress > 0.3
       if (measured) {
-        osc1.frequency.setTargetAtTime(ghzToHz(5.0), now, 0.02)
-        g1.gain.setTargetAtTime(0.15, now, 0.02)
-        g2.gain.setTargetAtTime(0, now, 0.05) // second tone drops
+        // Play collapse burst once
+        if (!collapsedRef.current) {
+          collapsedRef.current = true
+          // Noise burst: short white noise to represent wavefunction collapse
+          const bufLen = Math.floor(ctx.sampleRate * 0.08) // 80ms burst
+          const noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate)
+          const data = noiseBuf.getChannelData(0)
+          for (let i = 0; i < bufLen; i++) {
+            // Exponential decay envelope on white noise
+            const env = Math.exp(-i / (bufLen * 0.15))
+            data[i] = (Math.random() * 2 - 1) * env * 0.4
+          }
+          const src = ctx.createBufferSource()
+          src.buffer = noiseBuf
+          const burstGain = ctx.createGain()
+          burstGain.gain.value = 0.5
+          src.connect(burstGain).connect(mg)
+          src.start(now)
+          // Brief spike on both tones then cut
+          g1.gain.cancelScheduledValues(now)
+          g2.gain.cancelScheduledValues(now)
+          g1.gain.setValueAtTime(0.25, now) // spike
+          g2.gain.setValueAtTime(0.25, now) // spike
+          g1.gain.linearRampToValueAtTime(0.15, now + 0.15) // settle to single tone
+          g2.gain.linearRampToValueAtTime(0, now + 0.12)    // second drops fast
+        }
+        osc1.frequency.setTargetAtTime(ghzToHz(5.0), now + 0.15, 0.02)
+        g1.gain.setTargetAtTime(0.15, now + 0.2, 0.05)
+        g2.gain.setTargetAtTime(0, now + 0.15, 0.02)
       } else {
         osc1.frequency.setTargetAtTime(330, now, 0.05)
         osc2.frequency.setTargetAtTime(495, now, 0.05)
@@ -383,7 +431,7 @@ function useActTwoAudio(scene: number, progress: number) {
       g1.gain.setTargetAtTime(0, now, 0.1)
       g2.gain.setTargetAtTime(0, now, 0.1)
     }
-  }, [scene, progress, getCtx])
+  }, [scene, progress, getCtx, getMasterGain])
 
   useEffect(() => {
     return () => {

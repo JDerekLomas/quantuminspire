@@ -108,6 +108,52 @@ Key findings:
 - EstimatorV2 raw baseline (17-19 kcal/mol) far better than SamplerV2+PS (91 kcal/mol)
 - None achieve chemical accuracy (1.0 kcal/mol)
 
+## Amplification Threshold Analysis (2026-02-10)
+
+Full quantitative analysis across 30+ data points, two molecules, three backends.
+
+### Cross-Molecule Controlled Comparison
+
+Same circuit (Ry-CNOT-X), same shots (4096), same mitigation, same hardware.
+HeH+ has a *smaller* rotation angle (less gate noise), isolating the ratio effect.
+
+| Backend | Molecule | R (A) | |g1|/|g4| | |alpha| | Error (kcal/mol) | Pass? |
+|---------|----------|-------|----------|---------|------------------|-------|
+| IBM TREX | H2 | 0.735 | **4.40** | 0.112 | **0.22** | PASS |
+| IBM TREX | HeH+ | 0.750 | **7.81** | 0.127 | **4.45** | FAIL |
+| Tuna-9 PS+REM | H2 | 0.735 | **4.40** | 0.112 | **0.92** | PASS |
+| Tuna-9 REM+PS | HeH+ | 0.750 | **7.81** | 0.127 | **4.44** | FAIL |
+
+**Scaling**: 1.8x ratio increase → 20x error increase (superlinear, ~ratio^5).
+
+### Two Competing Noise Sources
+
+H2 PES sweep on Tuna-9 (PS only, q[2,4]) reveals the tradeoff:
+
+| R (A) | |g1|/|g4| | |alpha| | Error | Dominant Noise |
+|-------|----------|---------|-------|----------------|
+| 0.5 | 6.91 | 0.072 | 9.98 | Coeff. amplification |
+| 0.735 | 4.40 | 0.112 | 3.04 | Coeff. amplification |
+| **1.0** | **2.72** | **0.176** | **4.12** | **Error minimum** |
+| 1.5 | 1.12 | 0.363 | 12.68 | Gate noise |
+| 2.0 | 0.47 | 0.567 | 17.32 | Gate noise |
+
+Error minimum at R≈1.0, NOT at lowest ratio or smallest alpha.
+
+### Chemical Accuracy Threshold
+
+- **Achievable**: ratio ≤ 4.4 with best mitigation (IBM TREX or Tuna-9 PS+REM)
+- **Not achievable**: ratio ≥ 7.8 (all HeH+ distances fail on all backends)
+- **Practical threshold**: 4.4 < |g1|/|g4| < 7.8
+
+### Cross-Platform Consistency
+
+IBM and Tuna-9 give nearly identical HeH+ errors (4.45 vs 4.44 kcal/mol)
+despite completely different hardware and mitigation. This suggests the
+coefficient ratio, not the hardware, sets the error floor.
+
+Full analysis: `experiments/results/amplification-threshold-analysis.json`
+
 ## Connection to Sagastizabal 2019
 
 This exactly validates the paper's core claim: symmetry verification

@@ -15,9 +15,9 @@ const platforms = [
 ]
 
 const bellData = [
-  { label: 'Best pair',   tuna9: 93.5, garnet: 98.1, ibm: 86.5 },
-  { label: 'Worst pair',  tuna9: 85.8, garnet: 88.4, ibm: 86.5 },
-  { label: 'Average',     tuna9: 90.2, garnet: 94.7, ibm: 86.5 },
+  { label: 'Best pair',   tuna9: 93.5, garnet: 98.4, ibm: 86.5 },
+  { label: 'Worst pair',  tuna9: 85.8, garnet: 91.2, ibm: 86.5 },
+  { label: 'Average',     tuna9: 90.2, garnet: 96.3, ibm: 86.5 },
 ]
 
 const ghzData = [
@@ -327,9 +327,9 @@ export default function PlatformsPage() {
           <div className="flex gap-2 mt-4 text-xs font-mono text-gray-500">
             <span>2026-02-10</span>
             <span>&middot;</span>
-            <span>~100 hardware jobs</span>
+            <span>~105 hardware jobs</span>
             <span>&middot;</span>
-            <span>~230K shots</span>
+            <span>~253K shots</span>
             <span>&middot;</span>
             <span>3 quantum processors</span>
           </div>
@@ -360,7 +360,7 @@ export default function PlatformsPage() {
           </div>
           <p className="text-xs text-gray-500 mt-2 font-mono">
             *IBM used default transpiler qubit placement (not cherry-picked).
-            IQM Garnet leads on best-pair fidelity. All platforms have qubit-quality variation.
+            IQM Garnet: 22/29 pairs swept (mean 96.3%, 7.2pp spread). All platforms have qubit-quality variation.
           </p>
         </section>
 
@@ -476,7 +476,7 @@ export default function PlatformsPage() {
               <tbody className="text-gray-300">
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Qubits</td><td className="text-center">9</td><td className="text-center">20</td><td className="text-center">133</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Connectivity</td><td className="text-center">10 edges</td><td className="text-center">29 edges</td><td className="text-center">Heavy-hex</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Bell fidelity</td><td className="text-center">93.5%</td><td className="text-center font-bold">98.1%</td><td className="text-center">86.5%*</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Bell fidelity</td><td className="text-center">93.5%</td><td className="text-center font-bold">98.4%</td><td className="text-center">86.5%*</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-3</td><td className="text-center">88.9%</td><td className="text-center font-bold">93.9%</td><td className="text-center">82.9%</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-5</td><td className="text-center">83.8%</td><td className="text-center">81.8%</td><td className="text-center">76.6%</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-10</td><td className="text-center text-gray-600">n/a</td><td className="text-center">54.7%</td><td className="text-center font-bold">62.2%</td></tr>
@@ -485,7 +485,7 @@ export default function PlatformsPage() {
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Quantum Volume</td><td className="text-center">8</td><td className="text-center font-bold">32</td><td className="text-center font-bold">32</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Dominant noise</td><td className="text-center">Dephasing</td><td className="text-center">Dephasing</td><td className="text-center">Depolarizing</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Per-qubit error</td><td className="text-center">3.5-6.2%</td><td className="text-center">1.4-5.0%</td><td className="text-center">4.6-6.1%</td></tr>
-                <tr><td className="py-2 px-4 text-gray-400">QPU time used</td><td className="text-center">~42K shots</td><td className="text-center">~47K shots</td><td className="text-center">44s / 10 min</td></tr>
+                <tr><td className="py-2 px-4 text-gray-400">QPU time used</td><td className="text-center">~42K shots</td><td className="text-center">~70K shots</td><td className="text-center">44s / 10 min</td></tr>
               </tbody>
             </table>
           </div>
@@ -497,7 +497,7 @@ export default function PlatformsPage() {
           <div className="space-y-3 text-sm text-gray-300">
             <p>
               <strong className="text-[#f59e0b]">IQM Garnet wins on gate quality</strong> &mdash;
-              Highest Bell fidelity (98.1%), best GHZ-3 (93.9%), and strongest correlators.
+              Highest Bell fidelity (98.4%), best GHZ-3 (93.9%), and strongest correlators.
               For circuits that fit in 20 qubits, Garnet delivers the cleanest results.
             </p>
             <p>

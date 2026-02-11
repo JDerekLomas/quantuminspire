@@ -193,18 +193,33 @@ Z-basis measurement degradation.
 *H2 benefits from Z0/Z1 error cancellation (g1 = -g2 with symmetric noise).
 HeH+ has same cancellation but larger residual due to 4.4x coefficient.
 
-**Figure 3**: Scatter plot of g1*delta_Z vs measured error for all
-VQE experiments (H2 at multiple R, HeH+ at 11 bond distances). Should
-show strong linear correlation.
+**Figure 3**: |g1|/|g4| ratio vs best mitigated error across all VQE
+experiments (30+ data points, 2 molecules, 3 backends). Shows superlinear
+scaling: 1.8x ratio increase (H2→HeH+) causes 20x error increase on IBM.
 
-This framework is **predictive**: given a Hamiltonian and hardware noise
-characterization, one can estimate whether VQE will succeed without
-running it.
+**Table 2b**: Amplification threshold (controlled cross-molecule comparison)
 
-**Prediction test (CONFIRMED)**: We predicted TREX would reduce HeH+ error
-3-4x but not achieve chemical accuracy (due to |g1|/|g4| = 7.8). IBM results:
-TREX gives 2.3-4.3x improvement, best = 4.31 kcal/mol (R=1.50). HeH+ TREX
-is 20x worse than H2 TREX (0.22 kcal/mol), exactly as the framework predicts.
+| Backend | Molecule | R (A) | |g1|/|g4| | |alpha| | Error | Pass? |
+|---------|----------|-------|----------|---------|-------|-------|
+| IBM TREX | H2 | 0.735 | **4.40** | 0.112 | **0.22** | PASS |
+| IBM TREX | HeH+ | 0.750 | **7.81** | 0.127 | **4.45** | FAIL |
+| Tuna-9 PS+REM | H2 | 0.735 | **4.40** | 0.112 | **0.92** | PASS |
+| Tuna-9 REM+PS | HeH+ | 0.750 | **7.81** | 0.127 | **4.44** | FAIL |
+
+HeH+ has a *smaller* rotation angle (less gate noise) but 20x worse error.
+This isolates coefficient amplification as the dominant effect.
+
+**Two competing noise regimes** (H2 PES sweep on Tuna-9): Error minimum at
+R=1.0 (not at min ratio or min alpha). Coefficient amplification dominates
+at small R (ratio > 4), gate noise dominates at large R (|alpha| > 0.3).
+
+**Practical threshold**: Chemical accuracy requires |g1|/|g4| < ~5.
+Above ratio ~8, no current NISQ mitigation achieves chemical accuracy.
+Cross-platform confirmation: IBM (4.45) and Tuna-9 (4.44) HeH+ errors match
+to 0.01 kcal/mol despite different hardware and mitigation — the coefficient
+ratio, not hardware, sets the error floor.
+
+Full quantitative analysis: `experiments/results/amplification-threshold-analysis.json`
 
 ### 3.4 Mitigation Technique Ranking
 
