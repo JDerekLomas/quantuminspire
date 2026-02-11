@@ -104,7 +104,7 @@ agent transcripts are publicly available.
 | Cross et al. | 2019 | QV + RB | 3 | Benchmarking protocol; cross-platform |
 | Sagastizabal et al. | 2019 | VQE + error mitigation | 4 | Error mitigation; QuTech hardware→modern |
 | Harrigan et al. | 2021 | QAOA MaxCut | 4 | Optimization; Google→other platforms |
-| Kim et al. | 2023 | Utility-scale circuits | 3 | 9-qubit kicked Ising; ZNE on emulator |
+| Kim et al. | 2023 | Utility-scale circuits | 3 | 9-qubit kicked Ising; ZNE/TREX depth-dependence |
 
 Selection criteria: (a) 2-qubit VQE feasible on all platforms, (b) published
 sufficient detail to replicate, (c) span of algorithms (VQE, QAOA, benchmarking,
@@ -151,10 +151,11 @@ Systematic comparison of 8 mitigation configurations on IBM Torino for H2 VQE:
 | Peruzzo | 9 | 7/7* | 5/7 | 5/7 | - | 7/9 |
 | Cross | 3 | 3/3 | 3/3 | 3/3 | 2/3 | 3/3 |
 | Harrigan | 4 | 4/4 | 4/4 | - | - | 4/4 |
-| Kim | 3 | 3/3 | - | - | - | 3/3 |
+| Kim | 3 | 3/3 | 3/3 | 3/3** | - | 3/3 |
 | **Total** | **27** | **26/26** | **21/23** | **17/19** | **2/3** | **25/27** |
 
 *Limited by hardware topology or access
+**Kim IBM: noise decay PASS, but TREX only 1.3x improvement (gate-noise-dominated)
 
 Key finding: **100% emulator success, 93% overall** — failures are always
 hardware-specific, never algorithmic.
@@ -256,6 +257,14 @@ correlations that TREX exploits.
 Consistent with our Tuna-9 ZNE gate-folding experiment: adding 2 extra
 CNOTs changed energy by <1.3 kcal/mol, confirming CNOT noise is not the
 dominant error source on either platform.
+
+**TREX is circuit-depth dependent** (Kim 2023 finding): TREX achieves
+119x improvement for H2 VQE (shallow, 2 CX gates, readout-dominated)
+but only 1.3x for kicked Ising d=10 (deep, hundreds of gates,
+gate-noise-dominated). Raw MAE 0.150 vs TREX MAE 0.113 on IBM Torino
+9-qubit. This confirms mitigation must match the dominant error source:
+readout mitigation for shallow circuits, gate-noise mitigation (ZNE/PEA)
+for deep circuits.
 
 ### 3.5 Hybrid PS+REM on Tuna-9
 
@@ -393,7 +402,8 @@ across platforms, with the replication gaps themselves as the finding.
   with PS+REM (0.92 kcal/mol)
 - Coefficient amplification framework predicts VQE success/failure
 - Mitigation ranking: TREX > PS+REM > DD > post-selection >> twirling >> ZNE
-  for shallow circuits
+  for shallow circuits. For deep circuits (Kim 2023): TREX only 1.3x —
+  mitigation must match dominant error source
 - Qiskit HumanEval: 62-64% zero-shot, 68-71% with RAG, 79.5% ensemble
 - AI agents can conduct systematic quantum experiments but need validation
   pipelines

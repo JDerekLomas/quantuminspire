@@ -955,7 +955,7 @@ export const posts: BlogPost[] = [
 <tr><td><strong><a href="/rabi">Rabi Oscillations</a></strong></td><td>Driven qubit dynamics</td><td>Tune drive frequency and amplitude, see resonance on the Bloch sphere</td></tr>
 <tr><td><strong><a href="/hamiltonians">Hamiltonians</a></strong></td><td>H2 molecular Hamiltonian</td><td>Explore Pauli decomposition, coefficient values, bond-distance dependence</td></tr>
 <tr><td><strong><a href="/ansatz">Ansatz Explorer</a></strong></td><td>VQE circuit design</td><td>Adjust variational parameters and see how the ansatz covers the Hilbert space</td></tr>
-<tr><td><strong><a href="/sonification">Sonification</a></strong></td><td>Quantum states as sound</td><td>Hear the difference between separable and entangled states</td></tr>
+<tr><td><strong><a href="/listen">Sonification</a></strong></td><td>Quantum states as sound</td><td>Hear the difference between separable and entangled states</td></tr>
 </tbody>
 </table>
 
@@ -1563,7 +1563,7 @@ b = measure q"""
   },
   {
     slug: 'systematic-paper-replication',
-    title: 'Tier 1 Complete + Kim 2023: 6 Papers, 24 Claims, 4 Backends',
+    title: 'Tier 1 Complete + Kim 2023: 6 Papers, 27 Claims, 4 Backends',
     subtitle: 'What happens when AI agents try to reproduce quantum computing experiments across different hardware?',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
@@ -1571,7 +1571,7 @@ b = measure q"""
     tags: ['replication', 'VQE', 'QAOA', 'quantum volume', 'randomized benchmarking', 'reproducibility', 'cross-platform'],
     heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80',
     heroCaption: 'The gaps between published results and reproduced results are themselves a research finding.',
-    excerpt: 'We replicated 6 quantum computing papers across 4 hardware backends. 92% of claims reproduce successfully. Kim 2023 (Nature "utility" paper) is our first Tier 2 replication: 9-qubit kicked Ising with ZNE achieves 14.1x error reduction. TREX on IBM achieves 0.22 kcal/mol for VQE.',
+    excerpt: 'We replicated 6 quantum computing papers across 4 hardware backends. 93% of claims reproduce successfully (25/27). Key finding: TREX achieves 119x improvement for shallow VQE but only 1.3x for deep Ising circuits — mitigation must match the dominant error source.',
     content: `<p>Reproducibility is one of the quiet crises in quantum computing. Papers report impressive results on custom hardware, but how well do those results transfer to different backends? We built an automated pipeline to find out &mdash; and the results tell a clear story about the current state of quantum computing.</p>
 
 <h2>The Approach</h2>
@@ -1591,11 +1591,11 @@ b = measure q"""
 <tbody>
 <tr><td>Sagastizabal 2019</td><td>4</td><td>4</td><td>100%</td><td>Emulator, IBM, Tuna-9</td></tr>
 <tr><td>Kandala 2017</td><td>5</td><td>5</td><td>100%</td><td>Emulator, IBM, Tuna-9</td></tr>
-<tr><td>Peruzzo 2014</td><td>5</td><td>3</td><td>60%</td><td>Emulator, IBM</td></tr>
+<tr><td>Peruzzo 2014</td><td>9</td><td>7</td><td>78%</td><td>Emulator, IBM, Tuna-9</td></tr>
 <tr><td>Cross 2019</td><td>3</td><td>3</td><td>100%</td><td>Emulator, IBM, Tuna-9, IQM</td></tr>
 <tr><td>Harrigan 2021</td><td>4</td><td>4</td><td>100%</td><td>Emulator, Tuna-9</td></tr>
 <tr><td>Kim 2023</td><td>3</td><td>3</td><td>100%</td><td>Emulator, IBM, Tuna-9</td></tr>
-<tr><td><strong>Total</strong></td><td><strong>24</strong></td><td><strong>22</strong></td><td><strong>92%</strong></td><td><strong>4 backends</strong></td></tr>
+<tr><td><strong>Total</strong></td><td><strong>27</strong></td><td><strong>25</strong></td><td><strong>93%</strong></td><td><strong>4 backends</strong></td></tr>
 </tbody>
 </table>
 
@@ -1619,9 +1619,9 @@ b = measure q"""
 
 <p><em>Nature Communications 5, 4213</em> &mdash; <a href="https://arxiv.org/abs/1304.3061">arXiv:1304.3061</a></p>
 
-<p>The paper that started it all: the first variational quantum eigensolver, demonstrated on HeH+ using a photonic processor. We replicated the full potential energy curve (11 bond distances) using PennyLane's 4-qubit Jordan-Wigner encoding with DoubleExcitation ansatz. The emulator matches FCI within 0.00012 Ha MAE. IBM Torino with TREX achieves 4.31&ndash;7.26 kcal/mol across 3 distances &mdash; a 16x improvement over SamplerV2+post-selection (83.5 kcal/mol MAE), but still 20x worse than H2 TREX (0.22 kcal/mol). Tuna-9 with REM+PS achieves 4.44 kcal/mol at R=0.75&Aring;.</p>
+<p>The paper that started it all: the first variational quantum eigensolver, demonstrated on HeH+ using a photonic processor. We replicated the full potential energy curve (11 bond distances) using PennyLane's 4-qubit Jordan-Wigner encoding with DoubleExcitation ansatz. The emulator matches FCI within 0.00012 Ha MAE. IBM Torino with TREX achieves 4.31&ndash;7.26 kcal/mol across 3 distances &mdash; a 16x improvement over SamplerV2+post-selection (83.5 kcal/mol MAE), but still 20x worse than H2 TREX (0.22 kcal/mol). Tuna-9 with REM+PS achieves 4.44 kcal/mol at R=0.75&Aring;. Cross-platform agreement is striking: IBM TREX 4.45 kcal/mol vs Tuna-9 REM+PS 4.44 kcal/mol.</p>
 
-<p><strong>Result: 78% pass (7/9 claims).</strong> The HeH+ Hamiltonian has a coefficient amplification ratio |g1|/|g4| = 7.8 (vs 4.4 for H2), which fundamentally limits NISQ accuracy. Our prediction that TREX would give 3&ndash;4x improvement but not chemical accuracy was confirmed on IBM hardware. Symmetry verification provides 2.3&ndash;7.9x improvement across backends.</p>
+<p><strong>Result: 78% pass (7/9 claims).</strong> The HeH+ Hamiltonian has a coefficient amplification ratio |g1|/|g4| = 7.8 (vs 4.4 for H2), which fundamentally limits NISQ accuracy. This ratio predicts hardware error: 1.8x larger ratio &rarr; 20x worse energy. Chemical accuracy threshold appears to be ratio &lt; ~5. Symmetry verification provides 2.3&ndash;7.9x improvement across backends.</p>
 
 <h2>Paper 4: Cross et al. (2019) &mdash; Quantum Volume</h2>
 
@@ -1644,7 +1644,7 @@ b = measure q"""
 <p>Across all five papers and four backends, three patterns are clear:</p>
 
 <ol>
-<li><strong>TREX is the biggest lever.</strong> Qiskit's built-in TREX mitigation (resilience_level=1 in EstimatorV2) delivers 119x error reduction on IBM &mdash; from 26.2 kcal/mol raw to <strong>0.22 kcal/mol, achieving chemical accuracy</strong>. Z-parity post-selection alone gives 3-6x improvement. TREX goes further because it corrects readout errors in all measurement bases, not just the computational basis. One flag change matters more than qubit selection, shot count, or choice of backend.</li>
+<li><strong>TREX is the biggest lever &mdash; for shallow circuits.</strong> Qiskit's built-in TREX mitigation (resilience_level=1 in EstimatorV2) delivers 119x error reduction on IBM for VQE &mdash; from 26.2 kcal/mol raw to <strong>0.22 kcal/mol, achieving chemical accuracy</strong>. But for deep circuits (Kim 2023 kicked Ising at depth 10), TREX achieves only 1.3x. The difference: VQE has 2 CX gates (readout-dominated error) while Ising has hundreds (gate-noise-dominated). Mitigation must match the dominant error source.</li>
 <li><strong>With the right mitigation, chemistry reproduces.</strong> Raw VQE fails on every backend. But TREX pushes IBM VQE past chemical accuracy, and our overall pass rate reaches 90%. QV and QAOA (100% pass) test threshold properties robust to noise, while VQE requires active mitigation. The pattern is clear: quantum computing works, but only with the right error mitigation stack.</li>
 <li><strong>Each backend has a noise fingerprint.</strong> Tuna-9 shows dephasing noise (ZZ correlations preserved, XX/YY degraded). IBM Torino shows depolarizing noise (all correlations degrade equally). IQM Garnet shows the cleanest Bell fidelities (98.1%). Knowing the fingerprint tells you which mitigation to apply.</li>
 </ol>
@@ -1669,11 +1669,17 @@ b = measure q"""
 
 <p>Note: 9 qubits is exactly classically simulable, so this tests the <em>mitigation method</em>, not quantum advantage. The Tuna-9 result is the first experiment that uses all 9 hardware qubits and all 10 connected edges simultaneously.</p>
 
-<p><strong>Result: 100% pass (3/3 claims).</strong> ZNE gate folding delivers 2-3x error reduction on real hardware across both IBM and Tuna-9. The emulator&rsquo;s 14.1x overpromises &mdash; real-hardware ZNE is modest but consistent.</p>
+<h3>IBM Torino: TREX vs ZNE on Deep Circuits</h3>
+
+<p>We also ran the full 9-qubit kicked Ising circuit on IBM Torino using TREX (EstimatorV2, resilience_level=1) &mdash; the same mitigation that achieved 119x improvement for VQE. The results reveal a critical insight: <strong>TREX achieves only 1.3x improvement on deep Ising circuits</strong> (raw MAE 0.150 vs TREX MAE 0.113). The depth sweep shows raw M_z decaying from 0.948 (d=1) to 0.730 (d=10), with TREX barely helping (0.948 to 0.797). The theta sweep correctly tracks the phase transition from ordered (M_z=0.83 at &theta;=0) through chaotic (M_z&asymp;0 at &theta;=&pi;/4) to antiferromagnetic (M_z=&minus;0.67 at &theta;=&pi;/2).</p>
+
+<p>This is perhaps our most important methodological finding: <strong>error mitigation effectiveness depends on what errors dominate</strong>. TREX corrects readout errors only. For shallow VQE circuits (2 CX gates), readout error dominates &rarr; 119x improvement. For deep Ising circuits (hundreds of gates at d=10), gate noise dominates &rarr; only 1.3x. ZNE gate folding on IBM achieves 3.1x at shallow depth (d=1) but struggles at deeper circuits. The mitigation technique must match the dominant error source.</p>
+
+<p><strong>Result: 100% pass (3/3 claims on emulator).</strong> On hardware: noise decay confirmed across all backends. ZNE/TREX improvement varies from 14.1x (emulator) to 3.1x (IBM ZNE) to 2.3x (Tuna-9 ZNE) to 1.3x (IBM TREX). The takeaway: mitigation is not one-size-fits-all.</p>
 
 <h2>What's Next</h2>
 
-<p>Tier 2 is underway. Kim 2023 is the first paper where we replicate an <em>error mitigation technique</em> rather than a physical result &mdash; and ZNE gate folding now works across all three platforms: emulator (14.1x), IBM (3.1x), and Tuna-9 (2.3x). The Tuna-9 kicked Ising experiment is our largest hardware circuit to date: 9 qubits, 10 edges, up to 180 CZ gates (d=3, fold=3). Next: test higher fold factors on same-backend IBM runs, and start Watson et al. 2022 (QuTech silicon spin qubits) and Philips et al. 2022 (universal 6-qubit silicon). The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
+<p>All 6 papers are now replicated across 4 backends with 93% claim pass rate (25/27). The IBM TREX depth-dependent finding opens a new research question: <em>can we predict which mitigation technique will work best for a given circuit before running it?</em> Circuit depth, gate count, and the ratio of readout error to gate error appear to be the key predictors. The full replication dashboard is live at <a href="https://quantuminspire.vercel.app/replications">quantuminspire.vercel.app/replications</a>.</p>`,
     sources: [
       { label: 'Sagastizabal et al. (2019)', url: 'https://arxiv.org/abs/1902.11258' },
       { label: 'Kandala et al. (2017) - Hardware-efficient VQE', url: 'https://arxiv.org/abs/1704.05018' },
