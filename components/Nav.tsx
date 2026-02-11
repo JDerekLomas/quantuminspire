@@ -25,6 +25,7 @@ const pillars = [
     links: [
       { href: '/see', label: 'See', desc: 'What a qubit looks like — scroll-driven tour' },
       { href: '/listen', label: 'Listen', desc: 'Quantum states as sound' },
+      { href: '/sonification', label: 'Sonification Lab', desc: 'Play real experiment data as sound' },
       { href: '/how-qubits-work', label: 'How Qubits Work', desc: '6-part physics series' },
       { href: '/noise', label: 'Noise Channels', desc: 'T\u2081/T\u2082, dephasing, error budgets' },
       { href: '/error-mitigation', label: 'Error Mitigation', desc: '15 techniques ranked on hardware' },
@@ -36,10 +37,10 @@ const pillars = [
     hub: '/get-started',
     color: '#00d4ff',
     links: [
-      { href: '/get-started', label: 'Get Started', desc: 'Claude Code + quantum hardware' },
-      { href: '/get-started#silent-bugs', label: '8 Silent Bugs', desc: 'Traps that ruin results silently' },
-      { href: '/get-started#prompts', label: 'Prompt Archaeology', desc: '349 prompts from 445 sessions' },
-      { href: '/wp44', label: 'Research Program', desc: 'WP4.4 — Designing quantum for everyone' },
+      { href: '/get-started', label: 'Get Started', desc: 'Setup guide' },
+      { href: '/methodology', label: 'Methodology', desc: '445 sessions, 349 prompts, 5 phases' },
+      { href: '/quantum-vibecoding', label: 'Quantum VibeCoding', desc: 'Natural language to hardware' },
+      { href: '/wp44', label: 'Research Program', desc: 'WP4.4 at TU Delft' },
     ],
   },
 ]
@@ -146,6 +147,12 @@ export default function Nav({ section }: { section?: string }) {
           ))}
 
           <a
+            href="#cite"
+            className="px-3 py-2 text-xs font-mono text-gray-500 hover:text-white transition-colors"
+          >
+            Paper
+          </a>
+          <a
             href="https://github.com/JDerekLomas/quantuminspire"
             target="_blank"
             rel="noopener noreferrer"
@@ -202,6 +209,13 @@ export default function Nav({ section }: { section?: string }) {
               ))}
             </div>
           ))}
+          <a
+            href="#cite"
+            className="block px-6 py-4 text-sm text-gray-400 hover:text-white transition-colors"
+            onClick={handleLinkClick}
+          >
+            Paper
+          </a>
           <a
             href="https://github.com/JDerekLomas/quantuminspire"
             target="_blank"
