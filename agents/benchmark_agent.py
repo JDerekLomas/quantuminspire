@@ -71,7 +71,7 @@ def run_benchmark(model, limit=None, hard=False):
 
     cmd = [
         sys.executable,
-        str(PROJECT_DIR / "benchmark_harness.py"),
+        str(PROJECT_DIR / "scripts" / "benchmark_harness.py"),
         "--model", model,
     ]
     if limit:

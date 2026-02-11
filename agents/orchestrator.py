@@ -79,7 +79,7 @@ def run_benchmark_sweep(models=None, limit=None):
     for model in models:
         log(f"BENCHMARK: Starting {model}" + (f" (limit={limit})" if limit else ""))
 
-        cmd = [sys.executable, str(PROJECT_DIR / "benchmark_harness.py"), "--model", model]
+        cmd = [sys.executable, str(PROJECT_DIR / "scripts" / "benchmark_harness.py"), "--model", model]
         if limit:
             cmd.extend(["--limit", str(limit)])
 

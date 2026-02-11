@@ -38,7 +38,7 @@ def main():
         try:
             job_id = client.submit_circuits([circ], shots=SHOTS)
             print(f"  Job: {job_id}")
-            result = client.wait_for_results(job_id, timeout_secs=120)
+            result = client.wait_for_results(job_id, timeout_secs=600)
             counts = _extract_counts(result)
             total = sum(counts.values())
             p0 = counts.get("0", 0) / total if total > 0 else 0

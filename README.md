@@ -50,9 +50,9 @@ vercel --prod
 
 # Python experiments (requires .venv)
 source .venv/bin/activate
-secret-lover run -- python benchmark_harness.py --limit 10
-python replicate_sagastizabal.py
-python replicate_peruzzo.py
+secret-lover run -- python scripts/benchmark_harness.py --limit 10
+python scripts/replications/replicate_sagastizabal.py
+python scripts/replications/replicate_peruzzo.py
 
 # Run experiment daemon
 python agents/experiment_daemon.py

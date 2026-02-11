@@ -8,9 +8,10 @@ export const metadata: Metadata = {
     template: '%s — haiqu',
   },
   description: 'How might generative AI accelerate quantum computing? An open research initiative from TU Delft.',
+  authors: [{ name: 'J. Derek Lomas', url: 'https://dereklomas.me' }],
   openGraph: {
     title: 'haiqu — AI x Quantum Research',
-    description: 'How might generative AI accelerate quantum computing? Research from TU Delft.',
+    description: 'AI agents replicate 6 landmark quantum papers on 3 chips. 27 claims tested, 93% pass, chemical accuracy achieved. Open research from TU Delft.',
     type: 'website',
     siteName: 'haiqu',
   },

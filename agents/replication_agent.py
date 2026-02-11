@@ -36,7 +36,7 @@ PAPER_REGISTRY = {
         "journal": "Phys. Rev. A 100, 010302(R) (2019)",
         "arxiv": "1902.11258",
         "institution": "QuTech / TU Delft",
-        "script": "replicate_sagastizabal.py",
+        "script": "scripts/replications/replicate_sagastizabal.py",
         "status": "implemented",
         "description": (
             "2-qubit VQE for H2 ground-state energy using a single-parameter "
@@ -61,7 +61,7 @@ PAPER_REGISTRY = {
         "journal": "Nature 549, 242-246 (2017)",
         "arxiv": "1704.05018",
         "institution": "IBM Research",
-        "script": "replicate_kandala.py",
+        "script": "scripts/replications/replicate_kandala.py",
         "status": "implemented",
         "description": (
             "Hardware-efficient VQE for H2, LiH, and BeH2 using a parity mapping "
@@ -80,7 +80,7 @@ PAPER_REGISTRY = {
         "journal": "Nature Communications 5, 4213 (2014)",
         "arxiv": "1304.3061",
         "institution": "Various (Bristol, MIT, Google)",
-        "script": "replicate_peruzzo.py",
+        "script": "scripts/replications/replicate_peruzzo.py",
         "status": "implemented",
         "description": (
             "The original VQE paper. 2-qubit HeH+ ground state energy using a "

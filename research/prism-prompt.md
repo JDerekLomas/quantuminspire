@@ -51,10 +51,10 @@ Copy this into OpenAI Prism (https://prism.openai.com/) to draft the paper. All 
 - **Experiment daemon**: https://github.com/JDerekLomas/quantuminspire/blob/main/agents/experiment_daemon.py
 - **Replication agent**: https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_agent.py
 - **Replication analyzer**: https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_analyzer.py
-- **Benchmark harness**: https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_harness.py
+- **Benchmark harness**: https://github.com/JDerekLomas/quantuminspire/blob/main/scripts/benchmark_harness.py
 - **MCP servers**: https://github.com/JDerekLomas/quantuminspire/tree/main/mcp-servers
-- **Sagastizabal replication script**: https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_sagastizabal.py
-- **Peruzzo replication script**: https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_peruzzo.py
+- **Sagastizabal replication script**: https://github.com/JDerekLomas/quantuminspire/blob/main/scripts/replications/replicate_sagastizabal.py
+- **Peruzzo replication script**: https://github.com/JDerekLomas/quantuminspire/blob/main/scripts/replications/replicate_peruzzo.py
 
 ### Research Documents
 - **Research plan**: https://github.com/JDerekLomas/quantuminspire/blob/main/research/replication-research-plan.md

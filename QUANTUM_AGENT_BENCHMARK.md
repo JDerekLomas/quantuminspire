@@ -232,7 +232,7 @@ Key findings from baseline:
 - Peer review difficulty ratings with quantum computing researchers
 
 ### Phase 2: Harness Development (Weeks 2-3)
-- Extend `benchmark_harness.py` to support multi-turn agentic evaluation
+- Extend `scripts/benchmark_harness.py` to support multi-turn agentic evaluation
 - Add cross-framework equivalence checking (statevector comparison across Qiskit/PennyLane/Cirq)
 - Add judge model integration for scientific reasoning evaluation
 - Build results dashboard (integrate with quantuminspire.vercel.app)

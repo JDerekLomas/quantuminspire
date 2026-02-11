@@ -5,13 +5,13 @@ Runs the 151 Qiskit HumanEval tasks against an LLM via the Google GenAI API,
 executes generated code with tests, and reports Pass@1.
 
 Usage:
-    secret-lover run -- python benchmark_harness.py                       # Run all 151 tasks
-    secret-lover run -- python benchmark_harness.py --hard                # Hard variant
-    secret-lover run -- python benchmark_harness.py --difficulty basic    # Filter by difficulty
-    secret-lover run -- python benchmark_harness.py --limit 10           # First N tasks
-    secret-lover run -- python benchmark_harness.py --resume              # Resume from checkpoint
-    secret-lover run -- python benchmark_harness.py --task-id 42         # Single task
-    secret-lover run -- python benchmark_harness.py --model gemini-2.5-pro  # Different model
+    secret-lover run -- python scripts/benchmark_harness.py                       # Run all 151 tasks
+    secret-lover run -- python scripts/benchmark_harness.py --hard                # Hard variant
+    secret-lover run -- python scripts/benchmark_harness.py --difficulty basic    # Filter by difficulty
+    secret-lover run -- python scripts/benchmark_harness.py --limit 10           # First N tasks
+    secret-lover run -- python scripts/benchmark_harness.py --resume              # Resume from checkpoint
+    secret-lover run -- python scripts/benchmark_harness.py --task-id 42         # Single task
+    secret-lover run -- python scripts/benchmark_harness.py --model gemini-2.5-pro  # Different model
 """
 
 import json

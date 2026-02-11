@@ -331,13 +331,68 @@ export default function ResearchPage() {
         </div>
       </section>
 
+      {/* Data & Reproducibility */}
+      <section className="border-b border-white/5 px-6 py-12">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+            Data &amp; Reproducibility
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="space-y-4 text-sm text-gray-400 leading-relaxed">
+              <p>
+                All raw data, circuits, and analysis scripts are open on{' '}
+                <a
+                  href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#00d4ff] hover:underline"
+                >
+                  GitHub
+                </a>.
+                Every result file uses schema-versioned JSON with SHA256 checksums for raw counts and circuits.
+              </p>
+              <p>
+                <a
+                  href="https://github.com/JDerekLomas/quantuminspire/blob/main/research/paper-outline.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#00ff88] hover:underline"
+                >
+                  Paper outline
+                </a>{' '}
+                is available on GitHub. Preprint coming soon.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-gray-500 block mb-2">Environment</span>
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                  <span className="text-gray-500">Python</span><span className="text-white">3.12</span>
+                  <span className="text-gray-500">Qiskit</span><span className="text-white">2.1.2</span>
+                  <span className="text-gray-500">PennyLane</span><span className="text-white">0.44</span>
+                  <span className="text-gray-500">QI SDK</span><span className="text-white">3.5.1</span>
+                </div>
+              </div>
+              <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-gray-500 block mb-2">Hardware</span>
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                  <span className="text-gray-500">IBM Torino</span><span className="text-white">133 qubits</span>
+                  <span className="text-gray-500">QI Tuna-9</span><span className="text-white">9 qubits</span>
+                  <span className="text-gray-500">IQM Garnet</span><span className="text-white">20 qubits</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="px-6 py-12">
         <div className="max-w-5xl mx-auto flex flex-col items-center gap-3 text-[10px] text-gray-600 font-mono text-center">
           <div className="flex flex-wrap justify-center gap-3">
-            <a href="mailto:j.d.lomas@tudelft.nl" className="hover:text-[#00d4ff] transition-colors">j.d.lomas@tudelft.nl</a>
+            <a href="https://dereklomas.me" target="_blank" rel="noopener noreferrer" className="hover:text-[#00d4ff] transition-colors">J. Derek Lomas</a>
             <span className="text-gray-700">&middot;</span>
-            <a href="https://dereklomas.me" target="_blank" rel="noopener noreferrer" className="hover:text-[#00d4ff] transition-colors">dereklomas.me</a>
+            <a href="mailto:j.d.lomas@tudelft.nl" className="hover:text-[#00d4ff] transition-colors">j.d.lomas@tudelft.nl</a>
           </div>
           <div>
             <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026

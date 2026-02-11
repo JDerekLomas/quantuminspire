@@ -942,7 +942,7 @@ export default function ListenPage() {
           </p>
           <p className="text-gray-600 text-xs mt-2">
             Want to hear your own experiment data? Try the{' '}
-            <Link href="/sonification" className="text-[#8b5cf6] hover:underline">Sonification Lab</Link> — it plays real measurement results as sound.
+            <Link href="/explore" className="text-[#8b5cf6] hover:underline">Explore Hub</Link> — 20+ interactive tools and learning paths.
           </p>
         </div>
 
@@ -1137,8 +1137,8 @@ export default function ListenPage() {
             Resonance
           </Link>{' '}
           &middot;{' '}
-          <Link href="/sonification" className="text-gray-500 hover:text-quantum-accent">
-            Experiment Sonification
+          <Link href="/see" className="text-gray-500 hover:text-quantum-accent">
+            See
           </Link>
         </footer>
       </div>
