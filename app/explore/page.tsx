@@ -26,9 +26,48 @@ const experiences = [
 ]
 
 const deepDives = [
-  { href: '/resonance', title: 'Resonance', desc: 'Interactive explorer — energy levels, Lorentzian peaks, avoided crossings, and hardware frequencies.', color: '#f59e0b' },
+  { href: '/resonance', title: 'Resonance', desc: 'Energy levels, Lorentzian peaks, avoided crossings, and hardware frequencies.', color: '#f59e0b' },
+  { href: '/entanglement', title: 'Entanglement', desc: 'Bell states, GHZ/W comparison, separability slider, real hardware fidelity.', color: '#ff6b9d' },
+  { href: '/noise', title: 'Noise Channels', desc: 'T\u2081/T\u2082 decay, dephasing vs depolarizing, Bloch sphere trajectories, error budgets.', color: '#ff6b9d' },
+  { href: '/error-mitigation', title: 'Error Mitigation', desc: '15 techniques ranked on real hardware. TREX 119x, ZNE fails, and why.', color: '#00ff88' },
   { href: '/how-it-works', title: 'How It Works', desc: 'Scroll-driven explainer with ambient audio. Three acts: one qubit, two qubits, an orchestra.', color: '#00d4ff' },
   { href: '/how-qubits-work', title: 'How Qubits Work', desc: '6-part physics series: spectroscopy, coherence, coupling, gates, measurement, scaling.', color: '#8b5cf6' },
+]
+
+const learningPaths = [
+  {
+    title: 'First Encounter',
+    desc: 'Never touched quantum? Start here.',
+    color: '#00d4ff',
+    steps: [
+      { href: '/see', label: 'See a qubit' },
+      { href: '/bloch-sphere', label: 'Play with the Bloch sphere' },
+      { href: '/measurement', label: 'Measure it' },
+      { href: '/entanglement', label: 'Entangle two' },
+    ],
+  },
+  {
+    title: 'The Physics',
+    desc: 'Understand the hardware.',
+    color: '#8b5cf6',
+    steps: [
+      { href: '/resonance', label: 'Why qubits respond to microwaves' },
+      { href: '/how-qubits-work/coherence', label: 'Why they forget (T\u2081/T\u2082)' },
+      { href: '/noise', label: 'Three noise channels' },
+      { href: '/how-qubits-work/gates', label: 'How gates happen' },
+    ],
+  },
+  {
+    title: 'Run Real Experiments',
+    desc: 'From simulation to hardware.',
+    color: '#00ff88',
+    steps: [
+      { href: '/hamiltonians', label: 'Build a Hamiltonian' },
+      { href: '/ansatz', label: 'Design a circuit' },
+      { href: '/error-mitigation', label: 'Pick a mitigation strategy' },
+      { href: '/experiments', label: 'See the results' },
+    ],
+  },
 ]
 
 const tools = [
@@ -43,6 +82,7 @@ const tools = [
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Driving field, detuning, T2 dephasing', color: '#eab308' },
   { href: '/ansatz', title: 'Ansatz Builder', desc: 'VQE circuit construction', color: '#94a3b8' },
   { href: '/hamiltonians', title: 'Hamiltonians', desc: 'Molecular Hamiltonian explorer', color: '#94a3b8' },
+  { href: '/sonification', title: 'Sonification', desc: 'Quantum states as sound waves', color: '#e879f9' },
 ]
 
 const reference = [
@@ -118,7 +158,7 @@ export default function ExplorePage() {
           <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
             Go Deeper
           </h2>
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {deepDives.map((d) => (
               <Link
                 key={d.href}
@@ -136,6 +176,50 @@ export default function ExplorePage() {
         </div>
       </section>
 
+      {/* Learning Paths */}
+      <section className="border-b border-white/5 px-6 py-12">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+            Learning Paths
+          </h2>
+          <div className="grid sm:grid-cols-3 gap-6">
+            {learningPaths.map((path) => (
+              <div
+                key={path.title}
+                className="p-5 rounded-xl border"
+                style={{ borderColor: `${path.color}20`, background: `${path.color}03` }}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: path.color }} />
+                  <h3 className="text-white font-bold text-sm">{path.title}</h3>
+                </div>
+                <p className="text-gray-500 text-xs mb-4">{path.desc}</p>
+                <ol className="space-y-2">
+                  {path.steps.map((step, i) => (
+                    <li key={step.href}>
+                      <Link
+                        href={step.href}
+                        className="flex items-center gap-2 group hover:bg-white/5 -mx-2 px-2 py-1 rounded transition-colors"
+                      >
+                        <span
+                          className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold flex-shrink-0"
+                          style={{ backgroundColor: `${path.color}15`, color: path.color }}
+                        >
+                          {i + 1}
+                        </span>
+                        <span className="text-xs text-gray-400 group-hover:text-white transition-colors">
+                          {step.label}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Interactive Tools */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
@@ -143,7 +227,7 @@ export default function ExplorePage() {
             Interactive Tools
           </h2>
           <p className="text-xs text-gray-600 mb-6">
-            {tools.length} simulations. Every number computed live, nothing mocked.
+            {tools.length} interactive tools. Every number computed live, nothing mocked.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {tools.map((t) => (

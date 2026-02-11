@@ -169,6 +169,7 @@ export default function LearnPage() {
               { name: 'How We Scale', href: '/how-qubits-work/scaling', desc: 'Crowding & routing cost' },
               { name: 'Resonance', href: '/resonance', desc: 'Spectroscopy & avoided crossings' },
               { name: 'Error Mitigation', href: '/error-mitigation', desc: '15 techniques ranked on real hardware' },
+              { name: 'Noise Channels', href: '/noise', desc: 'T\u2081/T\u2082, dephasing, depolarizing' },
               { name: 'Hamiltonians', href: '/hamiltonians', desc: 'H\u2082 Pauli decomposition' },
               { name: 'Ansatz Explorer', href: '/ansatz', desc: 'VQE circuit design' },
               { name: 'Sonification', href: '/sonification', desc: 'Quantum states as sound' },
