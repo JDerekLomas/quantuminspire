@@ -37,10 +37,11 @@ function Hero() {
         <span className="text-gray-500">h</span>
         <span className="gradient-text font-bold">AI</span>
         <span className="text-gray-500">qu</span>
-        <span className="text-gray-700 mx-2">&mdash;</span>
+        <span className="hidden sm:inline text-gray-700 mx-2">&mdash;</span>
+        <br className="sm:hidden" />
         <span className="text-gray-500">AI as the interface between </span>
         <span className="text-gray-400">humans</span>
-        <span className="text-gray-500"> and </span>
+        <span className="text-gray-500"> &amp; </span>
         <span className="text-gray-400">quantum</span>
       </p>
       <div className="text-gray-600 animate-bounce text-sm font-mono">
@@ -147,18 +148,18 @@ function ScienceSection() {
             <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#ff8c42]/80 mb-4">
               Qiskit HumanEval Benchmark — 151 tasks
             </div>
-            <div className="grid grid-cols-3 gap-4 sm:gap-8 mb-6">
+            <div className="flex flex-wrap gap-6 sm:gap-8 mb-6">
               <div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-[#ff8c42]">79.5%</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 font-mono mt-1">ensemble pass@1</div>
+                <div className="text-3xl font-black font-mono text-[#ff8c42]">79.5%</div>
+                <div className="text-[10px] text-gray-500 font-mono mt-1">ensemble pass@1</div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-white">70.9%</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 font-mono mt-1">single model + RAG</div>
+                <div className="text-3xl font-black font-mono text-white">70.9%</div>
+                <div className="text-[10px] text-gray-500 font-mono mt-1">single model + RAG</div>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-gray-500">56.3%</div>
-                <div className="text-[10px] sm:text-xs text-gray-500 font-mono mt-1">prev. best (QSpark)</div>
+                <div className="text-3xl font-black font-mono text-gray-500">56.3%</div>
+                <div className="text-[10px] text-gray-500 font-mono mt-1">prev. best (QSpark)</div>
               </div>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed">
@@ -170,38 +171,38 @@ function ScienceSection() {
         </ScrollReveal>
 
         {/* Three key findings */}
-        <div className="space-y-10">
+        <div className="space-y-8 sm:space-y-10">
           <ScrollReveal delay={0.25}>
-            <div className="flex items-baseline gap-4 sm:gap-6">
-              <div className="shrink-0">
+            <div>
+              <div className="mb-2">
                 <span className="text-3xl sm:text-4xl font-black font-mono text-[#00ff88]">0.22</span>
                 <span className="text-sm font-mono text-gray-500 ml-2">kcal/mol</span>
               </div>
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                Chemical accuracy on IBM Torino — 119x noise reduction with TREX. The right mitigation strategy matters more than the hardware.
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Chemical accuracy on IBM Torino — 119x noise reduction with TREX.
               </p>
             </div>
           </ScrollReveal>
 
           <ScrollReveal delay={0.35}>
-            <div className="flex items-baseline gap-4 sm:gap-6">
-              <div className="shrink-0">
+            <div>
+              <div className="mb-2">
                 <span className="text-3xl sm:text-4xl font-black font-mono text-[#00ff88]">93%</span>
                 <span className="text-sm font-mono text-gray-500 ml-2">claims pass</span>
               </div>
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                27 claims tested across 6 landmark papers, 3 quantum chips. The gap between published and reproduced is the finding.
+              <p className="text-sm text-gray-400 leading-relaxed">
+                27 claims tested across 6 landmark papers, 3 quantum chips.
               </p>
             </div>
           </ScrollReveal>
 
           <ScrollReveal delay={0.45}>
-            <div className="flex items-baseline gap-4 sm:gap-6">
-              <div className="shrink-0">
+            <div>
+              <div className="mb-2">
                 <span className="text-3xl sm:text-4xl font-black font-mono text-[#00ff88]">9q &gt; 20q</span>
               </div>
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                Tuna-9 beats IQM Garnet on GHZ-5: 83.8% vs 81.8%. Knowing your chip&apos;s topology matters more than qubit count.
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Tuna-9 beats IQM Garnet on GHZ-5. Topology matters more than qubit count.
               </p>
             </div>
           </ScrollReveal>
