@@ -381,18 +381,108 @@ export default function LearnPage() {
     entries: GLOSSARY.filter(e => e.category === cat.id),
   }))
 
+  const paths = [
+    {
+      title: 'How Qubits Work',
+      href: '/how-qubits-work',
+      desc: '6-part series: from spectroscopy to scaling. The physics of superconducting qubits, built for developers.',
+      color: '#00d4ff',
+      items: ['Spectroscopy', 'Coherence (T1/T2)', 'Qubit coupling', 'Pulse gates', 'Measurement', 'Scaling'],
+    },
+    {
+      title: 'Interactive Labs',
+      href: '#tools',
+      desc: '20 hands-on simulations. Every number computed live, nothing mocked. Drag, click, listen.',
+      color: '#8b5cf6',
+      items: ['Bloch Sphere', 'Entanglement', 'Measurement', 'Interference', 'Grover\'s', 'Teleportation'],
+    },
+    {
+      title: 'How It Works',
+      href: '/how-it-works',
+      desc: 'Scroll-driven narrative: from microwave pulses to quantum advantage in one page.',
+      color: '#00ff88',
+      items: ['Resonance', 'Superposition', 'Gates', 'Entanglement', 'Noise', 'Advantage'],
+    },
+    {
+      title: 'Sonification',
+      href: '/listen',
+      desc: 'Hear quantum states. Compare clean emulator output to noisy hardware measurements.',
+      color: '#ff8c42',
+      items: ['Circuit sound', 'Noise as sound', 'Hardware comparison'],
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-[#0a0a1a] text-white">
       <Nav section="Learn" />
 
       <div className="max-w-5xl mx-auto px-6 py-16">
-        {/* Header */}
+        {/* Hub hero */}
         <div className="mb-16">
-          <span className="font-mono text-xs text-[#8b5cf6] tracking-[0.2em] uppercase">Reference</span>
-          <h1 className="text-4xl md:text-5xl font-bold mt-3 mb-4">Quantum Computing Glossary</h1>
-          <p className="text-gray-400 text-lg max-w-2xl">
-            A practical reference for the concepts, gates, algorithms, and metrics
-            used across our experiments. Terms link to interactive visualizations where available.
+          <span className="font-mono text-xs text-[#8b5cf6] tracking-[0.2em] uppercase">Learn</span>
+          <h1 className="text-4xl md:text-6xl font-black mt-3 mb-4 tracking-tight leading-[0.95]">
+            Quantum made<br />
+            <span className="gradient-text-pink">tangible.</span>
+          </h1>
+          <p className="text-gray-400 text-lg max-w-2xl mb-8">
+            20 interactive simulations, a 6-part physics series, and a 40-term glossary —
+            all built by AI, all running real math. No prerequisites. Click anything.
+          </p>
+
+          {/* Learning paths */}
+          <div className="grid sm:grid-cols-2 gap-4 mb-12">
+            {paths.map((path) => (
+              <Link
+                key={path.title}
+                href={path.href}
+                className="group p-5 rounded-xl border bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-all"
+                style={{ borderColor: `${path.color}15` }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: path.color }} />
+                  <span className="text-white font-bold text-sm group-hover:underline">{path.title}</span>
+                </div>
+                <p className="text-gray-500 text-xs mb-3">{path.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {path.items.map((item) => (
+                    <span
+                      key={item}
+                      className="text-[10px] font-mono px-1.5 py-0.5 rounded border"
+                      style={{ borderColor: `${path.color}20`, color: `${path.color}90` }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Quick links row */}
+          <div className="flex flex-wrap gap-3 mb-12">
+            <Link href="/gallery" className="text-xs font-mono px-3 py-1 rounded-full bg-[#8b5cf6]/10 text-[#8b5cf6] border border-[#8b5cf6]/20 hover:bg-[#8b5cf6]/20 transition-colors">
+              Gallery &rarr;
+            </Link>
+            <Link href="/see" className="text-xs font-mono px-3 py-1 rounded-full bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20 hover:bg-[#00d4ff]/20 transition-colors">
+              /see &rarr;
+            </Link>
+            <Link href="/resonance" className="text-xs font-mono px-3 py-1 rounded-full bg-[#00ff88]/10 text-[#00ff88] border border-[#00ff88]/20 hover:bg-[#00ff88]/20 transition-colors">
+              Resonance &rarr;
+            </Link>
+            <Link href="/hamiltonians" className="text-xs font-mono px-3 py-1 rounded-full bg-[#ff8c42]/10 text-[#ff8c42] border border-[#ff8c42]/20 hover:bg-[#ff8c42]/20 transition-colors">
+              Hamiltonians &rarr;
+            </Link>
+            <Link href="/ansatz" className="text-xs font-mono px-3 py-1 rounded-full bg-[#ff6b9d]/10 text-[#ff6b9d] border border-[#ff6b9d]/20 hover:bg-[#ff6b9d]/20 transition-colors">
+              Ansatz Explorer &rarr;
+            </Link>
+          </div>
+        </div>
+
+        {/* Glossary header */}
+        <div className="mb-8 pt-8 border-t border-[#1e293b]">
+          <h2 className="text-2xl font-bold text-white mb-2">Glossary</h2>
+          <p className="text-gray-400 text-sm max-w-2xl">
+            40+ terms with links to interactive tools and experiment data.
           </p>
         </div>
 
@@ -414,7 +504,7 @@ export default function LearnPage() {
         </div>
 
         {/* Interactive tools callout */}
-        <div className="mb-12 p-6 rounded-xl border border-[#8b5cf6]/20 bg-[#8b5cf6]/5">
+        <div id="tools" className="mb-12 p-6 rounded-xl border border-[#8b5cf6]/20 bg-[#8b5cf6]/5">
           <h2 className="text-white font-semibold mb-3">Interactive Visualizations</h2>
           <p className="text-gray-400 text-sm mb-4">
             Many glossary entries link to hands-on tools where you can explore the concept directly:

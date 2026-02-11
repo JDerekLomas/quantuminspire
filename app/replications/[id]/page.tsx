@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 import { notFound } from 'next/navigation'
 import {
   getAllReportIds,
@@ -537,19 +538,14 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
       </article>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-white/5">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-gray-500 font-mono">
-            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
-          </div>
-          <div className="flex gap-4 text-xs text-gray-500 font-mono">
-            <Link href="/replications" className="hover:text-[#ff8c42] transition-colors">Replications</Link>
-            <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>
-            <Link href="/" className="hover:text-white transition-colors">Research Home</Link>
-            <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-          </div>
-        </div>
-      </footer>
+      <Footer
+        showYear
+        links={[
+          { href: '/replications', label: 'Replications', hoverColor: 'hover:text-[#ff8c42]' },
+          { href: '/experiments', label: 'Experiments', hoverColor: 'hover:text-[#00ff88]' },
+          { href: '/', label: 'Research Home' },
+        ]}
+      />
     </>
   )
 }

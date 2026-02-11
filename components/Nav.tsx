@@ -8,8 +8,10 @@ import { useState, useRef, useEffect } from 'react'
 const pillars = [
   {
     label: 'Research',
+    hub: '/research',
     color: '#00ff88',
     links: [
+      { href: '/research', label: 'Overview', desc: 'The evidence — all findings in one place' },
       { href: '/replications', label: 'Replications', desc: '6 papers, 27 claims tested' },
       { href: '/experiments', label: 'Experiments', desc: '100+ hardware experiments' },
       { href: '/platforms', label: 'Platforms', desc: '3 chips compared head-to-head' },
@@ -19,9 +21,10 @@ const pillars = [
   },
   {
     label: 'Learn',
+    hub: '/learn',
     color: '#8b5cf6',
     links: [
-      { href: '/learn', label: 'Glossary & Tools', desc: '40+ terms, 14 interactive tools' },
+      { href: '/learn', label: 'Overview & Glossary', desc: '40+ terms, 20 interactive tools' },
       { href: '/how-qubits-work', label: 'How Qubits Work', desc: '6-part physics series' },
       { href: '/how-it-works', label: 'How It Works', desc: 'Scroll-driven narrative' },
       { href: '/listen', label: 'Listen', desc: 'Quantum states as sound' },
@@ -30,9 +33,12 @@ const pillars = [
   },
   {
     label: 'VibeCoding',
+    hub: '/quantum-vibecoding',
     color: '#00d4ff',
     links: [
+      { href: '/quantum-vibecoding', label: 'Overview', desc: 'Natural language to quantum hardware' },
       { href: '/get-started', label: 'Get Started', desc: 'Setup Claude Code + quantum hardware' },
+      { href: '/methodology', label: 'Methodology', desc: '349 prompts, 5-phase workflow' },
       { href: '/wp44', label: 'Research Program', desc: 'WP4.4 — Designing quantum for everyone' },
     ],
   },

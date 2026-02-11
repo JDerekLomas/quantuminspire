@@ -25,7 +25,7 @@ complex methods including ZNE, dynamical decoupling, and gate twirling for
 shallow circuits; (3) a hybrid post-selection + readout error mitigation (PS+REM)
 approach that achieves chemical accuracy on the 9-qubit Tuna-9 platform;
 (4) evidence that AI agents can conduct systematic quantum experiments at high
-throughput (100+ experiments, 600K+ shots, <10 min QPU time) but introduce novel
+throughput (105+ experiments, 250K+ shots, <10 min QPU time) but introduce novel
 failure modes including coefficient convention errors and incomplete analysis
 that require validation pipelines to catch. Separately, we benchmark quantum
 code generation with the Qiskit HumanEval suite: frontier LLMs achieve 62-64%
@@ -79,8 +79,10 @@ agent transcripts are publicly available.
 | IQM Garnet | 20 | Square-lattice-like | PRX, CZ | Dephasing |
 | Emulator | 9 | All-to-all | Any | None |
 
-- Brief characterization of each: Bell fidelity, QV, RB gate fidelity
-- Qubit selection methodology (autonomous characterization on Tuna-9)
+- Brief characterization of each: Bell fidelity sweep (22/29 pairs on IQM,
+  10/10 on Tuna-9, default placement on IBM), QV, RB gate fidelity
+- Qubit selection methodology (autonomous characterization on Tuna-9,
+  full pair sweep on IQM Garnet revealing 7.2pp spread: 91.2-98.4%)
 - Access constraints: IBM 10 min/month free, IQM 30 credits/month,
   QI unlimited
 
@@ -276,7 +278,7 @@ on one run). PS catches these outliers. The hybrid approach is robust: worst cas
 
 | Metric | Tuna-9 | IQM Garnet | IBM Torino |
 |--------|--------|-----------|------------|
-| Bell fidelity (best) | 96.6% | 98.1% | 86.5%* |
+| Bell fidelity (best) | 96.6% | 98.4% | 86.5%* |
 | QV | 8 | 32 | 32 |
 | RB fidelity | 99.82% | 99.82% | 99.99%** |
 | GHZ-3 | 88.9% | 93.9% | 82.9% |
@@ -337,7 +339,7 @@ error traceable and correctable.
 | Human time | ~20 hours review | — |
 | **Total compute cost** | | **~$15** |
 
-82 experiments across 4 backends in ~48 hours of wall time. The agent
+105+ experiments across 4 backends in ~72 hours of wall time. The agent
 operated autonomously for stretches of 4-6 hours, submitting jobs,
 waiting for results, analyzing, and queuing next experiments.
 
@@ -437,7 +439,7 @@ QASM listings for all circuits used. ISA (transpiled) circuits for each
 backend.
 
 ### C. Raw Measurement Data
-Pointer to repository with all 82 experiment JSON files including raw
+Pointer to repository with all 105+ experiment JSON files including raw
 bitstring counts.
 
 ### D. Agent Transcript Excerpts

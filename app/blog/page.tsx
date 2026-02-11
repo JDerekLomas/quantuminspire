@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 import { getAllPosts, categoryColors, categoryLabels } from '@/lib/blog'
 
 export const metadata = {
@@ -121,18 +122,7 @@ export default function BlogIndex() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t border-white/5">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-gray-500 font-mono">
-            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech
-          </div>
-          <div className="flex gap-4 text-xs text-gray-500 font-mono">
-            <Link href="/" className="hover:text-white transition-colors">Research Home</Link>
-            <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-          </div>
-        </div>
-      </footer>
+      <Footer links={[{ href: '/', label: 'Research Home' }]} />
     </>
   )
 }

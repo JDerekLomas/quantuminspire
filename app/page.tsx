@@ -24,8 +24,8 @@ const learnHighlights = [
 
 const vibeCodingHighlights = [
   { href: '/get-started', label: 'Setup Guide', detail: 'Claude Code + 3 quantum backends' },
+  { href: '/methodology', label: 'Methodology', detail: '349 prompts, 5-phase workflow' },
   { href: '/get-started#silent-bugs', label: '8 Silent Bugs', detail: 'Traps that ruin results silently' },
-  { href: '/get-started#prompts', label: 'Prompt Archaeology', detail: '349 prompts from 445 sessions' },
   { href: '/wp44', label: 'Research Program', detail: 'WP4.4 at TU Delft' },
 ]
 
@@ -154,7 +154,7 @@ function Pillars() {
           ]}
           highlights={researchHighlights}
           cta="See the research"
-          ctaHref="/replications"
+          ctaHref="/research"
         />
         <PillarCard
           title="The Tools"
@@ -182,7 +182,7 @@ function Pillars() {
           ]}
           highlights={vibeCodingHighlights}
           cta="Try it yourself"
-          ctaHref="/get-started"
+          ctaHref="/quantum-vibecoding"
         />
       </div>
     </section>

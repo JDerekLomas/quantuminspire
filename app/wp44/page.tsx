@@ -438,26 +438,51 @@ export default function WP44Page() {
 
           <ScrollReveal delay={0.4}>
             <div className="mt-16 p-8 rounded-xl border border-[#00ff88]/20 bg-[#00ff88]/5">
-              <div className="flex flex-col md:flex-row md:items-center gap-6">
-                <div className="flex-1">
+              <div className="flex flex-col gap-6">
+                <div>
                   <h3 className="text-white text-xl font-bold mb-2">
                     This site is the proof.
                   </h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-400 leading-relaxed mb-4">
                     This entire website — interactive quantum visualizations, real hardware experiments,
                     paper replications — was built through vibecoding: human intent translated by AI into
-                    working code. The same paradigm now works for quantum circuits.
+                    working code. 349 prompts, 445 sessions, zero lines of code written by hand.
                   </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                    {[
+                      { stat: '6', label: 'papers replicated', color: '#00ff88' },
+                      { stat: '100+', label: 'experiments', color: '#00d4ff' },
+                      { stat: '0.22', label: 'kcal/mol best', color: '#8b5cf6' },
+                      { stat: '93%', label: 'claims pass', color: '#ff8c42' },
+                    ].map((s) => (
+                      <div key={s.label} className="text-center">
+                        <div className="text-lg font-black font-mono" style={{ color: s.color }}>{s.stat}</div>
+                        <div className="text-[10px] text-gray-500 font-mono uppercase">{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex-shrink-0">
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="/research"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#00ff88]/10 border border-[#00ff88]/30 text-[#00ff88] font-mono text-sm hover:bg-[#00ff88]/20 transition-all duration-300"
+                  >
+                    See the evidence &rarr;
+                  </a>
+                  <a
+                    href="/quantum-vibecoding"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] font-mono text-sm hover:bg-[#00d4ff]/20 transition-all duration-300"
+                  >
+                    Try vibecoding yourself &rarr;
+                  </a>
                   <a
                     href="https://www.quantum-inspire.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#00ff88]/10 border border-[#00ff88]/30 text-[#00ff88] font-mono text-sm hover:bg-[#00ff88]/20 transition-all duration-300"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 text-gray-300 font-mono text-sm hover:bg-white/10 transition-all duration-300"
                   >
-                    Try Quantum Inspire
-                    <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                    Quantum Inspire
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
                     </svg>
                   </a>
@@ -473,7 +498,7 @@ export default function WP44Page() {
       {/* ============================================ */}
       <footer className="border-t border-[#1e293b]/50 py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
             <div>
               <span className="font-mono text-xs text-[#00d4ff] tracking-widest">WP4.4</span>
               <p className="text-gray-500 text-sm mt-2 leading-relaxed max-w-sm">
@@ -481,12 +506,14 @@ export default function WP44Page() {
                 Part of the Quantum Inspire research program at TU Delft / QuTech.
               </p>
             </div>
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-6">
               {[
+                { name: 'Research', url: '/research' },
+                { name: 'Learn', url: '/learn' },
+                { name: 'VibeCoding', url: '/quantum-vibecoding' },
                 { name: 'TU Delft', url: 'https://www.tudelft.nl' },
                 { name: 'QuTech', url: 'https://qutech.nl' },
                 { name: 'Quantum Inspire', url: 'https://www.quantum-inspire.com' },
-                { name: 'Research Home', url: '/' },
               ].map((p) => (
                 <a
                   key={p.name}
@@ -498,6 +525,20 @@ export default function WP44Page() {
                   {p.name}
                 </a>
               ))}
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-2 text-[10px] text-gray-600 font-mono text-center">
+            <div className="flex flex-wrap justify-center gap-3">
+              <a href="mailto:j.d.lomas@tudelft.nl" className="hover:text-[#00d4ff] transition-colors">
+                j.d.lomas@tudelft.nl
+              </a>
+              <span className="text-gray-700">&middot;</span>
+              <a href="https://dereklomas.me" target="_blank" rel="noopener noreferrer" className="hover:text-[#00d4ff] transition-colors">
+                dereklomas.me
+              </a>
+            </div>
+            <div>
+              <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
             </div>
           </div>
         </div>
