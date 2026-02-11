@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "kim2023-ising-tuna9-hardware",
+  "paper": {
+    "title": "Evidence for the utility of quantum computing before fault tolerance",
+    "authors": "Kim et al.",
+    "arxiv": "2302.11590",
+    "journal": "Nature 618, 500-505 (2023)"
+  },
+  "backend": "tuna9",
+  "n_qubits": 9,
+  "n_edges": 10,
+  "topology": "tuna9",
+  "theta_h": 0.0,
+  "theta_j": -0.7853981633974483,
+  "shots": 4096,
+  "timestamp": "2026-02-11T02:12:03.808462",
+  "note": "9-qubit kicked Ising on Tuna-9 hardware. Original paper used 127 qubits on IBM Eagle with PEA. We use 9 qubits with basic ZNE gate folding.",
+  "raw_results": {
+    "d1_f1": {
+      "n_steps": 1,
+      "fold_factor": 1,
+      "job_id": 416980,
+      "mz": 0.9443901909722222,
+      "z_expectations": [
+        0.953125,
+        0.95458984375,
+        0.97607421875,
+        0.93701171875,
+        0.92919921875,
+        0.9697265625,
+        0.92431640625,
+        0.92333984375,
+        0.93212890625
+      ],
+      "all_zero_fraction": 0.79345703125
+    },
+    "d3_f1": {
+      "n_steps": 3,
+      "fold_factor": 1,
+      "job_id": 416981,
+      "mz": 0.7848849826388888,
+      "z_expectations": [
+        0.958984375,
+        0.87060546875,
+        0.93701171875,
+        0.8857421875,
+        0.802734375,
+        0.896484375,
+        0.6376953125,
+        0.59521484375,
+        0.4794921875
+      ],
+      "all_zero_fraction": 0.42431640625
+    },
+    "d5_f1": {
+      "n_steps": 5,
+      "fold_factor": 1,
+      "job_id": 416982,
+      "mz": 0.5851236979166666,
+      "z_expectations": [
+        0.95068359375,
+        0.796875,
+        0.87353515625,
+        0.7998046875,
+        0.64404296875,
+        0.85107421875,
+        0.15185546875,
+        0.17333984375,
+        0.02490234375
+      ],
+      "all_zero_fraction": 0.138916015625
+    },
+    "d1_f3": {
+      "n_steps": 1,
+      "fold_factor": 3,
+      "job_id": 416983,
+      "mz": 0.8689236111111112,
+      "z_expectations": [
+        0.9599609375,
+        0.90673828125,
+        0.9619140625,
+        0.93310546875,
+        0.82666015625,
+        0.9384765625,
+        0.818359375,
+        0.68212890625,
+        0.79296875
+      ],
+      "all_zero_fraction": 0.5634765625
+    },
+    "d3_f3": {
+      "n_steps": 3,
+      "fold_factor": 3,
+      "job_id": 416984,
+      "mz": 0.6398654513888888,
+      "z_expectations": [
+        0.95361328125,
+        0.7392578125,
+        0.904296875,
+        0.8916015625,
+        0.4677734375,
+        0.6171875,
+        0.34912109375,
+        0.5498046875,
+        0.2861328125
+      ],
+      "all_zero_fraction": 0.187255859375
+    }
+  },
+  "depth_sweep": {
+    "description": "M_z vs Trotter depth at theta_h=0 (Clifford, ideal M_z=1.0)",
+    "results": [
+      {
+        "trotter_steps": 1,
+        "ideal_mz": 1.0,
+        "noisy_mz": 0.9443901909722222,
+        "noisy_error": 0.05560980902777779
+      },
+      {
+        "trotter_steps": 3,
+        "ideal_mz": 1.0,
+        "noisy_mz": 0.7848849826388888,
+        "noisy_error": 0.21511501736111116
+      },
+      {
+        "trotter_steps": 5,
+        "ideal_mz": 1.0,
+        "noisy_mz": 0.5851236979166666,
+        "noisy_error": 0.41487630208333337
+      }
+    ]
+  },
+  "zne": {
+    "description": "ZNE via gate folding (fold=1,3) with linear Richardson extrapolation",
+    "results": [
+      {
+        "trotter_steps": 1,
+        "noisy_mz": 0.9443901909722222,
+        "folded_mz": 0.8689236111111112,
+        "zne_mz": 0.9821234809027777,
+        "zne_error": 0.01787651909722232,
+        "improvement_factor": 3.1107738998482386
+      },
+      {
+        "trotter_steps": 3,
+        "noisy_mz": 0.7848849826388888,
+        "folded_mz": 0.6398654513888888,
+        "zne_mz": 0.8573947482638888,
+        "zne_error": 0.14260525173611116,
+        "improvement_factor": 1.5084649039376068
+      }
+    ]
+  },
+  "summary": {
+    "noisy_mae": 0.22853370949074078,
+    "zne_mae": 0.08024088541666674,
+    "zne_improvement_factor": 2.3096194018929226,
+    "worst_qubit": 7,
+    "best_qubit": 2
+  }
+}

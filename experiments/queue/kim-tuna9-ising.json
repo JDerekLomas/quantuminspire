@@ -1,11 +1,11 @@
 {
   "experiment": "kim2023_ising_tuna9",
   "jobs": {
-    "d1_f1": null,
-    "d3_f1": null,
-    "d5_f1": null,
-    "d1_f3": null,
-    "d3_f3": null
+    "d1_f1": 416980,
+    "d3_f1": 416981,
+    "d5_f1": 416982,
+    "d1_f3": 416983,
+    "d3_f3": 416984
   },
   "parameters": {
     "d1_f1": {

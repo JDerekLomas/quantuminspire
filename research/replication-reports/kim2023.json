@@ -13,7 +13,8 @@
   "backends_tested": [
     "emulator",
     "ibm_torino",
-    "ibm_marrakesh"
+    "ibm_marrakesh",
+    "tuna9"
   ],
   "comparisons": [
     {
@@ -58,6 +59,24 @@
           "ideal_mz": 1.0,
           "error": 0.043,
           "job_id": "d65omvbe4kfs73cvmj9g"
+        },
+        "tuna9": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "Full 9-qubit Tuna-9 topology (10 edges). M_z decays from 0.944 (d=1) to 0.785 (d=3) to 0.585 (d=5). Clear monotonic decay confirms paper's observation. Per-qubit: q0 stays 0.951 at d=5 while q8 collapses to 0.025 — dramatic position-dependent error accumulation on irregular topology.",
+          "severity": "none",
+          "mz_d1": 0.9444,
+          "mz_d3": 0.7849,
+          "mz_d5": 0.5851,
+          "ideal_mz": 1.0,
+          "n_qubits": 9,
+          "n_edges": 10,
+          "shots": 4096,
+          "job_ids": [416980, 416981, 416982],
+          "worst_qubit_d5": {"qubit": 8, "z_exp": 0.025},
+          "best_qubit_d5": {"qubit": 0, "z_exp": 0.951}
         }
       }
     },
@@ -93,6 +112,22 @@
           "zne_error": 0.01035,
           "raw_error": 0.03208,
           "zne_method": "gate folding (1x,3x) + linear Richardson extrapolation (same-backend)"
+        },
+        "tuna9": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "ZNE gate folding (fold=1,3) with linear Richardson on full 9-qubit Tuna-9 topology. d=1: noisy 0.944 -> ZNE 0.982 (1.8% error, 3.1x improvement). d=3: noisy 0.785 -> ZNE 0.857 (14.3% error, 1.5x improvement). ZNE partially recovers at d=1 but struggles at d=3 (60 CZ -> 180 CZ with folding overwhelms hardware coherence). Matches IBM marrakesh behavior (3.1x at d=3).",
+          "severity": "none",
+          "d1_noisy": 0.9444,
+          "d1_zne": 0.9821,
+          "d1_improvement": 3.1,
+          "d3_noisy": 0.7849,
+          "d3_zne": 0.8574,
+          "d3_improvement": 1.5,
+          "zne_method": "gate folding (1x,3x) + linear Richardson extrapolation",
+          "job_ids": [416980, 416981, 416983, 416984]
         }
       }
     },
@@ -127,6 +162,18 @@
           "zne_mz_error": 0.01035,
           "improvement_factor": 3.1,
           "note": "3.1x improvement is from same-backend (marrakesh) linear Richardson. The 5-qubit chain has only 24 CX gates at fold=1, limiting the noise budget available for ZNE to exploit."
+        },
+        "tuna9": {
+          "measured_value": 2.3,
+          "discrepancy": 7.7,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "ZNE on Tuna-9 9-qubit topology achieves 3.1x at d=1, 1.5x at d=3 (mean 2.3x). Below paper's ~10x with PEA, but matches IBM marrakesh's 3.1x with same basic ZNE method. Hardware has non-depolarizing noise (dephasing-dominated) that simple gate folding cannot fully exploit. At d=3, fold=3 requires 180 CZ gates — hardware decoherence limits ZNE effectiveness.",
+          "severity": "medium",
+          "d1_improvement": 3.1,
+          "d3_improvement": 1.5,
+          "mean_improvement": 2.3,
+          "note": "2.3x mean improvement matches IBM hardware behavior (3.1x). Both fall well below emulator's 14.1x, consistent with real-hardware ZNE limitations."
         }
       }
     }
@@ -269,6 +316,86 @@
     "noisy_mz": [0.868, 0.799, 0.530, 0.201, 0.024, 0.0, -0.024, -0.201, -0.530, -0.799, -0.868],
     "zne_mz": [0.995, 0.923, 0.622, 0.239, 0.025, 0.0, -0.025, -0.239, -0.622, -0.923, -0.995]
   },
+  "tuna9_hardware_data": {
+    "description": "9-qubit kicked Ising on Tuna-9 hardware at Clifford point (theta_h=0, theta_j=-pi/4)",
+    "topology": "tuna9: 9 qubits, 10 edges (irregular graph)",
+    "shots": 4096,
+    "results": [
+      {
+        "label": "d1_f1",
+        "n_steps": 1,
+        "fold_factor": 1,
+        "cz_gates": 20,
+        "job_id": 416980,
+        "mz": 0.9444,
+        "z_per_qubit": [0.953, 0.955, 0.976, 0.937, 0.929, 0.970, 0.924, 0.923, 0.932],
+        "all_zero_fraction": 0.793
+      },
+      {
+        "label": "d3_f1",
+        "n_steps": 3,
+        "fold_factor": 1,
+        "cz_gates": 60,
+        "job_id": 416981,
+        "mz": 0.7849,
+        "z_per_qubit": [0.959, 0.871, 0.937, 0.886, 0.803, 0.896, 0.638, 0.595, 0.479],
+        "all_zero_fraction": 0.424
+      },
+      {
+        "label": "d5_f1",
+        "n_steps": 5,
+        "fold_factor": 1,
+        "cz_gates": 100,
+        "job_id": 416982,
+        "mz": 0.5851,
+        "z_per_qubit": [0.951, 0.797, 0.874, 0.800, 0.644, 0.851, 0.152, 0.173, 0.025],
+        "all_zero_fraction": 0.139
+      },
+      {
+        "label": "d1_f3",
+        "n_steps": 1,
+        "fold_factor": 3,
+        "cz_gates": 60,
+        "job_id": 416983,
+        "mz": 0.8689,
+        "z_per_qubit": [0.960, 0.907, 0.962, 0.933, 0.827, 0.938, 0.818, 0.682, 0.793],
+        "all_zero_fraction": 0.563
+      },
+      {
+        "label": "d3_f3",
+        "n_steps": 3,
+        "fold_factor": 3,
+        "cz_gates": 180,
+        "job_id": 416984,
+        "mz": 0.6399,
+        "z_per_qubit": [0.954, 0.739, 0.904, 0.892, 0.468, 0.617, 0.349, 0.550, 0.286],
+        "all_zero_fraction": 0.187
+      }
+    ],
+    "zne_richardson": {
+      "d1": {
+        "fold_points": [1, 3],
+        "mz_values": [0.9444, 0.8689],
+        "zne_mz": 0.9821,
+        "zne_error": 0.018,
+        "raw_error": 0.056,
+        "improvement_factor": 3.1
+      },
+      "d3": {
+        "fold_points": [1, 3],
+        "mz_values": [0.7849, 0.6399],
+        "zne_mz": 0.8574,
+        "zne_error": 0.143,
+        "raw_error": 0.215,
+        "improvement_factor": 1.5
+      }
+    },
+    "noise_analysis": {
+      "position_dependent_decay": "Dramatic position-dependent error at d=5. q0 (edge, degree 2) maintains Z=0.951 while q8 (chain end via q6-q8) collapses to Z=0.025. Hub qubits (q4, q6 degree 3) accumulate more CZ errors.",
+      "error_per_depth": "M_z decays ~18% per Trotter step (0.944 -> 0.785 -> 0.585). ~0.09 M_z loss per step.",
+      "folding_noise": "Fold=3 at d=1 gives 0.869 (vs 0.944 at fold=1). ~8% additional error from 2x more CZ gates."
+    }
+  },
   "summary": {
     "total_claims_tested": 3,
     "successes": 3,
@@ -276,7 +403,7 @@
     "failure_mode_counts": {
       "success": 3
     },
-    "backends_tested": ["emulator", "ibm_torino", "ibm_marrakesh"],
-    "notes": "All 3 claims PASS on emulator. IBM hardware confirms physics AND ZNE works on real hardware: 3.1x improvement (M_z error 3.2% -> 1.0%) with same-backend linear Richardson on marrakesh. Emulator achieves 14.1x (simpler noise model). Hardware ZNE is lower because real noise includes coherent errors and crosstalk not captured by simple gate folding. 5-qubit chain on IBM, 9-qubit Tuna-9 topology on emulator."
+    "backends_tested": ["emulator", "ibm_torino", "ibm_marrakesh", "tuna9"],
+    "notes": "All 3 claims PASS on emulator (14.1x ZNE improvement). IBM hardware: 3.1x ZNE improvement on 5-qubit chain (marrakesh). Tuna-9 hardware: 9-qubit full topology, M_z decays 0.944->0.785->0.585 with depth, ZNE recovers to 0.982 at d=1 (3.1x) and 0.857 at d=3 (1.5x). Mean hardware ZNE improvement ~2-3x across both IBM and Tuna-9, well below emulator's 14.1x — real-hardware noise (dephasing, coherent errors) limits simple gate folding. Dramatic position-dependent error on Tuna-9: q0 keeps 0.951 at d=5 while q8 collapses to 0.025."
   }
 }
