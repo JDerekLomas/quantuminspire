@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "kim2023-ising-ibm-torino",
+  "paper": {
+    "title": "Evidence for the utility of quantum computing before fault tolerance",
+    "authors": "Kim et al.",
+    "arxiv": "2302.11590",
+    "journal": "Nature 618, 500-505 (2023)"
+  },
+  "backend": "ibm_torino",
+  "n_qubits": 9,
+  "topology": "tuna9 (logical), IBM heavy-hex (physical)",
+  "mitigation": "TREX (EstimatorV2, resilience_level=1)",
+  "note": "Original used 127 qubits + PEA. We use 9 qubits + TREX on IBM Torino.",
+  "timestamp": "2026-02-11T01:20:07.169722+00:00",
+  "jobs": {
+    "trex_depth": "d65thv8qbmes739dcka0",
+    "raw_depth": "d65ti5je4kfs73cvt2c0",
+    "trex_theta": "d65ti9be4kfs73cvt2kg",
+    "raw_theta": "d65tif0qbmes739dcku0"
+  },
+  "depth_sweep": {
+    "description": "M_z vs Trotter depth at theta_h=0 (Clifford)",
+    "theta_h": 0.0,
+    "theta_j": -0.7853981633974483,
+    "shots": 4096,
+    "results": [
+      {
+        "trotter_steps": 1,
+        "ideal_mz": 1.0,
+        "raw_mz": 0.94775390625,
+        "raw_std": 0.0016568442695577132,
+        "trex_mz": 0.9482711032752379,
+        "trex_std": 0.008163730475321804,
+        "trex_error": 0.05172889672476211
+      },
+      {
+        "trotter_steps": 2,
+        "ideal_mz": 1.0,
+        "raw_mz": 0.8714735243055556,
+        "raw_std": 0.0025372131145517535,
+        "trex_mz": 0.9135374764370039,
+        "trex_std": 0.0038813858680518763,
+        "trex_error": 0.08646252356299611
+      },
+      {
+        "trotter_steps": 3,
+        "ideal_mz": 1.0,
+        "raw_mz": 0.9052734375,
+        "raw_std": 0.002183628870834668,
+        "trex_mz": 0.9084518801284489,
+        "trex_std": 0.007367857277506941,
+        "trex_error": 0.09154811987155109
+      },
+      {
+        "trotter_steps": 5,
+        "ideal_mz": 1.0,
+        "raw_mz": 0.8301323784722221,
+        "raw_std": 0.0028879993975499643,
+        "trex_mz": 0.8594511234942864,
+        "trex_std": 0.004201543712771264,
+        "trex_error": 0.14054887650571357
+      },
+      {
+        "trotter_steps": 7,
+        "ideal_mz": 1.0,
+        "raw_mz": 0.8155381944444444,
+        "raw_std": 0.0029926039434194063,
+        "trex_mz": 0.8956577268686595,
+        "trex_std": 0.004336388615896111,
+        "trex_error": 0.10434227313134048
+      },
+      {
+        "trotter_steps": 10,
+        "ideal_mz": 1.0,
+        "raw_mz": 0.7301432291666666,
+        "raw_std": 0.0035409623700328598,
+        "trex_mz": 0.7968839908575462,
+        "trex_std": 0.005332649119088305,
+        "trex_error": 0.20311600914245376
+      }
+    ]
+  },
+  "theta_sweep": {
+    "description": "M_z vs theta_h at d=5",
+    "n_steps": 5,
+    "theta_j": -0.7853981633974483,
+    "shots": 4096,
+    "results": [
+      {
+        "theta_h": 0.0,
+        "theta_h_over_pi": 0.0,
+        "raw_mz": 0.8524848090277777,
+        "raw_std": 0.0027107601569808333,
+        "trex_mz": 0.8334800909899365,
+        "trex_std": 0.003753309719438068
+      },
+      {
+        "theta_h": 0.39269908169872414,
+        "theta_h_over_pi": 0.125,
+        "raw_mz": 0.41102430555555547,
+        "raw_std": 0.004708674207723075,
+        "trex_mz": 0.4255433698565407,
+        "trex_std": 0.005096554309171269
+      },
+      {
+        "theta_h": 0.7853981633974483,
+        "theta_h_over_pi": 0.25,
+        "raw_mz": 0.01719835069444444,
+        "raw_std": 0.005206050264792648,
+        "trex_mz": 0.018077777408632863,
+        "trex_std": 0.005621283852513996
+      },
+      {
+        "theta_h": 1.1780972450961724,
+        "theta_h_over_pi": 0.375,
+        "raw_mz": -0.3033311631944444,
+        "raw_std": 0.004930809779484957,
+        "trex_mz": -0.3337090747210861,
+        "trex_std": 0.005221067267583046
+      },
+      {
+        "theta_h": 1.5707963267948966,
+        "theta_h_over_pi": 0.5,
+        "raw_mz": -0.7022026909722221,
+        "raw_std": 0.003675623377663606,
+        "trex_mz": -0.6672138326637188,
+        "trex_std": 0.0040928235377030485
+      }
+    ]
+  },
+  "summary": {
+    "depth_sweep_raw_mae": 0.1499475549768519,
+    "depth_sweep_trex_mae": 0.11295778315646952,
+    "trex_improvement_factor": 1.3274654546747258,
+    "depths_tested": [
+      1,
+      2,
+      3,
+      5,
+      7,
+      10
+    ],
+    "theta_values_tested": [
+      0.0,
+      0.39269908169872414,
+      0.7853981633974483,
+      1.1780972450961724,
+      1.5707963267948966
+    ]
+  }
+}

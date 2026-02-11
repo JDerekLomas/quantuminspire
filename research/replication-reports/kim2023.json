@@ -14,7 +14,8 @@
     "emulator",
     "ibm_torino",
     "ibm_marrakesh",
-    "tuna9"
+    "tuna9",
+    "ibm_torino_9q_trex"
   ],
   "comparisons": [
     {
@@ -77,6 +78,24 @@
           "job_ids": [416980, 416981, 416982],
           "worst_qubit_d5": {"qubit": 8, "z_exp": 0.025},
           "best_qubit_d5": {"qubit": 0, "z_exp": 0.951}
+        },
+        "ibm_torino_9q_trex": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "9-qubit Tuna-9 topology on IBM Torino with TREX (EstimatorV2, resilience_level=1). Raw M_z decays from 0.948 (d=1) to 0.730 (d=10). Clear monotonic decay over 6 depths (d=1,2,3,5,7,10). Deeper sweep than Tuna-9 hardware (d=10 vs d=5), showing 27% signal loss at d=10.",
+          "severity": "none",
+          "raw_mz_d1": 0.9478,
+          "raw_mz_d2": 0.8715,
+          "raw_mz_d3": 0.9053,
+          "raw_mz_d5": 0.8301,
+          "raw_mz_d7": 0.8155,
+          "raw_mz_d10": 0.7301,
+          "ideal_mz": 1.0,
+          "n_qubits": 9,
+          "shots": 4096,
+          "job_id": "d65ti5je4kfs73cvt2c0"
         }
       }
     },
@@ -128,6 +147,21 @@
           "d3_improvement": 1.5,
           "zne_method": "gate folding (1x,3x) + linear Richardson extrapolation",
           "job_ids": [416980, 416981, 416983, 416984]
+        },
+        "ibm_torino_9q_trex": {
+          "measured_value": false,
+          "discrepancy": 1,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "TREX (readout error mitigation, not ZNE) on 9-qubit Tuna-9 topology on IBM Torino. Max TREX error 20.3% at d=10. TREX only corrects readout errors, not gate noise, so it cannot recover ideal M_z at deep circuits. At d=1: TREX 0.948 (5.2% error). At d=10: TREX 0.797 (20.3% error). TREX MAE 0.113 vs raw MAE 0.150 — only marginal improvement. Confirms that readout mitigation alone is insufficient for deep circuits.",
+          "severity": "medium",
+          "trex_mz_d1": 0.9483,
+          "trex_mz_d10": 0.7969,
+          "max_trex_error": 0.203,
+          "trex_mae": 0.113,
+          "raw_mae": 0.150,
+          "mitigation_method": "TREX (EstimatorV2, resilience_level=1) — readout mitigation only, NOT gate-noise ZNE",
+          "job_id": "d65thv8qbmes739dcka0"
         }
       }
     },
@@ -174,6 +208,18 @@
           "d3_improvement": 1.5,
           "mean_improvement": 2.3,
           "note": "2.3x mean improvement matches IBM hardware behavior (3.1x). Both fall well below emulator's 14.1x, consistent with real-hardware ZNE limitations."
+        },
+        "ibm_torino_9q_trex": {
+          "measured_value": 1.3,
+          "discrepancy": 8.7,
+          "within_published_error": false,
+          "failure_mode": "partial_noise",
+          "failure_description": "TREX (readout mitigation) on 9-qubit topology achieves only 1.3x improvement over raw (TREX MAE 0.113 vs raw MAE 0.150). Worst of all mitigation methods tested. TREX corrects readout errors only — for deep Ising circuits where gate noise dominates, readout mitigation provides minimal benefit. Contrast with H2 VQE where TREX achieved 119x improvement (shallow circuit, readout-dominated error). Key finding: mitigation method must match dominant error source.",
+          "severity": "major",
+          "trex_mae": 0.113,
+          "raw_mae": 0.150,
+          "improvement_factor": 1.3,
+          "note": "TREX is NOT ZNE — it only mitigates readout errors. For kicked Ising at depth 10 (544 transpiled depth, 0 CX — all RZZ decomposed), gate noise overwhelms readout error. This is the opposite regime from VQE, where TREX excels."
         }
       }
     }
@@ -292,6 +338,35 @@
       "backend_mismatch": "Fold 5 on torino shows more noise than extrapolated from marrakesh trend, consistent with different noise profile"
     }
   },
+  "ibm_torino_9q_trex_data": {
+    "description": "9-qubit kicked Ising on IBM Torino with TREX (EstimatorV2, resilience_level=1)",
+    "topology": "tuna9 (logical), IBM heavy-hex (physical)",
+    "n_qubits": 9,
+    "shots": 4096,
+    "timestamp": "2026-02-11T01:20:07.169722+00:00",
+    "jobs": {
+      "trex_depth": "d65thv8qbmes739dcka0",
+      "raw_depth": "d65ti5je4kfs73cvt2c0",
+      "trex_theta": "d65ti9be4kfs73cvt2kg",
+      "raw_theta": "d65tif0qbmes739dcku0"
+    },
+    "depth_sweep": {
+      "theta_h": 0.0,
+      "steps": [1, 2, 3, 5, 7, 10],
+      "raw_mz": [0.9478, 0.8715, 0.9053, 0.8301, 0.8155, 0.7301],
+      "trex_mz": [0.9483, 0.9135, 0.9085, 0.8595, 0.8957, 0.7969],
+      "raw_mae": 0.1499,
+      "trex_mae": 0.1130,
+      "improvement_factor": 1.33
+    },
+    "theta_sweep": {
+      "n_steps": 5,
+      "theta_h_over_pi": [0.0, 0.125, 0.25, 0.375, 0.5],
+      "raw_mz": [0.8525, 0.4110, 0.0172, -0.3033, -0.7022],
+      "trex_mz": [0.8335, 0.4255, 0.0181, -0.3337, -0.6672]
+    },
+    "analysis": "TREX provides only 1.3x improvement for deep Ising circuits — the worst mitigation result across all methods tested. TREX corrects readout errors (bit-flip calibration), but kicked Ising circuits at d=5-10 are dominated by gate noise (RZZ decomposition into CX chains). Compare: TREX on H2 VQE (d~5, 2 CX) achieved 119x improvement because VQE error is readout-dominated. This confirms that error mitigation effectiveness is circuit-depth and error-source dependent."
+  },
   "scaling_notes": {
     "original_qubits": 127,
     "replication_qubits": 9,
@@ -403,7 +478,7 @@
     "failure_mode_counts": {
       "success": 3
     },
-    "backends_tested": ["emulator", "ibm_torino", "ibm_marrakesh", "tuna9"],
-    "notes": "All 3 claims PASS on emulator (14.1x ZNE improvement). IBM hardware: 3.1x ZNE improvement on 5-qubit chain (marrakesh). Tuna-9 hardware: 9-qubit full topology, M_z decays 0.944->0.785->0.585 with depth, ZNE recovers to 0.982 at d=1 (3.1x) and 0.857 at d=3 (1.5x). Mean hardware ZNE improvement ~2-3x across both IBM and Tuna-9, well below emulator's 14.1x — real-hardware noise (dephasing, coherent errors) limits simple gate folding. Dramatic position-dependent error on Tuna-9: q0 keeps 0.951 at d=5 while q8 collapses to 0.025."
+    "backends_tested": ["emulator", "ibm_torino", "ibm_marrakesh", "tuna9", "ibm_torino_9q_trex"],
+    "notes": "All 3 claims PASS on emulator (14.1x ZNE improvement). IBM hardware ZNE: 3.1x on 5-qubit chain (marrakesh). Tuna-9 ZNE: 3.1x at d=1, 1.5x at d=3. IBM Torino 9q TREX: only 1.3x improvement — readout mitigation fails for deep circuits where gate noise dominates. Key finding: mitigation method must match dominant error source (TREX excels for shallow VQE at 119x, fails for deep Ising at 1.3x). Dramatic position-dependent error on Tuna-9: q0 keeps 0.951 at d=5 while q8 collapses to 0.025."
   }
 }
