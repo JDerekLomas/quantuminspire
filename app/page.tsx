@@ -16,7 +16,7 @@ const exploreHighlights = [
   { href: '/see', label: 'See', detail: 'Scroll-driven qubit tour' },
   { href: '/listen', label: 'Listen', detail: 'Quantum states as sound' },
   { href: '/how-qubits-work', label: 'How Qubits Work', detail: '6-part physics series' },
-  { href: '/explore', label: 'All tools & simulations', detail: '14 interactives + glossary' },
+  { href: '/explore', label: 'All tools & paths', detail: '20+ interactives + 3 learning paths' },
 ]
 
 const buildHighlights = [
@@ -173,9 +173,9 @@ function Pillars() {
           description="Scroll-driven tours, sonification, interactive simulations, and physics modules. Every visualization, every sound — created by AI."
           color="#8b5cf6"
           stats={[
-            { value: '14', label: 'interactives' },
+            { value: '20+', label: 'interactives' },
             { value: '6', label: 'physics modules' },
-            { value: '2', label: 'experiences' },
+            { value: '3', label: 'learning paths' },
           ]}
           highlights={exploreHighlights}
           cta="Start exploring"

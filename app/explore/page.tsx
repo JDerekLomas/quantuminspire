@@ -75,14 +75,14 @@ const tools = [
   { href: '/state-vector', title: 'State Vector', desc: '1–6 qubits, amplitude bars, phase coloring', color: '#8b5cf6' },
   { href: '/qsphere', title: 'Q-Sphere', desc: 'Multi-qubit states on a sphere, Hamming weight', color: '#e879f9' },
   { href: '/measurement', title: 'Measurement Lab', desc: 'Born rule convergence in real time', color: '#00ff88' },
-  { href: '/entanglement', title: 'Entanglement Lab', desc: 'Bell states, density matrices, entropy', color: '#ff6b9d' },
+  { href: '/entanglement', title: 'Entanglement', desc: 'Bell states, GHZ/W, hardware fidelity', color: '#ff6b9d' },
   { href: '/teleportation', title: 'Teleportation', desc: 'Step-through protocol with Bloch sphere', color: '#06b6d4' },
   { href: '/grovers', title: "Grover's Search", desc: 'Oracle + diffusion, amplitude amplification', color: '#ff8c42' },
   { href: '/interference', title: 'Multi-Slit', desc: 'N-slit diffraction, photon accumulation', color: '#14b8a6' },
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Driving field, detuning, T2 dephasing', color: '#eab308' },
   { href: '/ansatz', title: 'Ansatz Builder', desc: 'VQE circuit construction', color: '#94a3b8' },
   { href: '/hamiltonians', title: 'Hamiltonians', desc: 'Molecular Hamiltonian explorer', color: '#94a3b8' },
-  { href: '/sonification', title: 'Sonification', desc: 'Quantum states as sound waves', color: '#e879f9' },
+  { href: '/sonification', title: 'Sonification Lab', desc: 'Play real experiment data as sound', color: '#e879f9' },
 ]
 
 const reference = [

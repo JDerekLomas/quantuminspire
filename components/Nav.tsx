@@ -26,7 +26,9 @@ const pillars = [
       { href: '/see', label: 'See', desc: 'What a qubit looks like — scroll-driven tour' },
       { href: '/listen', label: 'Listen', desc: 'Quantum states as sound' },
       { href: '/how-qubits-work', label: 'How Qubits Work', desc: '6-part physics series' },
-      { href: '/explore', label: 'All Tools', desc: '14 interactive simulations' },
+      { href: '/noise', label: 'Noise Channels', desc: 'T\u2081/T\u2082, dephasing, error budgets' },
+      { href: '/error-mitigation', label: 'Error Mitigation', desc: '15 techniques ranked on hardware' },
+      { href: '/explore', label: 'All Tools & Paths', desc: '20+ interactives & learning paths' },
     ],
   },
   {

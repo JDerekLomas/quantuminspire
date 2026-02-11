@@ -367,6 +367,10 @@ export default function SonificationClient({ experiments, sweepEmulator }: Props
             <span>&middot;</span>
             <span>Web Audio API</span>
           </div>
+          <p className="text-gray-600 text-xs mt-3">
+            New to quantum sound? Start with the{' '}
+            <a href="/listen" className="text-[#00d4ff] hover:underline">9-act guided experience</a> — a narrative tour from one qubit to an orchestra.
+          </p>
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">

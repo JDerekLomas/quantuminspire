@@ -940,6 +940,10 @@ export default function ListenPage() {
           <p className="text-gray-500 text-xs">
             Best with headphones. Click any act to play it. Click the info button for details on what you&apos;re hearing.
           </p>
+          <p className="text-gray-600 text-xs mt-2">
+            Want to hear your own experiment data? Try the{' '}
+            <Link href="/sonification" className="text-[#8b5cf6] hover:underline">Sonification Lab</Link> — it plays real measurement results as sound.
+          </p>
         </div>
 
         {/* Play All button */}
