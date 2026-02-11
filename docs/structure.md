@@ -26,6 +26,8 @@
 |---|---|
 | `content/experiments/studies.ts` | 7 experiment study definitions: slug, title, abstract, research question, prior work, method, discussion, sources, status |
 | `content/blog/posts.ts` | Blog post registry |
+| `content/learn/glossary.ts` | 40+ quantum computing glossary terms with categories, viz/experiment links |
+| `content/learn/ansatz-data.ts` | Ansatz definitions, hardware topologies, qubit mappings, VQE energy landscape |
 
 ### Data layer (`lib/`)
 
@@ -85,25 +87,51 @@
 | `experiments/templates/` | Experiment templates |
 | `experiments/scripts/` | Helper scripts for experiment submission |
 
-### Top-level Python scripts
+### Replication scripts (`scripts/replications/`)
 
 | File | Description |
 |---|---|
 | `replicate_sagastizabal.py` | H2 VQE replication (PennyLane 4-qubit) |
 | `replicate_peruzzo.py` | HeH+ VQE replication (PennyLane 4-qubit, bond sweep) |
-| `replicate_kandala.py` | Kandala 2017 replication (in progress) |
-| `benchmark_harness.py` | Qiskit HumanEval runner (Google GenAI API, 151 tasks) |
-| `run_ibm_hardware.py` | Submit experiments to IBM backends |
-| `run_qi_hardware.py` | Submit experiments to QI backends |
-| `run_ibm_experiments.py` | IBM experiment runner |
-| `cross_validate_quantum.py` | Cross-validation utilities |
-| `bell_state_hybrid.py` | QI hybrid file for Bell state |
+| `replicate_kandala.py` | Kandala 2017 H2 VQE (hardware-efficient ansatz) |
+| `replicate_harrigan.py` | Harrigan 2021 QAOA MaxCut replication |
+| `replicate_kim.py` | Kim 2023 kicked Ising + ZNE replication |
 
-### Utility scripts (`scripts/`)
+### Hardware scripts (`scripts/hardware/`)
 
 | File | Description |
 |---|---|
+| `run_ibm_hardware.py` | Submit experiments to IBM backends |
+| `run_ibm_experiments.py` | IBM experiment runner |
+| `run_ibm_mitigation_ladder.py` | IBM error mitigation comparison (8 strategies) |
+| `run_ibm_heh_ladder.py` | IBM HeH+ VQE with bond distance sweep |
+| `run_kim_ibm.py` | Kim 2023 kicked Ising on IBM Torino |
+| `run_qi_hardware.py` | QI hybrid file for H2 VQE |
+
+### Other scripts (`scripts/`)
+
+| File | Description |
+|---|---|
+| `benchmark_harness.py` | Qiskit HumanEval runner (Google GenAI API, 151 tasks) |
+| `cross_validate_quantum.py` | Cross-validation oracle: Qiskit ground truth for JS quantum lib |
+| `amplification_threshold_analysis.py` | Coefficient amplification vs hardware error analysis |
+| `analyze_kim_tuna9.py` | Kim 2023 Tuna-9 result analysis |
+| `analyze_tuna9_missing.py` | Missing Tuna-9 replication analysis |
+| `benchmark_analysis.py` | Benchmark result analysis and reporting |
+| `compute_h2_coefficients.py` | H2 Hamiltonian coefficient computation |
+| `ibm_diagnostic_suite.py` | IBM hardware diagnostic (Bell, GHZ, QV) |
+| `ibm_qv_suite.py` | IBM Quantum Volume test suite |
+| `ibm_vqe_rem.py` | IBM VQE with readout error mitigation |
+| `iqm_experiments.py` | IQM Garnet experiments (Bell, VQE, QV) |
+| `iqm_rb_qv.py` | IQM randomized benchmarking + QV |
+| `iqm_vqe_rem.py` | IQM VQE with readout error mitigation |
+| `kim_tuna9_ising.py` | Kim 2023 kicked Ising on Tuna-9 |
 | `normalize_results.py` | One-time normalization: adds `schema_version`, `backend_qubits`, `job_id` to all result JSON files |
+| `backfill_reproducibility.py` | Add reproducibility metadata to result files |
+| `variance_analysis.py` | Compare original vs re-run results |
+| `tuna9_rem_reanalysis.py` | Tuna-9 readout error mitigation reanalysis |
+| `submit_tuna9_missing.py` | Submit missing Tuna-9 experiments |
+| `submit_cross2019_tuna9.py` | Submit Cross 2019 experiments on Tuna-9 |
 | `screenshot-gallery.mjs` | Screenshot gallery generator |
 
 ## Conventions
@@ -111,7 +139,8 @@
 - **Pure logic** in `lib/` (no React imports)
 - **Data/content** in `content/` (typed exports)
 - **UI** in `app/` (pages) and `components/` (shared)
-- **Python agents** in `agents/`, standalone scripts at root
+- **Python agents** in `agents/`, scripts in `scripts/` (replications, hardware, analysis)
+- **Tests** in `tests/` (Python) and inline `*.test.ts` (JS/TS)
 - **Experiment results** follow schema v1.0 (see README)
 - **Backend names** use exact strings from hardware (`ibm_marrakesh`, `tuna-9`, `qxelarator`); display labels resolved by `BACKEND_INFO` in `experiment-viz.tsx`
 - **Secrets** managed via `secret-lover` (macOS Keychain), never in `.env` files

@@ -503,8 +503,8 @@ pip install qxelarator`}</CodeBlock>
           <h2 className="text-2xl font-bold text-white mb-2">Prompt archaeology: real prompts from this project</h2>
           <p className="text-gray-400 text-sm mb-2">
             We mined 349 prompts across 445 Claude Code sessions that produced this project.
-            Below are the actual patterns that emerged -- not hypothetical examples, but the prompts
-            that built 100+ experiments, 6 paper replications, and 20+ interactive visualizations.
+            Below are highlights from each of the 5 workflow phases.{' '}
+            <a href="/methodology" className="text-[#00d4ff] hover:underline">See all 78 representative prompts on the methodology page &rarr;</a>
           </p>
           <p className="text-gray-500 text-xs mb-8">
             Prompts are organized by the workflow pattern they represent, roughly in the order you&apos;d
