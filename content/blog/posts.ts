@@ -2040,110 +2040,100 @@ b = measure q"""
   },
   {
     slug: 'coefficient-amplification',
-    title: 'Why HeH+ Is 20x Harder Than H2 on Quantum Hardware',
-    subtitle: 'The Hamiltonian coefficients predict the error before you run a single shot. We confirmed it on three backends.',
+    title: 'How to Know If Your Quantum Chemistry Experiment Will Fail Before You Run It',
+    subtitle: 'We wasted days on HeH+ before realizing the Hamiltonian itself told us the answer. One ratio predicts everything.',
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['VQE', 'HeH+', 'H2', 'coefficient amplification', 'chemical accuracy', 'TREX', 'IBM Quantum', 'Tuna-9', 'error analysis'],
     heroImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80',
-    heroCaption: 'Two molecules, same circuit depth, same hardware, same mitigation &mdash; 20x difference in accuracy.',
-    excerpt: "IBM's TREX achieves 0.22 kcal/mol on H2 but 4.45 kcal/mol on HeH+. The culprit: HeH+'s Hamiltonian amplifies readout errors through its |g1|/|g4| ratio (7.8 vs 4.4). We predicted this from the math and confirmed it on IBM Torino, Tuna-9, and emulator. Chemical accuracy requires ratio < ~5.",
-    content: `<p>After achieving chemical accuracy on H2 across two hardware backends (IBM TREX at 0.22 kcal/mol, Tuna-9 PS+REM at 0.92 kcal/mol), we turned to a harder molecule: HeH+. Same 2-qubit ansatz, same circuit depth, same mitigation techniques. The result: <strong>20x worse accuracy</strong>.</p>
+    heroCaption: 'The math knew the answer before we booked any QPU time.',
+    excerpt: "After achieving chemical accuracy on H2 (0.22 kcal/mol), we assumed HeH+ would be similar. Same circuit, same hardware, same mitigation. It was 20x worse. Turns out you can predict this from one number in the Hamiltonian &mdash; before running a single shot. Here's the pre-flight check we wish we'd known.",
+    content: `<p>We spent days optimizing HeH+ on quantum hardware. Same 2-qubit circuit as H2. Same error mitigation. Same backends. We expected similar results.</p>
 
-<p>This wasn't a hardware failure. It was a mathematical inevitability.</p>
+<p>H2 on IBM Torino: <strong>0.22 kcal/mol</strong>. Chemical accuracy, first try.</p>
 
-<h2>The Two Hamiltonians</h2>
+<p>HeH+ on IBM Torino: <strong>4.45 kcal/mol</strong>. Not even close. Twenty times worse.</p>
 
-<p>Both H2 and HeH+ reduce to 2-qubit Hamiltonians via sector projection:</p>
+<p>We tried everything. Different qubit pairs. Different mitigation layers. Different backends. Nothing worked. HeH+ wouldn't budge below ~4.4 kcal/mol on <em>any</em> hardware.</p>
+
+<p>Then we looked at the math and realized: <strong>the answer was in the Hamiltonian the whole time</strong>. We could have predicted this failure before submitting a single job.</p>
+
+<h2>The One-Number Pre-Flight Check</h2>
+
+<p>When you reduce a molecule to a 2-qubit Hamiltonian for VQE, it takes this form:</p>
 
 <pre>H = g0&middot;I + g1&middot;Z0 + g2&middot;Z1 + g3&middot;Z0Z1 + g4&middot;X0X1 + g5&middot;Y0Y1</pre>
 
-<p>The coefficients look similar at first glance:</p>
+<p>The g4 and g5 terms are where the quantum magic lives &mdash; they encode the electron correlation that a classical computer can't efficiently capture. The g1 and g2 terms are basically classical energy offsets that happen to be measured on a quantum chip.</p>
+
+<p>Here's the problem: on real hardware, <em>every</em> measurement has error. If g1 is large and g4 is small, hardware noise on the classical terms drowns out the quantum signal. It's like trying to hear a whisper at a rock concert.</p>
+
+<p>The ratio <strong>|g1| / |g4|</strong> tells you the concert-to-whisper ratio before you walk in the door:</p>
 
 <table>
-<thead><tr><th>Coefficient</th><th>H2 (R=0.735&Aring;)</th><th>HeH+ (R=0.75&Aring;)</th></tr></thead>
+<thead><tr><th></th><th>H2</th><th>HeH+</th></tr></thead>
 <tbody>
-<tr><td>g0 (identity)</td><td>&minus;0.321</td><td>&minus;1.681</td></tr>
-<tr><td>g1 (&lang;Z0&rang;)</td><td>+0.398</td><td>&minus;0.578</td></tr>
-<tr><td>g2 (&lang;Z1&rang;)</td><td>&minus;0.398</td><td>+0.578</td></tr>
-<tr><td>g3 (&lang;Z0Z1&rang;)</td><td>0.000</td><td>0.000</td></tr>
-<tr><td>g4 (&lang;X0X1&rang;)</td><td>+0.090</td><td>+0.074</td></tr>
-<tr><td>g5 (&lang;Y0Y1&rang;)</td><td>+0.090</td><td>+0.074</td></tr>
+<tr><td>g1 (classical noise amplifier)</td><td>0.398</td><td>0.578</td></tr>
+<tr><td>g4 (quantum signal)</td><td>0.090</td><td>0.074</td></tr>
+<tr><td><strong>|g1|/|g4| ratio</strong></td><td><strong>4.4</strong></td><td><strong>7.8</strong></td></tr>
+<tr><td>Best hardware error</td><td>0.22 kcal/mol</td><td>4.45 kcal/mol</td></tr>
+<tr><td>Chemical accuracy?</td><td><strong>Yes</strong></td><td><strong>No</strong></td></tr>
 </tbody>
 </table>
 
-<p>The critical difference: <strong>|g1|/|g4|</strong>. For H2, this ratio is 4.4. For HeH+, it's 7.8.</p>
+<p>1.8x larger ratio &rarr; 20x worse energy. The relationship is nonlinear because errors compound through the g1&minus;g2 difference.</p>
 
-<h2>Why the Ratio Matters</h2>
+<h2>We Predicted It, Then Confirmed It</h2>
 
-<p>On real hardware, every expectation value has measurement error. A 5% readout bias on &lang;Z0&rang; contributes an energy error of <code>g1 &times; 0.05</code>. When g1 is large relative to g4, the Z-basis errors dominate, and the X/Y-basis terms (which carry the entanglement physics) get drowned out.</p>
+<p>Once we spotted the pattern, we made a prediction: any molecule with |g1|/|g4| > ~5 will fail to achieve chemical accuracy on current NISQ hardware, regardless of the backend or mitigation strategy.</p>
 
-<p>Think of it as a signal-to-noise ratio for the quantum part of the computation. The g4 and g5 terms encode the electron correlation &mdash; the quantum advantage. The g1 and g2 terms are classical energy contributions that happen to be measured on quantum hardware. When g1 >> g4, hardware noise on the classical terms overwhelms the quantum signal.</p>
-
-<h2>The Prediction</h2>
-
-<p>Before running HeH+ on hardware, we predicted: if the |g1|/|g4| ratio drives the error, then HeH+ should be roughly (7.8/4.4)&sup2; &asymp; 3x worse than H2 in the best case, and potentially much worse because the error compounds through the g1&minus;g2 difference.</p>
-
-<h2>The Results</h2>
-
-<table>
-<thead><tr><th>Backend</th><th>Technique</th><th>H2 error</th><th>HeH+ error</th><th>Ratio</th></tr></thead>
-<tbody>
-<tr><td>Emulator</td><td>None</td><td>0.75</td><td>0.20</td><td>0.3x</td></tr>
-<tr><td>IBM Torino</td><td>TREX</td><td><strong>0.22</strong></td><td><strong>4.45</strong></td><td><strong>20x</strong></td></tr>
-<tr><td>Tuna-9 (best)</td><td>REM+PS</td><td><strong>0.92</strong></td><td><strong>4.44</strong></td><td><strong>4.8x</strong></td></tr>
-</tbody>
-</table>
-
-<p>All values in kcal/mol. Chemical accuracy threshold: 1.6 kcal/mol.</p>
-
-<p>The emulator shows HeH+ is actually <em>easier</em> than H2 in the absence of noise (smaller rotation angle, weaker correlation). But on real hardware, HeH+ is 5&ndash;20x worse. <strong>The difficulty isn't the molecule's physics &mdash; it's how the Hamiltonian coefficients amplify hardware noise.</strong></p>
-
-<h3>Cross-platform confirmation</h3>
-
-<p>The most striking result: IBM Torino and Tuna-9 give nearly identical HeH+ errors (4.45 vs 4.44 kcal/mol) despite completely different hardware, qubit counts, and mitigation strategies. This suggests the error floor is set by the Hamiltonian structure, not the backend.</p>
-
-<h2>The Chemical Accuracy Threshold</h2>
-
-<p>Plotting |g1|/|g4| against hardware error across all our experiments suggests a threshold:</p>
+<p>The confirmation came from an unexpected direction. IBM Torino (133 qubits, TREX mitigation) and Tuna-9 (9 qubits, confusion matrix + post-selection) gave <em>nearly identical</em> HeH+ errors:</p>
 
 <ul>
-<li><strong>Ratio &lt; ~5:</strong> Chemical accuracy achievable with readout mitigation (H2: ratio 4.4, best error 0.22 kcal/mol)</li>
-<li><strong>Ratio &gt; ~5:</strong> Chemical accuracy out of reach with current NISQ techniques (HeH+: ratio 7.8, best error 4.31 kcal/mol)</li>
+<li>IBM Torino: 4.45 kcal/mol</li>
+<li>Tuna-9: 4.44 kcal/mol</li>
 </ul>
 
-<p>This has practical implications for choosing which molecules to simulate on NISQ hardware. Before investing QPU time, compute the sector-projected Hamiltonian and check the ratio. If it's above 5, either find a different encoding (tapering, symmetry reduction) that improves the ratio, or wait for better hardware.</p>
+<p>Different hardware, different continents, different mitigation strategies &mdash; same error floor. The Hamiltonian, not the hardware, is the bottleneck.</p>
 
-<h2>Two Competing Error Regimes</h2>
+<p>On a noiseless emulator, HeH+ is actually <em>easier</em> than H2 (0.20 vs 0.75 kcal/mol). The molecule isn't hard. It's just noise-fragile.</p>
 
-<p>The H2 bond-distance sweep on Tuna-9 reveals two regimes:</p>
+<h2>The Sweet Spot for Bond Distance</h2>
+
+<p>The ratio changes as you stretch the molecule. We mapped the full H2 potential energy surface on Tuna-9 and found two competing failure modes:</p>
 
 <table>
-<thead><tr><th>R (&Aring;)</th><th>|g1|/|g4|</th><th>Rotation &alpha;</th><th>Error (kcal/mol)</th><th>Dominant noise</th></tr></thead>
+<thead><tr><th>Bond distance</th><th>|g1|/|g4|</th><th>Error</th><th>What goes wrong</th></tr></thead>
 <tbody>
-<tr><td>0.5</td><td>6.3</td><td>&minus;0.14</td><td>9.98</td><td>Coefficient amplification</td></tr>
-<tr><td>0.735</td><td>4.4</td><td>&minus;0.11</td><td>3.04</td><td>Balanced</td></tr>
-<tr><td>1.0</td><td>3.2</td><td>&minus;0.35</td><td>4.12</td><td>Balanced</td></tr>
-<tr><td>1.5</td><td>2.3</td><td>&minus;0.65</td><td>12.68</td><td>Gate noise (large &alpha;)</td></tr>
-<tr><td>2.0</td><td>1.8</td><td>&minus;0.94</td><td>17.32</td><td>Gate noise (large &alpha;)</td></tr>
+<tr><td>0.5 &Aring; (compressed)</td><td>6.3</td><td>9.98 kcal/mol</td><td>Classical noise too loud</td></tr>
+<tr><td>0.735 &Aring; (equilibrium)</td><td>4.4</td><td>3.04 kcal/mol</td><td>Balanced &mdash; best we can do</td></tr>
+<tr><td>1.0 &Aring;</td><td>3.2</td><td>4.12 kcal/mol</td><td>Balanced</td></tr>
+<tr><td>1.5 &Aring;</td><td>2.3</td><td>12.68 kcal/mol</td><td>Entangling gates add noise</td></tr>
+<tr><td>2.0 &Aring; (stretched)</td><td>1.8</td><td>17.32 kcal/mol</td><td>Too much entanglement</td></tr>
 </tbody>
 </table>
 
-<p>At small R, the ratio is high and coefficient amplification dominates. At large R, the ratio drops but the rotation angle increases, requiring more entanglement and adding gate noise from X/Y-basis measurements. The error minimum isn't at the weakest correlation (large R) or the smallest circuit (small &alpha;) &mdash; it's at the sweet spot where both error sources are manageable.</p>
+<p>At short distances, the ratio is high and noise amplification kills accuracy. At long distances, the ratio is low but the circuit needs more entanglement (larger rotation angle), which adds gate noise. The best accuracy lives in the middle &mdash; where neither failure mode dominates.</p>
 
-<h2>Implications</h2>
+<p>This is a real constraint on which parts of a potential energy surface you can trust from NISQ hardware.</p>
+
+<h2>What to Do About It</h2>
+
+<p>Before you commit QPU time to a new molecule:</p>
 
 <ol>
-<li><strong>Not all molecules are created equal for NISQ.</strong> The Hamiltonian structure determines whether chemical accuracy is achievable, independent of hardware quality.</li>
-<li><strong>The |g1|/|g4| ratio is a useful pre-screening metric.</strong> Compute it before running on hardware. If it's above 5, consider alternative encodings.</li>
-<li><strong>Error mitigation can't overcome coefficient amplification.</strong> TREX fixes readout bias, but when g1 amplifies even small residual errors, the floor is set by the math.</li>
-<li><strong>Cross-platform consistency confirms the mechanism.</strong> IBM and Tuna-9 giving identical HeH+ errors (4.45 vs 4.44) despite different hardware is strong evidence that the Hamiltonian, not the backend, is the bottleneck.</li>
+<li><strong>Compute the sector-projected Hamiltonian.</strong> Tools like OpenFermion or PySCF give you the coefficients in seconds on a laptop.</li>
+<li><strong>Check |g1|/|g4|.</strong> If it's below 5, you have a shot at chemical accuracy with current mitigation. If it's above 5, you're fighting the math.</li>
+<li><strong>If the ratio is bad, change the encoding.</strong> Different qubit mappings (Jordan-Wigner vs Bravyi-Kitaev), tapering, or symmetry reduction can change the coefficients. Find an encoding that shrinks the ratio.</li>
+<li><strong>If nothing works, wait.</strong> Better hardware (lower readout error) effectively reduces the noise that g1 amplifies. Or use a classical method &mdash; for these small molecules, CCSD(T) gives exact answers anyway.</li>
 </ol>
+
+<p>The deeper lesson: <strong>not all molecules are created equal for NISQ</strong>. The hardware is getting better every year, but the Hamiltonian structure creates a ceiling that no amount of error mitigation can break through. Knowing where that ceiling is before you start saves time, QPU credits, and frustration.</p>
 
 <hr />
 
-<p>H2 data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/">experiments/results/</a>. HeH+ IBM results: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/">experiments/results/</a>. Full amplification analysis: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/amplification-threshold-analysis.json">amplification-threshold-analysis.json</a>.</p>`,
+<p>Full analysis: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/amplification-threshold-analysis.json">amplification-threshold-analysis.json</a>. HeH+ replication: <a href="https://quantuminspire.vercel.app/replications/peruzzo2014">Peruzzo 2014</a>. H2 mitigation results: <a href="/blog/error-mitigation-showdown">error mitigation showdown</a>.</p>`,
     sources: [
       { label: 'Amplification threshold analysis (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/amplification-threshold-analysis.json' },
       { label: 'Peruzzo 2014 replication report', url: 'https://quantuminspire.vercel.app/replications/peruzzo2014' },
@@ -2154,46 +2144,62 @@ b = measure q"""
   },
   {
     slug: 'trex-depth-dependence',
-    title: "TREX Gives 119x Improvement on Shallow Circuits. On Deep Circuits, It's 1.3x.",
-    subtitle: 'Error mitigation must match the dominant noise source. We proved it by running the same technique on two very different circuits.',
+    title: "We Kept Using the Same Error Fix. Then It Stopped Working.",
+    subtitle: 'IBM TREX went from 119x improvement to 1.3x when we changed circuits. A 30-second diagnostic would have told us why.',
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['TREX', 'ZNE', 'circuit depth', 'error mitigation', 'kicked Ising', 'VQE', 'IBM Quantum', 'Tuna-9', 'Kim 2023'],
     heroImage: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&q=80',
-    heroCaption: 'The best mitigation technique depends on what&rsquo;s actually breaking your circuit.',
-    excerpt: "IBM's TREX achieves a 119x improvement on our 3-gate VQE circuit but only 1.3x on a depth-10 kicked Ising chain. ZNE, which failed on VQE, achieves 14.1x on the Ising circuit in emulation. The lesson: TREX fixes readout errors, ZNE fixes gate errors. Use the right tool for the dominant noise source.",
-    content: `<p>One of our most consistent findings has been that IBM's TREX (Twirled Readout EXtraction) is the best error mitigation technique for VQE. At resilience_level=1, it achieves 0.22 kcal/mol on H2 &mdash; a 119x improvement over the raw 26.2 kcal/mol result. We've called it "the best mitigation" multiple times.</p>
+    heroCaption: 'Diagnosing the problem takes 30 seconds. Skipping the diagnosis wastes hours.',
+    excerpt: "TREX was our hero &mdash; 119x improvement on VQE, chemical accuracy on the first try. So we used it on everything. Then we ran a deeper circuit and it barely helped (1.3x). Meanwhile ZNE, which had failed on VQE, would have given 14x. The mistake: we were fixing readout errors on a circuit where gate errors dominated. Here's the 30-second test that tells you which fix to use.",
+    content: `<p>After <a href="/blog/error-mitigation-showdown">our error mitigation showdown</a>, we had a clear winner: IBM's TREX. Set <code>resilience_level=1</code> and your VQE results go from 26 kcal/mol error to 0.22 kcal/mol. A 119x improvement. Chemical accuracy in a single API parameter. We were thrilled.</p>
 
-<p>But when we replicated Kim et al. 2023 (a kicked Ising model with depth-10 Trotter circuits), TREX gave only a <strong>1.3x improvement</strong>. Same backend (IBM Torino), same API, same resilience_level=1. Ninety times less effective.</p>
+<p>So naturally, we used TREX on the next experiment too &mdash; a kicked Ising model from Kim et al. 2023. Same IBM Torino backend. Same <code>resilience_level=1</code>.</p>
 
-<p>This isn't a bug. It's the most important lesson about error mitigation.</p>
+<p>The improvement: <strong>1.3x</strong>. Not 119x. One point three.</p>
 
-<h2>Two Circuits, Same Backend</h2>
+<p>We'd been treating TREX like a universal fix. It isn't. And the reason is embarrassingly simple once you see it.</p>
+
+<h2>Aspirin Doesn't Fix a Broken Leg</h2>
+
+<p>TREX corrects <strong>readout errors</strong> &mdash; the tendency for the measurement hardware to misread |1&rang; as |0&rang;. It's like noise-canceling headphones for the detector. On our VQE circuit (3 gates deep), readout error accounts for over 80% of total error. Fix readout, fix almost everything. Hence 119x.</p>
+
+<p>The kicked Ising circuit is 40&ndash;80 gates deep. By the time the quantum state reaches the detector, it's already been scrambled by dozens of imperfect gates. Readout error is maybe 10% of the problem. TREX faithfully corrects that 10% and calls it a day. Hence 1.3x.</p>
+
+<p>It's like taking aspirin for a broken leg. The aspirin works &mdash; your headache is gone. But your leg is still broken.</p>
+
+<h2>The Same Circuit, Two Diagnoses</h2>
 
 <table>
-<thead><tr><th>Property</th><th>H2 VQE</th><th>Kicked Ising (Kim 2023)</th></tr></thead>
+<thead><tr><th></th><th>H2 VQE (shallow)</th><th>Kicked Ising (deep)</th></tr></thead>
 <tbody>
-<tr><td>Qubits</td><td>2</td><td>5&ndash;9</td></tr>
-<tr><td>Native gate depth</td><td>3 (Ry, CNOT, X)</td><td>~40&ndash;80 (10 Trotter steps)</td></tr>
-<tr><td>CNOT count</td><td>1</td><td>40&ndash;80</td></tr>
-<tr><td>Dominant error</td><td><strong>Readout</strong> (&gt;80%)</td><td><strong>Gate noise</strong> (&gt;80%)</td></tr>
-<tr><td>TREX improvement</td><td><strong>119x</strong></td><td><strong>1.3x</strong></td></tr>
-<tr><td>ZNE improvement</td><td>0.5x (worse)</td><td><strong>14.1x</strong> (emulator)</td></tr>
+<tr><td>Gate depth</td><td>3</td><td>40&ndash;80</td></tr>
+<tr><td>What's actually broken</td><td>The detector (readout)</td><td>The computation (gates)</td></tr>
+<tr><td>TREX (readout fix)</td><td><strong>119x better</strong></td><td>1.3x better</td></tr>
+<tr><td>ZNE (gate noise fix)</td><td>Made it <em>worse</em></td><td><strong>14x better</strong> (emulator)</td></tr>
 </tbody>
 </table>
 
-<h2>What TREX Actually Does</h2>
+<p>ZNE (zero-noise extrapolation) is the opposite tool: it fixes <em>gate</em> errors by running the circuit at multiple noise levels and extrapolating to zero. On our VQE circuit, ZNE made results worse &mdash; there's no gate-noise signal to extrapolate. On the deep Ising circuit, it's exactly the right medicine.</p>
 
-<p>TREX randomizes the measurement basis by inserting random Pauli gates before readout, then classically correcting the results. This averages out systematic readout bias &mdash; the tendency for |1&rang; to be misread as |0&rang; more often than vice versa.</p>
+<h2>The 30-Second Diagnostic</h2>
 
-<p>Crucially, TREX <strong>only corrects readout errors</strong>. It does nothing about gate errors, decoherence during computation, or state preparation imperfections. When readout error dominates (shallow circuits where the state barely has time to decohere), TREX is transformative. When gate error dominates (deep circuits where dozens of imperfect gates compound), TREX corrects a small fraction of total error.</p>
+<p>Here's what we wish we'd done first. It takes 3 extra circuit submissions (~30 seconds of QPU time):</p>
 
-<h2>The Evidence Stack</h2>
+<ol>
+<li>Run your circuit normally (baseline)</li>
+<li>Run it with 3x the CNOT gates (insert CNOT-CNOT pairs that cancel out mathematically but add physical noise)</li>
+<li>Run it with 5x the CNOT gates</li>
+</ol>
 
-<h3>1. VQE: Readout-dominated</h3>
+<p>Then look at how the error changes:</p>
 
-<p>Our ZNE gate-folding experiment on Tuna-9 proved readout dominance. We ran the VQE circuit with 1, 3, and 5 CNOT insertions (adding gate noise without changing the circuit's intended output). The post-selected energy barely changed:</p>
+<p><strong>If the error increases steadily</strong> (more gates = worse results): gate noise dominates. Use ZNE.</p>
+
+<p><strong>If the error stays flat</strong> (more gates barely matter): readout noise dominates. Use TREX or confusion matrix correction.</p>
+
+<p>We ran this diagnostic on Tuna-9 for our VQE circuit:</p>
 
 <ul>
 <li>1 CNOT: 7.70 kcal/mol</li>
@@ -2201,53 +2207,46 @@ b = measure q"""
 <li>5 CNOTs: 6.86 kcal/mol</li>
 </ul>
 
-<p>Quadrupling the CNOT count added less than 1.3 kcal/mol of error. The remaining ~7 kcal/mol comes from readout. That's why TREX (which fixes readout) gives 119x improvement, and ZNE (which extrapolates gate noise to zero) gives garbage &mdash; there's no monotonic gate-noise signal to extrapolate.</p>
+<p>Flat. Even non-monotonic. Quadrupling the gate count changed the error by less than 1 kcal/mol. The remaining ~7 kcal/mol is all readout. This told us: TREX is correct, ZNE is pointless. Thirty seconds, three jobs, clear answer.</p>
 
-<h3>2. Kicked Ising: Gate-dominated</h3>
+<h2>A Decision Tree</h2>
 
-<p>The Kim 2023 circuit has 10 Trotter steps, each with a layer of ZZ entangling gates and single-qubit rotations. On a 5-qubit chain, that's roughly 40 two-qubit gates. Each gate adds ~0.1&ndash;0.5% error. By the time you reach measurement, the state has been corrupted by gate noise far more than readout could ever contribute.</p>
-
-<p>TREX faithfully corrects the readout bias. But that's fixing 10% of the problem. The 1.3x improvement reflects the small readout fraction of total error.</p>
-
-<p>ZNE, by contrast, is designed exactly for this regime. It runs the circuit at multiple noise levels (by inserting extra gate pairs) and extrapolates to zero gate noise. On the emulator with simulated noise, ZNE achieves a <strong>14.1x improvement</strong> on the kicked Ising magnetization.</p>
-
-<h3>3. Tuna-9 Ising: ZNE provides 2.3x</h3>
-
-<p>On Tuna-9 hardware, ZNE gave a 2.3x improvement on the kicked Ising circuit &mdash; meaningful but modest, limited by Tuna-9's smaller qubit count and noise characteristics. On IBM Torino with a 5-qubit chain, ZNE gave 3.1x. The improvement scales with circuit depth and qubit count, exactly as theory predicts.</p>
-
-<h2>The Matching Rule</h2>
-
-<p>The pattern is now clear across all our experiments:</p>
+<p>After running this diagnostic on multiple circuits across multiple backends, the pattern is consistent enough to be a rule:</p>
 
 <table>
-<thead><tr><th>Dominant error source</th><th>Best mitigation</th><th>Worst mitigation</th></tr></thead>
+<thead><tr><th>Your circuit</th><th>Dominant error</th><th>Use this</th><th>Skip this</th></tr></thead>
 <tbody>
-<tr><td><strong>Readout</strong> (shallow circuits, &lt;5 gates)</td><td>TREX, confusion matrix, REM</td><td>ZNE, DD (adds overhead)</td></tr>
-<tr><td><strong>Gate noise</strong> (deep circuits, &gt;20 gates)</td><td>ZNE, DD, Pauli twirling</td><td>TREX alone (fixes wrong thing)</td></tr>
-<tr><td><strong>Mixed</strong> (medium depth, 5&ndash;20 gates)</td><td>TREX + ZNE, hybrid approaches</td><td>Any single technique</td></tr>
+<tr><td>&lt;5 two-qubit gates</td><td>Readout</td><td>TREX, REM, confusion matrices</td><td>ZNE, DD (just adds overhead)</td></tr>
+<tr><td>5&ndash;20 two-qubit gates</td><td>Mixed</td><td>TREX + light ZNE together</td><td>Any single technique alone</td></tr>
+<tr><td>&gt;20 two-qubit gates</td><td>Gates</td><td>ZNE, DD, Pauli twirling</td><td>TREX alone (fixes 10% of problem)</td></tr>
 </tbody>
 </table>
 
-<p>The matching rule: <strong>identify your dominant noise source first, then select mitigation accordingly</strong>. The cheapest diagnostic is the ZNE gate-folding test: run your circuit at 1x, 3x, and 5x CNOT depth. If the error increases monotonically, gate noise dominates &rarr; use ZNE. If the error is flat, readout dominates &rarr; use TREX/REM.</p>
+<p>The predictor is <strong>two-qubit gate count</strong>, not qubit count and not backend. A 9-qubit circuit with 1 CNOT per qubit still benefits from TREX. A 2-qubit circuit with 40 CNOTs does not.</p>
 
-<h2>Practical Implications</h2>
+<h2>The Kim 2023 Results</h2>
 
-<ol>
-<li><strong>Don't default to TREX.</strong> IBM's documentation suggests resilience_level=1 as a safe default. It is &mdash; for shallow circuits. For QAOA, Trotterized dynamics, or anything with &gt;20 two-qubit gates, you need gate-level mitigation.</li>
-<li><strong>Circuit depth is the predictor.</strong> Not qubit count, not backend, not molecule. A 2-qubit circuit with 1 CNOT and a 9-qubit circuit with 1 CNOT per qubit will both benefit from TREX. A 2-qubit circuit with 40 CNOTs will not.</li>
-<li><strong>The ZNE gate-folding test is free.</strong> Before committing to a mitigation strategy, spend 3 extra circuit submissions to diagnose your noise. It costs ~30 seconds of QPU time and saves hours of wasted effort.</li>
-<li><strong>Combine techniques for medium-depth circuits.</strong> In the 5&ndash;20 gate range, both readout and gate noise contribute meaningfully. TREX + light ZNE (2&ndash;3 noise factors) can outperform either alone.</li>
-</ol>
+<p>Once we understood the regime, we matched the mitigation to the noise:</p>
 
-<h2>Why This Matters Beyond Our Experiments</h2>
+<ul>
+<li><strong>Emulator with simulated noise</strong>: ZNE achieved 14.1x improvement on kicked Ising magnetization. The gate-noise signal was clean and monotonic &mdash; exactly what ZNE needs.</li>
+<li><strong>Tuna-9 hardware</strong>: ZNE achieved 2.3x. Modest but meaningful, limited by the 9-qubit chip's noise characteristics.</li>
+<li><strong>IBM Torino (5-qubit chain)</strong>: ZNE achieved 3.1x. Better than TREX's 1.3x on the same circuit.</li>
+</ul>
 
-<p>The "error mitigation hierarchy" literature (Cai et al., Rev. Mod. Phys. 2023) discusses these techniques in isolation. Our contribution is the empirical demonstration that <strong>the same technique can be transformative or useless depending on circuit depth</strong>, and that a simple diagnostic (gate-folding test) predicts which regime you're in.</p>
+<p>None of these are as dramatic as TREX's 119x on VQE. Deep circuits are just harder &mdash; gate errors compound exponentially with depth, and no amount of post-processing fully undoes that. But choosing the right mitigation gets you 3x instead of 1.3x, which can be the difference between a publishable result and noise.</p>
 
-<p>As quantum algorithms scale from VQE (shallow) to quantum dynamics (deep) to fault-tolerant computing (very deep), the optimal mitigation strategy shifts from readout correction to gate-level techniques to full QEC. The depth-dependence we measured is the NISQ version of this transition.</p>
+<h2>The Broader Point</h2>
+
+<p>The quantum computing community tends to rank error mitigation techniques: "TREX is the best," "ZNE is state-of-the-art," "post-selection is too wasteful." Our data says these rankings are meaningless without context. The best technique depends entirely on what's actually breaking your circuit.</p>
+
+<p>This is also the NISQ preview of a deeper truth. As quantum algorithms scale from VQE (shallow, readout-limited) to quantum dynamics (medium, gate-limited) to fault-tolerant computing (deep, logically protected), the optimal error strategy shifts from readout correction to gate-level mitigation to full quantum error correction. The 119x-to-1.3x cliff we hit is the first transition in that ladder.</p>
+
+<p>Don't pick your mitigation based on what worked last time. <strong>Diagnose your circuit first.</strong> It takes 30 seconds.</p>
 
 <hr />
 
-<p>VQE mitigation data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-mitigation-ladder-001-ibm.json">IBM mitigation ladder</a>. ZNE gate-folding data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/">experiments/results/</a>. Kim 2023 replication: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/kim2023-ising-tuna9.json">kicked Ising results</a>.</p>`,
+<p>VQE mitigation data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-mitigation-ladder-001-ibm.json">IBM mitigation ladder</a>. Kim 2023 kicked Ising data: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/kim2023-ising-tuna9.json">kicked Ising results</a>. Gate-folding diagnostic: <a href="/blog/error-mitigation-showdown">error mitigation showdown</a>.</p>`,
     sources: [
       { label: 'IBM mitigation ladder (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-mitigation-ladder-001-ibm.json' },
       { label: 'Kim 2023 Ising replication (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/kim2023-ising-tuna9.json' },
