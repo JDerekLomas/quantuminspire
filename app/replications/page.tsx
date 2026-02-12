@@ -85,7 +85,7 @@ function SummaryStats({ reports }: { reports: ReplicationReport[] }) {
         <div key={s.label} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
           <p className="text-2xl sm:text-3xl font-black font-mono" style={{ color: s.color }}>{s.value}</p>
           <p className="text-xs text-gray-400 mt-1">{s.label}</p>
-          <p className="text-[10px] text-gray-600 font-mono mt-0.5 truncate">{s.sub}</p>
+          <p className="text-[10px] text-gray-500 font-mono mt-0.5 truncate">{s.sub}</p>
         </div>
       ))}
     </div>
@@ -111,7 +111,7 @@ function ReportCard({ report }: { report: ReplicationReport }) {
             {paper.title}
           </h3>
           <p className="text-xs text-gray-400 mt-1">{paper.authors} — {paper.journal}</p>
-          <p className="text-[10px] text-gray-600 font-mono mt-0.5">
+          <p className="text-[10px] text-gray-500 font-mono mt-0.5">
             {paper.institution} | {paper.hardware}
           </p>
         </div>
@@ -119,7 +119,7 @@ function ReportCard({ report }: { report: ReplicationReport }) {
           <div className="text-2xl font-black font-mono" style={{ color: passColor }}>
             {passRate}%
           </div>
-          <div className="text-[10px] text-gray-500 font-mono">
+          <div className="text-[10px] text-gray-400 font-mono">
             {summary.successes}/{summary.total_claims_tested} claims
           </div>
         </div>
@@ -158,13 +158,13 @@ function ReportCard({ report }: { report: ReplicationReport }) {
 
           return (
             <div key={comp.claim_id} className="flex items-center gap-3 text-xs">
-              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: statusColor }} />
+              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: statusColor }} aria-hidden="true" />
               <span className="text-gray-300 truncate">{comp.description}</span>
             </div>
           )
         })}
         {comparisons.length > 3 && (
-          <p className="text-[10px] text-gray-600 font-mono pl-4">
+          <p className="text-[10px] text-gray-500 font-mono pl-4">
             +{comparisons.length - 3} more claims
           </p>
         )}
@@ -187,9 +187,9 @@ function PipelineCard({ paper }: { paper: typeof PAPER_PIPELINE[0] }) {
       </span>
       <div className="flex-1 min-w-0">
         <div className="text-sm text-white truncate">{paper.title}</div>
-        <div className="text-[10px] text-gray-500 font-mono">{paper.authors} — {paper.type}</div>
+        <div className="text-[10px] text-gray-400 font-mono">{paper.authors} — {paper.type}</div>
       </div>
-      <span className="text-[10px] font-mono text-gray-600">{paper.qubits}q</span>
+      <span className="text-[10px] font-mono text-gray-500">{paper.qubits}q</span>
       <a
         href={`https://arxiv.org/abs/${paper.arxiv}`}
         target="_blank"
@@ -212,6 +212,7 @@ export default function ReplicationsPage() {
   return (
     <>
       <Nav section="replications" />
+      <main id="main-content">
 
       {/* Hero */}
       <section className="pt-28 pb-8 px-6">
@@ -263,14 +264,14 @@ export default function ReplicationsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10">
-                  <th className="text-left py-3 pr-4 text-gray-500 font-mono text-xs">Metric</th>
+                  <th scope="col" className="text-left py-3 pr-4 text-gray-400 font-mono text-xs">Metric</th>
                   {[
                     { name: 'QI Tuna-9', qubits: '9q', color: '#8b5cf6' },
                     { name: 'IQM Garnet', qubits: '20q', color: '#ff6b9d' },
                     { name: 'IBM Torino', qubits: '133q', color: '#00d4ff' },
                   ].map(b => (
-                    <th key={b.name} className="text-center py-3 px-3 font-mono text-xs" style={{ color: b.color }}>
-                      {b.name} <span className="text-gray-600">({b.qubits})</span>
+                    <th scope="col" key={b.name} className="text-center py-3 px-3 font-mono text-xs" style={{ color: b.color }}>
+                      {b.name} <span className="text-gray-500">({b.qubits})</span>
                     </th>
                   ))}
                 </tr>
@@ -302,7 +303,7 @@ export default function ReplicationsPage() {
               </tbody>
             </table>
           </div>
-          <p className="text-[10px] text-gray-600 font-mono mt-3">
+          <p className="text-[10px] text-gray-500 font-mono mt-3">
             * IBM RB inflated by transpiler collapsing Clifford sequences. Tuna-9/IQM values are true gate fidelity.
             Bold = best per metric. VQE: IBM uses TREX, Tuna-9 uses hybrid PS+REM. -- = not yet tested.
           </p>
@@ -323,12 +324,12 @@ export default function ReplicationsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10">
-                  <th className="text-left py-3 pr-4 text-gray-500 font-mono text-xs">Paper</th>
-                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#eab308' }}>Emulator</th>
-                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#8b5cf6' }}>Tuna-9</th>
-                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#00d4ff' }}>IBM Torino</th>
-                  <th className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#ff6b9d' }}>IQM Garnet</th>
-                  <th className="text-right py-3 pl-4 text-gray-500 font-mono text-xs">Type</th>
+                  <th scope="col" className="text-left py-3 pr-4 text-gray-400 font-mono text-xs">Paper</th>
+                  <th scope="col" className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#eab308' }}>Emulator</th>
+                  <th scope="col" className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#8b5cf6' }}>Tuna-9</th>
+                  <th scope="col" className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#00d4ff' }}>IBM Torino</th>
+                  <th scope="col" className="text-center py-3 px-3 font-mono text-xs" style={{ color: '#ff6b9d' }}>IQM Garnet</th>
+                  <th scope="col" className="text-right py-3 pl-4 text-gray-400 font-mono text-xs">Type</th>
                 </tr>
               </thead>
               <tbody className="font-mono text-xs">
@@ -355,20 +356,20 @@ export default function ReplicationsPage() {
                     <tr key={row.paper} className="border-b border-white/5">
                       <td className="py-2.5 pr-4 text-gray-300">
                         {row.paper}
-                        <span className="text-gray-600 ml-2">{row.note}</span>
+                        <span className="text-gray-500 ml-2">{row.note}</span>
                       </td>
                       <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.emulator)}`}>{cellLabel(row.emulator)}</td>
                       <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.tuna9)}`}>{cellLabel(row.tuna9)}</td>
                       <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.ibm)}`}>{cellLabel(row.ibm)}</td>
                       <td className={`py-2.5 px-3 text-center rounded-sm ${cellStyle(row.iqm)}`}>{cellLabel(row.iqm)}</td>
-                      <td className="py-2.5 pl-4 text-right text-gray-600">{row.type}</td>
+                      <td className="py-2.5 pl-4 text-right text-gray-500">{row.type}</td>
                     </tr>
                   )
                 })}
               </tbody>
             </table>
           </div>
-          <p className="text-[10px] text-gray-600 font-mono mt-3">
+          <p className="text-[10px] text-gray-500 font-mono mt-3">
             PASS = all tested claims within published error bars. PARTIAL = some claims pass, some fail due to hardware noise.
             FAIL = no claims pass on hardware. -- = not yet tested on this backend.
           </p>
@@ -424,7 +425,7 @@ export default function ReplicationsPage() {
       {/* Pipeline */}
       <section className="px-6 pb-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Replication Pipeline
           </h2>
           <div className="space-y-2">
@@ -438,7 +439,7 @@ export default function ReplicationsPage() {
       {/* Methodology */}
       <section className="px-6 pb-12">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">Methodology</h2>
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">Methodology</h2>
           <div className="bg-white/[0.02] border border-white/5 rounded-xl p-6 space-y-4 text-sm text-gray-300 leading-relaxed">
             <p>
               <strong className="text-white">Claim extraction.</strong>{' '}
@@ -468,6 +469,7 @@ export default function ReplicationsPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <Footer
         maxWidth="max-w-6xl"

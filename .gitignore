@@ -35,3 +35,4 @@ paper/*.fls
 paper/*.fdb_latexmk
 paper/*.synctex.gz
 paper/mainNotes.bib
+input.json

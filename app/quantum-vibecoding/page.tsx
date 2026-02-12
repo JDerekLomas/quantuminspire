@@ -2,8 +2,8 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 
 export const metadata = {
-  title: 'Quantum VibeCoding — Natural Language to Quantum Hardware',
-  description: 'Describe experiments in natural language. AI writes circuits, submits to hardware, analyzes results. The method behind 100+ quantum experiments.',
+  title: 'Quantum VibeCoding? — Can AI Support Quantum Computing Work?',
+  description: 'Can AI actually support quantum computing work? Describe experiments in natural language. AI writes circuits, submits to hardware, analyzes results.',
 }
 
 /* ────────────────────────── data ────────────────────────── */
@@ -95,12 +95,12 @@ export default function QuantumVibecodingPage() {
             Quantum VibeCoding
           </span>
           <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight mb-6 leading-[0.95]">
-            Describe it.<br />
-            AI runs it on<br />
-            <span className="gradient-text">real quantum hardware.</span>
+            Can AI support<br />
+            <span className="gradient-text">quantum computing</span><br />
+            work?
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl leading-relaxed mb-6">
-            Quantum vibe coding is using an AI coding agent to design, submit, and analyze
+            Quantum vibecoding is using an AI coding agent to design, submit, and analyze
             quantum circuits — without writing SDK code yourself. You describe experiments in
             natural language. The agent does the rest.
           </p>

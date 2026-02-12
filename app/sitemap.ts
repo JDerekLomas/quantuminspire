@@ -1,13 +1,13 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
-import { getAllResults } from '@/lib/experiments'
+import { getAllStudies } from '@/lib/experiments'
 import { getAllReports } from '@/lib/replications'
 
 const BASE_URL = 'https://haiqu.org'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts()
-  const experiments = getAllResults()
+  const studies = getAllStudies()
   const reports = getAllReports()
 
   const blogEntries = posts.map((post) => ({
@@ -17,9 +17,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  const experimentEntries = experiments.map((exp) => ({
-    url: `${BASE_URL}/experiments/${exp.id}`,
-    lastModified: exp.completed ? new Date(exp.completed) : new Date(),
+  const experimentEntries = studies.map((study) => ({
+    url: `${BASE_URL}/experiments/${study.slug}`,
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.5,
   }))
@@ -54,6 +54,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/listen`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/how-it-works`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/how-qubits-work`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE_URL}/how-qubits-work/spectroscopy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/how-qubits-work/coherence`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/how-qubits-work/coupling`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/how-qubits-work/gates`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/how-qubits-work/measurement`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/how-qubits-work/scaling`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/sonification`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 
     // Interactive tools
     { url: `${BASE_URL}/bloch-sphere`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

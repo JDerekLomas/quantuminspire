@@ -422,7 +422,7 @@ pip install qxelarator`}</CodeBlock>
       </section>
 
       {/* Silent bugs */}
-      <section className="border-b border-white/5 px-6 py-12">
+      <section id="silent-bugs" className="border-b border-white/5 px-6 py-12">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-white mb-2">Silent bugs that will bite you</h2>
           <p className="text-gray-400 text-sm mb-6">

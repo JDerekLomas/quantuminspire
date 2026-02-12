@@ -10,7 +10,7 @@ export const metadata = {
 
 const papers = [
   {
-    id: 'sagastizabal-2019',
+    id: 'sagastizabal2019',
     title: 'Sagastizabal et al. 2019',
     topic: 'H2 VQE error mitigation',
     claims: 4,
@@ -19,7 +19,7 @@ const papers = [
     color: '#00ff88',
   },
   {
-    id: 'kandala-2017',
+    id: 'kandala2017',
     title: 'Kandala et al. 2017',
     topic: 'Hardware-efficient VQE',
     claims: 5,
@@ -28,7 +28,7 @@ const papers = [
     color: '#00ff88',
   },
   {
-    id: 'peruzzo-2014',
+    id: 'peruzzo2014',
     title: 'Peruzzo et al. 2014',
     topic: 'First VQE (HeH+)',
     claims: 9,
@@ -37,7 +37,7 @@ const papers = [
     color: '#ff8c42',
   },
   {
-    id: 'cross-2019',
+    id: 'cross2019',
     title: 'Cross et al. 2019',
     topic: 'Quantum Volume',
     claims: 3,
@@ -46,7 +46,7 @@ const papers = [
     color: '#00ff88',
   },
   {
-    id: 'harrigan-2021',
+    id: 'harrigan2021',
     title: 'Harrigan et al. 2021',
     topic: 'QAOA MaxCut',
     claims: 4,
@@ -55,7 +55,7 @@ const papers = [
     color: '#00ff88',
   },
   {
-    id: 'kim-2023',
+    id: 'kim2023',
     title: 'Kim et al. 2023',
     topic: 'Kicked Ising / utility',
     claims: 3,
@@ -80,7 +80,7 @@ const keyFindings = [
     title: 'Coefficient amplification predicts error',
     detail: 'H2 ratio 4.4 = 0.22 kcal/mol. HeH+ ratio 7.8 = 4.45 kcal/mol. 1.8x ratio, 20x error.',
     color: '#ff8c42',
-    link: '/replications/peruzzo-2014',
+    link: '/replications/peruzzo2014',
   },
   {
     stat: '9q > 20q',
@@ -113,7 +113,7 @@ const experimentTypes = [
 
 export default function ResearchPage() {
   return (
-    <main className="min-h-screen text-gray-200">
+    <main id="main-content" className="min-h-screen text-gray-200">
       <Nav section="research" />
 
       {/* Hero */}
@@ -149,7 +149,7 @@ export default function ResearchPage() {
       {/* Paper replications */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Paper Replications
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -160,7 +160,7 @@ export default function ResearchPage() {
                 className="group p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-all"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono text-gray-500">{p.topic}</span>
+                  <span className="text-xs font-mono text-gray-400">{p.topic}</span>
                   <span
                     className="text-[10px] font-mono px-1.5 py-0.5 rounded"
                     style={{
@@ -174,7 +174,7 @@ export default function ResearchPage() {
                 <h3 className="text-white font-bold text-sm mb-2 group-hover:text-[#00ff88] transition-colors">
                   {p.title}
                 </h3>
-                <p className="text-gray-500 text-xs">{p.highlight}</p>
+                <p className="text-gray-400 text-xs">{p.highlight}</p>
               </Link>
             ))}
           </div>
@@ -192,7 +192,7 @@ export default function ResearchPage() {
       {/* Key findings */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Key Findings
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -204,10 +204,10 @@ export default function ResearchPage() {
               >
                 <div className="text-2xl font-black font-mono mb-1" style={{ color: f.color }}>
                   {f.stat}
-                  {f.unit && <span className="text-xs font-normal text-gray-500 ml-1">{f.unit}</span>}
+                  {f.unit && <span className="text-xs font-normal text-gray-400 ml-1">{f.unit}</span>}
                 </div>
                 <h3 className="text-sm font-bold text-white mb-1 group-hover:underline">{f.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{f.detail}</p>
+                <p className="text-xs text-gray-400 leading-relaxed">{f.detail}</p>
               </Link>
             ))}
           </div>
@@ -217,7 +217,7 @@ export default function ResearchPage() {
       {/* Experiment types */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             100+ Experiments
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -231,7 +231,7 @@ export default function ResearchPage() {
                   <span className="text-lg font-black font-mono" style={{ color: e.color }}>{e.count}</span>
                   <span className="text-white text-sm font-bold">{e.label}</span>
                 </div>
-                <p className="text-gray-500 text-xs">{e.desc}</p>
+                <p className="text-gray-400 text-xs">{e.desc}</p>
               </div>
             ))}
           </div>
@@ -249,7 +249,7 @@ export default function ResearchPage() {
       {/* Hardware platforms */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Three Chips, One Suite
           </h2>
           <div className="grid sm:grid-cols-3 gap-4">
@@ -264,28 +264,28 @@ export default function ResearchPage() {
                 style={{ borderColor: `${chip.color}20` }}
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: chip.color }} />
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: chip.color }} aria-hidden="true" />
                   <span className="text-white font-bold text-sm">{chip.name}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs mb-3">
                   <div>
-                    <span className="text-gray-500 block">Qubits</span>
+                    <span className="text-gray-400 block">Qubits</span>
                     <span className="text-white font-mono">{chip.qubits}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block">QV</span>
+                    <span className="text-gray-400 block">QV</span>
                     <span className="text-white font-mono">{chip.qv}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block">Bell best</span>
+                    <span className="text-gray-400 block">Bell best</span>
                     <span className="text-white font-mono">{chip.bell}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500 block">VQE best</span>
+                    <span className="text-gray-400 block">VQE best</span>
                     <span className="text-white font-mono">{chip.vqe} kcal/mol</span>
                   </div>
                 </div>
-                <p className="text-gray-500 text-xs">{chip.note}</p>
+                <p className="text-gray-400 text-xs">{chip.note}</p>
               </div>
             ))}
           </div>
@@ -303,7 +303,7 @@ export default function ResearchPage() {
       {/* Navigate to sub-pages */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Explore the Research
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -320,10 +320,10 @@ export default function ResearchPage() {
                 href={item.href}
                 className="group flex items-start gap-3 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-all"
               >
-                <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: item.color }} />
+                <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: item.color }} aria-hidden="true" />
                 <div>
                   <span className="text-white text-sm font-bold group-hover:underline">{item.label}</span>
-                  <p className="text-gray-500 text-xs mt-0.5">{item.desc}</p>
+                  <p className="text-gray-400 text-xs mt-0.5">{item.desc}</p>
                 </div>
               </Link>
             ))}
@@ -334,7 +334,7 @@ export default function ResearchPage() {
       {/* Data & Reproducibility */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Data &amp; Reproducibility
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -365,20 +365,20 @@ export default function ResearchPage() {
             </div>
             <div className="space-y-3">
               <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-gray-500 block mb-2">Environment</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-gray-400 block mb-2">Environment</span>
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <span className="text-gray-500">Python</span><span className="text-white">3.12</span>
-                  <span className="text-gray-500">Qiskit</span><span className="text-white">2.1.2</span>
-                  <span className="text-gray-500">PennyLane</span><span className="text-white">0.44</span>
-                  <span className="text-gray-500">QI SDK</span><span className="text-white">3.5.1</span>
+                  <span className="text-gray-400">Python</span><span className="text-white">3.12</span>
+                  <span className="text-gray-400">Qiskit</span><span className="text-white">2.1.2</span>
+                  <span className="text-gray-400">PennyLane</span><span className="text-white">0.44</span>
+                  <span className="text-gray-400">QI SDK</span><span className="text-white">3.5.1</span>
                 </div>
               </div>
               <div className="p-4 rounded-xl border border-white/5 bg-white/[0.02]">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-gray-500 block mb-2">Hardware</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-gray-400 block mb-2">Hardware</span>
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <span className="text-gray-500">IBM Torino</span><span className="text-white">133 qubits</span>
-                  <span className="text-gray-500">QI Tuna-9</span><span className="text-white">9 qubits</span>
-                  <span className="text-gray-500">IQM Garnet</span><span className="text-white">20 qubits</span>
+                  <span className="text-gray-400">IBM Torino</span><span className="text-white">133 qubits</span>
+                  <span className="text-gray-400">QI Tuna-9</span><span className="text-white">9 qubits</span>
+                  <span className="text-gray-400">IQM Garnet</span><span className="text-white">20 qubits</span>
                 </div>
               </div>
             </div>
@@ -388,10 +388,10 @@ export default function ResearchPage() {
 
       {/* Footer */}
       <footer className="px-6 py-12">
-        <div className="max-w-5xl mx-auto flex flex-col items-center gap-3 text-[10px] text-gray-600 font-mono text-center">
+        <div className="max-w-5xl mx-auto flex flex-col items-center gap-3 text-[10px] text-gray-500 font-mono text-center">
           <div className="flex flex-wrap justify-center gap-3">
             <a href="https://dereklomas.me" target="_blank" rel="noopener noreferrer" className="hover:text-[#00d4ff] transition-colors">J. Derek Lomas</a>
-            <span className="text-gray-700">&middot;</span>
+            <span className="text-gray-600">&middot;</span>
             <a href="mailto:j.d.lomas@tudelft.nl" className="hover:text-[#00d4ff] transition-colors">j.d.lomas@tudelft.nl</a>
           </div>
           <div>

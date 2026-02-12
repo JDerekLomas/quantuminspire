@@ -502,8 +502,8 @@ export default function GalleryPage() {
           <div><span className="text-white">{VISUALIZATIONS.filter(v => v.ourVersion).length}</span> with our replications</div>
           <div><span className="text-white">{VISUALIZATIONS.filter(v => v.embedUrl).length}</span> with live demos</div>
           <div className="ml-auto">
-            <Link href="/research/quantum-viz-catalog.md" className="text-[#00d4ff]/60 hover:text-[#00d4ff]">
-              Full research catalog &rarr;
+            <Link href="/gallery" className="text-[#00d4ff]/60 hover:text-[#00d4ff]">
+              Full visualization catalog &rarr;
             </Link>
           </div>
         </div>

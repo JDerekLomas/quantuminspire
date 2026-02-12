@@ -33,18 +33,18 @@ function Hero() {
           Read the paper (PDF)
         </a>
       </div>
-      <p className="text-sm font-mono text-gray-600 tracking-wide text-center mb-12">
-        <span className="text-gray-500">h</span>
+      <p className="text-sm font-mono text-gray-400 tracking-wide text-center mb-12">
+        <span className="text-gray-400">h</span>
         <span className="gradient-text font-bold">AI</span>
-        <span className="text-gray-500">qu</span>
-        <span className="hidden sm:inline text-gray-700 mx-2">&mdash;</span>
+        <span className="text-gray-400">qu</span>
+        <span className="hidden sm:inline text-gray-500 mx-2">&mdash;</span>
         <br className="sm:hidden" />
-        <span className="text-gray-500">AI as the interface between </span>
-        <span className="text-gray-400">humans</span>
-        <span className="text-gray-500"> &amp; </span>
-        <span className="text-gray-400">quantum</span>
+        <span className="text-gray-400">AI as the interface between </span>
+        <span className="text-gray-300">humans</span>
+        <span className="text-gray-400"> &amp; </span>
+        <span className="text-gray-300">quantum</span>
       </p>
-      <div className="text-gray-600 animate-bounce text-sm font-mono">
+      <div className="text-gray-400 animate-bounce text-sm font-mono" aria-hidden="true">
         &#8595; scroll
       </div>
     </section>
@@ -59,15 +59,16 @@ function VibecodingSection() {
       <div className="max-w-4xl mx-auto w-full">
         <ScrollReveal>
           <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#00d4ff] mb-4 block">
-            The Method
+            The Question
           </span>
           <h2 className="text-3xl sm:text-5xl font-black text-white mb-4">
-            Quantum <span className="text-[#00d4ff]">vibecoding</span>
+            Quantum <span className="text-[#00d4ff]">vibecoding?</span>
           </h2>
           <p className="text-gray-400 max-w-xl mb-4">
-            Claude Code + MCP servers that wrap quantum hardware as callable tools.
-            Describe the experiment you want in natural language. The agent derives Hamiltonians,
-            writes circuits, submits to real chips, and analyzes the results.
+            Can AI actually support quantum computing work? We tested this by connecting
+            Claude Code to real quantum hardware through MCP servers. Describe the experiment
+            in natural language. The agent derives Hamiltonians, writes circuits, submits to
+            real chips, and analyzes the results.
           </p>
           <p className="text-sm text-gray-500 font-mono mb-12">
             445 sessions. 349 prompts. 3 quantum chips. 0 lines of quantum code by hand.
@@ -126,6 +127,99 @@ function VibecodingSection() {
 
 // ─── Section 2: Science ─────────────────────────────────────────────────────
 
+function EvalChart() {
+  // Qiskit HumanEval benchmark data points
+  const data = [
+    { label: 'Granite-8b', date: 'Sep 2024', score: 46.5, color: '#666' },
+    { label: 'QSpark', date: 'Mar 2025', score: 56.3, color: '#666' },
+    { label: 'Claude 3.5\nzero-shot', date: 'Jun 2025', score: 58.9, color: '#9ca3af' },
+    { label: 'Claude 4.6\n+ RAG', date: 'Jan 2026', score: 70.9, color: '#ff8c42' },
+    { label: 'Ensemble\n(5 models)', date: 'Jan 2026', score: 79.5, color: '#ff8c42' },
+  ]
+
+  const W = 600
+  const H = 280
+  const padL = 12
+  const padR = 12
+  const padT = 24
+  const padB = 48
+
+  const chartW = W - padL - padR
+  const chartH = H - padT - padB
+
+  const xStep = chartW / (data.length - 1)
+  const yMin = 30
+  const yMax = 90
+
+  const toX = (i: number) => padL + i * xStep
+  const toY = (score: number) => padT + chartH - ((score - yMin) / (yMax - yMin)) * chartH
+
+  // Grid lines
+  const gridLines = [40, 50, 60, 70, 80]
+
+  return (
+    <div className="rounded-xl border border-[#ff8c42]/20 bg-[#ff8c42]/[0.03] p-6 sm:p-8">
+      <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#ff8c42]/80 mb-4">
+        Qiskit HumanEval Benchmark — 151 tasks — pass@1
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Chart showing Qiskit HumanEval benchmark scores over time. Granite-8b: 46.5%, QSpark: 56.3%, Claude 3.5 zero-shot: 58.9%, Claude 4.6 + RAG: 70.9%, Ensemble: 79.5%.">
+        {/* Y-axis grid */}
+        {gridLines.map(v => (
+          <g key={v}>
+            <line
+              x1={padL} y1={toY(v)} x2={W - padR} y2={toY(v)}
+              stroke="rgba(255,255,255,0.05)" strokeWidth="1"
+            />
+            <text x={padL - 4} y={toY(v) + 3} textAnchor="end" fill="#666" fontSize="9" fontFamily="monospace">
+              {v}%
+            </text>
+          </g>
+        ))}
+
+        {/* Connecting line */}
+        <polyline
+          points={data.map((d, i) => `${toX(i)},${toY(d.score)}`).join(' ')}
+          fill="none" stroke="rgba(255,140,66,0.3)" strokeWidth="2"
+        />
+
+        {/* Data points and labels */}
+        {data.map((d, i) => (
+          <g key={d.label}>
+            <circle cx={toX(i)} cy={toY(d.score)} r={i >= 3 ? 5 : 3.5} fill={d.color} />
+            <text
+              x={toX(i)} y={toY(d.score) - 12}
+              textAnchor="middle" fill={d.color} fontSize="12" fontWeight="900" fontFamily="monospace"
+            >
+              {d.score}%
+            </text>
+            {/* Date label */}
+            <text
+              x={toX(i)} y={H - padB + 16}
+              textAnchor="middle" fill="#666" fontSize="8" fontFamily="monospace"
+            >
+              {d.date}
+            </text>
+            {/* Model label */}
+            {d.label.split('\n').map((line, li) => (
+              <text
+                key={li}
+                x={toX(i)} y={H - padB + 28 + li * 10}
+                textAnchor="middle" fill="#9ca3af" fontSize="8" fontFamily="monospace"
+              >
+                {line}
+              </text>
+            ))}
+          </g>
+        ))}
+      </svg>
+      <p className="text-xs text-gray-400 leading-relaxed mt-4">
+        General-purpose frontier models beat every fine-tuned quantum specialist zero-shot.
+        Dynamic RAG adds +14%. Ensemble ceiling: 79.5%.
+      </p>
+    </div>
+  )
+}
+
 function ScienceSection() {
   return (
     <section className="min-h-screen flex items-center px-6 py-24 border-l-2 border-[#00ff88]/20 ml-4 sm:ml-8 lg:ml-0 lg:border-l-0">
@@ -142,73 +236,25 @@ function ScienceSection() {
           </p>
         </ScrollReveal>
 
-        {/* Benchmark eval — lead finding */}
+        {/* 93% claims pass — the one stat */}
         <ScrollReveal delay={0.1}>
-          <div className="rounded-xl border border-[#ff8c42]/20 bg-[#ff8c42]/[0.03] p-6 sm:p-8 mb-12">
-            <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#ff8c42]/80 mb-4">
-              Qiskit HumanEval Benchmark — 151 tasks
-            </div>
-            <div className="flex flex-wrap gap-6 sm:gap-8 mb-6">
-              <div>
-                <div className="text-3xl font-black font-mono text-[#ff8c42]">79.5%</div>
-                <div className="text-[10px] text-gray-500 font-mono mt-1">ensemble pass@1</div>
-              </div>
-              <div>
-                <div className="text-3xl font-black font-mono text-white">70.9%</div>
-                <div className="text-[10px] text-gray-500 font-mono mt-1">single model + RAG</div>
-              </div>
-              <div>
-                <div className="text-3xl font-black font-mono text-gray-500">56.3%</div>
-                <div className="text-[10px] text-gray-500 font-mono mt-1">prev. best (QSpark)</div>
-              </div>
+          <div className="mb-12">
+            <div className="mb-2">
+              <span className="text-4xl sm:text-5xl font-black font-mono text-[#00ff88]">93%</span>
+              <span className="text-sm font-mono text-gray-400 ml-3">claims pass</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed">
-              General-purpose frontier models beat every published fine-tuned quantum specialist.
-              Claude Opus 4.6 and Gemini 3 Flash both exceed IBM Granite-8b (46.5%) and QSpark ORPO (56.3%) zero-shot.
-              Dynamic RAG adds +14%. Ensemble ceiling: 79.5%.
+              27 claims tested across 6 landmark papers, 3 quantum chips.
             </p>
           </div>
         </ScrollReveal>
 
-        {/* Three key findings */}
-        <div className="space-y-8 sm:space-y-10">
-          <ScrollReveal delay={0.25}>
-            <div>
-              <div className="mb-2">
-                <span className="text-3xl sm:text-4xl font-black font-mono text-[#00ff88]">0.22</span>
-                <span className="text-sm font-mono text-gray-500 ml-2">kcal/mol</span>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Chemical accuracy on IBM Torino — 119x noise reduction with TREX.
-              </p>
-            </div>
-          </ScrollReveal>
+        {/* Eval chart */}
+        <ScrollReveal delay={0.3}>
+          <EvalChart />
+        </ScrollReveal>
 
-          <ScrollReveal delay={0.35}>
-            <div>
-              <div className="mb-2">
-                <span className="text-3xl sm:text-4xl font-black font-mono text-[#00ff88]">93%</span>
-                <span className="text-sm font-mono text-gray-500 ml-2">claims pass</span>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                27 claims tested across 6 landmark papers, 3 quantum chips.
-              </p>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.45}>
-            <div>
-              <div className="mb-2">
-                <span className="text-3xl sm:text-4xl font-black font-mono text-[#00ff88]">9q &gt; 20q</span>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Tuna-9 beats IQM Garnet on GHZ-5. Topology matters more than qubit count.
-              </p>
-            </div>
-          </ScrollReveal>
-        </div>
-
-        <ScrollReveal delay={0.6}>
+        <ScrollReveal delay={0.5}>
           <div className="mt-16 flex flex-col sm:flex-row items-start sm:items-center gap-6">
             <Link
               href="/replications"
@@ -247,21 +293,31 @@ function EducationSection() {
     },
   ]
 
+  const visualizations = [
+    { title: 'Bloch Sphere', href: '/bloch-sphere', desc: '3D single-qubit state space' },
+    { title: 'State Vector', href: '/state-vector', desc: 'Multi-qubit amplitudes & phases' },
+    { title: 'Q-Sphere', href: '/qsphere', desc: 'States mapped to a sphere' },
+    { title: 'Entanglement', href: '/entanglement', desc: 'Bell states & correlations' },
+    { title: 'Measurement', href: '/measurement', desc: 'Born rule in real time' },
+    { title: 'Interference', href: '/interference', desc: 'N-slit quantum patterns' },
+  ]
+
   return (
     <section className="min-h-screen flex items-center px-6 py-24 border-l-2 border-[#8b5cf6]/20 ml-4 sm:ml-8 lg:ml-0 lg:border-l-0">
       <div className="max-w-4xl mx-auto w-full">
         <ScrollReveal>
           <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#8b5cf6] mb-4 block">
-            The Creations
+            Learning &amp; Education
           </span>
           <h2 className="text-3xl sm:text-5xl font-black text-white mb-4">
-            Making quantum <span className="text-[#8b5cf6]">accessible</span>
+            Making quantum <span className="text-[#8b5cf6]">intuitive</span>
           </h2>
           <p className="text-gray-400 max-w-xl mb-16">
-            Every visualization, every sound, every interactive — created by AI.
+            AI-generated visualizations, simulations, and interactive tools that build new mental models for quantum computing — designed for learners, not just experts.
           </p>
         </ScrollReveal>
 
+        {/* Featured experiences */}
         <div className="grid sm:grid-cols-2 gap-6 mb-12">
           {experiences.map((exp, i) => (
             <ScrollReveal key={exp.title} delay={0.1 + i * 0.15}>
@@ -278,16 +334,47 @@ function EducationSection() {
           ))}
         </div>
 
-        <ScrollReveal delay={0.4}>
-          <p className="text-sm text-gray-500 font-mono mb-8">
-            20+ interactives, 6 physics modules, 3 learning paths
-          </p>
-          <Link
-            href="/explore"
-            className="text-sm font-mono font-bold text-[#8b5cf6] hover:text-white transition-colors"
-          >
-            Start exploring &rarr;
-          </Link>
+        {/* Interactive visualizations grid */}
+        <ScrollReveal delay={0.3}>
+          <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-4">
+            Interactive Visualizations
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-12">
+            {visualizations.map((v) => (
+              <Link
+                key={v.href}
+                href={v.href}
+                className="rounded-lg border border-white/5 bg-white/[0.02] p-3 hover:bg-[#8b5cf6]/[0.04] hover:border-[#8b5cf6]/20 transition-all group"
+              >
+                <div className="text-sm font-bold text-white group-hover:text-[#8b5cf6] transition-colors">{v.title}</div>
+                <div className="text-[10px] text-gray-500">{v.desc}</div>
+              </Link>
+            ))}
+          </div>
+        </ScrollReveal>
+
+        {/* Links */}
+        <ScrollReveal delay={0.5}>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <Link
+              href="/explore"
+              className="text-sm font-mono font-bold text-[#8b5cf6] hover:text-white transition-colors"
+            >
+              All 20+ interactives &rarr;
+            </Link>
+            <Link
+              href="/how-qubits-work"
+              className="text-sm font-mono font-bold text-gray-500 hover:text-white transition-colors"
+            >
+              6-part physics series &rarr;
+            </Link>
+            <Link
+              href="/wp44"
+              className="text-sm font-mono font-bold text-gray-500 hover:text-white transition-colors"
+            >
+              Research context (WP4.4) &rarr;
+            </Link>
+          </div>
         </ScrollReveal>
       </div>
     </section>
@@ -315,13 +402,13 @@ function HomeFooter() {
             <a href="https://dereklomas.me" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors">
               J. Derek Lomas
             </a>
-            <span className="text-gray-700">&mdash;</span>
-            <span className="text-gray-500">TU Delft / QuTech</span>
-            <a href="https://orcid.org/0000-0003-2329-7831" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-[#a6ce39] text-xs transition-colors">
-              ORCID
+            <span className="text-gray-500" aria-hidden="true">&mdash;</span>
+            <span className="text-gray-400">TU Delft / QuTech</span>
+            <a href="https://orcid.org/0000-0003-2329-7831" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#a6ce39] text-xs transition-colors">
+              ORCID<span className="sr-only"> (opens in new tab)</span>
             </a>
           </div>
-          <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500 font-mono">
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-400 font-mono">
             <a href="/haiqu-paper.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
               Paper (PDF)
             </a>
@@ -348,13 +435,13 @@ function HomeFooter() {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col items-center gap-2 text-[10px] text-gray-600 font-mono text-center">
+        <div className="flex flex-col items-center gap-2 text-[10px] text-gray-400 font-mono text-center">
           <div className="flex flex-wrap justify-center gap-3">
             <a href="mailto:j.d.lomas@tudelft.nl" className="hover:text-[#00d4ff] transition-colors">
               j.d.lomas@tudelft.nl
             </a>
-            <span className="text-gray-700">&middot;</span>
-            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; 2026
+            <span className="text-gray-500" aria-hidden="true">&middot;</span>
+            <span className="text-gray-300">h</span>AI<span className="text-gray-300">qu</span> &mdash; 2026
           </div>
           <div>
             Built with AI agents. This entire website, its quantum simulations, and the research
@@ -372,10 +459,12 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <Hero />
-      <VibecodingSection />
-      <ScienceSection />
-      <EducationSection />
+      <main id="main-content">
+        <Hero />
+        <VibecodingSection />
+        <ScienceSection />
+        <EducationSection />
+      </main>
       <HomeFooter />
     </>
   )

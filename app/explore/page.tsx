@@ -42,6 +42,7 @@ const learningPaths = [
     steps: [
       { href: '/see', label: 'See a qubit' },
       { href: '/bloch-sphere', label: 'Play with the Bloch sphere' },
+      { href: '/quantum-shooter', label: 'Play the Bloch sphere shooter' },
       { href: '/measurement', label: 'Measure it' },
       { href: '/entanglement', label: 'Entangle two' },
     ],
@@ -72,6 +73,7 @@ const learningPaths = [
 
 const tools = [
   { href: '/bloch-sphere', title: 'Bloch Sphere', desc: '3D state space, 8 gates, rotation controls', color: '#00d4ff' },
+  { href: '/quantum-shooter', title: 'Bloch Sphere Shooter', desc: 'Learn gates by shooting enemies in 3D', color: '#ff6b9d' },
   { href: '/state-vector', title: 'State Vector', desc: '1–6 qubits, amplitude bars, phase coloring', color: '#8b5cf6' },
   { href: '/qsphere', title: 'Q-Sphere', desc: 'Multi-qubit states on a sphere, Hamming weight', color: '#e879f9' },
   { href: '/measurement', title: 'Measurement Lab', desc: 'Born rule convergence in real time', color: '#00ff88' },
@@ -94,7 +96,7 @@ const reference = [
 
 export default function ExplorePage() {
   return (
-    <main className="min-h-screen text-gray-200">
+    <main id="main-content" className="min-h-screen text-gray-200">
       <Nav section="explore" />
 
       {/* Hero */}
@@ -117,7 +119,7 @@ export default function ExplorePage() {
       {/* Start here: See & Listen */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Start Here
           </h2>
           <div className="grid sm:grid-cols-2 gap-6">
@@ -155,7 +157,7 @@ export default function ExplorePage() {
       {/* Go Deeper */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Go Deeper
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -165,11 +167,11 @@ export default function ExplorePage() {
                 href={d.href}
                 className="group p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-all"
               >
-                <div className="w-2 h-2 rounded-full mb-3" style={{ backgroundColor: d.color }} />
+                <div className="w-2 h-2 rounded-full mb-3" style={{ backgroundColor: d.color }} aria-hidden="true" />
                 <h3 className="text-white font-bold text-sm mb-2 group-hover:underline">
                   {d.title}
                 </h3>
-                <p className="text-gray-500 text-xs leading-relaxed">{d.desc}</p>
+                <p className="text-gray-400 text-xs leading-relaxed">{d.desc}</p>
               </Link>
             ))}
           </div>
@@ -179,7 +181,7 @@ export default function ExplorePage() {
       {/* Learning Paths */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Learning Paths
           </h2>
           <div className="grid sm:grid-cols-3 gap-6">
@@ -190,10 +192,10 @@ export default function ExplorePage() {
                 style={{ borderColor: `${path.color}20`, background: `${path.color}03` }}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: path.color }} />
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: path.color }} aria-hidden="true" />
                   <h3 className="text-white font-bold text-sm">{path.title}</h3>
                 </div>
-                <p className="text-gray-500 text-xs mb-4">{path.desc}</p>
+                <p className="text-gray-400 text-xs mb-4">{path.desc}</p>
                 <ol className="space-y-2">
                   {path.steps.map((step, i) => (
                     <li key={step.href}>
@@ -226,7 +228,7 @@ export default function ExplorePage() {
           <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-2">
             Interactive Tools
           </h2>
-          <p className="text-xs text-gray-600 mb-6">
+          <p className="text-xs text-gray-500 mb-6">
             {tools.length} interactive tools. Every number computed live, nothing mocked.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -239,7 +241,7 @@ export default function ExplorePage() {
                 <h3 className="text-white text-sm font-bold mb-1 group-hover:underline">
                   {t.title}
                 </h3>
-                <p className="text-gray-600 text-[10px] leading-relaxed">{t.desc}</p>
+                <p className="text-gray-500 text-[10px] leading-relaxed">{t.desc}</p>
               </Link>
             ))}
           </div>
@@ -249,7 +251,7 @@ export default function ExplorePage() {
       {/* Reference */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
             Reference
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -259,10 +261,10 @@ export default function ExplorePage() {
                 href={r.href}
                 className="group flex items-start gap-3 p-5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10 transition-all"
               >
-                <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: r.color }} />
+                <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: r.color }} aria-hidden="true" />
                 <div>
                   <span className="text-white text-sm font-bold group-hover:underline">{r.title}</span>
-                  <p className="text-gray-500 text-xs mt-0.5">{r.desc}</p>
+                  <p className="text-gray-400 text-xs mt-0.5">{r.desc}</p>
                 </div>
               </Link>
             ))}
@@ -272,7 +274,7 @@ export default function ExplorePage() {
 
       {/* Footer */}
       <footer className="px-6 py-12">
-        <div className="max-w-5xl mx-auto flex flex-col items-center gap-3 text-[10px] text-gray-600 font-mono text-center">
+        <div className="max-w-5xl mx-auto flex flex-col items-center gap-3 text-[10px] text-gray-500 font-mono text-center">
           <div>
             <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
           </div>

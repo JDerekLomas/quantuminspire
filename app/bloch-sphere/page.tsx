@@ -316,6 +316,7 @@ export default function BlochSpherePage() {
             <span className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">Related</span>
             <div className="mt-2 space-y-1">
               {[
+                { href: '/quantum-shooter', label: 'Play the Bloch Sphere Shooter' },
                 { href: '/state-vector', label: 'State Vectors' },
                 { href: '/measurement', label: 'Measurement' },
                 { href: '/entanglement', label: 'Entanglement' },
