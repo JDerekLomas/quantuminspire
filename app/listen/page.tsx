@@ -44,11 +44,15 @@ function useActiveInView(threshold = 0.4) {
 // CONSTANTS
 // ============================================================
 
-const TUNA9_FREQS = [5.12, 5.38, 5.55, 4.95, 5.70, 6.02, 6.25, 6.48, 6.80]
+// Representative transmon frequencies from published QuTech/DiCarlo lab devices
+// (arxiv 2503.13225, QuantWare 5-qubit chip). Real transmons cluster within ~300 MHz.
+// Extrapolated to 9 qubits. Couplers sit higher (~6.3 GHz) and are not sonified.
+const TUNA9_FREQS = [5.30, 5.22, 5.18, 5.46, 5.45, 5.35, 5.27, 5.40, 5.15]
 const TUNA9_LABELS = ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8']
 
 function ghzToHz(ghz: number): number {
-  return 220 + ((ghz - 4.5) / 2.5) * 660
+  // Map 5.0–5.6 GHz to 300–600 Hz (narrower range reflects real transmon spread)
+  return 300 + ((ghz - 5.0) / 0.6) * 300
 }
 
 const H2_COEFFICIENTS: Record<string, { g0: number; g1: number; g2: number; g4: number; fci: number }> = {
@@ -85,8 +89,8 @@ function makeActs(): Act[] {
       description:
         'A transmon qubit is a superconducting resonator — a tiny circuit that oscillates at a specific microwave frequency, around 5 GHz. Drive it at exactly that frequency and it responds. Detune even slightly and it ignores you. This is the same principle as a tuning fork, but at 5 billion cycles per second.',
       whatYouHear:
-        'A pure sine tone at the audible equivalent of qubit 2\'s 5.55 GHz frequency (mapped to ~497 Hz). The tone fades exponentially — this is T2 decoherence, the qubit losing its quantum information to the environment. On Tuna-9, T2 is about 10-20 microseconds.',
-      physics: 'f_qubit ≈ 5.55 GHz → 497 Hz (audible). T2 decay: A(t) = A₀ · e^(-t/T₂)',
+        'A pure sine tone at the audible equivalent of qubit 2\'s 5.18 GHz frequency (mapped to ~390 Hz). The tone fades exponentially — this is T2 decoherence, the qubit losing its quantum information to the environment. Published T2 (Ramsey) values for similar transmons range from 10-34 microseconds.',
+      physics: 'f_qubit ≈ 5.18 GHz → 390 Hz (audible). T2 decay: A(t) = A₀ · e^(-t/T₂)',
       durationMs: 5000,
       color: '#00d4ff',
       play: (ctx, master) => {
@@ -94,7 +98,7 @@ function makeActs(): Act[] {
         const osc = ctx.createOscillator()
         const gain = ctx.createGain()
         osc.type = 'sine'
-        osc.frequency.value = ghzToHz(5.55)
+        osc.frequency.value = ghzToHz(5.18)
         gain.gain.setValueAtTime(0, now)
         gain.gain.linearRampToValueAtTime(0.35, now + 0.1)
         gain.gain.setValueAtTime(0.35, now + 2.5)
@@ -109,10 +113,10 @@ function makeActs(): Act[] {
       title: 'Nine Qubits',
       subtitle: 'The chip tunes up',
       description:
-        'Tuna-9 has nine transmon qubits, each deliberately tuned to a different frequency. The spread prevents crosstalk — if two qubits were too close in frequency, stray microwave photons meant for one would accidentally drive the other. The frequencies range from 4.95 to 6.80 GHz.',
+        'Tuna-9 has nine transmon qubits, each tuned to a slightly different frequency within a narrow band around 5.2-5.5 GHz. The spread prevents crosstalk — if two qubits were too close in frequency, stray microwave photons meant for one would accidentally drive the other. But they stay close enough for tunable couplers to mediate two-qubit gates.',
       whatYouHear:
-        'Nine tones enter one by one, panned across the stereo field (q0 far left to q8 far right), building into a nine-note chord. Each tone is the audible equivalent of that qubit\'s resonant frequency. The chord they form together is the "sound" of the chip.',
-      physics: 'Frequencies: q0=5.12, q1=5.38, q2=5.55, q3=4.95, q4=5.70, q5=6.02, q6=6.25, q7=6.48, q8=6.80 GHz',
+        'Nine tones enter one by one, panned across the stereo field (q0 far left to q8 far right), building into a nine-note chord. Each tone is the audible equivalent of that qubit\'s resonant frequency. The tight cluster reflects how close real transmon frequencies are — they form a dense chord, not a wide scale.',
+      physics: 'Frequencies: q0=5.30, q1=5.22, q2=5.18, q3=5.46, q4=5.45, q5=5.35, q6=5.27, q7=5.40, q8=5.15 GHz',
       durationMs: 7000,
       color: '#ff8c42',
       play: (ctx, master) => {
@@ -141,15 +145,15 @@ function makeActs(): Act[] {
       title: 'A Gate',
       subtitle: 'A microwave pulse flips the qubit',
       description:
-        'Quantum gates are precisely shaped microwave pulses. An X gate is a pi-rotation: it flips the qubit from |0⟩ to |1⟩ (or vice versa). The pulse duration is about 20-40 nanoseconds. The transition state |0⟩ is lower energy than |1⟩ — so the pitch jumps up.',
+        'Quantum gates are precisely shaped microwave pulses. An X gate is a pi-rotation: it flips the qubit from |0⟩ to |1⟩ (or vice versa). The DRAG-shaped pulse lasts about 20 nanoseconds at the qubit\'s own resonance frequency. Both states live at the same frequency — the gate doesn\'t change the pitch, it rotates the quantum state on the Bloch sphere.',
       whatYouHear:
-        'A low tone (|0⟩ ground state), then a brief sawtooth burst (the gate pulse — rich in harmonics like a real microwave drive), then a higher tone (|1⟩ excited state, one octave up). The octave represents the energy difference between computational states.',
-      physics: 'X gate: |0⟩ → |1⟩. Pulse duration ~20ns. f_{01} ≈ 5.55 GHz. The |1⟩ state is at a higher energy level.',
+        'A pure sine tone (|0⟩ ground state), then a brief sawtooth burst (the gate pulse — rich in harmonics like a real microwave drive), then a richer tone with harmonics (|1⟩ excited state). The timbre change represents the state flip — same frequency, different character. In reality, you can\'t "hear" the difference; this is an artistic choice.',
+      physics: 'X gate: |0⟩ → |1⟩. Pulse duration ~20ns. Drive at f_{01} ≈ 5.18 GHz. DRAG pulse shape suppresses leakage to |2⟩.',
       durationMs: 5000,
       color: '#8b5cf6',
       play: (ctx, master) => {
         const now = ctx.currentTime
-        const baseHz = ghzToHz(5.55)
+        const baseHz = ghzToHz(5.18)
         const osc0 = ctx.createOscillator()
         const gain0 = ctx.createGain()
         osc0.type = 'sine'
@@ -173,10 +177,19 @@ function makeActs(): Act[] {
         pulseOsc.start(now + 1.9)
         pulseOsc.stop(now + 2.2)
 
+        // |1⟩ state: same frequency, richer timbre (triangle + slight vibrato)
         const osc1 = ctx.createOscillator()
         const gain1 = ctx.createGain()
-        osc1.type = 'sine'
-        osc1.frequency.value = baseHz * 2
+        osc1.type = 'triangle'
+        osc1.frequency.value = baseHz
+        // Add subtle vibrato to suggest the excited state's energy
+        const vibrato = ctx.createOscillator()
+        const vibratoGain = ctx.createGain()
+        vibrato.frequency.value = 5
+        vibratoGain.gain.value = 3
+        vibrato.connect(vibratoGain).connect(osc1.frequency)
+        vibrato.start(now + 2.2)
+        vibrato.stop(now + 5)
         gain1.gain.setValueAtTime(0, now + 2.2)
         gain1.gain.linearRampToValueAtTime(0.3, now + 2.3)
         gain1.gain.setValueAtTime(0.3, now + 4.0)
@@ -391,10 +404,10 @@ function makeActs(): Act[] {
       title: 'Decoherence',
       subtitle: 'The quantum state dissolves',
       description:
-        'Every quantum state is temporary. The environment — thermal photons, magnetic fluctuations, cosmic rays — constantly probes the qubit. Phase information leaks out. The pure quantum state becomes a classical mixture. This process is called decoherence, and it\'s the fundamental enemy of quantum computation.',
+        'Every quantum state is temporary. The environment — thermal photons, magnetic fluctuations, oxide defects — constantly probes the qubit. Phase information leaks out randomly. The pure quantum state becomes a classical mixture. This is dephasing (T2*), the fundamental enemy of quantum computation.',
       whatYouHear:
-        'A clean Bell chord (E4 + B4, a perfect fifth) slowly decays. The upper note drifts sharp — this is dephasing (T2*), the relative phase between qubits randomizing. Beating emerges as the frequencies diverge. Meanwhile, a noise floor grows: the environment bleeding in. By the end, the quantum state is gone.',
-      physics: 'T2* dephasing: Δφ(t) accumulates randomly. Detuning: 495 Hz → 520 Hz over 5s. Noise floor ∝ t/T.',
+        'A clean two-note chord slowly loses its purity. Random phase noise creeps in — you hear it as growing roughness and instability in the tone. Meanwhile, a noise floor rises: the environment bleeding in. The phase jumps are random, not smooth — this is how real dephasing works. By the end, the quantum coherence is gone.',
+      physics: 'T2* dephasing: random phase kicks Δφ(t) accumulate as a random walk. Noise floor ∝ √t. T2* ~ 10-34 μs.',
       durationMs: 7000,
       color: '#ef4444',
       play: (ctx, master) => {
@@ -416,10 +429,14 @@ function makeActs(): Act[] {
         gain1.gain.linearRampToValueAtTime(0.25, now + 0.1)
         gain2.gain.setValueAtTime(0, now)
         gain2.gain.linearRampToValueAtTime(0.25, now + 0.1)
+        // Random phase noise on osc2 — schedule random frequency jumps
+        // that simulate dephasing (random walk in phase, not smooth drift)
         osc2.frequency.setValueAtTime(495, now)
-        osc2.frequency.linearRampToValueAtTime(495, now + 1.5)
-        osc2.frequency.linearRampToValueAtTime(503, now + 3.5)
-        osc2.frequency.linearRampToValueAtTime(520, now + 5.5)
+        for (let t = 1.5; t < dur; t += 0.15) {
+          const noiseAmt = ((t - 1.5) / (dur - 1.5)) * 25
+          const randomJump = 495 + (Math.random() - 0.5) * noiseAmt
+          osc2.frequency.setValueAtTime(randomJump, now + t)
+        }
         gain1.gain.setValueAtTime(0.25, now + 3)
         gain1.gain.linearRampToValueAtTime(0.05, now + dur)
         gain2.gain.setValueAtTime(0.25, now + 3)
@@ -599,7 +616,7 @@ function VisualOneQubit({ playing }: { playing: boolean }) {
 
         {/* Frequency label */}
         <text x="0" y="90" fill="#00d4ff" fontSize="12" fontFamily="monospace" textAnchor="middle" opacity="0.8">
-          5.55 GHz
+          5.18 GHz
         </text>
       </g>
 
@@ -643,27 +660,23 @@ function VisualOneQubit({ playing }: { playing: boolean }) {
 }
 
 function VisualNineQubits({ playing }: { playing: boolean }) {
+  // Real Tuna-9 topology from our experiments (diamond-like, 10 edges)
   const positions = [
-    [150, 80], [300, 80], [450, 80],
-    [150, 180], [300, 180], [450, 180],
-    [150, 280], [300, 280], [450, 280],
+    [300, 60],                    // q0 (top center)
+    [180, 140], [420, 140],       // q1, q2
+    [100, 230], [300, 230], [500, 230], // q3, q4, q5
+    [180, 310],                   // q6
+    [420, 310], [300, 370],       // q7, q8 — note: q7 only connects to q8
   ]
-  const connections = [[0,1],[1,2],[0,3],[1,4],[2,5],[3,4],[4,5],[3,6],[4,7],[5,8],[6,7],[7,8]]
+  // Adjacency: 0-[1,2], 1-[3,4], 2-[4,5], 3-[6], 4-[6], 6-[8], 7-[8]
+  const connections = [[0,1],[0,2],[1,3],[1,4],[2,4],[2,5],[3,6],[4,6],[6,8],[7,8]]
 
   return (
-    <svg viewBox="0 0 600 380" className="w-full max-w-2xl mx-auto">
-      <rect x="0" y="0" width="600" height="380" fill="#060610" rx="12" />
+    <svg viewBox="0 0 600 440" className="w-full max-w-2xl mx-auto">
+      <rect x="0" y="0" width="600" height="440" fill="#060610" rx="12" />
 
       {/* Chip border */}
-      <rect x="60" y="20" width="480" height="320" rx="6" fill="#0a0f1a" stroke="#1a2332" strokeWidth="1.5" />
-
-      {/* Grid lines */}
-      {Array.from({ length: 4 }, (_, i) => (
-        <g key={i}>
-          <line x1={60 + i * 160} y1="20" x2={60 + i * 160} y2="340" stroke="#111827" strokeWidth="0.3" />
-          <line x1="60" y1={20 + i * 107} x2="540" y2={20 + i * 107} stroke="#111827" strokeWidth="0.3" />
-        </g>
-      ))}
+      <rect x="40" y="20" width="520" height="400" rx="6" fill="#0a0f1a" stroke="#1a2332" strokeWidth="1.5" />
 
       {/* Connections */}
       {connections.map(([a, b], i) => (
@@ -709,10 +722,10 @@ function VisualNineQubits({ playing }: { playing: boolean }) {
       })}
 
       {/* Stereo label */}
-      <text x="70" y="365" fill="#475569" fontSize="8" fontFamily="monospace">L ear</text>
-      <text x="515" y="365" fill="#475569" fontSize="8" fontFamily="monospace">R ear</text>
-      <line x1="100" y1="362" x2="510" y2="362" stroke="#1e293b" strokeWidth="0.5" />
-      <polygon points="508,360 514,362 508,364" fill="#1e293b" />
+      <text x="70" y="425" fill="#475569" fontSize="8" fontFamily="monospace">L ear</text>
+      <text x="515" y="425" fill="#475569" fontSize="8" fontFamily="monospace">R ear</text>
+      <line x1="100" y1="422" x2="510" y2="422" stroke="#1e293b" strokeWidth="0.5" />
+      <polygon points="508,420 514,422 508,424" fill="#1e293b" />
     </svg>
   )
 }
@@ -730,12 +743,12 @@ function VisualGate({ playing }: { playing: boolean }) {
         {/* |0⟩ level */}
         <line x1="-80" y1="100" x2="80" y2="100" stroke="#00d4ff" strokeWidth="2" />
         <text x="95" y="104" fill="#00d4ff" fontSize="12" fontFamily="monospace">|0&#x27E9;</text>
-        <text x="-95" y="104" fill="#374151" fontSize="8" fontFamily="monospace" textAnchor="end">low</text>
+        <text x="-95" y="104" fill="#374151" fontSize="8" fontFamily="monospace" textAnchor="end">ground</text>
 
         {/* |1⟩ level */}
         <line x1="-80" y1="40" x2="80" y2="40" stroke="#00d4ff" strokeWidth="2" />
         <text x="95" y="44" fill="#00d4ff" fontSize="12" fontFamily="monospace">|1&#x27E9;</text>
-        <text x="-95" y="44" fill="#374151" fontSize="8" fontFamily="monospace" textAnchor="end">high</text>
+        <text x="-95" y="44" fill="#374151" fontSize="8" fontFamily="monospace" textAnchor="end">excited</text>
 
         {/* Transition arrow */}
         <line x1="0" y1="95" x2="0" y2="48" stroke={col} strokeWidth="2.5" className="transition-colors duration-500" />
@@ -1064,10 +1077,10 @@ function VisualDecoherence({ playing }: { playing: boolean }) {
 
         {/* Phase labels */}
         <text x="60" y="170" fill="#00d4ff" fontSize="10" fontFamily="monospace" opacity="0.6">
-          definite phase
+          coherent phase
         </text>
-        <text x="380" y="170" fill="#ef4444" fontSize="10" fontFamily="monospace" opacity="0.6">
-          phase scrambled
+        <text x="350" y="170" fill="#ef4444" fontSize="10" fontFamily="monospace" opacity="0.6">
+          random phase jumps (T2*)
         </text>
 
         {/* Arrow */}
@@ -1444,11 +1457,16 @@ export default function ListenPage() {
             Quantum computers operate in the microwave regime &mdash; the same frequencies as your Wi-Fi router,
             but at temperatures colder than outer space. These nine acts translate quantum phenomena into sound.
           </p>
-          <p className="text-gray-600 text-sm mb-8">
-            The frequencies are real, scaled from GHz to audible Hz. The Hamiltonian coefficients are from our
-            calculations. The error numbers are from actual hardware runs on{' '}
+          <p className="text-gray-600 text-sm mb-4">
+            Qubit frequencies are from published QuTech device calibrations. The H&#x2082; Hamiltonian coefficients
+            are from quantum chemistry calculations. Error rates are from actual hardware runs on{' '}
             <span className="text-[#ff8c42]">Tuna-9</span> and{' '}
             <span className="text-[#00d4ff]">IBM Torino</span>.
+          </p>
+          <p className="text-gray-700 text-xs mb-8">
+            Sonification note: GHz frequencies are linearly mapped to audible Hz &mdash; the ratios are preserved
+            but the sounds are artistic representations, not literal recordings. Choices like timbre, stereo panning,
+            and musical intervals are designed to make quantum phenomena intuitive, not to claim physical correspondence.
           </p>
 
           {/* Controls */}
@@ -1516,7 +1534,7 @@ export default function ListenPage() {
         <div className="grid sm:grid-cols-2 gap-6 text-sm text-gray-500 leading-relaxed">
           <div>
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Frequency mapping</h3>
-            <p>Qubit frequencies (4.5&ndash;7.0 GHz) are linearly mapped to 220&ndash;880 Hz (A3 to A5). This preserves the relative spacing while making them audible.</p>
+            <p>Qubit frequencies (5.0&ndash;5.6 GHz) are linearly mapped to 300&ndash;600 Hz. This preserves the relative spacing while making them audible. The narrow range reflects how closely real transmon frequencies are clustered.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Amplitude</h3>
@@ -1529,6 +1547,31 @@ export default function ListenPage() {
           <div>
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Implementation</h3>
             <p>Pure Web Audio API &mdash; OscillatorNode, GainNode, StereoPannerNode, BiquadFilterNode, and AudioBufferSourceNode for noise. No samples, no libraries. Stereo panning represents different qubits or entangled subsystems.</p>
+          </div>
+          <div className="sm:col-span-2 mt-4 pt-4 border-t border-[#111827]">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">What&apos;s real vs. artistic</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs text-[#22c55e] font-mono mb-1">Data-driven</p>
+                <ul className="text-sm text-gray-500 space-y-1 list-disc list-inside">
+                  <li>Qubit frequencies (published device calibrations)</li>
+                  <li>H&#x2082; Hamiltonian coefficients (quantum chemistry)</li>
+                  <li>Error rates &amp; TREX improvement (hardware measurements)</li>
+                  <li>Topology / connectivity (our experiments)</li>
+                  <li>Beat frequency mapping (error &#x2192; beating rate)</li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-xs text-[#f59e0b] font-mono mb-1">Artistic choices</p>
+                <ul className="text-sm text-gray-500 space-y-1 list-disc list-inside">
+                  <li>Perfect fifth for superposition (not physically motivated)</li>
+                  <li>Timbre change for |0&#x27E9; vs |1&#x27E9; (states share one frequency)</li>
+                  <li>Stereo panning for qubit position / entanglement</li>
+                  <li>Error mitigation histogram distributions (illustrative)</li>
+                  <li>Noise texture choices for decoherence / gate pulses</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

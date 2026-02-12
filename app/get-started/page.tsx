@@ -17,7 +17,7 @@ const platforms = [
     signupSteps: 'Create account at portal.quantum-inspire.com, then run: qi login',
     configFile: '~/.quantuminspire/config.json',
     free: true,
-    notes: 'Unlimited jobs. 9 superconducting qubits. cQASM 3.0 circuits.',
+    notes: 'Unlimited jobs. 9 superconducting qubits. cQASM 3.0 (Quantum Inspire\'s circuit language).',
   },
   {
     name: 'IBM Quantum (Torino)',
@@ -44,19 +44,19 @@ const platforms = [
 const silentBugs = [
   {
     name: 'Bit ordering',
-    description: 'PennyLane q0=MSB, Qiskit q0=LSB, cQASM MSB-first bitstrings. Code runs fine, gives wrong answers.',
+    description: 'PennyLane q0=MSB (most significant bit), Qiskit q0=LSB (least significant bit), cQASM MSB-first bitstrings. Different conventions for reading multi-qubit results. Code runs fine, gives wrong answers.',
     severity: 'critical',
     howCaught: 'Cross-platform comparison showed impossible fidelity values',
   },
   {
     name: 'Coefficient convention',
-    description: 'BK-tapered vs sector-projected Hamiltonians differ in sign of key terms. Both are valid.',
+    description: 'Two ways of simplifying molecular energy models (Bravyi-Kitaev tapering vs sector projection) differ in the sign of key terms. Both are valid, but mixing them silently gives wrong answers.',
     severity: 'critical',
-    howCaught: 'Emulator energy didn\'t match known FCI reference value',
+    howCaught: 'Emulator energy didn\'t match known FCI (exact solution) reference value',
   },
   {
     name: 'X gate placement',
-    description: 'Which qubit gets the X gate in VQE depends on coefficient signs. Wrong choice = 1400 kcal/mol error.',
+    description: 'Which qubit gets the X gate (a bit-flip operation) in VQE (variational quantum eigensolver) depends on coefficient signs in the Hamiltonian. Wrong choice = 1400 kcal/mol error.',
     severity: 'critical',
     howCaught: 'Compared computed energy to exact diagonalization',
   },
@@ -64,17 +64,17 @@ const silentBugs = [
     name: 'Non-contiguous qubit extraction',
     description: 'Hardware returns full-width bitstrings. bits[-2:] extracts q[0,1], not q[2,4].',
     severity: 'critical',
-    howCaught: 'Bell state on q[2,4] returned 0% fidelity',
+    howCaught: 'Bell state (entangled pair) on q[2,4] returned 0% fidelity',
   },
   {
     name: 'Missing post-selection',
     description: 'We reported 9.2 kcal/mol for weeks. The data was actually 1.66 kcal/mol. Analysis was wrong, not data.',
     severity: 'high',
-    howCaught: 'Offline reanalysis of raw counts with parity filtering',
+    howCaught: 'Offline reanalysis of raw counts with parity filtering (discarding results that violate known physics constraints)',
   },
   {
     name: 'Over-mitigation',
-    description: 'TREX alone: 0.22 kcal/mol. TREX + DD + twirling: 10 kcal/mol. Adding "improvements" made it 45x worse.',
+    description: 'TREX (readout error correction) alone: 0.22 kcal/mol. TREX + DD (dynamical decoupling) + twirling: 10 kcal/mol. Adding "improvements" made it 45x worse.',
     severity: 'high',
     howCaught: 'Systematic mitigation ladder experiment',
   },
@@ -100,22 +100,22 @@ const tips = [
   },
   {
     title: 'Compare emulator to known reference values',
-    detail: 'The emulator can\'t catch wrong Hamiltonians or convention errors. Always compare to FCI (exact diagonalization) or published values. Our BK-tapered coefficient error passed the emulator perfectly.',
+    detail: 'The emulator can\'t catch wrong Hamiltonians (energy models) or convention errors. Always compare to FCI (Full Configuration Interaction -- the mathematically exact solution) or published values. Our coefficient convention error passed the emulator perfectly.',
     icon: '2',
   },
   {
     title: 'Characterize hardware before doing science',
-    detail: 'We ran 33 characterization jobs before any real experiments. Best qubit pair: 96.6% Bell fidelity. Worst: 87%. That\'s the difference between chemical accuracy and failure.',
+    detail: 'We ran 33 characterization jobs before any real experiments. Best qubit pair: 96.6% Bell fidelity (how well hardware creates entangled pairs). Worst: 87%. That\'s the difference between chemical accuracy and failure.',
     icon: '3',
   },
   {
     title: 'Post-selection is free -- always use it',
-    detail: 'Discard measurement outcomes that violate known symmetries (e.g., parity). Costs zero QPU time, typically improves results by 2-6x. We forgot it for weeks and over-reported our error by 6x.',
+    detail: 'Discard measurement outcomes that violate known physics constraints (e.g., electron number must be conserved). Costs zero QPU time, typically improves results by 2-6x. We forgot it for weeks and over-reported our error by 6x.',
     icon: '4',
   },
   {
     title: 'Don\'t stack mitigation techniques blindly',
-    detail: 'TREX alone = 0.22 kcal/mol. Adding dynamical decoupling = 1.33. Adding twirling = 10. More shots = 3.77. The intuition that "more = better" is wrong for shallow circuits.',
+    detail: 'TREX (readout error correction) alone = 0.22 kcal/mol. Adding dynamical decoupling (extra pulses to fight noise) = 1.33. Adding twirling (randomization to average out errors) = 10. More shots = 3.77. The intuition that "more = better" is wrong for short circuits.',
     icon: '5',
   },
   {
@@ -252,7 +252,7 @@ export default function GetStartedPage() {
                 <span className="inline-block w-2 h-2 rounded-full bg-[#00d4ff]" />
                 <h3 className="text-sm font-bold text-white">Quantum Inspire</h3>
               </div>
-              <p className="text-xs text-gray-400 mb-3">Tuna-9 — 9 superconducting qubits. cQASM 3.0 circuits. Unlimited free jobs.</p>
+              <p className="text-xs text-gray-400 mb-3">Tuna-9 — 9 superconducting qubits. cQASM 3.0 (QI circuit language). Unlimited free jobs.</p>
               <div className="space-y-1.5 text-xs font-mono">
                 <div><span className="text-[#00d4ff]">qi_run_local</span> <span className="text-gray-500">— emulator, instant, no auth</span></div>
                 <div><span className="text-[#00d4ff]">qi_submit_circuit</span> <span className="text-gray-500">— real hardware</span></div>
@@ -516,8 +516,8 @@ claude`}</CodeBlock>
 
           <div className="space-y-3">
             {[
-              { layer: 'Emulator', catches: 'Circuit and algorithm bugs (wrong gates, bad parameters)', misses: 'Wrong Hamiltonian, convention errors, analysis bugs' },
-              { layer: 'FCI reference comparison', catches: 'Hamiltonian and coefficient convention errors', misses: 'Hardware-specific noise, analysis pipeline bugs' },
+              { layer: 'Emulator', catches: 'Circuit and algorithm bugs (wrong gates, bad parameters)', misses: 'Wrong energy model, convention errors, analysis bugs' },
+              { layer: 'Exact solution comparison', catches: 'Energy model and coefficient convention errors', misses: 'Hardware-specific noise, analysis pipeline bugs' },
               { layer: 'Cross-platform hardware', catches: 'Analysis bugs, platform-specific assumptions, bitstring ordering', misses: 'Errors common to all platforms (e.g., wrong post-processing)' },
               { layer: 'Re-run variance', catches: 'Non-determinism, calibration drift, flaky results', misses: 'Systematic errors that are consistent across runs' },
               { layer: 'Mitigation ladder', catches: 'Over-mitigation, technique interaction bugs', misses: 'Fundamental hardware limitations' },

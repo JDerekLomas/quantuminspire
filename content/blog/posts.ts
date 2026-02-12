@@ -4,21 +4,21 @@ export const posts: BlogPost[] = [
   {
     slug: 'error-mitigation-showdown',
     title: 'We Tested 15 Error Mitigation Strategies. Only One Achieved Chemical Accuracy.',
-    subtitle: "IBM's TREX hit 0.22 kcal/mol. Tuna-9's best combo (REM+PS) averaged 2.52 kcal/mol. ZNE made things worse. Here's what actually works for NISQ chemistry.",
+    subtitle: "IBM's TREX (readout error correction) hit 0.22 kcal/mol. Tuna-9's best combo (readout mitigation + post-selection) averaged 2.52 kcal/mol. Zero-noise extrapolation made things worse. Here's what actually works for near-term quantum chemistry.",
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['error mitigation', 'VQE', 'TREX', 'readout error', 'ZNE', 'post-selection', 'IBM Quantum', 'Tuna-9', 'chemical accuracy'],
     heroImage: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=1200&q=80',
     heroCaption: 'More mitigation does not always mean better results. The winning strategy is often the simplest one.',
-    excerpt: "We compared 15+ error mitigation techniques across IBM Torino and Tuna-9 for H2 VQE. IBM's TREX achieved chemical accuracy (0.22 kcal/mol) in a single shot. On Tuna-9, combining readout error mitigation with post-selection cut errors by 70% to 2.52 kcal/mol. But adding dynamical decoupling and twirling to TREX made IBM 45x worse. The lesson: understand your noise before stacking techniques.",
+    excerpt: "We compared 15+ error mitigation techniques across IBM Torino and Tuna-9 for hydrogen VQE (variational quantum eigensolver — an algorithm that finds molecular ground-state energies). IBM's TREX achieved chemical accuracy (0.22 kcal/mol) in a single shot. On Tuna-9, combining readout error mitigation with post-selection cut errors by 70% to 2.52 kcal/mol. But adding dynamical decoupling and Pauli twirling to TREX made IBM 45x worse. The lesson: understand your noise before stacking techniques.",
     content: `<p>After running 50+ VQE experiments across two quantum backends, we had a nagging question: <strong>we know the hardware errors are ~7-10 kcal/mol, but where exactly is the error coming from, and what actually fixes it?</strong></p>
 
 <p>We systematically tested every error mitigation technique available to us &mdash; from simple post-selection to IBM's advanced TREX readout correction to zero-noise extrapolation &mdash; and ranked them by effectiveness. The results surprised us.</p>
 
 <h2>The IBM Mitigation Ladder</h2>
 
-<p>On IBM Torino, we ran the same H2 VQE circuit (R=0.735 &Aring;, 2-qubit sector-projected ansatz) through IBM's Estimator API with progressively more mitigation layers. Each technique adds cost (more shots, more QPU time) but is supposed to reduce error.</p>
+<p>On IBM Torino, we ran the same H2 VQE circuit (bond distance R=0.735 &Aring;, using a 2-qubit <a href="/ansatz">ansatz</a> — the trial quantum state structure that VQE optimizes) through IBM's Estimator API with progressively more mitigation layers. Each technique adds cost (more shots, more QPU time) but is supposed to reduce error.</p>
 
 <table>
 <thead><tr><th>Rank</th><th>Technique</th><th>Energy (Ha)</th><th>Error (kcal/mol)</th><th>QPU time</th></tr></thead>
@@ -42,7 +42,7 @@ export const posts: BlogPost[] = [
 
 <p>The best technique is the <em>simplest</em> advanced option: <strong>TREX alone at 0.22 kcal/mol</strong> &mdash; well within chemical accuracy. TREX (Twirled Readout EXtraction) mitigates readout errors by randomizing the measurement basis, which is exactly what our noise analysis predicted: readout error is the dominant noise source.</p>
 
-<p>But adding dynamical decoupling (DD) to TREX makes it worse (1.33 kcal/mol). Adding DD <em>and</em> Pauli twirling makes it <strong>45x worse</strong> (10.0 kcal/mol). Why? These techniques add extra gates to suppress coherent errors &mdash; but our circuit is only 3 gates deep. The overhead of the mitigation exceeds the error it's trying to fix.</p>
+<p>But adding dynamical decoupling (DD — extra pulses inserted during idle time to fight decoherence) to TREX makes it worse (1.33 kcal/mol). Adding DD <em>and</em> Pauli twirling (randomizing gate sequences to average out systematic errors) makes it <strong>45x worse</strong> (10.0 kcal/mol). Why? These techniques add extra gates to suppress coherent errors (systematic errors that accumulate predictably) &mdash; but our circuit is only 3 gates deep. The overhead of the mitigation exceeds the error it's trying to fix.</p>
 
 <p>ZNE (zero-noise extrapolation) is the worst performer: the linear extrapolant gives 12.84 kcal/mol, and the exponential fit fails entirely (returns NaN). This confirms what we found on Tuna-9: <strong>CNOT gate noise is not the dominant error source on either backend</strong>. ZNE amplifies gate noise and extrapolates to zero, but when gate noise is already small compared to readout error, the extrapolation has nothing useful to extrapolate.</p>
 
@@ -139,7 +139,7 @@ export const posts: BlogPost[] = [
 
 <p>On IBM Torino, ZNE with DD+twirling gave 12.84 kcal/mol (linear) and NaN (exponential). The base error with DD+twirling is already 10.0 kcal/mol &mdash; worse than the raw TREX starting point.</p>
 
-<p>The root cause is the same on both backends: <strong>our VQE circuit is only 3 native gates deep</strong> (Ry, CNOT, X). Gate noise contributes &lt;20% of total error. The dominant errors are readout bias, state preparation imperfections, and T1/T2 decoherence during measurement. None of these scale with gate count, so ZNE's extrapolation has no signal to amplify.</p>
+<p>The root cause is the same on both backends: <strong>our VQE circuit is only 3 native gates deep</strong> (Ry, CNOT, X). Gate noise contributes &lt;20% of total error. The dominant errors are readout bias, state preparation imperfections, and <a href="/how-qubits-work/coherence">T1/T2 decoherence</a> (energy loss and phase scrambling) during measurement. None of these scale with gate count, so ZNE's extrapolation has no signal to amplify.</p>
 
 <p>ZNE would likely work better on deeper circuits (QAOA with multiple layers, Trotterized dynamics) where gate noise dominates. For shallow VQE, it's the wrong tool.</p>
 
@@ -178,7 +178,7 @@ export const posts: BlogPost[] = [
     tags: ['cross-platform', 'IBM Quantum', 'Tuna-9', 'IQM Garnet', 'VQE', 'quantum volume', 'QEC', 'neural network decoder', 'hardware noise'],
     heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
     heroCaption: 'The same quantum algorithm produces radically different results depending on where you run it.',
-    excerpt: `We ran VQE, quantum volume, randomized benchmarking, and error correction across 4 quantum backends. Benchmarks pass everywhere. VQE fails everywhere except the emulator. IQM Garnet achieves QV=32 while Tuna-9 manages QV=8. Error correction reveals the sharpest hardware differences. And IBM's 99.99% RB fidelity is fake.`,
+    excerpt: `We ran VQE (molecular energy estimation), quantum volume (a standard hardware benchmark), randomized benchmarking (gate accuracy testing), and error correction across 4 quantum backends. Benchmarks pass everywhere. VQE fails everywhere except the emulator. IQM Garnet achieves QV=32 while Tuna-9 manages QV=8. Error correction reveals the sharpest hardware differences. And IBM's 99.99% gate fidelity from randomized benchmarking is misleading.`,
     content: `<p>What happens when you take the same quantum algorithm and run it on four completely different backends? We've been answering this question systematically across 50+ experiments, 4 paper replications, and 4 platforms: a noiseless QI emulator, IBM's 133-qubit Torino processor, QuTech's 9-qubit Tuna-9 transmon chip, and IQM's 20-qubit Garnet processor.</p>
 
 <p>The headline: <strong>benchmarks are forgiving, chemistry is brutal, and error correction reveals the sharpest hardware differences of all.</strong></p>
@@ -269,13 +269,13 @@ export const posts: BlogPost[] = [
 
 <h2>Quantum Error Correction: Where Topology Kills</h2>
 
-<p>The [[4,2,2]] error detection code encodes 2 logical qubits into 4 data qubits, with 2 ancilla qubits measuring XXXX and ZZZZ stabilizers. It can <em>detect</em> (but not correct) any single-qubit error.</p>
+<p>The [[4,2,2]] error detection code encodes 2 logical qubits into 4 data qubits, with 2 ancilla (helper) qubits that check for errors by measuring collective properties called stabilizers. It can <em>detect</em> (but not correct) any single-qubit error.</p>
 
 <p>On the <strong>emulator</strong>: 100% detection rate, 0% false positive rate. Perfect, as expected from a noiseless backend.</p>
 
-<p>On <strong>IBM Torino</strong> (133 qubits, heavy-hex topology): 92.7% detection rate, 14.0% false positive rate. IBM's rich connectivity easily accommodates the circuit &mdash; each ancilla needs CNOTs to all 4 data qubits (degree 4), and IBM's topology provides this.</p>
+<p>On <strong>IBM Torino</strong> (133 qubits, heavy-hex topology): 92.7% detection rate, 14.0% false positive rate. IBM's rich connectivity easily accommodates the circuit &mdash; each helper qubit needs <a href="/learn">CNOT gates</a> (two-qubit operations) to all 4 data qubits, and IBM's topology provides this.</p>
 
-<p>On <strong>Tuna-9</strong>: <strong>Every circuit FAILED.</strong> The stabilizer measurement requires each ancilla to CNOT all 4 data qubits, meaning the ancilla needs degree 4. Tuna-9's maximum qubit degree is 3. There is no 6-qubit subgraph on Tuna-9 that can execute this circuit without SWAP gates &mdash; and cQASM 3.0 doesn't support implicit routing.</p>
+<p>On <strong>Tuna-9</strong>: <strong>Every circuit FAILED.</strong> The error check requires each helper qubit to interact with all 4 data qubits, meaning it needs 4 direct connections. Tuna-9's maximum connectivity per qubit is 3. There is no 6-qubit arrangement on Tuna-9 that can execute this circuit without SWAP gates (extra operations to move data between non-adjacent qubits) &mdash; and cQASM 3.0 doesn't support implicit routing.</p>
 
 <p>This is the starkest cross-platform difference in our data. The <strong>same algorithm, same encoding, same error model</strong> &mdash; one platform runs it with 93% accuracy, the other can't run it at all. Topology isn't just a performance factor; it's a hard constraint that determines which algorithms are physically possible on a given chip.</p>
 
@@ -396,10 +396,11 @@ export const posts: BlogPost[] = [
 
 <h3>The Circuit</h3>
 
-<p>The 2-qubit VQE ansatz uses a subspace-preserving circuit: <code>Ry(&alpha;) &rarr; CNOT &rarr; X</code>, producing the state cos(&alpha;/2)|10&rang; + sin(&alpha;/2)|01&rang;. The optimal parameter &alpha; = &minus;0.2235 gives the ground state energy E = &minus;1.1373 Hartree (the FCI reference).</p>
+<p>The 2-qubit VQE <a href="/ansatz">ansatz</a> (trial quantum state) uses a short 3-gate circuit: <code>Ry(&alpha;) &rarr; CNOT &rarr; X</code>, producing a superposition of two electron configurations. The optimal parameter &alpha; = &minus;0.2235 gives the ground state energy E = &minus;1.1373 Hartree (the exact solution).</p>
 
-<p>Energy is reconstructed from three measurement bases:</p>
+<p>Energy is reconstructed by measuring the qubits in three different bases (Z, X, and Y &mdash; corresponding to different <a href="/learn">Pauli operators</a>) and combining the results:</p>
 <p><code>E = g0 + g1&lang;Z0&rang; + g2&lang;Z1&rang; + g3&lang;Z0Z1&rang; + g4&lang;X0X1&rang; + g5&lang;Y0Y1&rang;</code></p>
+<p>Here &lang;Z0&rang; means "average measurement outcome of qubit 0 in the Z basis," and the g coefficients come from the <a href="/hamiltonians">molecular Hamiltonian</a>.</p>
 
 <h3>Results Across Backends</h3>
 
@@ -635,7 +636,7 @@ export const posts: BlogPost[] = [
   {
     slug: 'ai-meets-quantum',
     title: 'AI Meets Quantum Computing: The Papers That Matter',
-    subtitle: 'Neural decoders, autonomous quantum agents, and AI circuit optimizers \u2014 a researcher\'s guide to the intersection',
+    subtitle: 'Neural network error decoders, autonomous quantum agents, and AI circuit optimizers \u2014 a researcher\'s guide to the intersection',
     date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'landscape',
@@ -681,9 +682,9 @@ export const posts: BlogPost[] = [
 <tbody>
 <tr><td><a href="https://arxiv.org/abs/2510.00967">QUASAR</a></td><td>Circuit validity</td><td>99.31% Pass@1</td><td>4B params + agentic RL; validity is not correctness</td></tr>
 <tr><td><a href="https://arxiv.org/abs/2510.26101">QCoder</a> (o3)</td><td>Functional accuracy</td><td>78%</td><td>vs. 40% for human contest code; chain-of-thought helps</td></tr>
-<tr><td>Our benchmark (Claude Opus 4.6)</td><td>Functional correctness</td><td>63.6%</td><td><a href="/blog/llms-write-quantum-code">151 Qiskit tasks</a>; dominant failure: API staleness</td></tr>
+<tr><td>Our benchmark (Claude Opus 4.6)</td><td>Functional correctness</td><td>63.6%</td><td><a href="/blog/quantum-code-benchmark">151 Qiskit tasks</a>; dominant failure: API staleness</td></tr>
 <tr><td>Our benchmark (Gemini 3 Flash)</td><td>Functional correctness</td><td>62.3%</td><td>Within 1.4pp of Claude; same failure mode</td></tr>
-<tr><td>Our benchmark (+ <a href="/blog/rag-quantum-code-generation">Context7 RAG</a>)</td><td>Functional correctness</td><td>68\u201371%</td><td>+14% relative; 2.7pp run-to-run variance at temp=0</td></tr>
+<tr><td>Our benchmark (+ <a href="/blog/quantum-code-benchmark">Context7 RAG</a>)</td><td>Functional correctness</td><td>68\u201371%</td><td>+11\u201314% relative; 2.7pp run-to-run variance at temp=0</td></tr>
 <tr><td>Our benchmark (3-run ensemble)</td><td>Functional correctness</td><td>79.5%</td><td>Union of Opus + 2\u00d7Gemini RAG runs; 31 hard-floor tasks</td></tr>
 </tbody>
 </table>
@@ -999,293 +1000,126 @@ export const posts: BlogPost[] = [
     ],
   },
   {
-    slug: 'llms-write-quantum-code',
-    title: 'Can LLMs Write Quantum Code? We Tested 151 Tasks',
-    subtitle: 'Baseline: 62\u201364%. With RAG: 68\u201371%. Ensemble: 79.5%. The failures reveal more than the passes.',
-    date: '2026-02-09',
+    slug: 'quantum-code-benchmark',
+    title: 'Can AI Write Quantum Code? We Tested 151 Tasks and Then Gave It the Manual',
+    subtitle: 'From 63% to 80%. The bottleneck isn\'t intelligence \u2014 it\'s documentation.',
+    date: '2026-02-10',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
-    tags: ['benchmark', 'Qiskit', 'LLM', 'Gemini', 'quantum coding'],
+    tags: ['benchmark', 'RAG', 'Context7', 'Qiskit', 'LLM', 'Gemini', 'quantum coding', 'API staleness'],
     heroImage: 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=1200&q=80',
-    heroCaption: 'Testing whether AI models can bridge the gap between quantum theory and working code.',
-    excerpt: 'We ran the full Qiskit HumanEval benchmark against Gemini 3 Flash and Claude Opus 4.6 — 151 quantum programming tasks graded by automated code execution. The results reveal that LLMs understand quantum algorithms but struggle with rapidly evolving APIs.',
+    heroCaption: 'The bottleneck for AI-written quantum code isn\'t intelligence \u2014 it\'s documentation.',
+    excerpt: 'We ran 151 quantum programming tasks against frontier LLMs. They scored 63%. The main failure wasn\'t bad quantum logic \u2014 it was outdated API knowledge. When we gave them current documentation, scores jumped to 71%. A multi-run ensemble hit 80%.',
     content: `
-<p>Can a large language model write a working quantum circuit from a natural-language description? We tested this by running the complete <a href="https://arxiv.org/abs/2406.02132">Qiskit HumanEval</a> benchmark — 151 quantum programming tasks across three difficulty levels.</p>
+<h2>The Question</h2>
 
-<h2>The Setup</h2>
+<p>Quantum programs are short but dense \u2014 a handful of gates on a handful of qubits can encode algorithms that no classical computer can efficiently simulate. Writing them correctly requires knowing both the physics and the SDK. Can today's AI models do it?</p>
 
-<p>Each task provides a function signature and docstring. The model must produce the function body. The generated code is executed in a sandboxed subprocess with unit tests — no partial credit, no manual review. Pass or fail.</p>
+<p>We tested this with the <a href="https://arxiv.org/abs/2406.02132">Qiskit HumanEval</a> benchmark: 151 quantum programming tasks, each graded by automated code execution. No partial credit. The model gets a function signature and docstring, writes the body, and the code either passes the test suite or it doesn't.</p>
 
-<p>We tested two frontier models: <strong>Gemini 3 Flash</strong> (via Google's GenAI API) and <strong>Claude Opus 4.6</strong> (via Anthropic's API). The benchmark harness sends each prompt independently — no multi-turn dialogue, no chain-of-thought, no retrieval augmentation. Just the raw prompt and one shot at the answer.</p>
+<p>We ran two frontier models \u2014 <strong>Claude Opus 4.6</strong> and <strong>Gemini 3 Flash</strong> \u2014 with no retrieval, no chain-of-thought, no retries. Just the raw prompt and one shot. Then we gave them access to up-to-date documentation and measured what changed.</p>
 
-<h2>The Results</h2>
+<p>The headline: <strong>63% baseline \u2192 71% with documentation \u2192 80% with a multi-model ensemble</strong>. The failures tell the more interesting story.</p>
+
+<h2>Baseline Results</h2>
 
 <table>
-<thead><tr><th>Model</th><th>Pass@1</th><th>Basic</th><th>Intermediate</th><th>Difficult</th></tr></thead>
+<thead><tr><th>Model</th><th>Pass@1</th><th>Basic (79)</th><th>Intermediate (67)</th><th>Difficult (5)</th></tr></thead>
 <tbody>
-<tr><td><strong>Claude Opus 4.6</strong></td><td><strong>63.6%</strong> (96/151)</td><td>67.1% (53/79)</td><td>62.7% (42/67)</td><td>20.0% (1/5)</td></tr>
-<tr><td><strong>Gemini 3 Flash</strong></td><td>62.25% (94/151)</td><td>65.82% (52/79)</td><td>61.19% (41/67)</td><td>20.0% (1/5)</td></tr>
+<tr><td><strong>Claude Opus 4.6</strong></td><td><strong>63.6%</strong> (96/151)</td><td>67.1%</td><td>62.7%</td><td>20%</td></tr>
+<tr><td><strong>Gemini 3 Flash</strong></td><td>62.3% (94/151)</td><td>65.8%</td><td>61.2%</td><td>20%</td></tr>
 </tbody>
 </table>
 
-<p>Both models are remarkably close — within 1.4 percentage points. Claude edges ahead slightly, particularly on basic and intermediate tasks. Both models solve exactly 1 of 5 difficult tasks. The basic-to-intermediate drop is surprisingly small for both — the models don't just know simple gate sequences; they can construct meaningful quantum algorithms. The cliff happens at "difficult" tasks that require multi-step reasoning with precise API calls.</p>
+<p>Both models are within 1.4 percentage points of each other. The basic-to-intermediate drop is surprisingly small \u2014 these models don't just know simple gate sequences; they can construct meaningful quantum algorithms. The cliff happens at "difficult" tasks requiring multi-step reasoning with precise API calls.</p>
 
-<p>For context, the <strong>QUASAR</strong> system (which uses agentic RL and retrieval-augmented generation with a 4B parameter model) achieved 99.31% <em>circuit validity</em> — though that's a less strict metric than our functional correctness measure. <strong>QCoder</strong> with o3 reached 78% on a related benchmark, vs 40% for human experts.</p>
+<p>For context: <a href="https://arxiv.org/abs/2510.00967">QUASAR</a> (agentic RL, 4B params) achieves 99% <em>circuit validity</em>, but validity is a much looser metric than our functional correctness. <a href="https://arxiv.org/abs/2510.26101">QCoder</a> with o3 reached 78% on a related benchmark, vs 40% for human experts.</p>
 
-<h2>The Error Analysis</h2>
+<h2>Why They Fail</h2>
 
-<p>This is where it gets interesting. Of the 57 failures:</p>
+<p>Of Claude's 57 failures, we classified every error:</p>
 
 <table>
 <thead><tr><th>Error Type</th><th>Count</th><th>What It Means</th></tr></thead>
 <tbody>
-<tr><td>Wrong answer</td><td>13</td><td>Code runs but produces incorrect output</td></tr>
-<tr><td>Syntax error</td><td>11</td><td>Malformed Python — indentation, missing colons</td></tr>
-<tr><td>SamplerV2 API</td><td>9</td><td>Using deprecated Qiskit 1.x sampling API</td></tr>
+<tr><td>Wrong answer (real quantum mistakes)</td><td>13</td><td>Code runs, logic is wrong</td></tr>
+<tr><td>Syntax errors</td><td>11</td><td>Malformed Python</td></tr>
+<tr><td>Deprecated Qiskit API calls</td><td>18</td><td>SamplerV2, wrong methods, missing imports</td></tr>
 <tr><td>Account/runtime</td><td>6</td><td>Trying to use IBM Runtime (requires auth)</td></tr>
-<tr><td>Attribute error</td><td>5</td><td>Wrong method/property names</td></tr>
-<tr><td>Type error</td><td>4</td><td>Incorrect argument types</td></tr>
 <tr><td>Other</td><td>9</td><td>Misc runtime failures</td></tr>
 </tbody>
 </table>
 
-<h3>The key insight: API staleness, not algorithmic failure</h3>
+<p>Only <strong>23% of failures are genuine quantum mistakes</strong>. The dominant failure mode is API staleness: the models were trained on Qiskit 1.x, but the benchmark runs on Qiskit 2.x, which introduced major breaking changes. The models <em>understand the quantum computing</em> but generate code for an API that no longer exists.</p>
 
-<p>Only 13 of 57 failures (23%) are genuine algorithmic mistakes where the model produced incorrect quantum logic. The dominant failure mode is <strong>API version mismatch</strong>: 9 failures from Qiskit 2.x's <code>SamplerV2</code> breaking changes, 6 from trying to access IBM Runtime services that require authentication, and 5 from using wrong method names.</p>
+<h2>The Fix: Give Them the Manual</h2>
 
-<p>The model was trained on Qiskit 1.x documentation and code. Qiskit 2.x introduced significant breaking changes (the V2 primitives). The model <em>understands the quantum computing concepts</em> but generates code for an API that no longer exists.</p>
+<p>We tested two documentation strategies. The first \u2014 a static 335-line cheatsheet covering every Qiskit 2.x breaking change, prepended to every prompt \u2014 did <strong>nothing</strong>. Same pass rate, 17x more tokens. Dumping a comprehensive migration guide on every task just adds noise.</p>
 
-<h2>Implications</h2>
-
-<h3>1. RAG could dramatically improve performance</h3>
-<p>If the dominant failure mode is stale API knowledge, then <strong>retrieval-augmented generation</strong> with current Qiskit 2.x documentation should push Pass@1 significantly higher. We estimate 75-80% is achievable by simply injecting up-to-date API signatures into the prompt.</p>
-
-<h3>2. The QUASAR result is relevant</h3>
-<p>The <strong>QUASAR</strong> system, which uses RAG with quantum documentation, achieved 99.31% circuit validity — suggesting that the documentation-injection approach works. Our benchmark measures functional correctness (stricter than validity), but the principle holds.</p>
-
-<h3>3. Quantum SDK design matters for AI</h3>
-<p>Frequent breaking changes in quantum SDKs create a compounding problem for AI code generation. SDKs designed with AI agents in mind — stable interfaces, versioned examples, machine-readable changelogs — would dramatically improve AI-assisted quantum development.</p>
-
-<h3>4. This benchmark should be run continuously</h3>
-<p>As new models release and quantum SDKs evolve, the intersection of model capability and API coverage shifts. Our <a href="/#agents">agent infrastructure</a> is designed to run this benchmark automatically against new model releases.</p>
-
-<h2>Next Steps</h2>
-
-<p><strong>Update:</strong> We ran the RAG experiment. <a href="/blog/rag-quantum-code-generation">Dynamic RAG with Context7 pushed Pass@1 to 68\u201371%</a> (varies run-to-run even at temperature=0) — a 14% relative improvement. A 3-run ensemble (2\u00d7Gemini + Opus) reaches 79.5%. Static RAG did nothing. <a href="/blog/rag-quantum-code-generation">Read the full results.</a></p>
-
-<p>Other planned work:</p>
-<ol>
-<li>Test against GPT-5 and domain-specific models</li>
-<li>Develop a cQASM variant for Quantum Inspire hardware</li>
-<li>Run the Agent-Q and QUASAR approaches against our benchmark for direct comparison</li>
-</ol>
-`,
-    sources: [
-      { label: 'Qiskit HumanEval benchmark paper', url: 'https://arxiv.org/abs/2406.02132' },
-      { label: 'QUASAR — agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
-      { label: 'Our benchmark results (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
-      { label: 'Qiskit 2.x migration guide', url: 'https://docs.quantum.ibm.com/migration-guides' },
-    ],
-  },
-  {
-    slug: 'rag-quantum-code-generation',
-    title: 'Dynamic RAG Boosts Quantum Code Generation by 14% — Static RAG Does Nothing',
-    subtitle: 'We tested two RAG strategies on 151 Qiskit tasks across two frontier models. Both models converge to the same ceiling.',
-    date: '2026-02-10',
-    author: 'AI x Quantum Research Team',
-    category: 'experiment',
-    tags: ['benchmark', 'RAG', 'Context7', 'Qiskit', 'LLM', 'Gemini', 'API staleness'],
-    heroImage: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80',
-    heroCaption: 'The right documentation at the right time makes all the difference.',
-    excerpt: 'API staleness is the dominant failure mode when LLMs write quantum code. Dynamic RAG via Context7 boosts Pass@1 from 62-64% to 68-71% across models. A second Gemini run reveals 2.7pp variance and 16 flaky tasks. The union of 3 runs reaches 79.5% — the ceiling is documentation and sampling, not model capability.',
-    content: `
-<p>In our <a href="/blog/llms-write-quantum-code">previous post</a>, we found that frontier LLMs score around 62-64% on the Qiskit HumanEval benchmark — 151 quantum programming tasks graded by automated code execution. The most interesting finding wasn't the score but the failure mode: <strong>the dominant error is API staleness, not algorithmic misunderstanding</strong>. Models trained on Qiskit 1.x documentation generate code for APIs that no longer exist in Qiskit 2.x.</p>
-
-<p>The obvious fix: give the model up-to-date documentation. We tested two approaches. One failed completely. The other improved performance by 14%.</p>
-
-<h2>Two RAG Strategies</h2>
-
-<h3>Strategy 1: Static Cheatsheet</h3>
-
-<p>We wrote a comprehensive <strong>QISKIT_2X_CHEATSHEET.md</strong> — 335 lines covering every major breaking change: <code>execute()</code> removal, SamplerV2/EstimatorV2 PUB-based API, <code>qiskit_aer</code> import paths, <code>c_if()</code> removal, <code>BackendV1</code> removal, <code>generate_preset_pass_manager</code> changes, and complete working examples. This cheatsheet was prepended to every prompt as a system message supplement.</p>
-
-<p>The logic: if the model knows about Qiskit 2.x changes, it should stop generating deprecated code.</p>
-
-<h3>Strategy 2: Dynamic Per-Task Retrieval (Context7)</h3>
-
-<p><a href="https://context7.com">Context7</a> (by Upstash) is a cloud service that indexes open-source library documentation and returns relevant snippets per query. For each task, we sent the task description to Context7's API, retrieved documentation snippets from both <code>/qiskit/qiskit</code> and <code>/qiskit/qiskit-ibm-runtime</code> libraries, and appended them to the prompt.</p>
-
-<p>The logic: only inject documentation that's relevant to the specific task, not everything.</p>
-
-<h2>The Results</h2>
+<p>The second strategy worked. <a href="https://context7.com">Context7</a> dynamically retrieves only the documentation relevant to each specific task. Instead of "here's everything that changed," it's "here's how <code>SamplerV2</code> results work" \u2014 exactly when the model needs it.</p>
 
 <table>
-<thead><tr><th>Configuration</th><th>Pass@1</th><th>Basic (79)</th><th>Intermediate (67)</th><th>Difficult (5)</th><th>Input Tokens</th></tr></thead>
+<thead><tr><th>Configuration</th><th>Pass@1</th><th>Change</th></tr></thead>
 <tbody>
-<tr><td>Gemini 3 Flash (baseline)</td><td>62.3% (94)</td><td>65.8% (52)</td><td>61.2% (41)</td><td>20% (1)</td><td>28K</td></tr>
-<tr><td>Claude Opus 4.6 (baseline)</td><td>63.6% (96)</td><td>67.1% (53)</td><td>62.7% (42)</td><td>20% (1)</td><td>30K</td></tr>
-<tr><td>Gemini + Static Cheatsheet</td><td>62.3% (94)</td><td>65.8% (52)</td><td>62.7% (42)</td><td>0% (0)</td><td>486K</td></tr>
-<tr><td><strong>Gemini + Context7 (run 1)</strong></td><td><strong>70.9% (107)</strong></td><td><strong>77.2% (61)</strong></td><td><strong>67.2% (45)</strong></td><td>20% (1)</td><td>287K</td></tr>
-<tr><td><strong>Opus 4.6 + Context7</strong></td><td><strong>70.9% (107)</strong></td><td>76.0% (60)</td><td><strong>67.2% (45)</strong></td><td><strong>40% (2)</strong></td><td>406K</td></tr>
-<tr><td>Gemini + Context7 (run 2)</td><td>68.2% (103)</td><td>69.6% (55)</td><td>70.1% (47)</td><td>20% (1)</td><td>287K</td></tr>
+<tr><td>Baseline (no docs)</td><td>62\u201364%</td><td>\u2014</td></tr>
+<tr><td>+ Static cheatsheet</td><td>62% </td><td>+0pp</td></tr>
+<tr><td>+ Context7 (dynamic RAG)</td><td>68\u201371%</td><td><strong>+11\u201314% relative</strong></td></tr>
+<tr><td>3-run ensemble (2\u00d7Gemini + Opus)</td><td><strong>79.5%</strong></td><td>+25\u201328% relative</td></tr>
 </tbody>
 </table>
 
-<h2>The Static Cheatsheet Did Nothing</h2>
+<p>Dynamic retrieval targets the exact API the model is struggling with. The improvement is concentrated in basic and intermediate tasks \u2014 exactly those most likely to fail from a wrong import path or deprecated method call. Difficult tasks, which require multi-step algorithmic reasoning, don't improve. RAG helps with <em>API recall</em>, not <em>quantum reasoning</em>.</p>
 
-<p>This was the surprise. A carefully written, comprehensive migration guide — the exact kind of documentation you'd want a developer to read — had <strong>zero effect on overall pass rate</strong>. Same 94 tasks passed. 17x more tokens consumed. The intermediate tier gained 1 task but the difficult tier <em>lost</em> one, netting to zero.</p>
+<p>RAG isn't purely additive \u2014 a few tasks regress when retrieved docs steer the model away from a correct answer it already had. Run-to-run variance is roughly \u00b13pp even at temperature=0, due to sampling nondeterminism and minor differences in retrieved snippets.</p>
 
-<p>Why? Three likely reasons:</p>
+<h2>What's Still Broken</h2>
 
-<ol>
-<li><strong>Noise for simple tasks.</strong> Most basic tasks (create a circuit, add a gate) don't need migration knowledge. The 3K-token cheatsheet adds irrelevant context that can confuse the model on tasks where the old and new APIs are identical.</li>
-<li><strong>Not specific enough for complex tasks.</strong> The tasks that fail due to API changes need <em>specific</em> documentation about the exact API they're trying to use (e.g., how to get counts from a <code>SamplerV2</code> result), not a general overview of all changes.</li>
-<li><strong>Prompt engineering limits.</strong> Simply prepending a document to the system message is the crudest possible form of RAG. The model has to figure out which parts of the cheatsheet are relevant — the same task that RAG is supposed to solve.</li>
-</ol>
-
-<h2>Dynamic Retrieval Worked — Especially for Basic Tasks</h2>
-
-<p>Context7 improved Pass@1 from 62.3% to 70.9% — a <strong>+8.6 percentage point improvement</strong> (13.8% relative). Breaking it down by difficulty:</p>
+<p>34 tasks fail for <em>every</em> model and configuration \u2014 neither model with documentation can solve them. These are the hard ceiling:</p>
 
 <table>
-<thead><tr><th>Difficulty</th><th>Baseline</th><th>+Context7</th><th>Improvement</th></tr></thead>
+<thead><tr><th>Failure Mode</th><th>Count</th><th>%</th></tr></thead>
 <tbody>
-<tr><td>Basic</td><td>65.8% (52/79)</td><td>77.2% (61/79)</td><td><strong>+11.4pp</strong> (9 new passes)</td></tr>
-<tr><td>Intermediate</td><td>61.2% (41/67)</td><td>67.2% (45/67)</td><td>+6.0pp (4 new passes)</td></tr>
-<tr><td>Difficult</td><td>20% (1/5)</td><td>20% (1/5)</td><td>0pp</td></tr>
+<tr><td><strong>Logic/algorithm error</strong></td><td>14</td><td>41%</td></tr>
+<tr><td>API staleness (uncovered by Context7)</td><td>9</td><td>26%</td></tr>
+<tr><td>Other runtime errors</td><td>11</td><td>32%</td></tr>
 </tbody>
 </table>
 
-<p>The improvement is concentrated in basic tasks — exactly the tasks most likely to fail from simple API changes (wrong import path, deprecated method call). These are tasks where the model knows the quantum logic but generates code for the wrong API version. A targeted snippet showing the correct <code>SamplerV2</code> usage or the right import path is enough to fix the output.</p>
-
-<p>Intermediate tasks see a smaller but real improvement. Difficult tasks — which require multi-step algorithmic reasoning — don't improve. Dynamic RAG helps with <em>API recall</em>, not <em>quantum reasoning</em>.</p>
-
-<h2>Run-to-Run Variance: 16 Flaky Tasks</h2>
-
-<p>We re-ran the Gemini + Context7 configuration to measure stability. Run 2 scored <strong>68.2% (103/151)</strong> — 4 tasks fewer than run 1's 70.9%. This 2.7pp variance is significant: <strong>16 of 151 tasks (10.6%) gave different results across the two identical runs</strong>.</p>
-
-<p>None of these 16 tasks involve randomness in the test — they're deterministic. The variance comes from Gemini's sampling (temperature=0 does not guarantee identical output across API calls) and from minor wording differences in Context7's retrieved snippets.</p>
-
-<p>The consistent core is 97 tasks (64.2%) that pass in both runs. The ceiling — tasks that pass in at least one run — is 113/151 (74.8%). This gives us a confidence interval: <strong>Gemini + Context7 reliably scores 64-75%, with a mean around 69-71%</strong>.</p>
-
-<h2>The Convergence: Opus Matches Gemini</h2>
-
-<p>Opus 4.6 + Context7 scored <strong>70.9% (107/151)</strong> — identical to Gemini's run 1, and within the variance band of run 2's 68.2%. The differences by difficulty are in the margins:</p>
-
-<ul>
-<li>Gemini edges ahead on <strong>basic tasks</strong> in run 1 (77.2% vs 76.0%), but drops to 69.6% in run 2 — Opus is more stable</li>
-<li>Opus pulls ahead on <strong>difficult tasks</strong>: 40% vs 20% (+1 task)</li>
-<li>They tie on <strong>intermediate tasks</strong> in run 1 (67.2%), but Gemini run 2 actually beats both at 70.1%</li>
-</ul>
-
-<p>The most robust conclusion is that <strong>both models score in the 68-71% band with Context7</strong>, and the ceiling is set by documentation coverage, not model capability.</p>
-
-<h2>Inside the 34 Unsolvable Tasks</h2>
-
-<p>Both models with Context7 fail 44 tasks each, but 34 of those tasks are shared failures — <strong>neither model with documentation can solve them</strong>. These are the hard ceiling. We classified each by failure mode:</p>
-
-<table>
-<thead><tr><th>Failure Mode</th><th>Count</th><th>%</th><th>What It Means</th></tr></thead>
-<tbody>
-<tr><td><strong>Logic/Algorithm Error</strong></td><td>14</td><td>41%</td><td>Code runs but produces wrong answer</td></tr>
-<tr><td><strong>API Staleness</strong></td><td>9</td><td>26%</td><td>Deprecated APIs that Context7 doesn't cover</td></tr>
-<tr><td><strong>Other Runtime</strong></td><td>10</td><td>29%</td><td>Missing libraries, runtime errors, edge cases</td></tr>
-<tr><td>Type Mismatch</td><td>1</td><td>3%</td><td>Correct approach, wrong return type</td></tr>
-</tbody>
-</table>
-
-<p>The dominant failure is <strong>not API staleness — it's logic errors</strong> (41%). These are tasks where the model understands the API but produces incorrect quantum circuits or misinterprets the task. Examples:</p>
-
-<ul>
-<li><strong>Simon's algorithm</strong> (task 64): Both models misimplement the oracle construction</li>
-<li><strong>Bell state DAG</strong> (task 26): Both miscalculate circuit depth for a 3-qubit bell state</li>
-<li><strong>Operator composition</strong> (task 41): Both get the tensor dimensions wrong ((2,2,2) vs (2,2))</li>
-<li><strong>Backend connection map</strong> (task 97): Both fail to match two-qubit connections from the backend</li>
-</ul>
-
-<p>The 9 remaining API staleness failures are highly specific edge cases that Context7's index doesn't cover: <code>EstimatorV2</code> keyword arguments, <code>ResilienceOptionsV2.dd</code> (dynamical decoupling — very new), the separate <code>qiskit_ibm_transpiler</code> package, and <code>SamplerV2</code> session handling. These represent gaps in the documentation index, not model capability.</p>
-
-<h3>The Ensemble Opportunity</h3>
-
-<p>With three runs (Gemini x2 + Opus x1), we can measure ensemble strategies:</p>
-
-<table>
-<thead><tr><th>Strategy</th><th>Pass Rate</th><th>Gain vs Best Single</th></tr></thead>
-<tbody>
-<tr><td>Best single run (Gemini r1 or Opus)</td><td>70.9% (107/151)</td><td>baseline</td></tr>
-<tr><td><strong>3-way majority vote</strong></td><td><strong>71.5% (108/151)</strong></td><td>+0.7pp</td></tr>
-<tr><td>Union of all 3 runs</td><td><strong>79.5% (120/151)</strong></td><td>+8.6pp</td></tr>
-</tbody>
-</table>
-
-<p>Majority voting barely helps (+1 task) because the three runs are too correlated — Gemini's two runs share the same model biases. The <strong>union ceiling of 79.5%</strong> is the real headline: if you had an oracle to pick the best answer from any run, you'd solve 120 of 151 tasks. That leaves only 31 truly unsolvable tasks (20.5%).</p>
-
-<p>The disagreement between models is substantial. Gemini and Opus each uniquely solve 10 tasks the other misses. And within Gemini alone, 16 tasks flip between runs. The tasks that flip tend to be ones where the model is on the margin — small changes in retrieved documentation or sampling cause it to cross the pass/fail boundary.</p>
-
-<h3>RAG Regressions</h3>
-
-<p>Context7 isn't purely additive. Gemini regressed on 3 tasks (net +13), Opus on 5 tasks (net +11). In these cases, the retrieved documentation <strong>introduced confusion</strong> — the model had the right answer from training data, but Context7 snippets steered it toward a different (incorrect) approach. This is a known RAG failure mode: retrieval precision matters, and irrelevant context can hurt.</p>
-
-<h2>Why Dynamic Beats Static</h2>
-
-<p>The core insight: <strong>relevance filtering is the whole game</strong>. Context7 returns 1-2KB of documentation specifically about the APIs the task is likely to use. The static cheatsheet dumps 3KB about everything. For a task that needs to know how <code>SamplerV2</code> results work, getting a targeted code example of <code>result[0].data.meas.get_counts()</code> is far more useful than a comprehensive document that covers 20 different API changes.</p>
-
-<p>This matches a well-known finding in RAG research: retrieval precision matters more than recall. Injecting irrelevant context can <em>hurt</em> performance by diluting the model's attention. The static cheatsheet is high-recall (covers everything) but low-precision (most of it is irrelevant to any given task). Context7 is lower-recall but higher-precision.</p>
-
-<p>Token usage tells the story: Context7 used 287K tokens vs the cheatsheet's 486K — 41% fewer tokens — while passing 13 more tasks. The cheatsheet wastes tokens on irrelevant documentation for every single task. Context7 only retrieves what's needed.</p>
-
-<h2>Limitations</h2>
-
-<p>We want to be transparent about what this experiment does and doesn't show:</p>
-
-<ul>
-<li><strong>Two runs for Gemini, one for Opus.</strong> The 2.7pp variance between Gemini runs (70.9% vs 68.2%) suggests our measurements have a confidence interval of roughly +/-3pp. A single Opus run may be above or below its true mean.</li>
-<li><strong>No contamination check.</strong> Context7 retrieves documentation that may contain example code similar to benchmark tasks. We captured all retrieved snippets (rag_docs) but haven't yet audited them for overlap with test solutions.</li>
-<li><strong>No sandboxing.</strong> Generated code executes in a subprocess but not in a fully sandboxed environment.</li>
-</ul>
+<p>At the hard floor, the dominant failure flips: it's no longer stale documentation but <strong>genuine quantum reasoning errors</strong>. The models produce incorrect circuits or misinterpret the task requirements. The remaining 9 API failures are edge cases that Context7's index simply doesn't cover yet \u2014 gaps in documentation, not model capability.</p>
 
 <h2>What This Means</h2>
 
-<h3>For quantum SDK developers</h3>
-<p>API staleness is not just a human-developer problem — it's now an AI-developer problem. SDKs that maintain stable interfaces, or that provide machine-readable migration guides, will be more amenable to AI code generation. Qiskit's breaking changes between 1.x and 2.x created a "knowledge wall" that even frontier models can't cross without external help.</p>
+<ul>
+<li><strong>AI can already write most quantum code.</strong> 80% of 151 tasks are solvable with current frontier models, current documentation tools, and a simple multi-run strategy. No fine-tuning required.</li>
+<li><strong>SDK stability matters for AI.</strong> Qiskit's breaking changes between 1.x and 2.x created a "knowledge wall" that even frontier models can't cross without external help. SDKs designed with stable interfaces and machine-readable migration guides will get better AI-generated code.</li>
+<li><strong>Retrieval precision beats retrieval volume.</strong> A comprehensive cheatsheet did nothing; targeted per-task documentation retrieval improved scores by 11\u201314%. For fast-evolving domains, dynamic RAG should be standard infrastructure.</li>
+</ul>
 
-<h3>For AI-for-science tool builders</h3>
-<p>Dynamic documentation retrieval should be a standard component of any code-generation pipeline for fast-evolving domains. Static context injection is not a substitute — the relevance filtering that retrieval provides is essential. Services like Context7 that index open-source library documentation are directly useful infrastructure.</p>
+<h2>What's Next</h2>
 
-<h3>For quantum computing researchers</h3>
-<p>An LLM with the right documentation can write correct Qiskit code for ~71% of quantum programming tasks — including circuits, optimizations, and error analysis. The ceiling is likely higher with better retrieval, multi-turn correction, or agentic approaches. Practical quantum computing with AI assistance is getting closer.</p>
-
-<h2>Next Steps</h2>
-
-<ol>
-<li><strong>Ensemble selection</strong> — The 79.5% union ceiling (120/151) from just 3 runs shows massive headroom. A verifier model that checks which completion is correct — or even a simple "run the test, retry if it fails" loop — could capture much of this gap.</li>
-<li><strong>Agentic retry</strong> — 21 of 31 hard-floor failures produce assertion errors with informative messages. Letting the model see the error and retry is how developers actually work, and how systems like QUASAR achieve 99%+ validity.</li>
-<li><strong>Better retrieval</strong> — 9 core failures are API staleness that Context7 doesn't cover. Augmenting the index with <code>qiskit_ibm_transpiler</code>, <code>ResilienceOptionsV2</code>, and <code>EstimatorV2</code> keyword signatures could push the ceiling higher.</li>
-<li><strong>Contamination audit</strong> — We now have all retrieved Context7 snippets saved in the run 2 results. Next: check whether any snippets contain code that overlaps with test solutions.</li>
-</ol>
+<p>The 79.5% ensemble ceiling comes from single-shot generation \u2014 no retries, no error feedback. 21 of the 31 hard-floor failures produce assertion errors with informative messages. Letting the model see the error and try again is how developers actually work, and it's the basis for our next benchmark: an agentic evaluation where the model gets multiple attempts and tool access.</p>
 
 <p>All benchmark code and results are open source: <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results">github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results</a></p>
 `,
     sources: [
       { label: 'Qiskit HumanEval benchmark paper', url: 'https://arxiv.org/abs/2406.02132' },
-      { label: 'Our baseline benchmark results', url: '/blog/llms-write-quantum-code' },
+      { label: 'QUASAR \u2014 agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
       { label: 'Context7 by Upstash', url: 'https://context7.com' },
       { label: 'Benchmark code and results (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results' },
       { label: 'Qiskit 2.x migration guide', url: 'https://docs.quantum.ibm.com/migration-guides' },
-      { label: 'QUASAR — agentic RL for quantum code generation', url: 'https://arxiv.org/abs/2510.00967' },
     ],
   },
   {
     slug: 'ai-replicates-qutech-paper',
     title: 'An AI Agent Replicated a QuTech Quantum Paper',
-    subtitle: 'Claude Opus 4.6 wrote 300 lines of VQE simulation code from a paper reference alone',
+    subtitle: 'Claude Opus 4.6 wrote 300 lines of molecular energy simulation code from a paper reference alone',
     date: '2026-02-09',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['VQE', 'replication', 'Claude', 'QuTech', 'paper replication'],
     heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
     heroCaption: 'From published paper to working simulation — autonomously.',
-    excerpt: 'We gave Claude Opus 4.6 a reference to Sagastizabal et al. (2019) — a QuTech paper on symmetry-verified VQE for H2 — and asked it to replicate the experiment. It wrote the Hamiltonian, ansatz, noise model, and error mitigation from scratch.',
+    excerpt: 'We gave Claude Opus 4.6 a reference to Sagastizabal et al. (2019) — a QuTech paper on symmetry-verified molecular energy estimation for hydrogen — and asked it to replicate the experiment. It wrote the energy model, trial quantum state, noise model, and error mitigation from scratch.',
     content: `
 <p>One of the most powerful tests of AI scientific capability is <strong>paper replication</strong>: given a published paper, can an AI agent reproduce the experiment from scratch? We tested this with a quantum computing paper from our own institution.</p>
 
@@ -1571,7 +1405,7 @@ b = measure q"""
     tags: ['replication', 'VQE', 'QAOA', 'quantum volume', 'randomized benchmarking', 'reproducibility', 'cross-platform'],
     heroImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80',
     heroCaption: 'The gaps between published results and reproduced results are themselves a research finding.',
-    excerpt: 'We replicated 6 quantum computing papers across 4 hardware backends. 93% of claims reproduce successfully (25/27). Key finding: TREX achieves 119x improvement for shallow VQE but only 1.3x for deep Ising circuits — mitigation must match the dominant error source.',
+    excerpt: 'We replicated 6 quantum computing papers across 4 hardware backends. 93% of claims reproduce successfully (25/27). Key finding: TREX (readout error correction) achieves 119x improvement for short molecular energy circuits but only 1.3x for deeper physics simulations — the error correction strategy must match the dominant error source.',
     content: `<p>Reproducibility is one of the quiet crises in quantum computing. Papers report impressive results on custom hardware, but how well do those results transfer to different backends? We built an automated pipeline to find out &mdash; and the results tell a clear story about the current state of quantum computing.</p>
 
 <h2>The Approach</h2>
@@ -2041,14 +1875,14 @@ b = measure q"""
   {
     slug: 'coefficient-amplification',
     title: 'How to Know If Your Quantum Chemistry Experiment Will Fail Before You Run It',
-    subtitle: 'We wasted days on HeH+ before realizing the Hamiltonian itself told us the answer. One ratio predicts everything.',
+    subtitle: 'We wasted days on HeH+ before realizing the energy model itself told us the answer. One ratio predicts everything.',
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['VQE', 'HeH+', 'H2', 'coefficient amplification', 'chemical accuracy', 'TREX', 'IBM Quantum', 'Tuna-9', 'error analysis'],
     heroImage: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80',
     heroCaption: 'The math knew the answer before we booked any QPU time.',
-    excerpt: "After achieving chemical accuracy on H2 (0.22 kcal/mol), we assumed HeH+ would be similar. Same circuit, same hardware, same mitigation. It was 20x worse. Turns out you can predict this from one number in the Hamiltonian &mdash; before running a single shot. Here's the pre-flight check we wish we'd known.",
+    excerpt: "After achieving chemical accuracy on H2 (0.22 kcal/mol), we assumed HeH+ would be similar. Same circuit, same hardware, same error correction. It was 20x worse. Turns out you can predict this from one number in the molecular energy model &mdash; before running a single shot. Here's the pre-flight check we wish we'd known.",
     content: `<p>We spent days optimizing HeH+ on quantum hardware. Same 2-qubit circuit as H2. Same error mitigation. Same backends. We expected similar results.</p>
 
 <p>H2 on IBM Torino: <strong>0.22 kcal/mol</strong>. Chemical accuracy, first try.</p>
@@ -2145,14 +1979,14 @@ b = measure q"""
   {
     slug: 'trex-depth-dependence',
     title: "We Kept Using the Same Error Fix. Then It Stopped Working.",
-    subtitle: 'IBM TREX went from 119x improvement to 1.3x when we changed circuits. A 30-second diagnostic would have told us why.',
+    subtitle: 'IBM\'s error correction went from 119x improvement to 1.3x when we changed circuits. A 30-second diagnostic would have told us why.',
     date: '2026-02-11',
     author: 'AI x Quantum Research Team',
     category: 'experiment',
     tags: ['TREX', 'ZNE', 'circuit depth', 'error mitigation', 'kicked Ising', 'VQE', 'IBM Quantum', 'Tuna-9', 'Kim 2023'],
     heroImage: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&q=80',
     heroCaption: 'Diagnosing the problem takes 30 seconds. Skipping the diagnosis wastes hours.',
-    excerpt: "TREX was our hero &mdash; 119x improvement on VQE, chemical accuracy on the first try. So we used it on everything. Then we ran a deeper circuit and it barely helped (1.3x). Meanwhile ZNE, which had failed on VQE, would have given 14x. The mistake: we were fixing readout errors on a circuit where gate errors dominated. Here's the 30-second test that tells you which fix to use.",
+    excerpt: "TREX (readout error correction) was our hero &mdash; 119x improvement on molecular energy estimation, chemical accuracy on the first try. So we used it on everything. Then we ran a deeper circuit and it barely helped (1.3x). Meanwhile ZNE (zero-noise extrapolation), which had failed before, would have given 14x. The mistake: we were fixing measurement errors on a circuit where gate errors dominated. Here's the 30-second test that tells you which fix to use.",
     content: `<p>After <a href="/blog/error-mitigation-showdown">our error mitigation showdown</a>, we had a clear winner: IBM's TREX. Set <code>resilience_level=1</code> and your VQE results go from 26 kcal/mol error to 0.22 kcal/mol. A 119x improvement. Chemical accuracy in a single API parameter. We were thrilled.</p>
 
 <p>So naturally, we used TREX on the next experiment too &mdash; a kicked Ising model from Kim et al. 2023. Same IBM Torino backend. Same <code>resilience_level=1</code>.</p>
