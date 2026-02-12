@@ -49,8 +49,8 @@ npm run dev
 # Deploy
 vercel --prod
 
-# 2. Python environment (Python 3.12 required — 3.14 breaks libqasm)
-python3.12 -m venv .venv
+# 2. Python environment (Python 3.9-3.13 supported — 3.14 breaks qxelarator)
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r mcp-servers/requirements.txt
 
@@ -138,7 +138,7 @@ All result files in `experiments/results/` follow this schema:
 - **AI**: Claude, Gemini, GPT (via respective APIs)
 - **Web**: Next.js 14, Tailwind, Three.js
 - **Hardware**: Quantum Inspire Tuna-9 (9q), IBM Marrakesh (156q), IBM Torino (133q), IBM Fez (156q)
-- **Python**: 3.12 (3.14 breaks libqasm)
+- **Python**: 3.9-3.13 (3.14 breaks qxelarator)
 
 ## Links
 

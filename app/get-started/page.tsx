@@ -208,7 +208,7 @@ export default function GetStartedPage() {
               <div className="space-y-2">
                 {[
                   { step: '1', text: 'Claude reads this page and clones the repo' },
-                  { step: '2', text: 'Sets up a Python 3.12 virtual environment and installs dependencies' },
+                  { step: '2', text: 'Sets up a Python virtual environment and installs dependencies (Python 3.9-3.13)' },
                   { step: '3', text: 'MCP servers start automatically — 3 quantum backends become available as tools' },
                   { step: '4', text: 'You ask for an experiment in natural language. Claude writes the circuit, runs it, and analyzes results.' },
                 ].map(item => (
@@ -384,11 +384,11 @@ claude`}</CodeBlock>
           </StepCard>
 
           <StepCard step={3} title="Clone the repo and install Python environment">
-            <p>The MCP servers and all experiment code live in the repository. Python 3.12 is required (3.14 breaks libqasm, a dependency of the QI emulator).</p>
+            <p>The MCP servers and all experiment code live in the repository. Python 3.9&ndash;3.13 are supported (3.14 breaks qxelarator, the local emulator).</p>
             <CodeBlock title="terminal">{`git clone https://github.com/JDerekLomas/quantuminspire.git
 cd quantuminspire
 
-python3.12 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r mcp-servers/requirements.txt`}</CodeBlock>
             <p className="text-gray-400 text-xs">
