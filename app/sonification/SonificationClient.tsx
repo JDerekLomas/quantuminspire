@@ -346,7 +346,7 @@ export default function SonificationClient({ experiments, sweepEmulator }: Props
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Nav section="listen" />
+      <Nav section="sonification" />
 
       <main className="max-w-6xl mx-auto px-6 pt-24 pb-20">
         {/* Hero */}
