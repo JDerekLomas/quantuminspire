@@ -33,15 +33,13 @@ function Hero() {
           Read the paper (PDF)
         </a>
       </div>
-      <p className="text-sm font-mono text-gray-400 tracking-wide text-center mb-12">
-        <span className="text-gray-400">h</span>
-        <span className="gradient-text font-bold">AI</span>
-        <span className="text-gray-400">qu</span>
-        <span className="hidden sm:inline text-gray-500 mx-2">&mdash;</span>
+      <p className="text-sm font-mono text-gray-400 text-center mb-12">
+        <span className="text-gray-400">h</span><span className="gradient-text font-bold">AI</span><span className="text-gray-400">qu</span>
+        <span className="hidden sm:inline text-gray-500 mx-1">&mdash;</span>
         <br className="sm:hidden" />
-        <span className="text-gray-400">AI as the interface between </span>
+        AI as the interface between{' '}
         <span className="text-gray-300">humans</span>
-        <span className="text-gray-400"> &amp; </span>
+        {' '}&amp;{' '}
         <span className="text-gray-300">quantum</span>
       </p>
       <div className="text-gray-400 animate-bounce text-sm font-mono" aria-hidden="true">
@@ -262,6 +260,12 @@ function ScienceSection() {
             >
               See the replications &rarr;
             </Link>
+            <Link
+              href="/research#benchmark"
+              className="text-sm font-mono font-bold text-[#ff8c42] hover:text-white transition-colors"
+            >
+              Benchmark review &rarr;
+            </Link>
             <a
               href="/haiqu-paper.pdf"
               target="_blank"
@@ -271,6 +275,9 @@ function ScienceSection() {
               Download the paper (PDF) &rarr;
             </a>
           </div>
+          <p className="mt-4 text-xs text-gray-500 max-w-lg">
+            We also benchmarked 12 frontier models on 151 Qiskit coding tasks. General-purpose LLMs beat every fine-tuned quantum specialist — and RAG pushes accuracy to 70.9%.
+          </p>
         </ScrollReveal>
       </div>
     </section>
