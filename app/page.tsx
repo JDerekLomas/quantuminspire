@@ -21,7 +21,7 @@ function Hero() {
         <span className="text-white">?</span>
       </h1>
       <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed text-center mb-6">
-        AI agents run real quantum experiments on real hardware, through natural language.
+        Using natural language, you can ask AI agents to run real quantum experiments on real hardware: it&apos;s the era of Quantum Vibecoding
       </p>
       <div className="flex items-center gap-4 mb-8">
         <Link
@@ -71,8 +71,9 @@ function VibecodingSection() {
           <p className="text-gray-400 max-w-xl mb-4">
             Can AI actually support quantum computing work? We tested this by connecting
             Claude Code to real quantum hardware through MCP servers. Describe the experiment
-            in natural language. The agent derives Hamiltonians, writes circuits, submits to
-            real chips, and analyzes the results.
+            in natural language. The agent derives{' '}
+            <Link href="/hamiltonians" className="text-[#00d4ff] hover:underline">Hamiltonians</Link> (energy models for molecules),
+            writes circuits, submits to real chips, and analyzes the results.
           </p>
           <p className="text-sm text-gray-500 font-mono mb-12">
             445 sessions. 349 prompts. 3 quantum chips. 0 lines of quantum code by hand.
@@ -86,7 +87,7 @@ function VibecodingSection() {
               &gt; Replicate Sagastizabal 2019 on IBM Torino. Try every error mitigation strategy and rank them.
             </p>
             <p className="text-sm text-[#00ff88] leading-relaxed pl-4 border-l border-[#00ff88]/30">
-              TREX achieves 0.22 kcal/mol — 119x improvement over raw. Adding more mitigation makes it worse.
+              TREX (readout error correction) achieves 0.22 kcal/mol — 119x improvement over raw. Adding more mitigation makes it worse.
             </p>
           </div>
         </ScrollReveal>
@@ -147,7 +148,10 @@ function BenchmarkSection() {
       <p className="text-sm text-gray-400 leading-relaxed mb-6">
         Can LLMs write quantum code? We tested 12 models on{' '}
         <span className="text-gray-300">Qiskit HumanEval</span> — 151 hand-verified quantum
-        programming tasks (circuit construction, transpilation, error mitigation, VQE).
+        programming tasks (circuit construction,{' '}
+        <Link href="/learn" className="text-gray-300 hover:underline">transpilation</Link>,{' '}
+        <Link href="/error-mitigation" className="text-gray-300 hover:underline">error mitigation</Link>,{' '}
+        <Link href="/hamiltonians" className="text-gray-300 hover:underline">VQE</Link>).
       </p>
       <div className="space-y-3">
         {rows.map((r) => (
@@ -268,12 +272,12 @@ function EducationSection() {
   ]
 
   const visualizations = [
-    { title: 'Bloch Sphere', href: '/bloch-sphere', desc: '3D single-qubit state space' },
-    { title: 'State Vector', href: '/state-vector', desc: 'Multi-qubit amplitudes & phases' },
-    { title: 'Q-Sphere', href: '/qsphere', desc: 'States mapped to a sphere' },
-    { title: 'Entanglement', href: '/entanglement', desc: 'Bell states & correlations' },
-    { title: 'Measurement', href: '/measurement', desc: 'Born rule in real time' },
-    { title: 'Interference', href: '/interference', desc: 'N-slit quantum patterns' },
+    { title: 'Bloch Sphere', href: '/bloch-sphere', desc: 'Visualize a single qubit in 3D' },
+    { title: 'State Vector', href: '/state-vector', desc: 'See all possible outcomes at once' },
+    { title: 'Q-Sphere', href: '/qsphere', desc: 'Multi-qubit states on a sphere' },
+    { title: 'Entanglement', href: '/entanglement', desc: 'Correlated qubits that act as one' },
+    { title: 'Measurement', href: '/measurement', desc: 'Watch probability become certainty' },
+    { title: 'Interference', href: '/interference', desc: 'Waves that cancel and reinforce' },
   ]
 
   return (
