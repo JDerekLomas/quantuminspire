@@ -2,6 +2,11 @@ import Link from 'next/link'
 import Nav from '@/components/Nav'
 import { CATEGORIES, GLOSSARY } from '@/content/learn/glossary'
 
+export const metadata = {
+  title: 'Quantum Computing Glossary',
+  description: '40+ quantum computing terms with plain-English definitions, links to interactive tools, and connections to real experiment data.',
+}
+
 function CategoryBadge({ category }: { category: string }) {
   const cat = CATEGORIES.find(c => c.id === category)
   if (!cat) return null

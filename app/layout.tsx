@@ -42,6 +42,35 @@ export default function RootLayout({
         />
       </head>
       <body className="noise-overlay quantum-grid min-h-screen">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'WebSite',
+                '@id': 'https://haiqu.org/#website',
+                url: 'https://haiqu.org',
+                name: 'haiqu',
+                description: 'AI as the interface between humans and quantum computers. Open research from TU Delft.',
+                publisher: { '@id': 'https://haiqu.org/#organization' },
+              },
+              {
+                '@type': 'ResearchOrganization',
+                '@id': 'https://haiqu.org/#organization',
+                name: 'haiqu',
+                url: 'https://haiqu.org',
+                description: 'AI x Quantum research initiative from TU Delft / QuTech investigating how AI agents can accelerate quantum computing.',
+                parentOrganization: {
+                  '@type': 'EducationalOrganization',
+                  name: 'TU Delft',
+                  url: 'https://www.tudelft.nl',
+                },
+                sameAs: ['https://github.com/JDerekLomas/quantuminspire'],
+              },
+            ],
+          }) }}
+        />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-[#0a0a1a] focus:text-[#00d4ff] focus:border focus:border-[#00d4ff]/40 focus:rounded-lg focus:text-sm focus:font-mono"
