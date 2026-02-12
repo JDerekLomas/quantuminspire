@@ -192,22 +192,114 @@ export default function GetStartedPage() {
         </div>
       </section>
 
-      {/* Try it in 2 minutes */}
+      {/* Paste this link */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-[#00ff88]/5 border border-[#00ff88]/20 rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-white mb-2">Try it in 2 minutes</h2>
+          <div className="bg-[#00ff88]/5 border border-[#00ff88]/20 rounded-lg p-6 sm:p-8">
+            <h2 className="text-2xl font-bold text-white mb-3">Get started</h2>
             <p className="text-gray-300 text-sm mb-4">
-              Already have Claude Code? Paste this into your terminal:
+              Paste this link into{' '}
+              <a href="https://docs.anthropic.com/en/docs/claude-code/overview" className="text-[#00d4ff] hover:underline" target="_blank" rel="noopener noreferrer">Claude Code</a>
+              {' '}and ask it to set you up:
             </p>
-            <CodeBlock title="terminal">{`git clone https://github.com/JDerekLomas/quantuminspire.git && cd quantuminspire && python3.12 -m venv .venv && source .venv/bin/activate && pip install -r mcp-servers/requirements.txt && claude`}</CodeBlock>
-            <p className="text-gray-300 text-sm mt-4 mb-2">Then ask Claude:</p>
-            <CodeBlock title="in Claude Code">{`> Run a Bell state on the local emulator and show me the results`}</CodeBlock>
-            <p className="text-gray-400 text-xs mt-3">
-              No accounts needed. The MCP servers start automatically and the local quantum emulator
-              runs circuits instantly. Claude generates cQASM 3.0, runs it, and analyzes the results.
-              Add real hardware accounts later (see full setup below).
+            <CodeBlock title="paste into Claude Code">{`Set me up for quantum vibecoding: https://haiqu.org/get-started`}</CodeBlock>
+
+            <div className="mt-6 mb-2">
+              <p className="text-sm font-bold text-white mb-3">What happens:</p>
+              <div className="space-y-2">
+                {[
+                  { step: '1', text: 'Claude reads this page and clones the repo' },
+                  { step: '2', text: 'Sets up a Python 3.12 virtual environment and installs dependencies' },
+                  { step: '3', text: 'MCP servers start automatically — 3 quantum backends become available as tools' },
+                  { step: '4', text: 'You ask for an experiment in natural language. Claude writes the circuit, runs it, and analyzes results.' },
+                ].map(item => (
+                  <div key={item.step} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/30 flex items-center justify-center text-[#00ff88] font-mono text-[10px] font-bold mt-0.5">
+                      {item.step}
+                    </span>
+                    <p className="text-gray-300 text-sm">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-gray-400 text-xs mt-4">
+              No quantum hardware accounts needed — the local emulator runs circuits instantly.
+              Add real hardware later when you&apos;re ready.
+              Don&apos;t have Claude Code?{' '}
+              <a href="https://docs.anthropic.com/en/docs/claude-code/overview" className="text-[#00d4ff] hover:underline" target="_blank" rel="noopener noreferrer">
+                Install it first
+              </a>{' '}
+              (requires Node.js 18+ and an Anthropic API key), or see the{' '}
+              <a href="#manual-setup" className="text-[#00d4ff] hover:underline">manual setup</a> below.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* What you get — tools */}
+      <section className="border-b border-white/5 px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-white mb-2">What you can do</h2>
+          <p className="text-gray-400 text-sm mb-8">
+            Once set up, you have 12 quantum tools available through natural language.
+            Describe what you want — Claude picks the right tool.
+          </p>
+
+          <div className="grid sm:grid-cols-3 gap-4 mb-8">
+            <div className="bg-white/[0.02] border border-[#00d4ff]/20 rounded-lg p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#00d4ff]" />
+                <h3 className="text-sm font-bold text-white">Quantum Inspire</h3>
+              </div>
+              <p className="text-xs text-gray-400 mb-3">Tuna-9 — 9 superconducting qubits. cQASM 3.0 circuits. Unlimited free jobs.</p>
+              <div className="space-y-1.5 text-xs font-mono">
+                <div><span className="text-[#00d4ff]">qi_run_local</span> <span className="text-gray-500">— emulator, instant, no auth</span></div>
+                <div><span className="text-[#00d4ff]">qi_submit_circuit</span> <span className="text-gray-500">— real hardware</span></div>
+                <div><span className="text-[#00d4ff]">qi_check_job</span> <span className="text-gray-500">— poll status</span></div>
+                <div><span className="text-[#00d4ff]">qi_get_results</span> <span className="text-gray-500">— measurement counts</span></div>
+                <div><span className="text-[#00d4ff]">qi_list_backends</span> <span className="text-gray-500">— available backends</span></div>
+              </div>
+            </div>
+
+            <div className="bg-white/[0.02] border border-[#8b5cf6]/20 rounded-lg p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#8b5cf6]" />
+                <h3 className="text-sm font-bold text-white">IBM Quantum</h3>
+              </div>
+              <p className="text-xs text-gray-400 mb-3">Torino — 133 qubits. OpenQASM 2.0. 10 min/month free QPU time.</p>
+              <div className="space-y-1.5 text-xs font-mono">
+                <div><span className="text-[#8b5cf6]">ibm_submit_circuit</span> <span className="text-gray-500">— auto-picks best backend</span></div>
+                <div><span className="text-[#8b5cf6]">ibm_check_job</span> <span className="text-gray-500">— poll status</span></div>
+                <div><span className="text-[#8b5cf6]">ibm_get_results</span> <span className="text-gray-500">— measurement counts</span></div>
+                <div><span className="text-[#8b5cf6]">ibm_list_backends</span> <span className="text-gray-500">— available backends</span></div>
+              </div>
+            </div>
+
+            <div className="bg-white/[0.02] border border-[#f59e0b]/20 rounded-lg p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#f59e0b]" />
+                <h3 className="text-sm font-bold text-white">Quantum Random</h3>
+              </div>
+              <p className="text-xs text-gray-400 mb-3">True quantum randomness. ANU vacuum fluctuations, Tuna-9 fallback, local emulator.</p>
+              <div className="space-y-1.5 text-xs font-mono">
+                <div><span className="text-[#f59e0b]">quantum_random_int</span> <span className="text-gray-500">— uint8 or uint16</span></div>
+                <div><span className="text-[#f59e0b]">quantum_coin_flip</span> <span className="text-gray-500">— heads/tails</span></div>
+                <div><span className="text-[#f59e0b]">quantum_dice_roll</span> <span className="text-gray-500">— N-sided dice</span></div>
+                <div><span className="text-[#f59e0b]">quantum_random_hex</span> <span className="text-gray-500">— tokens, UUIDs</span></div>
+                <div><span className="text-[#f59e0b]">quantum_random_float</span> <span className="text-gray-500">— 0 to 1</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
+            <p className="text-sm text-gray-300 font-bold mb-2">Example prompts:</p>
+            <div className="space-y-2 text-sm font-mono text-gray-400">
+              <p>&gt; Run a Bell state on the local emulator and show me the results</p>
+              <p>&gt; Submit a 3-qubit GHZ state to Tuna-9 and analyze the fidelity</p>
+              <p>&gt; Run H2 VQE at bond distance 0.735 angstroms on IBM Torino</p>
+              <p>&gt; Generate 100 quantum random numbers and test them for uniformity</p>
+            </div>
           </div>
         </div>
       </section>
@@ -236,9 +328,12 @@ export default function GetStartedPage() {
       </section>
 
       {/* Setup Steps */}
-      <section className="border-b border-white/5 px-6 py-12">
+      <section id="manual-setup" className="border-b border-white/5 px-6 py-12">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-8">Setup</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">Manual setup</h2>
+          <p className="text-gray-400 text-sm mb-8">
+            If you prefer to set things up yourself, or don&apos;t have Claude Code yet.
+          </p>
 
           <StepCard step={1} title="Install Claude Code">
             <p>
@@ -337,82 +432,12 @@ pip install -r mcp-servers/requirements.txt`}</CodeBlock>
             </p>
           </StepCard>
 
-          <StepCard step={5} title="Run your first quantum circuit">
-            <p>Start Claude Code in your project directory and ask it to run a circuit:</p>
-            <CodeBlock title="in Claude Code">{`> Run a Bell state on the local emulator and show me the results
-
-> Submit a 3-qubit GHZ state to Tuna-9 and analyze the fidelity
-
-> Run H2 VQE at bond distance 0.735 angstroms on the emulator`}</CodeBlock>
-            <p>
-              The agent will generate cQASM 3.0 or OpenQASM 2.0, call the appropriate MCP tool,
-              wait for results, and analyze the measurement histogram. No SDK code needed on your end.
-            </p>
-            <div className="bg-[#00ff88]/5 border border-[#00ff88]/20 rounded-lg p-4 mt-3">
-              <p className="text-[#00ff88] text-sm font-bold mb-1">Start with the emulator</p>
-              <p className="text-gray-300 text-xs">
-                The <code>qi_run_local</code> tool runs circuits instantly with no account, no queue, no cost.
-                Verify your circuit works here before spending hardware time.
-              </p>
-            </div>
+          <StepCard step={5} title="Run your first circuit">
+            <p>Start Claude Code in the project directory and ask it to run a circuit:</p>
+            <CodeBlock title="terminal">{`cd quantuminspire
+claude`}</CodeBlock>
+            <p className="mt-2">Then try any of the example prompts above.</p>
           </StepCard>
-        </div>
-      </section>
-
-      {/* What you get */}
-      <section className="border-b border-white/5 px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-4">Available tools</h2>
-          <p className="text-gray-400 text-sm mb-6">Once configured, Claude Code has these quantum tools:</p>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm font-mono">
-              <thead>
-                <tr className="text-left text-gray-500 border-b border-white/5">
-                  <th className="py-2 pr-4">Tool</th>
-                  <th className="py-2 pr-4">Backend</th>
-                  <th className="py-2">What it does</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-300">
-                <tr className="border-b border-white/[0.02]">
-                  <td className="py-2 pr-4 text-[#00d4ff]">qi_run_local</td>
-                  <td className="py-2 pr-4">Emulator</td>
-                  <td className="py-2">Run cQASM 3.0 locally, instant results, no auth</td>
-                </tr>
-                <tr className="border-b border-white/[0.02]">
-                  <td className="py-2 pr-4 text-[#00d4ff]">qi_submit_circuit</td>
-                  <td className="py-2 pr-4">Tuna-9</td>
-                  <td className="py-2">Submit cQASM 3.0 to real hardware, returns job ID</td>
-                </tr>
-                <tr className="border-b border-white/[0.02]">
-                  <td className="py-2 pr-4 text-[#00d4ff]">qi_check_job / qi_get_results</td>
-                  <td className="py-2 pr-4">Tuna-9</td>
-                  <td className="py-2">Poll status, retrieve measurement counts</td>
-                </tr>
-                <tr className="border-b border-white/[0.02]">
-                  <td className="py-2 pr-4 text-[#8b5cf6]">ibm_submit_circuit</td>
-                  <td className="py-2 pr-4">IBM Torino</td>
-                  <td className="py-2">Submit OpenQASM 2.0, auto-selects least busy backend</td>
-                </tr>
-                <tr className="border-b border-white/[0.02]">
-                  <td className="py-2 pr-4 text-[#8b5cf6]">ibm_check_job / ibm_get_results</td>
-                  <td className="py-2 pr-4">IBM Torino</td>
-                  <td className="py-2">Poll status, retrieve measurement counts</td>
-                </tr>
-                <tr className="border-b border-white/[0.02]">
-                  <td className="py-2 pr-4 text-[#f59e0b]">quantum_random_int</td>
-                  <td className="py-2 pr-4">ANU/Tuna-9</td>
-                  <td className="py-2">True quantum random numbers (cascading fallback)</td>
-                </tr>
-                <tr>
-                  <td className="py-2 pr-4 text-[#f59e0b]">quantum_coin_flip / quantum_dice_roll</td>
-                  <td className="py-2 pr-4">ANU/Tuna-9</td>
-                  <td className="py-2">Quantum coin flips and dice rolls</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 
