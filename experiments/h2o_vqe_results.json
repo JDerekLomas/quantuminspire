@@ -1,0 +1,886 @@
+{
+  "molecule": "H2O",
+  "geometry": {
+    "O-H_distance_angstrom": 0.96,
+    "H-O-H_angle_degrees": 104.5,
+    "atoms": [
+      {
+        "element": "O",
+        "coords": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "element": "H",
+        "coords": [
+          0.7590619907940895,
+          0.5877285888330713,
+          0
+        ]
+      },
+      {
+        "element": "H",
+        "coords": [
+          -0.7590619907940895,
+          0.5877285888330713,
+          0
+        ]
+      }
+    ]
+  },
+  "basis": "sto-3g",
+  "active_space": "CASCI(4,4)",
+  "n_qubits": 8,
+  "n_params": 16,
+  "n_layers": 2,
+  "n_pauli_terms": 105,
+  "n_measurement_circuits": 45,
+  "optimal_params": [
+    -7.973256250032584e-06,
+    -7.300105418980368e-06,
+    -4.054605284387431e-06,
+    -8.40036100081771e-06,
+    -5.217035752658997e-06,
+    -7.572223944784598e-06,
+    6.375194625105778e-07,
+    -0.20199128598283755,
+    -4.978632244645453e-06,
+    -4.997829281179162e-06,
+    -4.240521228141447e-06,
+    -4.973734276226543e-06,
+    -6.0127646936292675e-06,
+    -3.982993594780629e-06,
+    -3.1415977791116356,
+    -0.20199289165151824
+  ],
+  "energies": {
+    "E_HF": -74.96331909832679,
+    "E_FCI": -75.01315478659306,
+    "E_CASCI": -74.97080971949634,
+    "E_VQE_active_space": -74.96331909807373,
+    "E_FCI_active_space": -74.97080971949623,
+    "VQE_error_mHa": 7.490621422505228,
+    "CASCI_correlation_pct": 15.030636538076617
+  },
+  "pauli_terms": {
+    "IIIIIIII": -73.11908854541164,
+    "ZIIIIIII": 0.2280926274941898,
+    "YZZZYIII": -0.04269783560178203,
+    "XZZZXIII": -0.04269783560178203,
+    "IZIIIIII": 0.22809262749418968,
+    "IYZZZYII": -0.04269783560178204,
+    "IXZZZXII": -0.04269783560178204,
+    "IIZIIIII": 0.17477693101632436,
+    "IIIZIIII": 0.17477693101632427,
+    "IIIIZIII": -0.16293568595009594,
+    "IIIIIZII": -0.16293568595009597,
+    "IIIIIIZI": -0.1855690485937123,
+    "IIIIIIIZ": -0.1855690485937122,
+    "ZZIIIIII": 0.1953710022330498,
+    "YIZZYIII": -0.030408193922482014,
+    "XIZZXIII": -0.030408193922482014,
+    "YXXYIIII": 0.013950722055006916,
+    "YYXXIIII": -0.013950722055006916,
+    "XXYYIIII": -0.013950722055006916,
+    "XYYXIIII": 0.013950722055006916,
+    "ZYZZZYII": -0.030408193922482014,
+    "ZXZZZXII": -0.030408193922482014,
+    "YXIIXYII": 0.01728230687992298,
+    "YYIIXXII": -0.01728230687992298,
+    "XXIIYYII": -0.01728230687992298,
+    "XYIIYXII": 0.01728230687992298,
+    "YXIIIIXY": 0.017249840663549395,
+    "YYIIIIXX": -0.017249840663549395,
+    "XXIIIIYY": -0.017249840663549395,
+    "XYIIIIYX": 0.017249840663549395,
+    "ZIZIIIII": 0.16814365185248265,
+    "YZIZYIII": -0.029607777933024947,
+    "XZIZXIII": -0.029607777933024947,
+    "ZIIZIIII": 0.18209437390748956,
+    "YZZIYIII": -0.029200499265262525,
+    "XZZIXIII": -0.029200499265262525,
+    "YZYYZYII": -0.0004072786677624192,
+    "YZYXZXII": -0.0004072786677624192,
+    "XZXYZYII": -0.0004072786677624192,
+    "XZXXZXII": -0.0004072786677624192,
+    "ZIIIZIII": 0.11996699555659582,
+    "ZIIIIZII": 0.13724930243651878,
+    "YZZZYZII": -0.011175541986472338,
+    "XZZZXZII": -0.011175541986472338,
+    "YZZZZXXY": -0.014490356034545352,
+    "YZZZZYXX": 0.014490356034545352,
+    "XZZZZXYY": 0.014490356034545352,
+    "XZZZZYYX": -0.014490356034545352,
+    "ZIIIIIZI": 0.13470104204965383,
+    "YZZZYIZI": -0.024916579799304592,
+    "XZZZXIZI": -0.024916579799304592,
+    "ZIIIIIIZ": 0.15195088271320323,
+    "YZZZYIIZ": -0.01042622376475924,
+    "XZZZXIIZ": -0.01042622376475924,
+    "IZZIIIII": 0.18209437390748956,
+    "IYIZZYII": -0.029200499265262525,
+    "IXIZZXII": -0.029200499265262525,
+    "IYXXYIII": -0.0004072786677624192,
+    "IYYXXIII": 0.0004072786677624192,
+    "IXXYYIII": 0.0004072786677624192,
+    "IXYYXIII": -0.0004072786677624192,
+    "IZIZIIII": 0.16814365185248265,
+    "IYZIZYII": -0.029607777933024947,
+    "IXZIZXII": -0.029607777933024947,
+    "IZIIZIII": 0.13724930243651878,
+    "IYZZIYII": -0.011175541986472338,
+    "IXZZIXII": -0.011175541986472338,
+    "IYZZXIXY": 0.014490356034545352,
+    "IYZZYIYY": 0.014490356034545352,
+    "IXZZXIXX": 0.014490356034545352,
+    "IXZZYIYX": 0.014490356034545352,
+    "IZIIIZII": 0.11996699555659582,
+    "IZIIIIZI": 0.15195088271320323,
+    "IYZZZYZI": -0.01042622376475924,
+    "IXZZZXZI": -0.01042622376475924,
+    "IZIIIIIZ": 0.13470104204965383,
+    "IYZZZYIZ": -0.024916579799304592,
+    "IXZZZXIZ": -0.024916579799304592,
+    "IIZZIIII": 0.22003977334376135,
+    "IIYXXYII": 0.00963084705328582,
+    "IIYYXXII": -0.00963084705328582,
+    "IIXXYYII": -0.00963084705328582,
+    "IIXYYXII": 0.00963084705328582,
+    "IIYXIIXY": 0.006091685943720961,
+    "IIYYIIXX": -0.006091685943720961,
+    "IIXXIIYY": -0.006091685943720961,
+    "IIXYIIYX": 0.006091685943720961,
+    "IIZIZIII": 0.13755819852767573,
+    "IIZIIZII": 0.14718904558096155,
+    "IIZIIIZI": 0.15009947838655052,
+    "IIZIIIIZ": 0.15619116433027147,
+    "IIIZZIII": 0.14718904558096155,
+    "IIIZIZII": 0.13755819852767573,
+    "IIIZIIZI": 0.15619116433027147,
+    "IIIZIIIZ": 0.15009947838655052,
+    "IIIIZZII": 0.1492304286565125,
+    "IIIIYXXY": 0.02882284720262335,
+    "IIIIYYXX": -0.02882284720262335,
+    "IIIIXXYY": -0.02882284720262335,
+    "IIIIXYYX": 0.02882284720262335,
+    "IIIIZIZI": 0.11269343383585251,
+    "IIIIZIIZ": 0.14151628103847586,
+    "IIIIIZZI": 0.14151628103847586,
+    "IIIIIZIZ": 0.11269343383585251,
+    "IIIIIIZZ": 0.15479356685447704
+  },
+  "ideal_expectations": {
+    "ZIIIIIII": -0.9999999998248614,
+    "IZIIIIII": -0.9999999998614502,
+    "IIZZIIII": 0.9999999998478545,
+    "ZZIIIIII": 0.9999999998601068,
+    "IIIIIIZI": 0.9999999999484714,
+    "IIIIIIIZ": 0.9999999999558201,
+    "ZIIZIIII": 0.9999999998398816,
+    "IZZIIIII": 0.9999999998431034,
+    "IIZIIIII": -0.99999999983715,
+    "IIIZIIII": -0.9999999998820654,
+    "ZIZIIIII": 0.999999999980418,
+    "IZIZIIII": 0.9999999999793844,
+    "IIIIIZII": 0.9999999999261201,
+    "IIIIZIII": 0.9999999998918282,
+    "IIZIIIIZ": -0.9999999998177571,
+    "IIIZIIZI": -0.9999999998803021,
+    "IIIIIIZZ": 0.9999999999290785,
+    "ZIIIIIIZ": -0.9999999998080271,
+    "IZIIIIZI": -0.9999999998596868,
+    "IIZIIIZI": -0.9999999998886783,
+    "IIIZIIIZ": -0.999999999926245,
+    "IIIIZZII": 0.9999999998856953,
+    "IIZIIZII": -0.9999999998310173,
+    "IIIZZIII": -0.999999999866379,
+    "IIIIZIIZ": 0.9999999998724353,
+    "IIIIIZZI": 0.9999999999243567,
+    "IIZIZIII": -0.9999999999453215,
+    "IIIZIZII": -0.999999999955945,
+    "ZIIIIZII": -0.999999999821949,
+    "IZIIZIII": -0.9999999998457636,
+    "ZIIIIIZI": -0.9999999998742446,
+    "IZIIIIIZ": -0.9999999999056297,
+    "ZIIIZIII": -0.9999999999280477,
+    "IZIIIZII": -0.9999999999353297,
+    "IIIIZIZI": 0.9999999999433564,
+    "IIIIIZIZ": 0.9999999999702996,
+    "IYZZZYII": 3.038532417994294e-33,
+    "IXZZZXII": 2.1309915844366596e-17,
+    "YZZZYIII": -5.180808590899838e-28,
+    "XZZZXIII": -1.2502027262801529e-11,
+    "YIZZYIII": 5.180808593233122e-28,
+    "XIZZXIII": 1.2502040714052693e-11,
+    "ZYZZZYII": -6.119996819440746e-33,
+    "ZXZZZXII": -1.3172704798752078e-17,
+    "YZIZYIII": 2.126297074142266e-27,
+    "XZIZXIII": -1.250167453316692e-11,
+    "IYZIZYII": 6.205966579177498e-33,
+    "IXZIZXII": 1.164759092518641e-16,
+    "YZZIYIII": 4.5618609314833054e-28,
+    "XZZIXIII": 1.2502036521348811e-11,
+    "IYIZZYII": -6.120008574283361e-33,
+    "IXIZZXII": -3.4481801229212675e-17,
+    "IIIIYXXY": 2.9935190880718654e-11,
+    "IIIIYYXX": 2.993519088160774e-11,
+    "IIIIXXYY": 2.9935190881876965e-11,
+    "IIIIXYYX": 2.993519088222777e-11,
+    "YZZZYIZI": -5.180808592290251e-28,
+    "XZZZXIZI": -1.2502027262549224e-11,
+    "IYZZZYIZ": 3.038532418775327e-33,
+    "IXZZZXIZ": 2.1309915842910654e-17,
+    "YXIIXYII": 3.3792390107329054e-17,
+    "YYIIXXII": -1.2742639289704571e-16,
+    "XXIIYYII": -1.274256433161896e-16,
+    "XYIIYXII": 1.7677650541196242e-17,
+    "YXIIIIXY": -4.698758341324983e-28,
+    "YYIIIIXX": 1.0550889712000231e-16,
+    "XXIIIIYY": 1.0550979211119013e-16,
+    "XYIIIIYX": 4.823852916790894e-28,
+    "YZZZZXXY": 3.3957694836305777e-28,
+    "YZZZZYXX": 3.395759640283874e-28,
+    "XZZZZXYY": -5.377543574691822e-17,
+    "XZZZZYYX": -5.37754259095762e-17,
+    "IYZZXIXY": 3.003766147630769e-32,
+    "IYZZYIYY": -1.8695370993604748e-32,
+    "IXZZXIXX": -7.876611564251808e-17,
+    "IXZZYIYX": 7.876680766043222e-17,
+    "YXXYIIII": -6.012766283250699e-06,
+    "YYXXIIII": -6.012766283406389e-06,
+    "XXYYIIII": -6.012764693359712e-06,
+    "XYYXIIII": -6.0127646933443926e-06,
+    "YZZZYZII": -4.15802633567763e-28,
+    "XZZZXZII": -1.2502001674723993e-11,
+    "IYZZIYII": 3.5102171392961546e-33,
+    "IXZZIXII": 3.448150178451628e-17,
+    "YZZZYIIZ": -5.180808593148674e-28,
+    "XZZZXIIZ": -1.250202726335386e-11,
+    "IYZZZYZI": 3.0385469995444182e-33,
+    "IXZZZXZI": 2.130972409247004e-17,
+    "IIYXXYII": 2.1192374748434644e-11,
+    "IIYYXXII": -2.1192374749599666e-11,
+    "IIXXYYII": -2.1192349090468823e-11,
+    "IIXYYXII": 2.1192349090664487e-11,
+    "IIYXIIXY": 7.814932848417628e-23,
+    "IIYYIIXX": 7.224135776249605e-22,
+    "IIXXIIYY": 6.344028670564226e-22,
+    "IIXYIIYX": 9.723629422213354e-29,
+    "YZYYZYII": 1.5820993512446087e-11,
+    "YZYXZXII": 1.5820993512322334e-11,
+    "XZXYZYII": -1.5820988310449846e-11,
+    "XZXXZXII": -1.5820988310326098e-11,
+    "IYXXYIII": 1.6599619550279052e-11,
+    "IYYXXIII": -1.659960043131757e-11,
+    "IXXYYIII": 1.6599635075554663e-11,
+    "IXYYXIII": -1.65996159560981e-11
+  },
+  "measurement_groups": {
+    "Z": [
+      {
+        "term": "IIIIIIII",
+        "coeff": -73.11908854541164
+      },
+      {
+        "term": "ZIIIIIII",
+        "coeff": 0.2280926274941898
+      },
+      {
+        "term": "IZIIIIII",
+        "coeff": 0.22809262749418968
+      },
+      {
+        "term": "IIZIIIII",
+        "coeff": 0.17477693101632436
+      },
+      {
+        "term": "IIIZIIII",
+        "coeff": 0.17477693101632427
+      },
+      {
+        "term": "IIIIZIII",
+        "coeff": -0.16293568595009594
+      },
+      {
+        "term": "IIIIIZII",
+        "coeff": -0.16293568595009597
+      },
+      {
+        "term": "IIIIIIZI",
+        "coeff": -0.1855690485937123
+      },
+      {
+        "term": "IIIIIIIZ",
+        "coeff": -0.1855690485937122
+      },
+      {
+        "term": "ZZIIIIII",
+        "coeff": 0.1953710022330498
+      },
+      {
+        "term": "ZIZIIIII",
+        "coeff": 0.16814365185248265
+      },
+      {
+        "term": "ZIIZIIII",
+        "coeff": 0.18209437390748956
+      },
+      {
+        "term": "ZIIIZIII",
+        "coeff": 0.11996699555659582
+      },
+      {
+        "term": "ZIIIIZII",
+        "coeff": 0.13724930243651878
+      },
+      {
+        "term": "ZIIIIIZI",
+        "coeff": 0.13470104204965383
+      },
+      {
+        "term": "ZIIIIIIZ",
+        "coeff": 0.15195088271320323
+      },
+      {
+        "term": "IZZIIIII",
+        "coeff": 0.18209437390748956
+      },
+      {
+        "term": "IZIZIIII",
+        "coeff": 0.16814365185248265
+      },
+      {
+        "term": "IZIIZIII",
+        "coeff": 0.13724930243651878
+      },
+      {
+        "term": "IZIIIZII",
+        "coeff": 0.11996699555659582
+      },
+      {
+        "term": "IZIIIIZI",
+        "coeff": 0.15195088271320323
+      },
+      {
+        "term": "IZIIIIIZ",
+        "coeff": 0.13470104204965383
+      },
+      {
+        "term": "IIZZIIII",
+        "coeff": 0.22003977334376135
+      },
+      {
+        "term": "IIZIZIII",
+        "coeff": 0.13755819852767573
+      },
+      {
+        "term": "IIZIIZII",
+        "coeff": 0.14718904558096155
+      },
+      {
+        "term": "IIZIIIZI",
+        "coeff": 0.15009947838655052
+      },
+      {
+        "term": "IIZIIIIZ",
+        "coeff": 0.15619116433027147
+      },
+      {
+        "term": "IIIZZIII",
+        "coeff": 0.14718904558096155
+      },
+      {
+        "term": "IIIZIZII",
+        "coeff": 0.13755819852767573
+      },
+      {
+        "term": "IIIZIIZI",
+        "coeff": 0.15619116433027147
+      },
+      {
+        "term": "IIIZIIIZ",
+        "coeff": 0.15009947838655052
+      },
+      {
+        "term": "IIIIZZII",
+        "coeff": 0.1492304286565125
+      },
+      {
+        "term": "IIIIZIZI",
+        "coeff": 0.11269343383585251
+      },
+      {
+        "term": "IIIIZIIZ",
+        "coeff": 0.14151628103847586
+      },
+      {
+        "term": "IIIIIZZI",
+        "coeff": 0.14151628103847586
+      },
+      {
+        "term": "IIIIIZIZ",
+        "coeff": 0.11269343383585251
+      },
+      {
+        "term": "IIIIIIZZ",
+        "coeff": 0.15479356685447704
+      }
+    ],
+    "q0Y_q4Y": [
+      {
+        "term": "YZZZYIII",
+        "coeff": -0.04269783560178203
+      },
+      {
+        "term": "YIZZYIII",
+        "coeff": -0.030408193922482014
+      },
+      {
+        "term": "YZIZYIII",
+        "coeff": -0.029607777933024947
+      },
+      {
+        "term": "YZZIYIII",
+        "coeff": -0.029200499265262525
+      },
+      {
+        "term": "YZZZYZII",
+        "coeff": -0.011175541986472338
+      },
+      {
+        "term": "YZZZYIZI",
+        "coeff": -0.024916579799304592
+      },
+      {
+        "term": "YZZZYIIZ",
+        "coeff": -0.01042622376475924
+      }
+    ],
+    "q0X_q4X": [
+      {
+        "term": "XZZZXIII",
+        "coeff": -0.04269783560178203
+      },
+      {
+        "term": "XIZZXIII",
+        "coeff": -0.030408193922482014
+      },
+      {
+        "term": "XZIZXIII",
+        "coeff": -0.029607777933024947
+      },
+      {
+        "term": "XZZIXIII",
+        "coeff": -0.029200499265262525
+      },
+      {
+        "term": "XZZZXZII",
+        "coeff": -0.011175541986472338
+      },
+      {
+        "term": "XZZZXIZI",
+        "coeff": -0.024916579799304592
+      },
+      {
+        "term": "XZZZXIIZ",
+        "coeff": -0.01042622376475924
+      }
+    ],
+    "q1Y_q5Y": [
+      {
+        "term": "IYZZZYII",
+        "coeff": -0.04269783560178204
+      },
+      {
+        "term": "ZYZZZYII",
+        "coeff": -0.030408193922482014
+      },
+      {
+        "term": "IYIZZYII",
+        "coeff": -0.029200499265262525
+      },
+      {
+        "term": "IYZIZYII",
+        "coeff": -0.029607777933024947
+      },
+      {
+        "term": "IYZZIYII",
+        "coeff": -0.011175541986472338
+      },
+      {
+        "term": "IYZZZYZI",
+        "coeff": -0.01042622376475924
+      },
+      {
+        "term": "IYZZZYIZ",
+        "coeff": -0.024916579799304592
+      }
+    ],
+    "q1X_q5X": [
+      {
+        "term": "IXZZZXII",
+        "coeff": -0.04269783560178204
+      },
+      {
+        "term": "ZXZZZXII",
+        "coeff": -0.030408193922482014
+      },
+      {
+        "term": "IXIZZXII",
+        "coeff": -0.029200499265262525
+      },
+      {
+        "term": "IXZIZXII",
+        "coeff": -0.029607777933024947
+      },
+      {
+        "term": "IXZZIXII",
+        "coeff": -0.011175541986472338
+      },
+      {
+        "term": "IXZZZXZI",
+        "coeff": -0.01042622376475924
+      },
+      {
+        "term": "IXZZZXIZ",
+        "coeff": -0.024916579799304592
+      }
+    ],
+    "q0Y_q1X_q2X_q3Y": [
+      {
+        "term": "YXXYIIII",
+        "coeff": 0.013950722055006916
+      }
+    ],
+    "q0Y_q1Y_q2X_q3X": [
+      {
+        "term": "YYXXIIII",
+        "coeff": -0.013950722055006916
+      }
+    ],
+    "q0X_q1X_q2Y_q3Y": [
+      {
+        "term": "XXYYIIII",
+        "coeff": -0.013950722055006916
+      }
+    ],
+    "q0X_q1Y_q2Y_q3X": [
+      {
+        "term": "XYYXIIII",
+        "coeff": 0.013950722055006916
+      }
+    ],
+    "q0Y_q1X_q4X_q5Y": [
+      {
+        "term": "YXIIXYII",
+        "coeff": 0.01728230687992298
+      }
+    ],
+    "q0Y_q1Y_q4X_q5X": [
+      {
+        "term": "YYIIXXII",
+        "coeff": -0.01728230687992298
+      }
+    ],
+    "q0X_q1X_q4Y_q5Y": [
+      {
+        "term": "XXIIYYII",
+        "coeff": -0.01728230687992298
+      }
+    ],
+    "q0X_q1Y_q4Y_q5X": [
+      {
+        "term": "XYIIYXII",
+        "coeff": 0.01728230687992298
+      }
+    ],
+    "q0Y_q1X_q6X_q7Y": [
+      {
+        "term": "YXIIIIXY",
+        "coeff": 0.017249840663549395
+      }
+    ],
+    "q0Y_q1Y_q6X_q7X": [
+      {
+        "term": "YYIIIIXX",
+        "coeff": -0.017249840663549395
+      }
+    ],
+    "q0X_q1X_q6Y_q7Y": [
+      {
+        "term": "XXIIIIYY",
+        "coeff": -0.017249840663549395
+      }
+    ],
+    "q0X_q1Y_q6Y_q7X": [
+      {
+        "term": "XYIIIIYX",
+        "coeff": 0.017249840663549395
+      }
+    ],
+    "q0Y_q2Y_q3Y_q5Y": [
+      {
+        "term": "YZYYZYII",
+        "coeff": -0.0004072786677624192
+      }
+    ],
+    "q0Y_q2Y_q3X_q5X": [
+      {
+        "term": "YZYXZXII",
+        "coeff": -0.0004072786677624192
+      }
+    ],
+    "q0X_q2X_q3Y_q5Y": [
+      {
+        "term": "XZXYZYII",
+        "coeff": -0.0004072786677624192
+      }
+    ],
+    "q0X_q2X_q3X_q5X": [
+      {
+        "term": "XZXXZXII",
+        "coeff": -0.0004072786677624192
+      }
+    ],
+    "q0Y_q5X_q6X_q7Y": [
+      {
+        "term": "YZZZZXXY",
+        "coeff": -0.014490356034545352
+      }
+    ],
+    "q0Y_q5Y_q6X_q7X": [
+      {
+        "term": "YZZZZYXX",
+        "coeff": 0.014490356034545352
+      }
+    ],
+    "q0X_q5X_q6Y_q7Y": [
+      {
+        "term": "XZZZZXYY",
+        "coeff": 0.014490356034545352
+      }
+    ],
+    "q0X_q5Y_q6Y_q7X": [
+      {
+        "term": "XZZZZYYX",
+        "coeff": -0.014490356034545352
+      }
+    ],
+    "q1Y_q2X_q3X_q4Y": [
+      {
+        "term": "IYXXYIII",
+        "coeff": -0.0004072786677624192
+      }
+    ],
+    "q1Y_q2Y_q3X_q4X": [
+      {
+        "term": "IYYXXIII",
+        "coeff": 0.0004072786677624192
+      }
+    ],
+    "q1X_q2X_q3Y_q4Y": [
+      {
+        "term": "IXXYYIII",
+        "coeff": 0.0004072786677624192
+      }
+    ],
+    "q1X_q2Y_q3Y_q4X": [
+      {
+        "term": "IXYYXIII",
+        "coeff": -0.0004072786677624192
+      }
+    ],
+    "q1Y_q4X_q6X_q7Y": [
+      {
+        "term": "IYZZXIXY",
+        "coeff": 0.014490356034545352
+      }
+    ],
+    "q1Y_q4Y_q6Y_q7Y": [
+      {
+        "term": "IYZZYIYY",
+        "coeff": 0.014490356034545352
+      }
+    ],
+    "q1X_q4X_q6X_q7X": [
+      {
+        "term": "IXZZXIXX",
+        "coeff": 0.014490356034545352
+      }
+    ],
+    "q1X_q4Y_q6Y_q7X": [
+      {
+        "term": "IXZZYIYX",
+        "coeff": 0.014490356034545352
+      }
+    ],
+    "q2Y_q3X_q4X_q5Y": [
+      {
+        "term": "IIYXXYII",
+        "coeff": 0.00963084705328582
+      }
+    ],
+    "q2Y_q3Y_q4X_q5X": [
+      {
+        "term": "IIYYXXII",
+        "coeff": -0.00963084705328582
+      }
+    ],
+    "q2X_q3X_q4Y_q5Y": [
+      {
+        "term": "IIXXYYII",
+        "coeff": -0.00963084705328582
+      }
+    ],
+    "q2X_q3Y_q4Y_q5X": [
+      {
+        "term": "IIXYYXII",
+        "coeff": 0.00963084705328582
+      }
+    ],
+    "q2Y_q3X_q6X_q7Y": [
+      {
+        "term": "IIYXIIXY",
+        "coeff": 0.006091685943720961
+      }
+    ],
+    "q2Y_q3Y_q6X_q7X": [
+      {
+        "term": "IIYYIIXX",
+        "coeff": -0.006091685943720961
+      }
+    ],
+    "q2X_q3X_q6Y_q7Y": [
+      {
+        "term": "IIXXIIYY",
+        "coeff": -0.006091685943720961
+      }
+    ],
+    "q2X_q3Y_q6Y_q7X": [
+      {
+        "term": "IIXYIIYX",
+        "coeff": 0.006091685943720961
+      }
+    ],
+    "q4Y_q5X_q6X_q7Y": [
+      {
+        "term": "IIIIYXXY",
+        "coeff": 0.02882284720262335
+      }
+    ],
+    "q4Y_q5Y_q6X_q7X": [
+      {
+        "term": "IIIIYYXX",
+        "coeff": -0.02882284720262335
+      }
+    ],
+    "q4X_q5X_q6Y_q7Y": [
+      {
+        "term": "IIIIXXYY",
+        "coeff": -0.02882284720262335
+      }
+    ],
+    "q4X_q5Y_q6Y_q7X": [
+      {
+        "term": "IIIIXYYX",
+        "coeff": 0.02882284720262335
+      }
+    ]
+  },
+  "circuits_openqasm": {
+    "Z": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q4Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[4];\nh q[4];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q4X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[4];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1Y_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[1];\nh q[1];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1X_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[1];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q1X_q2X_q3Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nh q[1];\nh q[2];\nsdg q[3];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q1Y_q2X_q3X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[1];\nh q[1];\nh q[2];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q1X_q2Y_q3Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[1];\nsdg q[2];\nh q[2];\nsdg q[3];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q1Y_q2Y_q3X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nsdg q[1];\nh q[1];\nsdg q[2];\nh q[2];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q1X_q4X_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nh q[1];\nh q[4];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q1Y_q4X_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[1];\nh q[1];\nh q[4];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q1X_q4Y_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[1];\nsdg q[4];\nh q[4];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q1Y_q4Y_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nsdg q[1];\nh q[1];\nsdg q[4];\nh q[4];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q1X_q6X_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nh q[1];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q1Y_q6X_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[1];\nh q[1];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q1X_q6Y_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[1];\nsdg q[6];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q1Y_q6Y_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nsdg q[1];\nh q[1];\nsdg q[6];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q2Y_q3Y_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[2];\nh q[2];\nsdg q[3];\nh q[3];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q2Y_q3X_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[2];\nh q[2];\nh q[3];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q2X_q3Y_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[2];\nsdg q[3];\nh q[3];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q2X_q3X_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[2];\nh q[3];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q5X_q6X_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nh q[5];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0Y_q5Y_q6X_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[5];\nh q[5];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q5X_q6Y_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nh q[5];\nsdg q[6];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q0X_q5Y_q6Y_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[0];\nsdg q[5];\nh q[5];\nsdg q[6];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1Y_q2X_q3X_q4Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[1];\nh q[1];\nh q[2];\nh q[3];\nsdg q[4];\nh q[4];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1Y_q2Y_q3X_q4X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[1];\nh q[1];\nsdg q[2];\nh q[2];\nh q[3];\nh q[4];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1X_q2X_q3Y_q4Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[1];\nh q[2];\nsdg q[3];\nh q[3];\nsdg q[4];\nh q[4];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1X_q2Y_q3Y_q4X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[1];\nsdg q[2];\nh q[2];\nsdg q[3];\nh q[3];\nh q[4];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1Y_q4X_q6X_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[1];\nh q[1];\nh q[4];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1Y_q4Y_q6Y_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[1];\nh q[1];\nsdg q[4];\nh q[4];\nsdg q[6];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1X_q4X_q6X_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[1];\nh q[4];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q1X_q4Y_q6Y_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[1];\nsdg q[4];\nh q[4];\nsdg q[6];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2Y_q3X_q4X_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[2];\nh q[2];\nh q[3];\nh q[4];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2Y_q3Y_q4X_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[2];\nh q[2];\nsdg q[3];\nh q[3];\nh q[4];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2X_q3X_q4Y_q5Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[2];\nh q[3];\nsdg q[4];\nh q[4];\nsdg q[5];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2X_q3Y_q4Y_q5X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[2];\nsdg q[3];\nh q[3];\nsdg q[4];\nh q[4];\nh q[5];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2Y_q3X_q6X_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[2];\nh q[2];\nh q[3];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2Y_q3Y_q6X_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[2];\nh q[2];\nsdg q[3];\nh q[3];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2X_q3X_q6Y_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[2];\nh q[3];\nsdg q[6];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q2X_q3Y_q6Y_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[2];\nsdg q[3];\nh q[3];\nsdg q[6];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q4Y_q5X_q6X_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[4];\nh q[4];\nh q[5];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q4Y_q5Y_q6X_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nsdg q[4];\nh q[4];\nsdg q[5];\nh q[5];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q4X_q5X_q6Y_q7Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[4];\nh q[5];\nsdg q[6];\nh q[6];\nsdg q[7];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n",
+    "q4X_q5Y_q6Y_q7X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[8];\ncreg c[8];\n\n// Hartree-Fock state\nx q[4];\nx q[5];\nx q[6];\nx q[7];\n\n// Layer 1: Ry rotations\nry(-0.000008) q[0];\nry(-0.000007) q[1];\nry(-0.000004) q[2];\nry(-0.000008) q[3];\nry(-0.000005) q[4];\nry(-0.000008) q[5];\nry(0.000001) q[6];\nry(-0.201991) q[7];\n\n// Layer 1: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Layer 2: Ry rotations\nry(-0.000005) q[0];\nry(-0.000005) q[1];\nry(-0.000004) q[2];\nry(-0.000005) q[3];\nry(-0.000006) q[4];\nry(-0.000004) q[5];\nry(-3.141598) q[6];\nry(-0.201993) q[7];\n\n// Layer 2: CNOT chain\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\ncx q[3], q[4];\ncx q[4], q[5];\ncx q[5], q[6];\ncx q[6], q[7];\n\n// Measurement basis rotation\nh q[4];\nsdg q[5];\nh q[5];\nsdg q[6];\nh q[6];\nh q[7];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\nmeasure q[4] -> c[4];\nmeasure q[5] -> c[5];\nmeasure q[6] -> c[6];\nmeasure q[7] -> c[7];\n"
+  },
+  "circuits_cqasm": {
+    "Z": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nb = measure q\n",
+    "q0Y_q4Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[4]\nH q[4]\n\nb = measure q\n",
+    "q0X_q4X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[4]\n\nb = measure q\n",
+    "q1Y_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[1]\nH q[1]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q1X_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[1]\nH q[5]\n\nb = measure q\n",
+    "q0Y_q1X_q2X_q3Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nH q[1]\nH q[2]\nSdag q[3]\nH q[3]\n\nb = measure q\n",
+    "q0Y_q1Y_q2X_q3X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[1]\nH q[1]\nH q[2]\nH q[3]\n\nb = measure q\n",
+    "q0X_q1X_q2Y_q3Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[1]\nSdag q[2]\nH q[2]\nSdag q[3]\nH q[3]\n\nb = measure q\n",
+    "q0X_q1Y_q2Y_q3X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nSdag q[1]\nH q[1]\nSdag q[2]\nH q[2]\nH q[3]\n\nb = measure q\n",
+    "q0Y_q1X_q4X_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nH q[1]\nH q[4]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q0Y_q1Y_q4X_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[1]\nH q[1]\nH q[4]\nH q[5]\n\nb = measure q\n",
+    "q0X_q1X_q4Y_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[1]\nSdag q[4]\nH q[4]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q0X_q1Y_q4Y_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nSdag q[1]\nH q[1]\nSdag q[4]\nH q[4]\nH q[5]\n\nb = measure q\n",
+    "q0Y_q1X_q6X_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nH q[1]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q0Y_q1Y_q6X_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[1]\nH q[1]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q0X_q1X_q6Y_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[1]\nSdag q[6]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q0X_q1Y_q6Y_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nSdag q[1]\nH q[1]\nSdag q[6]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q0Y_q2Y_q3Y_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[2]\nH q[2]\nSdag q[3]\nH q[3]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q0Y_q2Y_q3X_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[2]\nH q[2]\nH q[3]\nH q[5]\n\nb = measure q\n",
+    "q0X_q2X_q3Y_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[2]\nSdag q[3]\nH q[3]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q0X_q2X_q3X_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[2]\nH q[3]\nH q[5]\n\nb = measure q\n",
+    "q0Y_q5X_q6X_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nH q[5]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q0Y_q5Y_q6X_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[0]\nH q[0]\nSdag q[5]\nH q[5]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q0X_q5X_q6Y_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nH q[5]\nSdag q[6]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q0X_q5Y_q6Y_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[0]\nSdag q[5]\nH q[5]\nSdag q[6]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q1Y_q2X_q3X_q4Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[1]\nH q[1]\nH q[2]\nH q[3]\nSdag q[4]\nH q[4]\n\nb = measure q\n",
+    "q1Y_q2Y_q3X_q4X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[1]\nH q[1]\nSdag q[2]\nH q[2]\nH q[3]\nH q[4]\n\nb = measure q\n",
+    "q1X_q2X_q3Y_q4Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[1]\nH q[2]\nSdag q[3]\nH q[3]\nSdag q[4]\nH q[4]\n\nb = measure q\n",
+    "q1X_q2Y_q3Y_q4X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[1]\nSdag q[2]\nH q[2]\nSdag q[3]\nH q[3]\nH q[4]\n\nb = measure q\n",
+    "q1Y_q4X_q6X_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[1]\nH q[1]\nH q[4]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q1Y_q4Y_q6Y_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[1]\nH q[1]\nSdag q[4]\nH q[4]\nSdag q[6]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q1X_q4X_q6X_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[1]\nH q[4]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q1X_q4Y_q6Y_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[1]\nSdag q[4]\nH q[4]\nSdag q[6]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q2Y_q3X_q4X_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[2]\nH q[2]\nH q[3]\nH q[4]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q2Y_q3Y_q4X_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[2]\nH q[2]\nSdag q[3]\nH q[3]\nH q[4]\nH q[5]\n\nb = measure q\n",
+    "q2X_q3X_q4Y_q5Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[2]\nH q[3]\nSdag q[4]\nH q[4]\nSdag q[5]\nH q[5]\n\nb = measure q\n",
+    "q2X_q3Y_q4Y_q5X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[2]\nSdag q[3]\nH q[3]\nSdag q[4]\nH q[4]\nH q[5]\n\nb = measure q\n",
+    "q2Y_q3X_q6X_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[2]\nH q[2]\nH q[3]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q2Y_q3Y_q6X_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[2]\nH q[2]\nSdag q[3]\nH q[3]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q2X_q3X_q6Y_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[2]\nH q[3]\nSdag q[6]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q2X_q3Y_q6Y_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[2]\nSdag q[3]\nH q[3]\nSdag q[6]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q4Y_q5X_q6X_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[4]\nH q[4]\nH q[5]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q4Y_q5Y_q6X_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nSdag q[4]\nH q[4]\nSdag q[5]\nH q[5]\nH q[6]\nH q[7]\n\nb = measure q\n",
+    "q4X_q5X_q6Y_q7Y": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[4]\nH q[5]\nSdag q[6]\nH q[6]\nSdag q[7]\nH q[7]\n\nb = measure q\n",
+    "q4X_q5Y_q6Y_q7X": "version 3.0\n\nqubit[8] q\nbit[8] b\n\nX q[4]\nX q[5]\nX q[6]\nX q[7]\n\nRy(-0.000008) q[0]\nRy(-0.000007) q[1]\nRy(-0.000004) q[2]\nRy(-0.000008) q[3]\nRy(-0.000005) q[4]\nRy(-0.000008) q[5]\nRy(0.000001) q[6]\nRy(-0.201991) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nRy(-0.000005) q[0]\nRy(-0.000005) q[1]\nRy(-0.000004) q[2]\nRy(-0.000005) q[3]\nRy(-0.000006) q[4]\nRy(-0.000004) q[5]\nRy(-3.141598) q[6]\nRy(-0.201993) q[7]\n\nCNOT q[0], q[1]\nCNOT q[1], q[2]\nCNOT q[2], q[3]\nCNOT q[3], q[4]\nCNOT q[4], q[5]\nCNOT q[5], q[6]\nCNOT q[6], q[7]\n\nH q[4]\nSdag q[5]\nH q[5]\nSdag q[6]\nH q[6]\nH q[7]\n\nb = measure q\n"
+  }
+}

@@ -2,6 +2,213 @@ import { BlogPost } from "@/lib/blogTypes"
 
 export const posts: BlogPost[] = [
   {
+    slug: 'lithium-hydride-from-scratch',
+    title: 'We Computed a Molecule from First Principles and Ran It on Three Quantum Platforms',
+    subtitle: 'From molecular geometry to quantum hardware measurements in one automated pipeline. The emulator nailed it. IBM Fez tried its best.',
+    date: '2026-02-12',
+    author: 'AI x Quantum Research Team',
+    category: 'experiment',
+    tags: ['VQE', 'LiH', 'H2', 'PySCF', 'OpenFermion', 'IBM Quantum', 'Quantum Inspire', 'quantum chemistry', 'first principles', 'CASCI'],
+    heroImage: '/images/blog/lih-molecule.png',
+    heroCaption: 'LiH (lithium hydride) &mdash; the molecule we computed from first principles and ran on three quantum platforms.',
+    excerpt: "We built a complete quantum chemistry pipeline from molecular integrals to qubit Hamiltonians to hardware measurements. H2 on 2 qubits achieved chemical accuracy on the QI emulator (1.3 mHa error). LiH on 4 qubits needed 9 measurement circuits. The emulator nailed it (0.2 mHa). IBM Fez got the right quantum state but 354 mHa of noise. Noise scales faster than circuit depth.",
+    content: `<p>Most quantum chemistry tutorials start with a Hamiltonian that's already been computed for you. We wanted to see the full pipeline: start from a molecule's geometry, compute the electronic structure from scratch, map it to qubits, generate measurement circuits, and run them on real hardware.</p>
+
+<p>The result: two molecules (H<sub>2</sub> and LiH), three platforms (QI emulator, IBM Fez, IBM Torino), 12 unique circuit designs, and nearly 300,000 total measurements. Here&rsquo;s what we learned.</p>
+
+<h2>The Pipeline</h2>
+
+<p>Quantum chemistry on a quantum computer requires four layers of translation:</p>
+
+<ol>
+<li><strong>Molecular integrals</strong> &mdash; PySCF computes one- and two-electron integrals from the molecular geometry and basis set (STO-3G). For LiH, this means solving the Hartree-Fock equations for 4 electrons in 6 orbitals.</li>
+<li><strong>Active space selection</strong> &mdash; We can't put all orbitals on a quantum computer. CASCI(2,2) selects 2 electrons in 2 active orbitals, freezing the core. This maps to 4 qubits via Jordan-Wigner.</li>
+<li><strong>Qubit Hamiltonian</strong> &mdash; OpenFermion converts the fermionic Hamiltonian to a sum of Pauli operators. H<sub>2</sub> gives 5 terms. LiH gives 27 terms across 9 measurement groups.</li>
+<li><strong>Measurement circuits</strong> &mdash; Each Pauli term requires measuring qubits in specific bases (Z, X, or Y). Terms sharing the same basis requirements are grouped into one circuit. H<sub>2</sub> needs 3 circuits. LiH needs 9.</li>
+</ol>
+
+<p>Every step is classical computation except the final measurement. The quantum computer&rsquo;s job is narrow but critical: prepare the trial wavefunction and measure it in the right bases. A classical optimizer then adjusts the circuit parameters to minimize the energy &mdash; this loop is VQE (Variational Quantum Eigensolver). Everything else &mdash; integrals, mapping, energy reconstruction &mdash; runs on a laptop.</p>
+
+<h2>H<sub>2</sub>: The Warmup (2 Qubits, 1 CNOT)</h2>
+
+<p>Molecular hydrogen at R=0.735 &Aring; is the canonical VQE (Variational Quantum Eigensolver) test case. The Hamiltonian has 5 Pauli terms (<code>ZI, IZ, ZZ, XX, YY</code>) plus a constant offset, requiring 3 measurement circuits (one each for the Z, X, and Y bases). The ansatz &mdash; the parameterized trial circuit &mdash; is a single Ry rotation followed by a CNOT. About as simple as quantum chemistry gets.</p>
+
+<p>The QI emulator achieves <strong>chemical accuracy</strong> (1.3 mHa error, entirely from finite sampling). IBM Fez gets the right quantum state 89.6% of the time but noise pushes the energy up by 87 mHa. Torino, running the same circuit, is 3.8x worse.</p>
+
+<details><summary>H<sub>2</sub> platform comparison table</summary>
+<table>
+<thead><tr><th>Platform</th><th>Chip</th><th>Energy (Ha)</th><th>Error (mHa)</th><th>|01&rang; fidelity</th></tr></thead>
+<tbody>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>QI Emulator</strong></td><td>qxelarator</td><td>&minus;1.1382</td><td><strong>1.3</strong></td><td>98.3%</td></tr>
+<tr><td>IBM Fez</td><td>Heron r2 (156q)</td><td>&minus;1.0506</td><td>87.0</td><td>89.6%</td></tr>
+<tr><td>IBM Torino</td><td>Heron (133q)</td><td>&minus;0.8100</td><td>328.0</td><td>76.0%</td></tr>
+</tbody>
+</table>
+<p>FCI (full configuration interaction) reference: &minus;1.1395 Ha (Hartree, the atomic unit of energy). Chemical accuracy threshold: 1.6 mHa (milliHartree, about 1 kcal/mol) &mdash; the point where quantum errors become chemically irrelevant.</p>
+</details>
+
+<h3>H<sub>2</sub> Potential Energy Surface on the QI Emulator</h3>
+
+<p>We also ran the full H<sub>2</sub> potential energy surface: 15 bond distances from 0.3 to 3.0 &Aring;, each requiring 3 circuits &mdash; 45 circuits total, 184,320 measurements. The emulator traced the exact FCI curve with <strong>10 out of 15 points within chemical accuracy</strong>. The remaining 5 points missed by 1.7&ndash;3.8 mHa, entirely due to finite-shot statistics.</p>
+
+<p>This confirms that the VQE algorithm itself is exact for H<sub>2</sub> &mdash; any deviation on real hardware is purely noise.</p>
+
+<h2>LiH: The Real Test (4 Qubits, 3 CNOTs)</h2>
+
+<p>With H<sub>2</sub> as a sanity check, we moved to the real target. Lithium hydride doubles the qubit count and triples the entangling gates: 4 qubits, a 3-CNOT entangling layer, 27 Pauli terms, and 9 measurement circuits. The Hamiltonian was computed entirely from first principles:</p>
+
+<ol>
+<li>PySCF Hartree-Fock + CASCI(2,2) for LiH at R=1.6 &Aring;</li>
+<li>OpenFermion Jordan-Wigner mapping to 4-qubit Pauli operators</li>
+<li>Hardware-efficient ansatz: two layers of Ry rotations interleaved with a CNOT chain (q0&rarr;q1&rarr;q2&rarr;q3)</li>
+<li>Classical VQE optimization (8 parameters) matched the CASCI energy exactly</li>
+</ol>
+
+<p>The 27 Pauli terms group into 9 measurement circuits. One Z-basis circuit handles the 11 diagonal terms (ZZ, ZI, IZ combinations). Four two-qubit rotation circuits handle 12 terms (paired XX, YY, XY). The remaining four circuits each handle a single four-qubit cross-term (YXXY, YYXX, XXYY, XYYX) &mdash; these require rotating all four qubits simultaneously.</p>
+
+<h3>The Three-Way Comparison</h3>
+
+<table>
+<thead><tr><th>Platform</th><th>Chip</th><th>Active-space E (Ha)</th><th>vs Ideal (mHa)</th><th>|1111&rang; fidelity</th></tr></thead>
+<tbody>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>QI Emulator</strong></td><td>qxelarator</td><td>&minus;10.7547</td><td><strong>0.2</strong></td><td>100%</td></tr>
+<tr><td>IBM Fez</td><td>Heron r2 (156q)</td><td>&minus;10.4003</td><td>354.3</td><td>81.0%</td></tr>
+</tbody>
+</table>
+
+<p>Ideal VQE: &minus;10.7546 Ha. The QI emulator is 0.2 mHa off &mdash; pure shot noise. IBM Fez is 354 mHa off &mdash; hardware noise depolarizing the quantum state.</p>
+
+<p>Where does the 354 mHa error come from? The Z-basis measurement tells the story: the emulator produces |1111&rang; 100% of the time, while IBM Fez spreads 19% of probability across wrong bitstrings. Every Pauli expectation value is biased toward zero &mdash; classic depolarization &mdash; adding up to ~300 mHa of systematic energy shift.</p>
+
+<details><summary>Z-basis distribution + per-term Pauli analysis</summary>
+<table>
+<thead><tr><th>State</th><th>QI Emulator</th><th>IBM Fez</th></tr></thead>
+<tbody>
+<tr><td>|1111&rang; (correct)</td><td><strong>100.0%</strong></td><td><strong>81.0%</strong></td></tr>
+<tr><td>|0111&rang;</td><td>0%</td><td>5.2%</td></tr>
+<tr><td>|1110&rang;</td><td>0%</td><td>4.3%</td></tr>
+<tr><td>|1011&rang;</td><td>0%</td><td>3.2%</td></tr>
+<tr><td>Other (12 states)</td><td>0%</td><td>6.3%</td></tr>
+</tbody>
+</table>
+
+<p>On a perfect device, each Z-basis term should return exactly &plusmn;1.0. On IBM Fez, they return 0.73&ndash;0.89:</p>
+
+<table>
+<thead><tr><th>Pauli term</th><th>Coefficient</th><th>QI &lang;P&rang;</th><th>IBM &lang;P&rang;</th><th>IBM error</th></tr></thead>
+<tbody>
+<tr><td>ZIII</td><td>+0.617</td><td>&minus;1.000</td><td>&minus;0.867</td><td>+0.133</td></tr>
+<tr><td>IZII</td><td>+0.617</td><td>&minus;1.000</td><td>&minus;0.859</td><td>+0.141</td></tr>
+<tr><td>IIZI</td><td>+0.371</td><td>&minus;1.000</td><td>&minus;0.892</td><td>+0.108</td></tr>
+<tr><td>IIIZ</td><td>+0.371</td><td>&minus;1.000</td><td>&minus;0.820</td><td>+0.180</td></tr>
+<tr><td>ZZII</td><td>&minus;0.122</td><td>+1.000</td><td>+0.765</td><td>&minus;0.235</td></tr>
+<tr><td>IIZZ</td><td>&minus;0.084</td><td>+1.000</td><td>+0.875</td><td>&minus;0.126</td></tr>
+</tbody>
+</table>
+
+<p>Each of the 6 terms is off by 0.1&ndash;0.27. Multiplied by their Hamiltonian coefficients (0.05&ndash;0.62) and summed, that produces ~300 mHa of systematic error. The off-diagonal terms (XX, YY, XY) contribute less because their coefficients are 10&ndash;50x smaller.</p>
+</details>
+
+<h2>How Noise Scales with Circuit Complexity</h2>
+
+<details><summary>H<sub>2</sub> vs LiH noise scaling comparison</summary>
+<table>
+<thead><tr><th></th><th>H<sub>2</sub> (2 qubits)</th><th>LiH (4 qubits)</th><th>Scaling</th></tr></thead>
+<tbody>
+<tr><td>Qubits</td><td>2</td><td>4</td><td>2x</td></tr>
+<tr><td>CNOT gates</td><td>1</td><td>3</td><td>3x</td></tr>
+<tr><td>Pauli terms</td><td>5</td><td>27</td><td>5.4x</td></tr>
+<tr><td>Circuits</td><td>3</td><td>9</td><td>3x</td></tr>
+<tr><td>Total shots</td><td>12,288</td><td>36,864</td><td>3x</td></tr>
+<tr><td>QI emulator error</td><td>1.3 mHa</td><td>0.2 mHa</td><td>&mdash;</td></tr>
+<tr><td>IBM Fez error</td><td>87 mHa</td><td>354 mHa</td><td><strong>4.1x</strong></td></tr>
+</tbody>
+</table>
+</details>
+
+<p>Going from 2 to 4 qubits (and 1 to 3 CNOTs), IBM noise grows 4.1x &mdash; faster than the 3x increase in gate count. Each additional CNOT introduces entangling errors <em>and</em> extends the circuit duration, giving decoherence more time to act.</p>
+
+<p>The emulator, by contrast, actually gets <em>better</em> (1.3 &rarr; 0.2 mHa). LiH&rsquo;s prepared state is closer to a computational basis state than H<sub>2</sub>&rsquo;s, so shot noise matters less.</p>
+
+<p>The implication for scaling: a 6-qubit molecule like BeH<sub>2</sub> would need ~5 CNOTs, and the noise trend suggests IBM errors of 700+ mHa &mdash; approaching the Hamiltonian&rsquo;s entire energy range. Without error mitigation, molecules beyond 4 qubits are likely noise-dominated on current hardware.</p>
+
+<h2>TREX Error Mitigation: Does It Help?</h2>
+
+<p>For H<sub>2</sub>, <a href="/blog/error-mitigation-showdown">TREX (Twirled Readout EXtraction) achieved chemical accuracy</a> in a single shot. Can it rescue LiH?</p>
+
+<p>We re-ran the LiH experiment using IBM&rsquo;s EstimatorV2 with <code>resilience_level=1</code>, which enables TREX &mdash; a readout error correction technique that randomly flips qubits before measurement and inverts the results, averaging out systematic readout bias.</p>
+
+<table>
+<thead><tr><th>Method</th><th>Energy (Ha)</th><th>Error vs CASCI (mHa)</th><th>Improvement</th></tr></thead>
+<tbody>
+<tr><td>Raw Sampler (IBM Fez)</td><td>&minus;7.508</td><td>354</td><td>&mdash;</td></tr>
+<tr style="background: rgba(0,255,136,0.08)"><td><strong>TREX (IBM Fez)</strong></td><td>&minus;7.703</td><td><strong>160</strong></td><td><strong>2.2x</strong></td></tr>
+<tr><td>QI Emulator</td><td>&minus;7.862</td><td>0.2</td><td>&mdash;</td></tr>
+</tbody>
+</table>
+
+<p>TREX cut the error roughly in half (354 &rarr; 160 mHa), but didn&rsquo;t come close to chemical accuracy. The per-term analysis reveals why: TREX fixes readout errors cleanly on qubits with low gate noise (ZIII improved from &minus;0.867 to &minus;0.999, nearly perfect), but can&rsquo;t fix gate errors from the CNOT chain (IZII only improved from &minus;0.859 to &minus;0.902).</p>
+
+<p>This makes physical sense. TREX only corrects the <em>measurement</em> step. For H<sub>2</sub> with 1 CNOT, readout error was the dominant noise source, so TREX was enough. For LiH with 3 CNOTs, gate errors from the entangling layer dominate &mdash; and those require deeper techniques like zero-noise extrapolation (ZNE) or probabilistic error cancellation (PEC).</p>
+
+<h2>The Active Space Limitation</h2>
+
+<p>Even with a perfect, noiseless quantum computer, our LiH result wouldn&rsquo;t match the exact (FCI) energy. The reason is the active space: we only put 2 electrons in 2 orbitals on the quantum computer, while LiH actually has 4 electrons in 6 orbitals. The truncated model captures just 1.3% of the total correlation energy (0.3 out of 20.5 mHa).</p>
+
+<details><summary>Active space energy breakdown</summary>
+<table>
+<thead><tr><th>Method</th><th>Energy (Ha)</th><th>vs FCI (mHa)</th></tr></thead>
+<tbody>
+<tr><td>Hartree-Fock (classical)</td><td>&minus;7.8619</td><td>+20.5</td></tr>
+<tr><td>CASCI(2,2) / QI emulator</td><td>&minus;7.8621</td><td>+20.2</td></tr>
+<tr><td>FCI (exact)</td><td>&minus;7.8823</td><td>0.0</td></tr>
+</tbody>
+</table>
+</details>
+
+<p>The quantum computer perfectly solves the problem it was given &mdash; the 2-orbital active space Hamiltonian. But the problem itself is too small. To reach chemical accuracy for LiH, you'd need CASCI(4,6) &mdash; 12 qubits &mdash; or a larger basis set.</p>
+
+<p>This is the fundamental tension in near-term quantum chemistry: <strong>the molecules that fit on today's hardware are the ones classical computers already solve easily.</strong> The advantage comes at scale &mdash; 20+ qubits with active spaces that classical CASCI can't handle. We're not there yet, but the pipeline is ready.</p>
+
+<h2>What We Built</h2>
+
+<p>The entire experiment was orchestrated by Claude Code using three <a href="/blog/quantum-mcp-servers">MCP servers</a>:</p>
+
+<ul>
+<li><strong>IBM Quantum MCP</strong> &mdash; submitted 12 circuits (3 for H<sub>2</sub>, 9 for LiH) to ibm_fez and ibm_torino, polled for results</li>
+<li><strong>QI Circuits MCP</strong> &mdash; ran 54 circuits on the qxelarator emulator (45 for H<sub>2</sub> PES + 9 for LiH)</li>
+<li><strong>Python (PySCF + OpenFermion)</strong> &mdash; computed molecular integrals, built Hamiltonians, optimized VQE parameters, generated all circuits</li>
+</ul>
+
+<p>The prompt was &ldquo;compute the ground state energy of lithium hydride.&rdquo; From there, the AI handled the chemistry, the qubit mapping, the circuit generation, the job submission, and the energy reconstruction from raw measurement counts. No manual circuit writing, no copy-pasting QASM.</p>
+
+<h2>Bottom Line</h2>
+
+<p>We proved three things:</p>
+
+<ol>
+<li><strong>The QI emulator is a reliable quantum chemistry reference.</strong> Chemical accuracy on H<sub>2</sub> (1.3 mHa) and perfect CASCI reproduction on LiH (0.2 mHa). If your algorithm works here, the algorithm is correct.</li>
+<li><strong>IBM Fez hardware gives qualitatively correct results, but needs error mitigation.</strong> 81% state fidelity and the correct dominant state on LiH, but 354 mHa of raw noise. TREX halved this to 160 mHa by fixing readout errors, but the 3-CNOT circuit introduces gate errors that TREX can&rsquo;t touch. Reaching chemical accuracy on LiH will require deeper mitigation (ZNE or PEC).</li>
+<li><strong>The first-principles pipeline works end-to-end.</strong> Geometry &rarr; integrals &rarr; qubit Hamiltonian &rarr; circuits &rarr; hardware &rarr; energy. Every step is automated. Changing the molecule means changing one line of code.</li>
+</ol>
+
+<p>Next: LiH with ZNE or PEC on IBM Fez to push past TREX&rsquo;s 160 mHa floor. BeH<sub>2</sub> (6 qubits) on the QI emulator. And eventually, LiH on Tuna-9 hardware &mdash; 9 qubits is more than enough for CASCI(2,2), and we already know Tuna-9&rsquo;s readout correction <a href="/blog/error-mitigation-showdown">works well for VQE</a>.</p>
+
+<hr />
+
+<p>All experiment code and data: <a href="https://github.com/dereklomas/haiqu">github.com/dereklomas/haiqu</a>. Analysis scripts: <code>experiments/lih_compare.py</code>, <code>experiments/h2_vqe_compare.py</code>. Interactive Hamiltonian explorer: <a href="/hamiltonians">haiqu.org/hamiltonians</a>.</p>`,
+    sources: [
+      { label: 'PySCF: Python-based simulations of chemistry framework', url: 'https://pyscf.org/' },
+      { label: 'OpenFermion: quantum chemistry on quantum computers', url: 'https://quantumai.google/openfermion' },
+      { label: 'Peruzzo et al. 2014 — original VQE paper', url: 'https://arxiv.org/abs/1304.3061' },
+      { label: 'Cross-platform quantum comparison', url: '/blog/cross-platform-quantum-comparison' },
+      { label: 'Error mitigation showdown', url: '/blog/error-mitigation-showdown' },
+      { label: 'Quantum MCP servers', url: '/blog/quantum-mcp-servers' },
+      { label: 'IBM Quantum', url: 'https://quantum.ibm.com/' },
+      { label: 'Quantum Inspire', url: 'https://www.quantum-inspire.com/' },
+    ],
+  },
+  {
     slug: 'error-mitigation-showdown',
     title: 'We Tested 15 Error Mitigation Strategies. Only One Achieved Chemical Accuracy.',
     subtitle: "IBM's TREX (readout error correction) hit 0.22 kcal/mol. Tuna-9's best combo (readout mitigation + post-selection) averaged 2.52 kcal/mol. Zero-noise extrapolation made things worse. Here's what actually works for near-term quantum chemistry.",
@@ -956,7 +1163,7 @@ export const posts: BlogPost[] = [
 <tr><td><strong><a href="/rabi">Rabi Oscillations</a></strong></td><td>Driven qubit dynamics</td><td>Tune drive frequency and amplitude, see resonance on the Bloch sphere</td></tr>
 <tr><td><strong><a href="/hamiltonians">Hamiltonians</a></strong></td><td>H2 molecular Hamiltonian</td><td>Explore Pauli decomposition, coefficient values, bond-distance dependence</td></tr>
 <tr><td><strong><a href="/ansatz">Ansatz Explorer</a></strong></td><td>VQE circuit design</td><td>Adjust variational parameters and see how the ansatz covers the Hilbert space</td></tr>
-<tr><td><strong><a href="/listen">Sonification</a></strong></td><td>Quantum states as sound</td><td>Hear the difference between separable and entangled states</td></tr>
+<tr><td><strong><a href="/tuna9">Tuna-9</a></strong></td><td>Meeting a quantum computer</td><td>Guided tour of a 9-qubit chip with sound and visuals</td></tr>
 </tbody>
 </table>
 

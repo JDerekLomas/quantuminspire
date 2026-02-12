@@ -24,7 +24,7 @@ const pillars = [
     color: '#8b5cf6',
     links: [
       { href: '/see', label: 'See', desc: 'What a qubit looks like — scroll-driven tour' },
-      { href: '/listen', label: 'Listen', desc: 'Quantum states as sound' },
+      { href: '/tuna9', label: 'Tuna-9', desc: 'Meeting a 9-qubit quantum computer' },
       { href: '/sonification', label: 'Sonification Lab', desc: 'Play real experiment data as sound' },
       { href: '/how-qubits-work', label: 'How Qubits Work', desc: '6-part physics series' },
       { href: '/noise', label: 'Noise Channels', desc: 'T\u2081/T\u2082, dephasing, error budgets' },

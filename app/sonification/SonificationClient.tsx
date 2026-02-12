@@ -369,7 +369,7 @@ export default function SonificationClient({ experiments, sweepEmulator }: Props
           </div>
           <p className="text-gray-600 text-xs mt-3">
             New to quantum sound? Start with the{' '}
-            <a href="/listen" className="text-[#00d4ff] hover:underline">9-act guided experience</a> — a narrative tour from one qubit to an orchestra.
+            <a href="/tuna9" className="text-[#00d4ff] hover:underline">Meeting Tuna-9</a> — a guided tour of a 9-qubit quantum computer.
           </p>
         </section>
 

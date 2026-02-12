@@ -1,0 +1,78 @@
+{
+  "molecule": "LiH",
+  "bond_distance": 1.6,
+  "basis": [
+    [
+      0,
+      "X"
+    ],
+    [
+      1,
+      "Y"
+    ],
+    [
+      2,
+      "Y"
+    ],
+    [
+      3,
+      "X"
+    ]
+  ],
+  "n_qubits": 4,
+  "n_params": 8,
+  "optimal_params": [
+    -3.7070287006695962e-06,
+    3.1416311869975133,
+    2.422909564567009e-05,
+    0.1827039191751927,
+    2.3473523619385464e-05,
+    -5.9733646291766766e-05,
+    1.421176402472e-05,
+    0.18270817005344223
+  ],
+  "E_HF": -7.861864769808645,
+  "E_FCI": -7.882324378883491,
+  "E_VQE": -10.75456027230527,
+  "E_CASCI": -7.862128833438587,
+  "pauli_terms": {
+    "IIII": -8.35590992423199,
+    "ZIII": 0.6166576277429734,
+    "YZYI": 0.034563657541850486,
+    "XZXI": 0.034563657541850486,
+    "IZII": 0.6166576277429735,
+    "IYZY": 0.034563657541850486,
+    "IXZX": 0.034563657541850486,
+    "IIZI": 0.370979366498277,
+    "IIIZ": 0.37097936649827695,
+    "ZZII": -0.12182774168311085,
+    "ZYZY": -0.012144898067813291,
+    "ZXZX": -0.012144898067813291,
+    "YIYI": -0.012144898067813291,
+    "XIXI": -0.012144898067813291,
+    "YXXY": -0.003265995895202011,
+    "YYXX": 0.003265995895202011,
+    "XXYY": 0.003265995895202011,
+    "XYYX": -0.003265995895202011,
+    "ZIZI": -0.05263651530244966,
+    "ZIIZ": -0.05590251119765166,
+    "YZYZ": 0.0018710430187559995,
+    "XZXZ": 0.0018710430187559995,
+    "IZZI": -0.05590251119765166,
+    "IYIY": 0.0018710430187559995,
+    "IXIX": 0.0018710430187559995,
+    "IZIZ": -0.05263651530244966,
+    "IIZZ": -0.08447056786924143
+  },
+  "circuits": {
+    "Z": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q0Y_q2Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[2];\nh q[2];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q0X_q2X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nh q[0];\nh q[2];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q1Y_q3Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nsdg q[1];\nh q[1];\nsdg q[3];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q1X_q3X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nh q[1];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q0Y_q1X_q2X_q3Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nh q[1];\nh q[2];\nsdg q[3];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q0Y_q1Y_q2X_q3X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nsdg q[0];\nh q[0];\nsdg q[1];\nh q[1];\nh q[2];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q0X_q1X_q2Y_q3Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nh q[0];\nh q[1];\nsdg q[2];\nh q[2];\nsdg q[3];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n",
+    "q0X_q1Y_q2Y_q3X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\ncreg c[4];\n\n// Hartree-Fock state |0011>\nx q[0];\nx q[1];\n\n// Layer 1: Ry rotations\nry(-0.000004) q[0];\nry(3.141631) q[1];\nry(0.000024) q[2];\nry(0.182704) q[3];\n\n// Entangling layer\ncx q[0], q[1];\ncx q[1], q[2];\ncx q[2], q[3];\n\n// Layer 2: Ry rotations\nry(0.000023) q[0];\nry(-0.000060) q[1];\nry(0.000014) q[2];\nry(0.182708) q[3];\n\n// Measurement basis rotation\nh q[0];\nsdg q[1];\nh q[1];\nsdg q[2];\nh q[2];\nh q[3];\n\n// Measure all qubits\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\nmeasure q[3] -> c[3];\n"
+  }
+}

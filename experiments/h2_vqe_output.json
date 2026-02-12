@@ -1,0 +1,139 @@
+{
+  "theta_optimal": 1.4413108649859967,
+  "coefficients": {
+    "g0": -0.8692,
+    "g1": 0.3435,
+    "g2": -0.3435,
+    "g3": 0.5596,
+    "g4": 0.091,
+    "g5": 0.091
+  },
+  "classical_results": {
+    "E_HF": -0.7417999999999999,
+    "E_VQE": -2.1394989517369503,
+    "E_FCI": -2.1394989517369503,
+    "pauli_expectations": {
+      "II": 1.0,
+      "ZI": -0.9666540219095157,
+      "IZ": 0.9666540219095157,
+      "ZZ": -1.0,
+      "XX": -0.25608592684128006,
+      "YY": -0.25608592684128006
+    }
+  },
+  "circuits": {
+    "ibm_Z": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\n\n// Prepare |01> (Hartree-Fock state)\nx q[1];\n\n// UCCSD ansatz\ncx q[1], q[0];\nry(1.441311) q[0];\ncx q[1], q[0];\n\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+    "qi_Z": "version 3.0\n\nqubit[2] q\n\n// Prepare |01> (Hartree-Fock state)\nX q[1]\n\n// UCCSD ansatz\nCNOT q[1], q[0]\nRy q[0], 1.441311\nCNOT q[1], q[0]\n\nmeasure q\n",
+    "ibm_X": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\n\n// Prepare |01> (Hartree-Fock state)\nx q[1];\n\n// UCCSD ansatz\ncx q[1], q[0];\nry(1.441311) q[0];\ncx q[1], q[0];\n\n// Rotate to X basis\nh q[0];\nh q[1];\n\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+    "qi_X": "version 3.0\n\nqubit[2] q\n\n// Prepare |01> (Hartree-Fock state)\nX q[1]\n\n// UCCSD ansatz\nCNOT q[1], q[0]\nRy q[0], 1.441311\nCNOT q[1], q[0]\n\n// Rotate to X basis\nH q[0]\nH q[1]\n\nmeasure q\n",
+    "ibm_Y": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\n\n// Prepare |01> (Hartree-Fock state)\nx q[1];\n\n// UCCSD ansatz\ncx q[1], q[0];\nry(1.441311) q[0];\ncx q[1], q[0];\n\n// Rotate to Y basis\nsdg q[0];\nh q[0];\nsdg q[1];\nh q[1];\n\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n",
+    "qi_Y": "version 3.0\n\nqubit[2] q\n\n// Prepare |01> (Hartree-Fock state)\nX q[1]\n\n// UCCSD ansatz\nCNOT q[1], q[0]\nRy q[0], 1.441311\nCNOT q[1], q[0]\n\n// Rotate to Y basis\nSdag q[0]\nH q[0]\nSdag q[1]\nH q[1]\n\nmeasure q\n"
+  },
+  "pes_data": [
+    {
+      "R": 0.2,
+      "E_HF": 0.14429999999999998,
+      "E_VQE": -1.9460542213910583,
+      "E_FCI": -1.946054221391058,
+      "theta": 1.5319707570262837
+    },
+    {
+      "R": 0.3,
+      "E_HF": -0.12219999999999998,
+      "E_VQE": -2.1245437086142913,
+      "E_FCI": -2.1245437086142913,
+      "theta": 1.5111372016131543
+    },
+    {
+      "R": 0.4,
+      "E_HF": -0.3267,
+      "E_VQE": -2.2091359866446467,
+      "E_FCI": -2.2091359866446467,
+      "theta": 1.4923362022391409
+    },
+    {
+      "R": 0.5,
+      "E_HF": -0.4862000000000001,
+      "E_VQE": -2.2287201919664987,
+      "E_FCI": -2.2287201919664987,
+      "theta": 1.4749087605983089
+    },
+    {
+      "R": 0.6,
+      "E_HF": -0.611,
+      "E_VQE": -2.207995200381569,
+      "E_FCI": -2.2079952003815952,
+      "theta": 1.4599189836164426
+    },
+    {
+      "R": 0.7,
+      "E_HF": -0.7098,
+      "E_VQE": -2.163683089336325,
+      "E_FCI": -2.1636830893363332,
+      "theta": 1.4465329475602196
+    },
+    {
+      "R": 0.735,
+      "E_HF": -0.7417999999999999,
+      "E_VQE": -2.1394989517369325,
+      "E_FCI": -2.1394989517369503,
+      "theta": 1.4413109768227295
+    },
+    {
+      "R": 0.8,
+      "E_HF": -0.7861,
+      "E_VQE": -2.1033703688875005,
+      "E_FCI": -2.1033703688883905,
+      "theta": 1.4342468705980438
+    },
+    {
+      "R": 0.9,
+      "E_HF": -0.8435000000000001,
+      "E_VQE": -2.033878040358532,
+      "E_FCI": -2.03387804036635,
+      "theta": 1.4230186778622707
+    },
+    {
+      "R": 1.0,
+      "E_HF": -0.8859000000000001,
+      "E_VQE": -1.960564606012754,
+      "E_FCI": -1.9605646060127615,
+      "theta": 1.4122737564406802
+    },
+    {
+      "R": 1.2,
+      "E_HF": -0.9386,
+      "E_VQE": -1.8147645424733716,
+      "E_FCI": -1.8147645432612949,
+      "theta": 1.3921318035859622
+    },
+    {
+      "R": 1.5,
+      "E_HF": -0.9809999999999999,
+      "E_VQE": -1.6296212895009141,
+      "E_FCI": -1.6296213098375012,
+      "theta": 1.3621702002076534
+    },
+    {
+      "R": 2.0,
+      "E_HF": -1.0191,
+      "E_VQE": -1.4211019562058458,
+      "E_FCI": -1.4211019589462746,
+      "theta": 1.3180278719928684
+    },
+    {
+      "R": 2.5,
+      "E_HF": -1.0449,
+      "E_VQE": -1.2957256827455645,
+      "E_FCI": -1.2957259126227525,
+      "theta": 1.2811632512483935
+    },
+    {
+      "R": 3.0,
+      "E_HF": -1.0653,
+      "E_VQE": -1.218901988979996,
+      "E_FCI": -1.2189037382361307,
+      "theta": 1.2475694477312929
+    }
+  ]
+}

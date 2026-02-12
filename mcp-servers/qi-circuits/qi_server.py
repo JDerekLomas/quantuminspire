@@ -224,8 +224,7 @@ def qi_run_local(
         import qxelarator
         from qxelarator import SimulationError as QxSimError
 
-        qx = qxelarator.QXelarator()
-        result = qx.execute_string(circuit, iterations=number_of_shots)
+        result = qxelarator.execute_string(circuit, iterations=number_of_shots)
 
         # qxelarator returns SimulationError (not an exception) on failure
         if isinstance(result, QxSimError):

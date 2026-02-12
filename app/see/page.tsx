@@ -964,7 +964,7 @@ export default function SeePage() {
     <div className="min-h-screen bg-[#060610] text-white">
       <Nav />
       <div className="max-w-5xl mx-auto px-6 pt-8 pb-4">
-        <Link href="/listen" className="text-sm text-gray-600 hover:text-gray-400 transition-colors inline-block">
+        <Link href="/tuna9" className="text-sm text-gray-600 hover:text-gray-400 transition-colors inline-block">
           &larr; back to Listen
         </Link>
       </div>
@@ -1002,7 +1002,7 @@ export default function SeePage() {
         <Link href="https://www.quantum-inspire.com" className="text-gray-600 hover:text-gray-400">Tuna-9</Link>
         <br />
         <span className="text-gray-800">
-          <Link href="/listen" className="hover:text-gray-500">Listen</Link>
+          <Link href="/tuna9" className="hover:text-gray-500">Tuna-9</Link>
           {' '}&middot;{' '}
           <Link href="/resonance" className="hover:text-gray-500">Resonance</Link>
           {' '}&middot;{' '}

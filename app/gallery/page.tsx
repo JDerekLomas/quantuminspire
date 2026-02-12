@@ -296,7 +296,7 @@ const OUR_INTERACTIVES: OurViz[] = [
   { name: 'Rabi Oscillations', href: '/rabi', concept: 'Driven qubit dynamics', description: 'Tune drive frequency and amplitude, see resonance and decoherence', tech: 'Three.js + Canvas' },
   { name: 'Hamiltonians', href: '/hamiltonians', concept: 'Molecular energy', description: 'Explore H2 Pauli decomposition, coefficients, and bond-distance dependence', tech: 'React + Recharts' },
   { name: 'Ansatz Explorer', href: '/ansatz', concept: 'VQE circuit design', description: 'Adjust variational parameters and see how the ansatz covers Hilbert space', tech: 'React + SVG' },
-  { name: 'Sonification', href: '/listen', concept: 'Quantum as sound', description: 'Hear the difference between separable and entangled states', tech: 'Web Audio API' },
+  { name: 'Tuna-9', href: '/tuna9', concept: 'Meeting a quantum computer', description: 'Guided tour of a 9-qubit chip with sound and visuals', tech: 'Web Audio API + SVG' },
 ]
 
 const qualityColor = {

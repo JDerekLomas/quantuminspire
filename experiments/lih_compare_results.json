@@ -1,0 +1,30 @@
+{
+  "molecule": "LiH",
+  "bond_distance_angstrom": 1.6,
+  "basis_set": "STO-3G",
+  "active_space": "CASCI(2,2)",
+  "n_qubits": 4,
+  "n_pauli_terms": 27,
+  "n_circuits": 9,
+  "shots_per_circuit": 4096,
+  "platforms": {
+    "qi_emulator": {
+      "E_active": -10.754725990037176,
+      "E_molecular": -7.862294551170494,
+      "error_mHa": 20.029827712997772,
+      "z_fidelity_pct": 100.0
+    },
+    "ibm_fez": {
+      "E_active": -10.400283916344723,
+      "E_molecular": -7.50785247747804,
+      "error_mHa": 374.4719014054514,
+      "z_fidelity_pct": 80.9814453125
+    }
+  },
+  "reference": {
+    "E_FCI": -7.882324378883491,
+    "E_HF": -7.861864769808645,
+    "E_CASCI": -7.862128833438587,
+    "E_VQE_ideal": -10.75456027230527
+  }
+}
