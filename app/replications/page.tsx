@@ -4,8 +4,8 @@ import Footer from '@/components/Footer'
 import { getAllReports, PAPER_PIPELINE, type ReplicationReport } from '@/lib/replications'
 
 export const metadata = {
-  title: 'Paper Replications',
-  description: 'Can AI agents systematically replicate quantum computing experiments? Tracking our progress paper by paper.',
+  title: 'Paper Reproductions',
+  description: 'Testing published quantum computing results on modern hardware with AI-generated circuits. Some are full replications, some are small-scale reproductions.',
 }
 
 // ---------------------------------------------------------------------------
@@ -77,7 +77,7 @@ function SummaryStats({ reports }: { reports: ReplicationReport[] }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       {[
-        { value: reports.length.toString(), label: 'Papers Replicated', sub: `${plannedPapers} more planned`, color: '#ff8c42' },
+        { value: reports.length.toString(), label: 'Papers Tested', sub: `${plannedPapers} more planned`, color: '#ff8c42' },
         { value: totalClaims.toString(), label: 'Claims Tested', sub: `across ${allBackends.size} backends`, color: '#00d4ff' },
         { value: `${totalClaims > 0 ? Math.round((totalSuccesses / totalClaims) * 100) : 0}%`, label: 'Pass Rate', sub: `${totalSuccesses}/${totalClaims} claims`, color: '#00ff88' },
         { value: allBackends.size.toString(), label: 'Backends', sub: Array.from(allBackends).map(backendLabel).join(', '), color: '#8b5cf6' },
@@ -219,17 +219,17 @@ export default function ReplicationsPage() {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#ff8c42]">
-              Paper Replication
+              Paper Reproductions
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4">
-            Can AI Replicate<br />
-            <span className="gradient-text-green">Quantum Experiments?</span>
+            Testing Published<br />
+            <span className="gradient-text-green">Quantum Results</span>
           </h1>
           <p className="text-gray-300 text-lg max-w-3xl mb-6">
-            We attempt to reproduce published quantum computing results using AI-written code
-            on multiple backends. The gaps between published and reproduced results
-            reveal what&apos;s real, what&apos;s noisy, and where the field stands.
+            We reproduce published quantum computing results using AI-written circuits
+            on modern hardware. Some are full replications at original scale, others are
+            small-scale reproductions that verify the underlying mechanisms.
           </p>
           <p className="text-gray-400 max-w-3xl">
             Each paper is tested on up to four backends: a noiseless emulator (correctness baseline),{' '}
@@ -314,7 +314,7 @@ export default function ReplicationsPage() {
       <section className="px-6 pb-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#ff8c42] mb-6">
-            Replication Success by Backend
+            Results by Backend
           </h2>
           <p className="text-sm text-gray-400 mb-6 max-w-3xl">
             Which papers pass on which hardware? Green = all claims pass. Orange = partial.
@@ -334,11 +334,12 @@ export default function ReplicationsPage() {
               </thead>
               <tbody className="font-mono text-xs">
                 {[
-                  { paper: 'Sagastizabal 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: null, type: 'VQE + EM', note: '4/4 claims' },
-                  { paper: 'Kandala 2017', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: null, type: 'VQE', note: '5/5 claims' },
-                  { paper: 'Peruzzo 2014', emulator: 'pass', tuna9: 'partial', ibm: 'fail', iqm: null, type: 'VQE', note: '6/8 claims' },
-                  { paper: 'Cross 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: 'pass', type: 'QV + RB', note: '3/3 claims' },
-                  { paper: 'Harrigan 2021', emulator: 'pass', tuna9: 'pass', ibm: null, iqm: null, type: 'QAOA', note: '4/4 claims' },
+                  { paper: 'Cross 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: 'pass', type: 'QV + RB', note: '3/3 — same scale, different hardware' },
+                  { paper: 'Sagastizabal 2019', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: null, type: 'VQE + EM', note: '4/4 — same scale, different hardware' },
+                  { paper: 'Kandala 2017', emulator: 'pass', tuna9: 'pass', ibm: 'pass', iqm: null, type: 'VQE', note: '5/5 — H2 only (omits LiH, BeH2)' },
+                  { paper: 'Peruzzo 2014', emulator: 'pass', tuna9: 'partial', ibm: 'fail', iqm: null, type: 'VQE', note: '6/8 — superconducting, not photonic' },
+                  { paper: 'Harrigan 2021', emulator: 'pass', tuna9: 'pass', ibm: null, iqm: null, type: 'QAOA', note: '4/4 — 3-6 qubits (original: 23)' },
+                  { paper: 'Kim 2023', emulator: 'pass', tuna9: 'partial', ibm: 'partial', iqm: null, type: 'Ising', note: '3/3 — 9 qubits (original: 127)' },
                 ].map(row => {
                   const cellStyle = (val: string | null) => {
                     if (val === null) return 'text-gray-700 bg-white/[0.01]'
@@ -371,7 +372,7 @@ export default function ReplicationsPage() {
           </div>
           <p className="text-[10px] text-gray-500 font-mono mt-3">
             PASS = all tested claims within published error bars. PARTIAL = some claims pass, some fail due to hardware noise.
-            FAIL = no claims pass on hardware. -- = not yet tested on this backend.
+            FAIL = no claims pass on hardware. -- = not yet tested. Notes show scope relative to original paper.
           </p>
         </div>
       </section>
@@ -382,8 +383,8 @@ export default function ReplicationsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
-                q: 'Are published results reproducible?',
-                detail: 'We extract quantitative claims from papers and test whether AI-generated circuits produce matching numbers on noiseless emulators and real hardware.',
+                q: 'Do published results hold up?',
+                detail: 'We extract quantitative claims from papers and test whether AI-generated circuits produce matching numbers on noiseless emulators and real hardware. Some tests are at original scale, others are smaller-scale checks of the underlying mechanisms.',
                 color: '#ff8c42',
               },
               {
@@ -411,7 +412,7 @@ export default function ReplicationsPage() {
         <section className="px-6 pb-12">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-[#ff8c42] mb-6">
-              Completed Replications
+              Completed Reports
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {reports.map(report => (
@@ -426,7 +427,7 @@ export default function ReplicationsPage() {
       <section className="px-6 pb-12">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-6">
-            Replication Pipeline
+            Paper Pipeline
           </h2>
           <div className="space-y-2">
             {PAPER_PIPELINE.map(paper => (

@@ -23,8 +23,8 @@ export function generateMetadata({ params }: { params: { id: string } }) {
   const report = getReportById(params.id)
   if (!report) return { title: 'Not Found' }
   return {
-    title: `${report.paper.title} — Replication`,
-    description: `Replication of ${report.paper.authors} (${report.paper.journal}). ${report.summary.successes}/${report.summary.total_claims_tested} claims reproduced.`,
+    title: `${report.paper.title} — Reproduction`,
+    description: `Reproduction of ${report.paper.authors} (${report.paper.journal}). ${report.summary.successes}/${report.summary.total_claims_tested} claims tested across multiple backends.`,
   }
 }
 
@@ -288,12 +288,14 @@ function FailureModeBreakdown({ counts }: { counts: Record<string, number> }) {
 const PAPER_CONTEXT: Record<string, {
   whatItDoes: string
   whyItMatters: string
+  scope: string
   whatWeFound: string
   keyTerms: Record<string, string>
 }> = {
   sagastizabal2019: {
     whatItDoes: 'This paper uses a quantum computer to calculate the energy of a hydrogen molecule (H2) — one of the simplest molecules in chemistry. It tests whether "symmetry verification," a technique for filtering out errors, can make noisy quantum computers accurate enough for real chemistry.',
     whyItMatters: 'If quantum computers can calculate molecular energies accurately, they could revolutionize drug design, materials science, and catalysis. But today\'s quantum processors are noisy. This paper shows that clever error-filtering techniques can bridge the gap between noisy hardware and useful chemistry.',
+    scope: 'Full replication. Same molecule (H2), same 2-qubit protocol, same scale. Run on different hardware (Tuna-9, IBM Torino instead of the original Starmon-5).',
     whatWeFound: 'All claims reproduced successfully across all three chips. IBM Torino achieved 0.22 kcal/mol error with just one line of code changed (TREX error mitigation) — well within "chemical accuracy" (the threshold where quantum predictions become useful for real chemistry). The simplest error mitigation strategy turned out to be the most effective.',
     keyTerms: {
       'VQE': 'Variational Quantum Eigensolver — a hybrid quantum-classical algorithm that finds the lowest energy of a molecule by iteratively adjusting quantum circuit parameters',
@@ -306,7 +308,8 @@ const PAPER_CONTEXT: Record<string, {
   kandala2017: {
     whatItDoes: 'This landmark IBM paper demonstrated VQE (a quantum chemistry algorithm) running on real quantum hardware to calculate energies of small molecules: hydrogen (H2), lithium hydride (LiH), and beryllium hydride (BeH2) — using up to 6 qubits.',
     whyItMatters: 'It was among the first demonstrations that real quantum hardware could do meaningful chemistry calculations. The "hardware-efficient" approach designs circuits that work well on actual chips rather than theoretically perfect ones — a practical necessity for today\'s noisy processors.',
-    whatWeFound: 'All 5 claims reproduced successfully. The energy curves match published results on both emulator and real hardware. This confirms that the hardware-efficient approach works and that AI-generated circuits can faithfully reproduce the original experiment.',
+    scope: 'Partial reproduction. We tested only H2 (2 qubits), not the larger molecules LiH (4 qubits) and BeH2 (6 qubits) that were the paper\'s main contribution.',
+    whatWeFound: 'All 5 H2 claims reproduced successfully. The energy curves match published results on both emulator and real hardware. The hardware-efficient ansatz works as described. The larger molecules remain untested.',
     keyTerms: {
       'Hardware-efficient ansatz': 'A quantum circuit design strategy that uses only the gate types and connections available on the actual chip, rather than requiring arbitrary qubit connections',
       'LiH / BeH2': 'Lithium hydride and beryllium hydride — small molecules used as benchmarks for quantum chemistry algorithms',
@@ -316,6 +319,7 @@ const PAPER_CONTEXT: Record<string, {
   peruzzo2014: {
     whatItDoes: 'This is the paper that invented VQE — the very first demonstration of a variational quantum chemistry algorithm. It calculated the energy of helium hydride (HeH+) on a photonic quantum processor using just 2 qubits.',
     whyItMatters: 'As the founding paper for variational quantum computing, reproducing it tests whether the core idea works across different hardware platforms. It\'s also a test of whether AI agents can faithfully implement historical quantum algorithms.',
+    scope: 'Cross-platform reproduction. The original used photonic qubits — an entirely different physical platform. We ran the same algorithm on superconducting qubits (Tuna-9, IBM Torino). Same qubit count and protocol, different physics.',
     whatWeFound: '7 of 9 claims reproduced. We discovered that HeH+ is inherently harder than H2 for noisy hardware: the ratio of Hamiltonian coefficients (|g1|/|g4| = 7.8 vs 4.4 for H2) amplifies noise. This "coefficient amplification" effect predicts which molecules will be hardest on noisy hardware — a finding not in the original paper.',
     keyTerms: {
       'HeH+': 'Helium hydride ion — a simple two-atom molecule used as a benchmark',
@@ -326,6 +330,7 @@ const PAPER_CONTEXT: Record<string, {
   cross2019: {
     whatItDoes: 'This paper defines Quantum Volume (QV) — a single-number benchmark for how powerful a quantum computer is. It accounts for both the number of qubits AND the error rate, giving a more honest assessment than just counting qubits.',
     whyItMatters: 'Marketing claims about qubit counts are misleading. A 1000-qubit chip with high error rates may be less useful than a 20-qubit chip with low errors. QV provides a standardized way to compare quantum computers fairly — it\'s now the industry-standard benchmark.',
+    scope: 'Full replication. Same protocol (2-3 qubit QV circuits, heavy output test), same scale. Tested on four backends including hardware not available to the original authors.',
     whatWeFound: 'All 3 claims reproduced. Both IQM Garnet and IBM Torino achieved QV=32. The Randomized Benchmarking results confirmed gate fidelities above 99.8% on all tested platforms.',
     keyTerms: {
       'Quantum Volume': 'A benchmark that measures the largest random circuit a quantum computer can run correctly. Higher = better. Doubles with each step: QV=8, 16, 32, 64...',
@@ -336,7 +341,8 @@ const PAPER_CONTEXT: Record<string, {
   harrigan2021: {
     whatItDoes: 'This Google paper tests QAOA (Quantum Approximate Optimization Algorithm) on a real problem: MaxCut, where the goal is to divide a network into two groups to maximize the connections between them. It ran on Google\'s Sycamore processor with 23 qubits.',
     whyItMatters: 'Optimization is one of the most promising near-term applications of quantum computing. This paper tested whether QAOA can actually beat random guessing on real hardware — a prerequisite for any practical quantum advantage in optimization.',
-    whatWeFound: 'All 4 claims reproduced. Tuna-9 achieved a 74.1% approximation ratio on the 9-node problem — matching the qualitative behavior of the original Google results. The algorithm successfully finds better-than-random solutions on real hardware.',
+    scope: 'Small-scale reproduction. The original ran 3-23 qubit instances on 53-qubit Sycamore. We ran 3-6 qubit instances on Tuna-9 (9 qubits), mostly on emulator. The algorithm works, but we didn\'t test the larger instances that were the paper\'s main result.',
+    whatWeFound: 'All 4 claims reproduced at our scale. Tuna-9 achieved a 74.1% approximation ratio on the 9-node problem — matching the qualitative behavior of the original Google results. The algorithm finds better-than-random solutions on real hardware.',
     keyTerms: {
       'QAOA': 'Quantum Approximate Optimization Algorithm — a hybrid algorithm that alternates quantum and classical steps to find approximate solutions to optimization problems',
       'MaxCut': 'A graph problem: divide nodes into two groups to maximize edges between groups. Used as a standard benchmark for optimization algorithms',
@@ -346,7 +352,8 @@ const PAPER_CONTEXT: Record<string, {
   kim2023: {
     whatItDoes: 'This high-profile IBM paper claimed "evidence for quantum utility" — that a 127-qubit quantum computer could produce results that are difficult for classical computers to simulate. It modeled a kicked Ising chain (a physics model for interacting magnets) using error mitigation.',
     whyItMatters: 'This is the most contested claim in recent quantum computing: can current hardware do anything classically intractable? The paper\'s results were challenged by classical simulation groups. Reproducing the key experimental signatures tests whether the claims hold up.',
-    whatWeFound: 'All 3 claims reproduced on a 9-qubit subset. ZNE (Zero Noise Extrapolation) achieved a 14.1x improvement in signal quality using 180 CZ gates. While our smaller-scale test can\'t address the classical intractability question, it confirms the experimental methodology works.',
+    scope: 'Mechanism verification, not a replication. The original ran 127 qubits at 60 Trotter steps with a learned noise model (PEA). We ran 5-9 qubits at 10 steps with simple ZNE. Our scale is trivially classically simulable — we tested whether the error mitigation methodology works, not the quantum utility claim.',
+    whatWeFound: 'All 3 mechanism claims confirmed on a 9-qubit subset. ZNE achieved a 14.1x improvement on the emulator and 2-3x on hardware. The mitigation technique works as described, but our small-scale test cannot address the paper\'s central quantum utility argument.',
     keyTerms: {
       'Kicked Ising model': 'A physics model where quantum spins (tiny magnets) interact and are periodically "kicked" — used to study quantum dynamics and chaos',
       'ZNE': 'Zero Noise Extrapolation — run the same circuit at different noise levels, then extrapolate to estimate what the zero-noise answer would be',
@@ -386,7 +393,7 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
           <div className="mb-10">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#ff8c42]">
-                Paper Replication
+                Paper Reproduction
               </span>
               <span className="text-gray-600 font-mono" aria-hidden="true">|</span>
               <span className="text-[10px] font-mono text-gray-400">
@@ -429,6 +436,10 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
                 <p>
                   <span className="text-white font-bold">Why it matters: </span>
                   {PAPER_CONTEXT[params.id].whyItMatters}
+                </p>
+                <p>
+                  <span className="text-white font-bold">Our scope: </span>
+                  {PAPER_CONTEXT[params.id].scope}
                 </p>
                 <p>
                   <span className="font-bold" style={{ color: passColor }}>What we found: </span>

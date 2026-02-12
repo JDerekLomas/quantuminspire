@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import Nav from '@/components/Nav'
 import ScrollReveal from '@/components/ScrollReveal'
 
@@ -24,7 +25,7 @@ function Hero() {
         Using natural language, you can ask AI agents to run real quantum experiments on real hardware: it&apos;s the era of Quantum Vibecoding
       </p>
       <p className="text-sm font-mono text-[#00ff88] mb-8">
-        Quantum Vibecoding on real quantum hardware in under 15 minutes
+        Get started vibecoding on real quantum hardware in under 15 minutes
       </p>
       <div className="flex items-center gap-4 mb-8">
         <Link
@@ -428,6 +429,21 @@ function HomeFooter() {
             Built with AI agents. This entire website, its quantum simulations, and the research
             infrastructure were created through human-AI collaboration using Claude Code.
           </div>
+        </div>
+
+        {/* Partner logos */}
+        <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 mt-10 pt-6 border-t border-white/5">
+          <a href="https://www.quantum-inspire.com" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-90 transition-opacity">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/quantum-inspire.svg" alt="Quantum Inspire" className="h-6 sm:h-7 w-auto" />
+          </a>
+          <a href="https://qutech.nl" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-90 transition-opacity">
+            <Image src="/logos/qutech.png" alt="QuTech" width={120} height={44} className="h-7 sm:h-8 w-auto invert" />
+          </a>
+          <a href="https://www.tudelft.nl" target="_blank" rel="noopener noreferrer" className="opacity-50 hover:opacity-90 transition-opacity">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logos/tu-delft.svg" alt="TU Delft" className="h-6 sm:h-7 w-auto" />
+          </a>
         </div>
       </div>
     </footer>

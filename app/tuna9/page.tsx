@@ -39,8 +39,8 @@ const TUNA9 = {
   // Source: tuna9-connectivity-discovery.json
   errors: [0.123, 0.037, 0.016, 0.052, 0.019, 0.016, 0.027, 0.045, 0.035],
 
-  // Topology: 10 edges, diamond-like layout
-  topology: [[0,1],[0,2],[1,3],[1,4],[2,4],[2,5],[3,6],[4,6],[6,8],[7,8]] as [number,number][],
+  // Topology: 12 edges, diamond-like layout (from QI API backend_type.topology)
+  topology: [[0,1],[0,2],[1,3],[1,4],[2,4],[2,5],[3,6],[4,6],[4,7],[5,7],[6,8],[7,8]] as [number,number][],
 
   // SVG positions for the topology
   positions: [
@@ -51,10 +51,12 @@ const TUNA9 = {
     [420, 330], [300, 400],              // q7, q8
   ],
 
-  // Bell fidelities per connected pair
+  // Bell fidelities per connected pair (from our experiments)
+  // 4-7 and 5-7 confirmed by API topology but not yet measured by us
   bellFidelities: {
     '0-1': 0.870, '0-2': 0.858, '1-3': 0.913, '1-4': 0.898,
     '2-4': 0.923, '2-5': 0.914, '3-6': 0.871, '4-6': 0.935,
+    '4-7': 0, '5-7': 0,  // unmeasured — Tuna-9 offline
     '6-8': 0.913, '7-8': 0.883,
   } as Record<string, number>,
 
@@ -129,7 +131,7 @@ function makeSections(): Section[] {
       whatYouHear:
         'Nine tones enter one by one, each at the audible equivalent of that qubit\u2019s resonance frequency (5.15\u20135.46 GHz mapped to 375\u2013530 Hz). They\u2019re panned across stereo: q0 at left, q8 at right. Together they form a dense chord \u2014 the tight cluster reflects how close real transmon frequencies are.',
       dataNote:
-        'Frequencies from published DiCarlo lab devices (arxiv 2503.13225). Topology and Bell fidelities from our experiments on Tuna-9.',
+        'Frequencies from published DiCarlo lab devices (arxiv 2503.13225). 12-edge topology from QI API. Bell fidelities measured on 10 of 12 pairs; 2 (q4-q7, q5-q7) pending.',
       durationMs: 7000,
       color: '#00d4ff',
       play: (ctx, master) => {
@@ -545,24 +547,26 @@ function VisualChip({ playing }: { playing: boolean }) {
       {/* Connections with fidelity colors */}
       {TUNA9.topology.map(([a, b], i) => {
         const key = `${Math.min(a,b)}-${Math.max(a,b)}`
-        const fid = TUNA9.bellFidelities[key] || 0.85
+        const fid = TUNA9.bellFidelities[key]
+        const unmeasured = !fid
         return (
           <g key={i}>
             <line
               x1={TUNA9.positions[a][0]} y1={TUNA9.positions[a][1]}
               x2={TUNA9.positions[b][0]} y2={TUNA9.positions[b][1]}
-              stroke={playing ? fidelityColor(fid) : '#1e293b'}
-              strokeWidth="2.5"
-              opacity={playing ? 0.6 : 0.3}
+              stroke={playing ? (unmeasured ? '#475569' : fidelityColor(fid)) : '#1e293b'}
+              strokeWidth={unmeasured ? 1.5 : 2.5}
+              strokeDasharray={unmeasured ? '4 3' : undefined}
+              opacity={playing ? (unmeasured ? 0.4 : 0.6) : 0.3}
               className="transition-all duration-700"
             />
             {playing && (
               <text
                 x={(TUNA9.positions[a][0] + TUNA9.positions[b][0]) / 2 + 12}
                 y={(TUNA9.positions[a][1] + TUNA9.positions[b][1]) / 2 - 4}
-                fill={fidelityColor(fid)} fontSize="7" fontFamily="monospace" opacity="0.6"
+                fill={unmeasured ? '#475569' : fidelityColor(fid)} fontSize="7" fontFamily="monospace" opacity="0.6"
               >
-                {(fid * 100).toFixed(0)}%
+                {unmeasured ? '?' : `${(fid * 100).toFixed(0)}%`}
               </text>
             )}
           </g>
@@ -1000,13 +1004,16 @@ function VisualCoda({ playing }: { playing: boolean }) {
       <g transform="translate(100, 35) scale(0.65)">
         {TUNA9.topology.map(([a, b], i) => {
           const key = `${Math.min(a,b)}-${Math.max(a,b)}`
-          const fid = TUNA9.bellFidelities[key] || 0.85
+          const fid = TUNA9.bellFidelities[key]
+          const unmeasured = !fid
           return (
             <line key={i}
               x1={TUNA9.positions[a][0]} y1={TUNA9.positions[a][1]}
               x2={TUNA9.positions[b][0]} y2={TUNA9.positions[b][1]}
-              stroke={playing ? fidelityColor(fid) : '#1e293b'}
-              strokeWidth="2.5" opacity={0.5}
+              stroke={playing ? (unmeasured ? '#475569' : fidelityColor(fid)) : '#1e293b'}
+              strokeWidth={unmeasured ? 1.5 : 2.5}
+              strokeDasharray={unmeasured ? '4 3' : undefined}
+              opacity={unmeasured ? 0.3 : 0.5}
               className="transition-colors duration-500"
             />
           )
