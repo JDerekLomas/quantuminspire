@@ -135,10 +135,10 @@ function EvalChart() {
     { label: 'Ensemble\n(5 models)', date: 'Jan 2026', score: 79.5, color: '#ff8c42' },
   ]
 
-  const W = 520
+  const W = 560
   const H = 300
-  const padL = 10
-  const padR = 10
+  const padL = 50
+  const padR = 50
   const padT = 20
   const padB = 70
 
