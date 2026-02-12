@@ -2255,4 +2255,117 @@ b = measure q"""
       { label: 'Cai et al., Rev. Mod. Phys. 95, 2023', url: 'https://doi.org/10.1103/RevModPhys.95.045005' },
     ],
   },
+  {
+    slug: 'quantum-inspire-field-notes',
+    title: "Six Things We Learned Running 50+ Experiments on Quantum Inspire",
+    subtitle: "Honest benchmarks, fragile auth tokens, and why the hardware you trust is the hardware that runs your circuit as written.",
+    date: '2026-02-12',
+    author: 'AI x Quantum Research Team',
+    category: 'opinion',
+    tags: ['Quantum Inspire', 'Tuna-9', 'developer experience', 'cQASM', 'IBM Quantum', 'error mitigation', 'benchmarking', 'QI SDK'],
+    heroImage: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
+    heroCaption: 'Trust the platform that shows you what actually happened.',
+    excerpt: "We ran 50+ experiments on Quantum Inspire's Tuna-9, built an MCP server around the SDK, and automated a full experiment pipeline. The hardware surprised us &mdash; honest benchmarks, portable error mitigation, cross-platform parity on hard problems. The developer experience surprised us too, in less pleasant ways. Here's what we'd tell the QI team over coffee.",
+    content: `<p>Over the past weeks we've run 50+ quantum experiments across Quantum Inspire's Tuna-9, IBM Torino, IBM Marrakesh, and IQM Garnet. We built an <a href="/blog/quantum-mcp-servers">MCP server</a> around the QI SDK, wrote an <a href="/blog/ai-runs-quantum-experiment">autonomous experiment daemon</a>, and pushed every error mitigation technique we could find through every backend we had access to.</p>
+
+<p>This post is our honest field report. What surprised us, what frustrated us, and what we'd tell the Quantum Inspire team if we had 20 minutes of their time.</p>
+
+<h2>1. The Honest Compiler Is a Feature, Not a Limitation</h2>
+
+<p>This is the single most important thing we learned about Quantum Inspire, and it took a cross-platform benchmarking experiment to see it.</p>
+
+<p>We ran <a href="/blog/cross-platform-quantum-comparison">randomized benchmarking</a> across three backends. IBM Torino reported 99.99% gate fidelity. Tuna-9 reported 99.82%. IQM Garnet reported 99.82%. Two out of three agree &mdash; and the outlier is the one with the aggressive transpiler.</p>
+
+<p>What happened: IBM's Clifford-level transpiler collapsed our 32-gate RB sequences into 1&ndash;2 gates. It was measuring readout error, not gate error. QI and IQM ran the circuits as written, and converged on the same answer.</p>
+
+<p><strong>Two honest compilers agree. The outlier is the one that optimizes away your benchmark.</strong></p>
+
+<p>cQASM 3.0 goes straight to hardware. No black-box compilation. This makes certain things harder (you need to know the topology, get CNOT direction right, handle routing yourself), but it also means your benchmarks measure your hardware, not your compiler. For a research platform, that's the right tradeoff.</p>
+
+<h2>2. Open Error Mitigation Matches Proprietary Techniques</h2>
+
+<p>IBM's TREX achieved 0.22 kcal/mol on H2 VQE. Chemical accuracy, one API call, impressive. But it's proprietary &mdash; locked to IBM's Estimator primitives, opaque internals, works only on their hardware.</p>
+
+<p>On Tuna-9, we combined two open-source techniques: readout error mitigation (confusion matrix inversion) and parity post-selection. The result on the best qubit pair: <strong>0.92 kcal/mol</strong>. Chemical accuracy, using techniques that work on any backend with a calibration matrix.</p>
+
+<table>
+<thead><tr><th>Backend</th><th>Best technique</th><th>H2 VQE error</th><th>Portable?</th></tr></thead>
+<tbody>
+<tr><td>IBM Torino</td><td>TREX (resilience=1)</td><td><strong>0.22 kcal/mol</strong></td><td>No (IBM only)</td></tr>
+<tr><td>Tuna-9 q[2,4]</td><td>REM + post-selection</td><td><strong>0.92 kcal/mol</strong></td><td>Yes</td></tr>
+<tr><td>Tuna-9 q[6,8]</td><td>REM + post-selection</td><td>1.32 kcal/mol</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<p>Going from raw counts (22 kcal/mol) to hybrid PS+REM (0.92 kcal/mol) on Tuna-9 recovers 96% of the error using generic techniques. The remaining gap between 0.92 and IBM's 0.22 reflects IBM's better baseline readout fidelity, not a fundamentally better approach.</p>
+
+<p>And on the hard problem &mdash; HeH+ VQE, where the <a href="/blog/coefficient-amplification">coefficient amplification</a> makes chemical accuracy impossible &mdash; both platforms converge: 4.45 kcal/mol (IBM TREX) vs 4.44 kcal/mol (Tuna-9 REM+PS). <strong>The Hamiltonian sets the error floor, not the hardware.</strong></p>
+
+<h2>3. Qubit Selection Matters More Than Mitigation Strategy</h2>
+
+<p>On Tuna-9, the best qubit pair (q[2,4]) gave 0.92 kcal/mol with REM+PS. The worst pair (q[0,1]) gave 9.5 kcal/mol with the same mitigation. That's a <strong>10.3x difference</strong> from qubit selection alone.</p>
+
+<p>Readout error on individual qubits ranged from 1.6% (q[2]) to 12.3% (q[0]). This isn't documented anywhere we could find programmatically. Our <a href="/blog/ai-characterizes-quantum-processor">autonomous characterization agent</a> discovered it empirically &mdash; by running Bell circuits on every connected pair and comparing fidelities.</p>
+
+<p>On a 9-qubit chip, you can find the best qubits by exhaustive search in 20 minutes. On a 133-qubit chip, you need calibration data. IBM publishes it via their API. <strong>QI should too.</strong> A <code>backend.calibration_data()</code> endpoint returning per-qubit T1, T2, readout error, and gate fidelity would let users auto-select optimal qubits instead of discovering the hard way that q[0] is 8x noisier than q[2].</p>
+
+<h2>4. The Developer Experience Has Sharp Edges</h2>
+
+<p>We built three different interfaces to QI hardware: a <a href="/blog/quantum-mcp-servers">Model Context Protocol server</a>, a direct SDK integration in our experiment daemon, and a CLI-based subprocess wrapper. All three hit friction.</p>
+
+<h3>Auth tokens go stale silently</h3>
+
+<p>The QI SDK authenticates via <code>~/.quantuminspire/config.json</code>, populated by <code>qi login</code> (GitHub OAuth). Tokens expire without warning. Our MCP server would work for hours, then start returning opaque errors. We ended up rewriting the experiment daemon to call the SDK directly (<code>RemoteBackend</code>) instead of the CLI, specifically to work around token staleness. A token refresh mechanism &mdash; or at minimum, a clear "token expired" error instead of a generic failure &mdash; would save significant debugging time.</p>
+
+<h3><code>qi files run</code> output is unpredictable</h3>
+
+<p>Our daemon tried to parse JSON from <code>qi files run</code> stdout. Sometimes it got JSON. Sometimes it got extra log text mixed in. This made automated pipelines brittle. A <code>--format json</code> flag (or even just a guarantee that stdout is clean JSON when the command succeeds) would make programmatic use much more reliable.</p>
+
+<h3>cQASM needs a validation tool</h3>
+
+<p>cQASM 3.0 has no compiler and no implicit routing. CNOT directionality must match the hardware topology, and the topology can change after recalibration. We discovered stale topology data the hard way &mdash; CNOTs that worked last week got rejected this week because the hardware was recalibrated.</p>
+
+<p>A <code>qi validate circuit.cqasm</code> command that checks a circuit against the current topology (without submitting it) would catch these errors at development time instead of after waiting in the job queue. Even better: an API endpoint that returns the current connectivity graph, so tools can validate locally.</p>
+
+<h2>5. Document the Noise Profile, Not Just the Qubit Count</h2>
+
+<p>Our most actionable finding was that Tuna-9 is <strong>readout-error dominated</strong>. We discovered this by running a <a href="/blog/trex-depth-dependence">gate-folding diagnostic</a>: tripling the CNOT count changed VQE error by less than 1 kcal/mol out of ~7 kcal/mol total. The remaining error was almost entirely readout.</p>
+
+<p>This means:</p>
+<ul>
+<li><strong>REM (readout correction) is the right first-line treatment</strong> &mdash; it recovered 96% of the error</li>
+<li><strong>ZNE (gate noise extrapolation) returned NaN</strong> &mdash; there wasn't enough gate noise to extrapolate</li>
+<li><strong>Dynamical decoupling made things worse</strong> &mdash; it added gate overhead to fix a non-problem</li>
+</ul>
+
+<p>Most quantum computing tutorials assume gate-error-dominated hardware (because IBM's larger chips are gate-limited at scale). A researcher following those tutorials on Tuna-9 would waste time on ZNE and DD before discovering they need REM. The QI documentation should lead with this: <em>"Tuna-9 is readout-limited. Start with confusion matrix correction. Skip ZNE for shallow circuits."</em></p>
+
+<h2>6. Topology Changes Need Notifications</h2>
+
+<p>Hardware recalibration changed Tuna-9's connectivity graph. Qubits q[6&ndash;8], which our cached topology map said were dead, came back online. Other connections shifted. Our autonomous agent <a href="/blog/ai-characterizes-quantum-processor">discovered this by accident</a> &mdash; it started from zero and re-probed everything, catching changes a human would have missed by reusing old data.</p>
+
+<p>There's no notification when the topology changes. No version number. No "recalibrated at" timestamp in the API. A simple <code>backend.topology_version()</code> that increments on recalibration &mdash; or a webhook, or even a "last calibrated" field in <code>qi_list_backends</code> &mdash; would prevent the stale-data trap. Research results built on wrong topology assumptions are worse than no results at all.</p>
+
+<h2>The Broader Picture</h2>
+
+<p>Quantum Inspire is a research platform, and it behaves like one. The hardware runs your circuits honestly. The error mitigation techniques that work on it are portable. The benchmarks you get from it are real. These properties matter more than qubit count for the kind of work we're doing &mdash; replicating published experiments, characterizing noise, building trust in results.</p>
+
+<p>The gaps are in developer experience: auth management, output parsing, calibration data access, topology change detection. These are solvable engineering problems, not fundamental limitations. And the honest-compiler philosophy &mdash; what you write is what runs &mdash; is an undermarketed strength in an ecosystem where transpiler tricks can quietly inflate benchmarks.</p>
+
+<p>We'll keep running experiments on Tuna-9. The data it produces is data we trust.</p>
+
+<hr />
+
+<p>All experiment data: <a href="https://haiqu.org/experiments">experiments dashboard</a>. Cross-platform comparison: <a href="/blog/cross-platform-quantum-comparison">full analysis</a>. Error mitigation techniques: <a href="/blog/error-mitigation-showdown">mitigation showdown</a>. Autonomous hardware characterization: <a href="/blog/ai-characterizes-quantum-processor">characterization report</a>.</p>`,
+    sources: [
+      { label: 'Experiments dashboard', url: 'https://haiqu.org/experiments' },
+      { label: 'Cross-platform quantum comparison', url: '/blog/cross-platform-quantum-comparison' },
+      { label: 'Error mitigation showdown', url: '/blog/error-mitigation-showdown' },
+      { label: 'Autonomous hardware characterization', url: '/blog/ai-characterizes-quantum-processor' },
+      { label: 'Coefficient amplification analysis', url: '/blog/coefficient-amplification' },
+      { label: 'TREX depth dependence', url: '/blog/trex-depth-dependence' },
+      { label: 'Quantum Inspire SDK', url: 'https://github.com/QuTech-Delft/quantuminspire' },
+      { label: 'Sagastizabal et al. 2019', url: 'https://arxiv.org/abs/1902.11258' },
+    ],
+  },
 ]
