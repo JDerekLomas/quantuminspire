@@ -162,7 +162,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     term: 'VQE (Variational Quantum Eigensolver)',
     definition: 'A hybrid quantum-classical algorithm for finding molecular ground state energies. A parameterized quantum circuit (ansatz) prepares a trial state, the quantum computer measures the energy, and a classical optimizer adjusts the parameters. Our H2 experiments use VQE.',
     category: 'algorithms',
-    vizLink: { label: 'Ansatz Explorer', href: '/ansatz' },
+    vizLink: { label: 'VQE Explainer', href: '/vqe' },
     expLink: { label: 'H\u2082 VQE results', href: '/experiments/vqe-h2' },
     related: ['Ansatz', 'Hamiltonian', 'Chemical accuracy'],
   },

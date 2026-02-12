@@ -638,7 +638,7 @@ export default function AnsatzPage() {
             </Link>{' '}
             is a parameterized quantum circuit used as a trial wavefunction in variational algorithms
             like{' '}
-            <Link href="/learn" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
+            <Link href="/vqe" className="text-quantum-accent/80 hover:text-quantum-accent underline decoration-quantum-accent/30">
               VQE
             </Link>{' '}
             and{' '}
@@ -853,7 +853,7 @@ export default function AnsatzPage() {
           <h2 className="text-xl font-semibold mb-1">Parameter Landscape</h2>
           <p className="text-sm text-gray-500 mb-6">
             E(θ) for the 2-qubit H₂{' '}
-            <Link href="/learn" className="text-quantum-accent/60 hover:text-quantum-accent">VQE</Link>{' '}
+            <Link href="/vqe" className="text-quantum-accent/60 hover:text-quantum-accent">VQE</Link>{' '}
             at R=0.735 &Aring;, from{' '}
             <a href="https://arxiv.org/abs/1902.11258" target="_blank" rel="noopener noreferrer"
               className="text-quantum-accent/60 hover:text-quantum-accent">Sagastizabal 2019</a>.

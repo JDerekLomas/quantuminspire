@@ -17,11 +17,11 @@ const experiences = [
     tag: 'Scroll-driven tour',
   },
   {
-    href: '/listen',
-    title: 'Listen',
-    desc: 'The same story told through sound. Nine acts: one qubit, nine qubits, entanglement, measurement, decoherence.',
+    href: '/tuna9',
+    title: 'Tuna-9',
+    desc: 'Meet a 9-qubit quantum computer. Sound and visuals from real experiments at TU Delft.',
     color: '#e879f9',
-    tag: '9-act sonification',
+    tag: 'Guided tour',
   },
 ]
 
@@ -82,9 +82,10 @@ const tools = [
   { href: '/grovers', title: "Grover's Search", desc: 'Oracle + diffusion, amplitude amplification', color: '#ff8c42' },
   { href: '/interference', title: 'Multi-Slit', desc: 'N-slit diffraction, photon accumulation', color: '#14b8a6' },
   { href: '/rabi', title: 'Rabi Oscillations', desc: 'Driving field, detuning, T2 dephasing', color: '#eab308' },
+  { href: '/vqe', title: 'VQE', desc: 'Variational quantum eigensolver explained', color: '#00ff88' },
   { href: '/ansatz', title: 'Ansatz Builder', desc: 'VQE circuit construction', color: '#94a3b8' },
   { href: '/hamiltonians', title: 'Hamiltonians', desc: 'Molecular Hamiltonian explorer', color: '#94a3b8' },
-  { href: '/listen', title: 'Sonification Lab', desc: 'Play real experiment data as sound', color: '#e879f9' },
+  { href: '/sonification', title: 'Sonification Lab', desc: 'Play real experiment data as sound', color: '#e879f9' },
 ]
 
 const reference = [

@@ -154,7 +154,7 @@ function BenchmarkSection() {
         programming tasks (circuit construction,{' '}
         <Link href="/learn" className="text-gray-300 hover:underline">transpilation</Link>,{' '}
         <Link href="/error-mitigation" className="text-gray-300 hover:underline">error mitigation</Link>,{' '}
-        <Link href="/hamiltonians" className="text-gray-300 hover:underline">VQE</Link>).
+        <Link href="/vqe" className="text-gray-300 hover:underline">VQE</Link>).
       </p>
       <div className="space-y-3">
         {rows.map((r) => (
@@ -268,9 +268,9 @@ function EducationSection() {
       href: '/see',
     },
     {
-      title: 'Listen',
-      description: 'Quantum states as sound',
-      href: '/listen',
+      title: 'Tuna-9',
+      description: 'Meet a 9-qubit quantum computer',
+      href: '/tuna9',
     },
   ]
 

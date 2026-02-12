@@ -1200,6 +1200,7 @@ export default function HamiltoniansPage() {
           <h2 className="text-xl font-semibold mb-4">Explore More</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
+              { href: '/vqe', title: 'VQE Explainer', desc: 'The variational loop, energy landscape, and real hardware results' },
               { href: '/ansatz', title: 'Ansatz Explorer', desc: 'Circuit architectures from 4 papers, mapped to 3 quantum processors' },
               { href: '/replications', title: 'Paper Replications', desc: '5 papers, 19 claims tested across emulator, Tuna-9, Garnet, and IBM' },
               { href: '/experiments', title: 'Experiment Dashboard', desc: '50+ experiments: Bell, GHZ, VQE, QAOA, QV, RB results' },

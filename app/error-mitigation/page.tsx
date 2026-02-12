@@ -570,7 +570,7 @@ export default function ErrorMitigationPage() {
         <section className="mb-16">
           <h2 className="text-2xl font-bold mb-3 text-white">The Noise Problem</h2>
           <p className="text-gray-400 mb-6 max-w-2xl">
-            Quantum computers make errors on every shot. For a simple H₂ VQE circuit,
+            Quantum computers make errors on every shot. For a simple H₂ <Link href="/vqe" className="text-gray-300 hover:underline">VQE</Link> circuit,
             the ideal result is a clean 50/50 split between |01⟩ and |10⟩. Real hardware
             leaks probability into the wrong states — and that leak corrupts the energy.
           </p>
