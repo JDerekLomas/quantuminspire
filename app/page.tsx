@@ -135,12 +135,12 @@ function EvalChart() {
     { label: 'Ensemble\n(5 models)', date: 'Jan 2026', score: 79.5, color: '#ff8c42' },
   ]
 
-  const W = 600
-  const H = 280
-  const padL = 12
-  const padR = 12
-  const padT = 24
-  const padB = 48
+  const W = 520
+  const H = 300
+  const padL = 10
+  const padR = 10
+  const padT = 20
+  const padB = 70
 
   const chartW = W - padL - padR
   const chartH = H - padT - padB
@@ -156,9 +156,9 @@ function EvalChart() {
   const gridLines = [40, 50, 60, 70, 80]
 
   return (
-    <div className="rounded-xl border border-[#ff8c42]/20 bg-[#ff8c42]/[0.03] p-6 sm:p-8">
-      <div className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#ff8c42]/80 mb-4">
-        Qiskit HumanEval Benchmark — 151 tasks — pass@1
+    <div className="rounded-xl border border-[#ff8c42]/20 bg-[#ff8c42]/[0.03] p-4 sm:p-8">
+      <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#ff8c42]/80 mb-4">
+        Qiskit HumanEval — 151 tasks — pass@1
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Chart showing Qiskit HumanEval benchmark scores over time. Granite-8b: 46.5%, QSpark: 56.3%, Claude 3.5 zero-shot: 58.9%, Claude 4.6 + RAG: 70.9%, Ensemble: 79.5%.">
         {/* Y-axis grid */}
@@ -185,14 +185,14 @@ function EvalChart() {
           <g key={d.label}>
             <circle cx={toX(i)} cy={toY(d.score)} r={i >= 3 ? 5 : 3.5} fill={d.color} />
             <text
-              x={toX(i)} y={toY(d.score) - 12}
-              textAnchor="middle" fill={d.color} fontSize="12" fontWeight="900" fontFamily="monospace"
+              x={toX(i)} y={toY(d.score) - 10}
+              textAnchor="middle" fill={d.color} fontSize="11" fontWeight="900" fontFamily="monospace"
             >
               {d.score}%
             </text>
             {/* Date label */}
             <text
-              x={toX(i)} y={H - padB + 16}
+              x={toX(i)} y={H - padB + 14}
               textAnchor="middle" fill="#666" fontSize="8" fontFamily="monospace"
             >
               {d.date}
@@ -201,8 +201,8 @@ function EvalChart() {
             {d.label.split('\n').map((line, li) => (
               <text
                 key={li}
-                x={toX(i)} y={H - padB + 28 + li * 10}
-                textAnchor="middle" fill="#9ca3af" fontSize="8" fontFamily="monospace"
+                x={toX(i)} y={H - padB + 26 + li * 10}
+                textAnchor="middle" fill="#9ca3af" fontSize="7.5" fontFamily="monospace"
               >
                 {line}
               </text>
