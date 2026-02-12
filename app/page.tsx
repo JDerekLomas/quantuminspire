@@ -125,94 +125,55 @@ function VibecodingSection() {
 
 // ─── Section 2: Science ─────────────────────────────────────────────────────
 
-function EvalChart() {
-  // Qiskit HumanEval benchmark data points
-  const data = [
-    { label: 'Granite-8b', date: 'Sep 2024', score: 46.5, color: '#666' },
-    { label: 'QSpark', date: 'Mar 2025', score: 56.3, color: '#666' },
-    { label: 'Claude 3.5\nzero-shot', date: 'Jun 2025', score: 58.9, color: '#9ca3af' },
-    { label: 'Claude 4.6\n+ RAG', date: 'Jan 2026', score: 70.9, color: '#ff8c42' },
-    { label: 'Ensemble\n(5 models)', date: 'Jan 2026', score: 79.5, color: '#ff8c42' },
+function BenchmarkSection() {
+  const rows = [
+    { label: 'Best fine-tuned specialist', model: 'QSpark', score: 56.3, color: '#666', highlight: false },
+    { label: 'General-purpose, zero-shot', model: 'Claude 3.5 Sonnet', score: 58.9, color: '#9ca3af', highlight: false },
+    { label: 'General-purpose + RAG', model: 'Claude Opus 4.6', score: 70.9, color: '#ff8c42', highlight: true },
+    { label: 'Ensemble ceiling', model: '5 frontier models', score: 79.5, color: '#ff8c42', highlight: true },
   ]
 
-  const W = 560
-  const H = 300
-  const padL = 50
-  const padR = 50
-  const padT = 20
-  const padB = 70
-
-  const chartW = W - padL - padR
-  const chartH = H - padT - padB
-
-  const xStep = chartW / (data.length - 1)
-  const yMin = 30
-  const yMax = 90
-
-  const toX = (i: number) => padL + i * xStep
-  const toY = (score: number) => padT + chartH - ((score - yMin) / (yMax - yMin)) * chartH
-
-  // Grid lines
-  const gridLines = [40, 50, 60, 70, 80]
-
   return (
-    <div className="rounded-xl border border-[#ff8c42]/20 bg-[#ff8c42]/[0.03] p-4 sm:p-8">
-      <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#ff8c42]/80 mb-4">
-        Qiskit HumanEval — 151 tasks — pass@1
+    <div className="rounded-xl border border-[#ff8c42]/20 bg-[#ff8c42]/[0.03] p-5 sm:p-8">
+      <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#ff8c42]/80 mb-3">
+        Benchmark Review
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Chart showing Qiskit HumanEval benchmark scores over time. Granite-8b: 46.5%, QSpark: 56.3%, Claude 3.5 zero-shot: 58.9%, Claude 4.6 + RAG: 70.9%, Ensemble: 79.5%.">
-        {/* Y-axis grid */}
-        {gridLines.map(v => (
-          <g key={v}>
-            <line
-              x1={padL} y1={toY(v)} x2={W - padR} y2={toY(v)}
-              stroke="rgba(255,255,255,0.05)" strokeWidth="1"
-            />
-            <text x={padL - 4} y={toY(v) + 3} textAnchor="end" fill="#666" fontSize="9" fontFamily="monospace">
-              {v}%
-            </text>
-          </g>
-        ))}
-
-        {/* Connecting line */}
-        <polyline
-          points={data.map((d, i) => `${toX(i)},${toY(d.score)}`).join(' ')}
-          fill="none" stroke="rgba(255,140,66,0.3)" strokeWidth="2"
-        />
-
-        {/* Data points and labels */}
-        {data.map((d, i) => (
-          <g key={d.label}>
-            <circle cx={toX(i)} cy={toY(d.score)} r={i >= 3 ? 5 : 3.5} fill={d.color} />
-            <text
-              x={toX(i)} y={toY(d.score) - 10}
-              textAnchor="middle" fill={d.color} fontSize="11" fontWeight="900" fontFamily="monospace"
+      <p className="text-sm text-gray-400 leading-relaxed mb-6">
+        Can LLMs write quantum code? We tested 12 models on{' '}
+        <span className="text-gray-300">Qiskit HumanEval</span> — 151 hand-verified quantum
+        programming tasks (circuit construction, transpilation, error mitigation, VQE).
+      </p>
+      <div className="space-y-3">
+        {rows.map((r) => (
+          <div key={r.model} className="flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{ width: `${r.score}%`, backgroundColor: r.color }}
+                />
+              </div>
+            </div>
+            <span
+              className="text-sm sm:text-base font-mono font-black tabular-nums shrink-0"
+              style={{ color: r.highlight ? r.color : '#9ca3af' }}
             >
-              {d.score}%
-            </text>
-            {/* Date label */}
-            <text
-              x={toX(i)} y={H - padB + 14}
-              textAnchor="middle" fill="#666" fontSize="8" fontFamily="monospace"
-            >
-              {d.date}
-            </text>
-            {/* Model label */}
-            {d.label.split('\n').map((line, li) => (
-              <text
-                key={li}
-                x={toX(i)} y={H - padB + 26 + li * 10}
-                textAnchor="middle" fill="#9ca3af" fontSize="7.5" fontFamily="monospace"
-              >
-                {line}
-              </text>
-            ))}
-          </g>
+              {r.score}%
+            </span>
+          </div>
         ))}
-      </svg>
-      <p className="text-xs text-gray-400 leading-relaxed mt-4">
-        General-purpose frontier models beat every fine-tuned quantum specialist zero-shot.
-        Dynamic RAG adds +14%. Ensemble ceiling: 79.5%.
+        {/* Labels below bars */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+          {rows.map((r) => (
+            <div key={r.model}>
+              <div className="text-[11px] font-mono text-gray-300">{r.model}</div>
+              <div className="text-[10px] text-gray-500">{r.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <p className="text-xs text-gray-500 leading-relaxed mt-5">
+        General-purpose frontier models beat every fine-tuned quantum specialist — zero-shot, with no quantum training data. Adding dynamic RAG (feeding relevant Qiskit docs at inference) pushes accuracy to 70.9%.
       </p>
     </div>
   )
@@ -249,7 +210,7 @@ function ScienceSection() {
 
         {/* Eval chart */}
         <ScrollReveal delay={0.3}>
-          <EvalChart />
+          <BenchmarkSection />
         </ScrollReveal>
 
         <ScrollReveal delay={0.5}>
