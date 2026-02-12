@@ -24,13 +24,19 @@ function Hero() {
         AI agents run real quantum experiments on real hardware, through natural language.
       </p>
       <div className="flex items-center gap-4 mb-8">
+        <Link
+          href="/get-started"
+          className="px-5 py-2.5 rounded-lg text-sm font-mono font-bold bg-[#00ff88]/10 border border-[#00ff88]/30 text-[#00ff88] hover:bg-[#00ff88]/20 transition-all"
+        >
+          Try it yourself
+        </Link>
         <a
           href="/haiqu-paper.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="px-5 py-2.5 rounded-lg text-sm font-mono font-bold bg-white/5 border border-white/20 text-white hover:bg-white/10 transition-all"
         >
-          Read the paper (PDF)
+          Read the paper
         </a>
       </div>
       <p className="text-sm font-mono text-gray-400 text-center mb-12">

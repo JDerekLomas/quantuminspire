@@ -192,6 +192,26 @@ export default function GetStartedPage() {
         </div>
       </section>
 
+      {/* Try it in 2 minutes */}
+      <section className="border-b border-white/5 px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-[#00ff88]/5 border border-[#00ff88]/20 rounded-lg p-6">
+            <h2 className="text-2xl font-bold text-white mb-2">Try it in 2 minutes</h2>
+            <p className="text-gray-300 text-sm mb-4">
+              Already have Claude Code? Paste this into your terminal:
+            </p>
+            <CodeBlock title="terminal">{`git clone https://github.com/JDerekLomas/quantuminspire.git && cd quantuminspire && python3.12 -m venv .venv && source .venv/bin/activate && pip install -r mcp-servers/requirements.txt && claude`}</CodeBlock>
+            <p className="text-gray-300 text-sm mt-4 mb-2">Then ask Claude:</p>
+            <CodeBlock title="in Claude Code">{`> Run a Bell state on the local emulator and show me the results`}</CodeBlock>
+            <p className="text-gray-400 text-xs mt-3">
+              No accounts needed. The MCP servers start automatically and the local quantum emulator
+              runs circuits instantly. Claude generates cQASM 3.0, runs it, and analyzes the results.
+              Add real hardware accounts later (see full setup below).
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* What is this */}
       <section className="border-b border-white/5 px-6 py-12">
         <div className="max-w-4xl mx-auto">
@@ -235,7 +255,11 @@ claude`}</CodeBlock>
             </p>
           </StepCard>
 
-          <StepCard step={2} title="Get quantum hardware accounts (all free)">
+          <StepCard step={2} title="Get quantum hardware accounts (optional, all free)">
+            <p className="mb-4">
+              The local emulator works with no accounts at all.
+              Add hardware accounts when you want to run on real qubits.
+            </p>
             <div className="space-y-4">
               {platforms.map(p => (
                 <div key={p.name} className="bg-white/[0.02] border border-white/5 rounded-lg p-4">
@@ -260,61 +284,56 @@ claude`}</CodeBlock>
               ))}
             </div>
             <p className="text-gray-400 text-xs mt-2">
-              You don&apos;t need all three. Quantum Inspire is the easiest to start with (unlimited jobs, fast queue).
-              The local emulator works with zero accounts.
+              Quantum Inspire is the easiest to start with (unlimited jobs, fast queue).
+              You don&apos;t need all three.
             </p>
           </StepCard>
 
-          <StepCard step={3} title="Install Python environment">
-            <p>The MCP servers need Python 3.12 (not 3.14 -- it breaks libqasm) with quantum SDKs.</p>
-            <CodeBlock title="terminal">{`python3.12 -m venv .venv
+          <StepCard step={3} title="Clone the repo and install Python environment">
+            <p>The MCP servers and all experiment code live in the repository. Python 3.12 is required (3.14 breaks libqasm, a dependency of the QI emulator).</p>
+            <CodeBlock title="terminal">{`git clone https://github.com/JDerekLomas/quantuminspire.git
+cd quantuminspire
+
+python3.12 -m venv .venv
 source .venv/bin/activate
-
-# Core quantum SDKs
-pip install qiskit==2.1.2 qiskit-ibm-runtime
-pip install pennylane==0.44
-pip install quantuminspire>=3.5.0
-
-# MCP server framework
-pip install "mcp>=1.0.0"
-
-# Local emulator (no hardware needed)
-pip install qxelarator`}</CodeBlock>
+pip install -r mcp-servers/requirements.txt`}</CodeBlock>
+            <p className="text-gray-400 text-xs">
+              This installs Qiskit, Quantum Inspire SDK, MCP framework, and all dependencies.
+              If you already ran the quick start above, skip this step.
+            </p>
           </StepCard>
 
-          <StepCard step={4} title="Set up MCP quantum servers">
+          <StepCard step={4} title="MCP servers (already configured)">
             <p>
               MCP (Model Context Protocol) servers expose quantum hardware as tools that Claude Code can call.
-              Each server wraps a vendor SDK. Create a <code className="text-[#00d4ff]">.mcp.json</code> file
-              in your project root:
+              The repo includes a <code className="text-[#00d4ff]">.mcp.json</code> that configures three servers automatically.
+              When you run <code className="text-[#00d4ff]">claude</code> in the project directory, the servers start on their own.
             </p>
-            <CodeBlock title=".mcp.json">{`{
+            <CodeBlock title=".mcp.json (already in the repo)">{`{
   "mcpServers": {
     "qi-circuits": {
       "type": "stdio",
       "command": ".venv/bin/python",
-      "args": ["mcp-servers/qi-circuits/qi_server.py"]
+      "args": ["mcp-servers/qi-circuits/qi_server.py"],
+      "cwd": "."
     },
     "ibm-quantum": {
       "type": "stdio",
       "command": ".venv/bin/python",
-      "args": ["mcp-servers/ibm-quantum/ibm_server.py"]
+      "args": ["mcp-servers/ibm-quantum/ibm_server.py"],
+      "cwd": "."
     },
     "qrng": {
       "type": "stdio",
       "command": ".venv/bin/python",
-      "args": ["mcp-servers/qrng/qrng_server.py"]
+      "args": ["mcp-servers/qrng/qrng_server.py"],
+      "cwd": "."
     }
   }
 }`}</CodeBlock>
-            <p>
-              The MCP server source code is in our repository. Clone it to get the servers:
-            </p>
-            <CodeBlock>{`git clone https://github.com/JDerekLomas/quantuminspire.git
-# Servers are in mcp-servers/qi-circuits/, mcp-servers/ibm-quantum/, mcp-servers/qrng/`}</CodeBlock>
             <p className="text-gray-400 text-xs">
               Each server is ~200-400 lines of Python. They&apos;re simple wrappers around vendor SDKs that
-              expose submit/check/get-results as MCP tools.
+              expose submit/check/get-results as MCP tools. No configuration needed for the local emulator.
             </p>
           </StepCard>
 
