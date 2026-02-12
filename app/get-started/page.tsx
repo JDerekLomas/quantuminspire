@@ -175,8 +175,7 @@ export default function GetStartedPage() {
             Quantum Vibe Coding
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl">
-            Run circuits on real quantum hardware from your terminal.
-            Claude Code + MCP servers = quantum experiments in natural language.
+            Quantum Vibecoding on real quantum hardware in under 15 minutes.
           </p>
           <div className="flex flex-wrap gap-3 mt-6">
             <span className="text-xs font-mono px-3 py-1 rounded-full bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20">

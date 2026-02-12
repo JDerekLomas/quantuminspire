@@ -23,6 +23,9 @@ function Hero() {
       <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed text-center mb-6">
         Using natural language, you can ask AI agents to run real quantum experiments on real hardware: it&apos;s the era of Quantum Vibecoding
       </p>
+      <p className="text-sm font-mono text-[#00ff88] mb-8">
+        Quantum Vibecoding on real quantum hardware in under 15 minutes
+      </p>
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/get-started"
