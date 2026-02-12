@@ -26,8 +26,28 @@ export default function LearnPage() {
     entries: GLOSSARY.filter(e => e.category === cat.id),
   }))
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    name: 'Quantum Computing Glossary',
+    description: '40+ quantum computing terms with plain-English definitions, links to interactive tools, and connections to real experiment data.',
+    url: 'https://haiqu.org/learn',
+    publisher: { '@id': 'https://haiqu.org/#organization' },
+    hasDefinedTerm: GLOSSARY.map(entry => ({
+      '@type': 'DefinedTerm',
+      name: entry.term,
+      description: entry.definition,
+      url: `https://haiqu.org/learn#${entry.category}`,
+      inDefinedTermSet: 'https://haiqu.org/learn',
+    })),
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a1a] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Nav section="glossary" />
 
       <div className="max-w-5xl mx-auto px-6 py-16">
