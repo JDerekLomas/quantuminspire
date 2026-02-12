@@ -1037,7 +1037,7 @@ export const posts: BlogPost[] = [
 
 <h2>Why They Fail</h2>
 
-<p>Of Claude's 57 failures, we classified every error:</p>
+<p>Of Gemini's 57 baseline failures, we classified every error:</p>
 
 <table>
 <thead><tr><th>Error Type</th><th>Count</th><th>What It Means</th></tr></thead>
@@ -1074,7 +1074,7 @@ export const posts: BlogPost[] = [
 
 <h2>What's Still Broken</h2>
 
-<p>34 tasks fail for <em>every</em> model and configuration \u2014 neither model with documentation can solve them. These are the hard ceiling:</p>
+<p>Across the two best Context7 runs (Opus and Gemini run 1, both at 107/151), 34 tasks fail for <em>both</em> models \u2014 neither can solve them even with documentation. These are the hard ceiling:</p>
 
 <table>
 <thead><tr><th>Failure Mode</th><th>Count</th><th>%</th></tr></thead>
@@ -1097,9 +1097,25 @@ export const posts: BlogPost[] = [
 
 <h2>What's Next</h2>
 
-<p>The 79.5% ensemble ceiling comes from single-shot generation \u2014 no retries, no error feedback. 21 of the 31 hard-floor failures produce assertion errors with informative messages. Letting the model see the error and try again is how developers actually work, and it's the basis for our next benchmark: an agentic evaluation where the model gets multiple attempts and tool access.</p>
+<p>The 79.5% ensemble ceiling comes from single-shot generation \u2014 no retries, no error feedback. About half the hard-floor failures produce assertion errors with informative messages. Letting the model see the error and try again is how developers actually work, and it's the basis for our next benchmark: an agentic evaluation where the model gets multiple attempts and tool access.</p>
 
-<p>All benchmark code and results are open source: <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results">github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results</a></p>
+<h2>Raw Data</h2>
+
+<p>Every result file is a JSON with per-task pass/fail, error messages, generated code, and token counts. The canonical runs cited in this post:</p>
+
+<table>
+<thead><tr><th>Configuration</th><th>Result File</th></tr></thead>
+<tbody>
+<tr><td>Claude Opus 4.6 baseline</td><td><a href="https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_claude-opus-4-6_20260210_110315.json">claude-opus-4-6_20260210_110315</a></td></tr>
+<tr><td>Gemini 3 Flash baseline</td><td><a href="https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_gemini-3-flash-preview_20260209_234106.json">gemini-3-flash_20260209_234106</a></td></tr>
+<tr><td>Gemini + Static RAG</td><td><a href="https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_rag_gemini-3-flash-preview_20260210_144039.json">rag_gemini-3-flash_20260210_144039</a></td></tr>
+<tr><td>Gemini + Context7 (run 1)</td><td><a href="https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_rag_context7_gemini-3-flash-preview_20260210_163102.json">rag_context7_gemini-3-flash_20260210_163102</a></td></tr>
+<tr><td>Opus + Context7</td><td><a href="https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_rag_context7_claude-opus-4-6_20260210_184650.json">rag_context7_claude-opus-4-6_20260210_184650</a></td></tr>
+<tr><td>Gemini + Context7 (run 2)</td><td><a href="https://github.com/JDerekLomas/quantuminspire/blob/main/benchmark_results/results_standard_rag_context7_gemini-3-flash-preview_20260210_204214.json">rag_context7_gemini-3-flash_20260210_204214</a></td></tr>
+</tbody>
+</table>
+
+<p>All benchmark code and results: <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results">github.com/JDerekLomas/quantuminspire/tree/main/benchmark_results</a></p>
 `,
     sources: [
       { label: 'Qiskit HumanEval benchmark paper', url: 'https://arxiv.org/abs/2406.02132' },
