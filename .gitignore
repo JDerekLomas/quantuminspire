@@ -18,6 +18,9 @@ node_modules/
 # Build output
 out/
 
+# macOS
+.DS_Store
+
 # Transient artifacts
 tsconfig.tsbuildinfo
 logs/

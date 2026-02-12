@@ -17,6 +17,25 @@ from mcp.server.fastmcp import FastMCP
 logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 logger = logging.getLogger("qi-circuits")
 
+# ---------------------------------------------------------------------------
+# Monkey-patch: QI API returns image_id longer than the SDK's max_length=16.
+# Widen the constraint until upstream fixes it.
+# ---------------------------------------------------------------------------
+try:
+    from compute_api_client.models.backend_type import BackendType as _BT
+    for field_name, field_info in _BT.model_fields.items():
+        if field_name == "image_id":
+            field_info.metadata = [
+                m for m in field_info.metadata
+                if not (hasattr(m, "max_length") and m.max_length == 16)
+            ]
+            from annotated_types import MaxLen
+            field_info.metadata.append(MaxLen(256))
+    _BT.model_rebuild(force=True)
+    logger.info("Patched BackendType.image_id max_length")
+except Exception as exc:
+    logger.warning("Could not patch BackendType.image_id: %s", exc)
+
 mcp = FastMCP("Quantum Inspire Circuits")
 
 # ---------------------------------------------------------------------------
@@ -202,8 +221,18 @@ def qi_run_local(
         number_of_shots: Number of measurement shots (default 1024)
     """
     try:
-        backend = _get_local()
-        result = backend.run_quantum(circuit, number_of_shots=number_of_shots)
+        import qxelarator
+        from qxelarator import SimulationError as QxSimError
+
+        qx = qxelarator.QXelarator()
+        result = qx.execute_string(circuit, iterations=number_of_shots)
+
+        # qxelarator returns SimulationError (not an exception) on failure
+        if isinstance(result, QxSimError):
+            return json.dumps({
+                "error": f"Simulation failed: {result.message}",
+                "backend": "qxelarator (local emulator)",
+            })
 
         return json.dumps({
             "results": result.results,

@@ -7,5 +7,6 @@ mcp>=1.0.0
 quantuminspire>=3.5.0
 
 # IBM Quantum (ibm-quantum server)
+# NOTE: <2 pin is intentional — Qiskit 2.0 may break qiskit-ibm-runtime compat
 qiskit>=1.2,<2
 qiskit-ibm-runtime>=0.30
