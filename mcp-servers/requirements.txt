@@ -1,0 +1,11 @@
+# MCP server dependencies
+# Install: pip install -r mcp-servers/requirements.txt
+
+mcp>=1.0.0
+
+# Quantum Inspire (qi-circuits + qrng servers)
+quantuminspire>=3.5.0
+
+# IBM Quantum (ibm-quantum server)
+qiskit>=1.2,<2
+qiskit-ibm-runtime>=0.30

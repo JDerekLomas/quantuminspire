@@ -43,21 +43,32 @@ Additional hardware experiments: connectivity probe (Tuna-9 topology), repetitio
 ## Quick start
 
 ```bash
-# Website
+# 1. Website
+npm install
 npm run dev
 # Deploy
 vercel --prod
 
-# Python experiments (requires .venv)
+# 2. Python environment (Python 3.12 required — 3.14 breaks libqasm)
+python3.12 -m venv .venv
 source .venv/bin/activate
-secret-lover run -- python scripts/benchmark_harness.py --limit 10
+pip install -r mcp-servers/requirements.txt
+
+# 3. MCP servers for Claude Code (optional — starts automatically)
+#    The .mcp.json in this repo configures three quantum MCP servers.
+#    They use .venv/bin/python, so step 2 must be done first.
+#    Auth setup (needed for hardware, not for emulator):
+#      - Quantum Inspire: qi login
+#      - IBM Quantum: python -c "from qiskit_ibm_runtime import QiskitRuntimeService; QiskitRuntimeService.save_account(channel='ibm_cloud', token='YOUR_TOKEN')"
+
+# 4. Run experiments
+source .venv/bin/activate
+python scripts/benchmark_harness.py --limit 10
 python scripts/replications/replicate_sagastizabal.py
 python scripts/replications/replicate_peruzzo.py
-
-# Run experiment daemon
 python agents/experiment_daemon.py
 
-# Tests
+# 5. Tests
 npm test                              # JS/TS (Vitest)
 python -m pytest tests/               # Python
 ```
