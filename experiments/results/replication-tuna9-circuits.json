@@ -1,0 +1,429 @@
+{
+  "generated": "2026-02-14T13:47:57.550221+00:00",
+  "backend": "tuna-9",
+  "gate_set": "native (CZ, Ry, Rz, X)",
+  "compile_stage": "routing",
+  "shots": 4096,
+  "qubit_pair": [
+    4,
+    6
+  ],
+  "qubit_chain": [
+    2,
+    4,
+    6,
+    8
+  ],
+  "sagastizabal2019": {
+    "experiment": "H2 VQE + symmetry verification",
+    "paper": "Sagastizabal et al., PRA 100, 010302(R) (2019)",
+    "encoding": "sector-projected 2 qubits",
+    "ansatz": "single excitation (1 CZ gate)",
+    "symmetry": "S = Z0Z1, eigenvalue +1",
+    "n_circuits": 21,
+    "distances": [
+      {
+        "bond_distance": 0.5,
+        "fci_energy": -1.05515976,
+        "hf_energy": -1.04299624,
+        "projected_energy": -1.05515973,
+        "optimal_alpha": -0.143585,
+        "error_vs_fci_mHa": 0.0,
+        "g0": 0.12316306,
+        "g1": 0.58307965,
+        "g2": -0.58307965,
+        "g3": 0.0,
+        "g4": 0.08443511,
+        "g5": 0.08443511,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 0.7,
+        "fci_energy": -1.13618945,
+        "hf_energy": -1.11734903,
+        "projected_energy": -1.13618944,
+        "optimal_alpha": -0.209565,
+        "error_vs_fci_mHa": 0.0,
+        "g0": -0.27643762,
+        "g1": 0.42045571,
+        "g2": -0.42045571,
+        "g3": 0.0,
+        "g4": 0.08950029,
+        "g5": 0.08950029,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 0.735,
+        "fci_energy": -1.13730604,
+        "hf_energy": -1.116999,
+        "projected_energy": -1.13730603,
+        "optimal_alpha": -0.22339,
+        "error_vs_fci_mHa": 0.0,
+        "g0": -0.32112409,
+        "g1": 0.39793745,
+        "g2": -0.39793745,
+        "g3": 0.0,
+        "g4": 0.0904656,
+        "g5": 0.0904656,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 0.9,
+        "fci_energy": -1.12056029,
+        "hf_energy": -1.09191406,
+        "projected_energy": -1.12056028,
+        "optimal_alpha": -0.298167,
+        "error_vs_fci_mHa": 0.0,
+        "g0": -0.47233944,
+        "g1": 0.30978731,
+        "g2": -0.30978731,
+        "g3": 0.0,
+        "g4": 0.09528584,
+        "g5": 0.09528584,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 1.1,
+        "fci_energy": -1.07919296,
+        "hf_energy": -1.0365389,
+        "projected_energy": -1.07919296,
+        "optimal_alpha": -0.413789,
+        "error_vs_fci_mHa": 0.0,
+        "g0": -0.5737471,
+        "g1": 0.2313959,
+        "g2": -0.2313959,
+        "g3": 0.0,
+        "g4": 0.10161111,
+        "g5": 0.10161111,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 1.5,
+        "fci_energy": -0.99814937,
+        "hf_energy": -0.91087359,
+        "projected_energy": -0.99814937,
+        "optimal_alpha": -0.726723,
+        "error_vs_fci_mHa": 0.0,
+        "g0": -0.65267092,
+        "g1": 0.12910133,
+        "g2": -0.12910133,
+        "g3": 0.0,
+        "g4": 0.11476796,
+        "g5": 0.11476796,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 2.0,
+        "fci_energy": -0.94864112,
+        "hf_energy": -0.78379268,
+        "projected_energy": -0.94864112,
+        "optimal_alpha": -1.133286,
+        "error_vs_fci_mHa": 0.0,
+        "g0": -0.66253664,
+        "g1": 0.06062802,
+        "g2": -0.06062802,
+        "g3": 0.0,
+        "g4": 0.12956923,
+        "g5": 0.12956923,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      }
+    ]
+  },
+  "peruzzo2014": {
+    "experiment": "HeH+ VQE cross-platform",
+    "paper": "Peruzzo et al., Nature Comms 5, 4213 (2014)",
+    "encoding": "sector-projected 2 qubits",
+    "ansatz": "single excitation (1 CZ gate)",
+    "n_circuits": 21,
+    "distances": [
+      {
+        "bond_distance": 0.5,
+        "fci_energy": -2.64071452,
+        "hf_energy": -2.63166504,
+        "projected_energy": -2.64062281,
+        "optimal_alpha": -0.108396,
+        "error_vs_fci_mHa": 0.0917,
+        "g0": -1.10802457,
+        "g1": 0.76182023,
+        "g4": 0.08273026,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 0.75,
+        "fci_energy": -2.99157382,
+        "hf_energy": -2.8364465,
+        "projected_energy": -2.84587417,
+        "optimal_alpha": -0.127247,
+        "error_vs_fci_mHa": 145.6996,
+        "g0": -1.68127654,
+        "g1": 0.57758498,
+        "g4": 0.07394257,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 1.0,
+        "fci_energy": -3.15785919,
+        "hf_energy": -2.85292108,
+        "projected_energy": -2.85972442,
+        "optimal_alpha": -0.115936,
+        "error_vs_fci_mHa": 298.1348,
+        "g0": -1.84775936,
+        "g1": 0.50258086,
+        "g4": 0.05857303,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 1.25,
+        "fci_energy": -3.22540765,
+        "hf_energy": -2.83772983,
+        "projected_energy": -2.84105737,
+        "optimal_alpha": -0.082632,
+        "error_vs_fci_mHa": 384.3503,
+        "g0": -1.86608966,
+        "g1": 0.48582008,
+        "g4": 0.0402412,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 1.5,
+        "fci_energy": -3.25421975,
+        "hf_energy": -2.82344975,
+        "projected_energy": -2.82458345,
+        "optimal_alpha": -0.048071,
+        "error_vs_fci_mHa": 429.6363,
+        "g0": -1.83246447,
+        "g1": 0.49549264,
+        "g4": 0.02370814,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 2.0,
+        "fci_energy": -3.27136847,
+        "hf_energy": -2.81072584,
+        "projected_energy": -2.8107786,
+        "optimal_alpha": -0.00974,
+        "error_vs_fci_mHa": 460.5899,
+        "g0": -1.75023626,
+        "g1": 0.53024479,
+        "g4": 0.00529123,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      },
+      {
+        "bond_distance": 2.5,
+        "fci_energy": -3.27399951,
+        "hf_energy": -2.80820885,
+        "projected_energy": -2.80820997,
+        "optimal_alpha": -0.001571,
+        "error_vs_fci_mHa": 465.7895,
+        "g0": -1.69538945,
+        "g1": 0.5564097,
+        "g4": 0.00079413,
+        "physical_qubits": [
+          4,
+          6
+        ],
+        "bases": [
+          "Z",
+          "X",
+          "Y"
+        ]
+      }
+    ]
+  },
+  "kandala2017": {
+    "experiment": "H2 depth-1 hardware-efficient VQE",
+    "paper": "Kandala et al., Nature 549, 242 (2017)",
+    "encoding": "Jordan-Wigner (4 qubits)",
+    "ansatz": "hardware-efficient RX-RZ + CNOT ladder, d=1",
+    "n_circuits": 1,
+    "details": [
+      {
+        "bond_distance": 0.735,
+        "fci_energy": -1.13730604,
+        "vqe_energy": -1.13730603,
+        "error_mHa": 0.0,
+        "optimal_params": [
+          0.2235,
+          0.1634,
+          -2.3e-05,
+          0.599414,
+          1.2e-05,
+          -0.61457,
+          2.3e-05,
+          0.90737,
+          -0.009261,
+          -1.2e-05,
+          0.514304,
+          0.346573,
+          3.141634,
+          0.915424,
+          -0.178357,
+          1.1e-05,
+          -0.163323,
+          0.178416,
+          2e-06,
+          -0.170209
+        ],
+        "n_params": 20,
+        "depth": 1,
+        "n_cz_gates": 3,
+        "physical_qubits": [
+          2,
+          4,
+          6,
+          8
+        ]
+      }
+    ]
+  },
+  "circuits": {
+    "h2_R0.500_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.143585) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R0.500_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.143585) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.500_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.143585) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.700_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.209565) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R0.700_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.209565) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.700_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.209565) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.735_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.223390) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R0.735_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.223390) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.735_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.223390) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.900_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.298167) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R0.900_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.298167) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R0.900_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.298167) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R1.100_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.413789) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R1.100_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.413789) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R1.100_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.413789) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R1.500_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.726723) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R1.500_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.726723) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R1.500_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.726723) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R2.000_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(1.133286) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "h2_R2.000_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(1.133286) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_R2.000_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(1.133286) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R0.500_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.108396) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R0.500_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.108396) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R0.500_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.108396) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R0.750_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.127247) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R0.750_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.127247) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R0.750_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.127247) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R1.000_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.115936) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R1.000_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.115936) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R1.000_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.115936) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R1.250_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.082632) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R1.250_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.082632) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R1.250_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.082632) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R1.500_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.048071) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R1.500_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.048071) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R1.500_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.048071) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R2.000_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.009740) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R2.000_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.009740) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R2.000_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.009740) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R2.500_Z": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.001571) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "heh_R2.500_X": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.001571) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[4]\nRy(-1.570796) q[6]\nbit[9] b\nb = measure q",
+    "heh_R2.500_Y": "version 3.0\nqubit[9] q\nX q[4]\nRy(0.001571) q[6]\nRy(-1.570796) q[4]\nCZ q[6], q[4]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[4]\nRz(-1.570796) q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "h2_kandala_d1_R0.735_Z": "version 3.0\nqubit[9] q\nX q[2]\nX q[4]\nRz(-1.570796) q[2]\nRy(0.223500) q[2]\nRz(1.570796) q[2]\nRz(0.163400) q[2]\nRz(-1.570796) q[4]\nRy(-0.000023) q[4]\nRz(1.570796) q[4]\nRz(0.599414) q[4]\nRz(-1.570796) q[6]\nRy(0.000012) q[6]\nRz(1.570796) q[6]\nRz(-0.614570) q[6]\nRz(-1.570796) q[8]\nRy(0.000023) q[8]\nRz(1.570796) q[8]\nRz(0.907370) q[8]\nRy(-1.570796) q[4]\nCZ q[2], q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRy(-1.570796) q[8]\nCZ q[6], q[8]\nRy(1.570796) q[8]\nRz(-0.009261) q[2]\nRz(-1.570796) q[2]\nRy(-0.000012) q[2]\nRz(1.570796) q[2]\nRz(0.514304) q[2]\nRz(0.346573) q[4]\nRz(-1.570796) q[4]\nRy(3.141634) q[4]\nRz(1.570796) q[4]\nRz(0.915424) q[4]\nRz(-0.178357) q[6]\nRz(-1.570796) q[6]\nRy(0.000011) q[6]\nRz(1.570796) q[6]\nRz(-0.163323) q[6]\nRz(0.178416) q[8]\nRz(-1.570796) q[8]\nRy(0.000002) q[8]\nRz(1.570796) q[8]\nRz(-0.170209) q[8]\nbit[9] b\nb = measure q"
+  },
+  "total_circuits": 43
+}
