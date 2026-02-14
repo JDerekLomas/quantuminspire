@@ -127,8 +127,8 @@
       "avg_fidelity": 0.958,
       "mapping": "d0=3, s0=1, d1=4, s1=2, d2=5"
     },
-    "topology_notes": "Only 6/36 pairs connected. Max degree = 3. Chain topology: 5-2-0-1-3 with q4 branching from q1 and q2.",
-    "interpretation": "Tuna-9 has sparse connectivity (6 connected pairs out of 36 tested). Best fidelity: q2-q4 at 96.3%. Worst: q0-q1 at 88.8%. Topology is roughly a tree with max degree 3."
+    "topology_notes": "Only 6/36 pairs connected in this probe (Feb 10). Later discovery (Feb 13): full 12-edge topology from QI API includes pairs 4-7 and 5-7, giving q4 degree 4. Original probe missed these because couplers were disabled during this calibration cycle.",
+    "interpretation": "Tuna-9 has sparse connectivity (6 connected pairs found in this Feb 10 probe). Best fidelity: q2-q4 at 96.3%. Worst: q0-q1 at 88.8%. NOTE: Full topology has 12 edges (not 6 connected pairs out of 36). Pairs 4-7 and 5-7 were offline during this measurement but confirmed active Feb 13."
   },
   "circuit_cqasm": "36 Bell-pair circuits (H+CNOT on each qubit pair)",
   "errors": [

@@ -1,0 +1,30 @@
+{
+  "source": "/Users/dereklomas/haiqu/experiments/results/watson2018-tuna9-circuits-native.json",
+  "backend": "Tuna-9",
+  "n_shots": 4096,
+  "compile_stage": "ROUTING",
+  "job_ids": {
+    "bell_PhiPlus_ZZ": 426189,
+    "bell_PhiPlus_XX": 426190,
+    "bell_PhiPlus_YY": 426191,
+    "bell_PhiMinus_ZZ": 426192,
+    "bell_PhiMinus_XX": 426193,
+    "bell_PhiMinus_YY": 426194,
+    "bell_PsiPlus_ZZ": 426195,
+    "bell_PsiPlus_XX": 426196,
+    "bell_PsiPlus_YY": 426197,
+    "bell_PsiMinus_ZZ": 426198,
+    "bell_PsiMinus_XX": 426199,
+    "bell_PsiMinus_YY": 426200,
+    "dj_constant_0": 426201,
+    "dj_constant_1": 426202,
+    "dj_balanced_id": 426203,
+    "dj_balanced_not": 426204,
+    "grover_target_00": 426205,
+    "grover_target_01": 426206,
+    "grover_target_10": 426207,
+    "grover_target_11": 426208
+  },
+  "n_submitted": 20,
+  "n_failed": 0
+}

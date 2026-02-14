@@ -1,0 +1,128 @@
+{
+  "experiment": "kim2023_ising_12edge",
+  "topology": "tuna9_12edge",
+  "n_qubits": 9,
+  "n_edges": 12,
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      5,
+      7
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "theta_j": -0.7853981633974483,
+  "theta_h": 0.0,
+  "rz_angle": -1.5707963267948966,
+  "gate_counts": {
+    "d1_f1": {
+      "n_steps": 1,
+      "fold": 1,
+      "n_edges": 12,
+      "cnots_per_step": 24,
+      "rz_per_step": 12,
+      "total_cnots": 24,
+      "total_rz": 12,
+      "total_gates": 36
+    },
+    "d3_f1": {
+      "n_steps": 3,
+      "fold": 1,
+      "n_edges": 12,
+      "cnots_per_step": 24,
+      "rz_per_step": 12,
+      "total_cnots": 72,
+      "total_rz": 36,
+      "total_gates": 108
+    },
+    "d5_f1": {
+      "n_steps": 5,
+      "fold": 1,
+      "n_edges": 12,
+      "cnots_per_step": 24,
+      "rz_per_step": 12,
+      "total_cnots": 120,
+      "total_rz": 60,
+      "total_gates": 180
+    },
+    "d1_f3": {
+      "n_steps": 1,
+      "fold": 3,
+      "n_edges": 12,
+      "cnots_per_step": 72,
+      "rz_per_step": 12,
+      "total_cnots": 72,
+      "total_rz": 12,
+      "total_gates": 84
+    }
+  },
+  "circuits": {
+    "d1_f1": "version 3.0\nqubit[9] q\nbit[9] b\n\n// Kicked Ising model: 1 Trotter steps, fold=1\n// theta_j = -pi/4, theta_h = 0 (Clifford point)\n// 12-edge Tuna-9 topology\n\n// --- Trotter step 1/1 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\nb = measure q\n",
+    "d3_f1": "version 3.0\nqubit[9] q\nbit[9] b\n\n// Kicked Ising model: 3 Trotter steps, fold=1\n// theta_j = -pi/4, theta_h = 0 (Clifford point)\n// 12-edge Tuna-9 topology\n\n// --- Trotter step 1/3 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\n// --- Trotter step 2/3 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\n// --- Trotter step 3/3 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\nb = measure q\n",
+    "d5_f1": "version 3.0\nqubit[9] q\nbit[9] b\n\n// Kicked Ising model: 5 Trotter steps, fold=1\n// theta_j = -pi/4, theta_h = 0 (Clifford point)\n// 12-edge Tuna-9 topology\n\n// --- Trotter step 1/5 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\n// --- Trotter step 2/5 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\n// --- Trotter step 3/5 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\n// --- Trotter step 4/5 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\n// --- Trotter step 5/5 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\n\nb = measure q\n",
+    "d1_f3": "version 3.0\nqubit[9] q\nbit[9] b\n\n// Kicked Ising model: 1 Trotter steps, fold=3\n// theta_j = -pi/4, theta_h = 0 (Clifford point)\n// 12-edge Tuna-9 topology\n\n// --- Trotter step 1/1 ---\n// ZZ on edge (0,1)\nCNOT q[0], q[1]\nCNOT q[0], q[1]\nCNOT q[0], q[1]\nRz(-1.5707963267948966) q[1]\nCNOT q[0], q[1]\nCNOT q[0], q[1]\nCNOT q[0], q[1]\n\n// ZZ on edge (0,2)\nCNOT q[0], q[2]\nCNOT q[0], q[2]\nCNOT q[0], q[2]\nRz(-1.5707963267948966) q[2]\nCNOT q[0], q[2]\nCNOT q[0], q[2]\nCNOT q[0], q[2]\n\n// ZZ on edge (1,3)\nCNOT q[1], q[3]\nCNOT q[1], q[3]\nCNOT q[1], q[3]\nRz(-1.5707963267948966) q[3]\nCNOT q[1], q[3]\nCNOT q[1], q[3]\nCNOT q[1], q[3]\n\n// ZZ on edge (1,4)\nCNOT q[1], q[4]\nCNOT q[1], q[4]\nCNOT q[1], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[1], q[4]\nCNOT q[1], q[4]\nCNOT q[1], q[4]\n\n// ZZ on edge (2,4)\nCNOT q[2], q[4]\nCNOT q[2], q[4]\nCNOT q[2], q[4]\nRz(-1.5707963267948966) q[4]\nCNOT q[2], q[4]\nCNOT q[2], q[4]\nCNOT q[2], q[4]\n\n// ZZ on edge (2,5)\nCNOT q[2], q[5]\nCNOT q[2], q[5]\nCNOT q[2], q[5]\nRz(-1.5707963267948966) q[5]\nCNOT q[2], q[5]\nCNOT q[2], q[5]\nCNOT q[2], q[5]\n\n// ZZ on edge (3,6)\nCNOT q[3], q[6]\nCNOT q[3], q[6]\nCNOT q[3], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[3], q[6]\nCNOT q[3], q[6]\nCNOT q[3], q[6]\n\n// ZZ on edge (4,6)\nCNOT q[4], q[6]\nCNOT q[4], q[6]\nCNOT q[4], q[6]\nRz(-1.5707963267948966) q[6]\nCNOT q[4], q[6]\nCNOT q[4], q[6]\nCNOT q[4], q[6]\n\n// ZZ on edge (4,7)\nCNOT q[4], q[7]\nCNOT q[4], q[7]\nCNOT q[4], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[4], q[7]\nCNOT q[4], q[7]\nCNOT q[4], q[7]\n\n// ZZ on edge (5,7)\nCNOT q[5], q[7]\nCNOT q[5], q[7]\nCNOT q[5], q[7]\nRz(-1.5707963267948966) q[7]\nCNOT q[5], q[7]\nCNOT q[5], q[7]\nCNOT q[5], q[7]\n\n// ZZ on edge (6,8)\nCNOT q[6], q[8]\nCNOT q[6], q[8]\nCNOT q[6], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[6], q[8]\nCNOT q[6], q[8]\nCNOT q[6], q[8]\n\n// ZZ on edge (7,8)\nCNOT q[7], q[8]\nCNOT q[7], q[8]\nCNOT q[7], q[8]\nRz(-1.5707963267948966) q[8]\nCNOT q[7], q[8]\nCNOT q[7], q[8]\nCNOT q[7], q[8]\n\nb = measure q\n"
+  },
+  "emulator_verification": {
+    "d1_f1": {
+      "counts": {
+        "000000000": 4096
+      },
+      "z_expectations": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "mz": 1.0,
+      "total_shots": 4096,
+      "n_unique_bitstrings": 1
+    }
+  }
+}

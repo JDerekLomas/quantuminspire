@@ -1,0 +1,262 @@
+{
+  "experiment": "H2 2-qubit bond sweep \u2014 Tuna-9 native",
+  "circuits": {
+    "R0p3_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.471685) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p3_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.471685) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p3_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.471685) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p4_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.451940) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p4_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.451940) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p4_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.451940) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p5_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.426987) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p5_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.426987) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p5_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.426987) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p6_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.396740) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p6_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.396740) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p6_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.396740) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p7_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.347257) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p7_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.347257) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p7_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.347257) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p8_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.319751) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p8_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.319751) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p8_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.319751) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p9_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.272393) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p9_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.272393) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R0p9_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.272393) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p0_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.218361) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p0_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.218361) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p0_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.218361) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p2_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.088146) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p2_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.088146) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p2_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(1.088146) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p5_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.844104) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p5_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.844104) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R1p5_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.844104) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R2p0_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.437656) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R2p0_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.437656) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R2p0_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.437656) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R2p5_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.189985) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R2p5_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.189985) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R2p5_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.189985) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R3p0_Z": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.074956) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R3p0_X": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.074956) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "R3p0_Y": "version 3.0\nqubit[9] q\nX q[6]\nRy(0.074956) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q"
+  },
+  "gate_set": "native (CZ, Ry, Rz, X)",
+  "qubit_pair": [
+    4,
+    6
+  ],
+  "n_circuits": 39,
+  "bond_distances": [
+    {
+      "bond_distance": 0.3,
+      "alpha": -0.099111,
+      "energy_exact": -0.601804,
+      "fci_energy": -0.601804,
+      "hf_energy": -0.593828,
+      "coefficients": {
+        "g0": 1.02347,
+        "g1": 0.808649,
+        "g2": -0.808649,
+        "g3": 0.0,
+        "g4": 0.080409,
+        "g5": 0.080409
+      }
+    },
+    {
+      "bond_distance": 0.4,
+      "alpha": -0.118856,
+      "energy_exact": -0.914149,
+      "fci_energy": -0.91415,
+      "hf_energy": -0.904361,
+      "coefficients": {
+        "g0": 0.473277,
+        "g1": 0.688819,
+        "g2": -0.688819,
+        "g3": 0.0,
+        "g4": 0.082258,
+        "g5": 0.082258
+      }
+    },
+    {
+      "bond_distance": 0.5,
+      "alpha": -0.143809,
+      "energy_exact": -1.05516,
+      "fci_energy": -1.05516,
+      "hf_energy": -1.042996,
+      "coefficients": {
+        "g0": 0.123163,
+        "g1": 0.58308,
+        "g2": -0.58308,
+        "g3": 0.0,
+        "g4": 0.084435,
+        "g5": 0.084435
+      }
+    },
+    {
+      "bond_distance": 0.6,
+      "alpha": -0.174057,
+      "energy_exact": -1.116287,
+      "fci_energy": -1.116286,
+      "hf_energy": -1.101128,
+      "coefficients": {
+        "g0": -0.113101,
+        "g1": 0.494014,
+        "g2": -0.494014,
+        "g3": 0.0,
+        "g4": 0.086865,
+        "g5": 0.086865
+      }
+    },
+    {
+      "bond_distance": 0.7,
+      "alpha": -0.209735,
+      "energy_exact": -1.13619,
+      "fci_energy": -1.136189,
+      "hf_energy": -1.117349,
+      "coefficients": {
+        "g0": -0.276438,
+        "g1": 0.420456,
+        "g2": -0.420456,
+        "g3": 0.0,
+        "g4": 0.0895,
+        "g5": 0.0895
+      }
+    },
+    {
+      "bond_distance": 0.735,
+      "alpha": -0.223539,
+      "energy_exact": -1.137305,
+      "fci_energy": -1.137306,
+      "hf_energy": -1.116999,
+      "coefficients": {
+        "g0": -0.321124,
+        "g1": 0.397937,
+        "g2": -0.397937,
+        "g3": 0.0,
+        "g4": 0.090466,
+        "g5": 0.090466
+      }
+    },
+    {
+      "bond_distance": 0.8,
+      "alpha": -0.251045,
+      "energy_exact": -1.134147,
+      "fci_energy": -1.134148,
+      "hf_energy": -1.11085,
+      "coefficients": {
+        "g0": -0.390932,
+        "g1": 0.359959,
+        "g2": -0.359959,
+        "g3": 0.0,
+        "g4": 0.092313,
+        "g5": 0.092313
+      }
+    },
+    {
+      "bond_distance": 0.9,
+      "alpha": -0.298403,
+      "energy_exact": -1.120559,
+      "fci_energy": -1.12056,
+      "hf_energy": -1.091914,
+      "coefficients": {
+        "g0": -0.472339,
+        "g1": 0.309787,
+        "g2": -0.309787,
+        "g3": 0.0,
+        "g4": 0.095286,
+        "g5": 0.095286
+      }
+    },
+    {
+      "bond_distance": 1.0,
+      "alpha": -0.352435,
+      "energy_exact": -1.10115,
+      "fci_energy": -1.10115,
+      "hf_energy": -1.066109,
+      "coefficients": {
+        "g0": -0.531051,
+        "g1": 0.267529,
+        "g2": -0.267529,
+        "g3": 0.0,
+        "g4": 0.098395,
+        "g5": 0.098395
+      }
+    },
+    {
+      "bond_distance": 1.2,
+      "alpha": -0.48265,
+      "energy_exact": -1.056742,
+      "fci_energy": -1.056741,
+      "hf_energy": -1.005107,
+      "coefficients": {
+        "g0": -0.604728,
+        "g1": 0.20019,
+        "g2": -0.20019,
+        "g3": 0.0,
+        "g4": 0.104896,
+        "g5": 0.104896
+      }
+    },
+    {
+      "bond_distance": 1.5,
+      "alpha": -0.726692,
+      "energy_exact": -0.998149,
+      "fci_energy": -0.998149,
+      "hf_energy": -0.910874,
+      "coefficients": {
+        "g0": -0.652671,
+        "g1": 0.129101,
+        "g2": -0.129101,
+        "g3": 0.0,
+        "g4": 0.114768,
+        "g5": 0.114768
+      }
+    },
+    {
+      "bond_distance": 2.0,
+      "alpha": -1.13314,
+      "energy_exact": -0.948641,
+      "fci_energy": -0.948641,
+      "hf_energy": -0.783793,
+      "coefficients": {
+        "g0": -0.662537,
+        "g1": 0.060628,
+        "g2": -0.060628,
+        "g3": 0.0,
+        "g4": 0.129569,
+        "g5": 0.129569
+      }
+    },
+    {
+      "bond_distance": 2.5,
+      "alpha": -1.380812,
+      "energy_exact": -0.936055,
+      "fci_energy": -0.936055,
+      "hf_energy": -0.702944,
+      "coefficients": {
+        "g0": -0.648674,
+        "g1": 0.027135,
+        "g2": -0.027135,
+        "g3": 0.0,
+        "g4": 0.141105,
+        "g5": 0.141105
+      }
+    },
+    {
+      "bond_distance": 3.0,
+      "alpha": -1.49584,
+      "energy_exact": -0.933633,
+      "fci_energy": -0.933632,
+      "hf_energy": -0.656048,
+      "coefficients": {
+        "g0": -0.633578,
+        "g1": 0.011235,
+        "g2": -0.011235,
+        "g3": 0.0,
+        "g4": 0.149606,
+        "g5": 0.149606
+      }
+    }
+  ]
+}

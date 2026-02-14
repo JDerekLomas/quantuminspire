@@ -64,9 +64,9 @@ async def run_bell_test(qi: QuantumInterface, pair: tuple[int, int]) -> dict:
         counts = {}
         total = 0
         for bitstring, count in results.items():
-            # Extract just the two relevant qubits (LSB convention)
-            b0 = int(bitstring[q0])
-            b1 = int(bitstring[q1])
+            # Extract the two relevant qubits (MSB-first: qubit q at position -(q+1))
+            b0 = int(bitstring[-(q0 + 1)])
+            b1 = int(bitstring[-(q1 + 1)])
             key = f"{b0}{b1}"
             counts[key] = counts.get(key, 0) + count
             total += count

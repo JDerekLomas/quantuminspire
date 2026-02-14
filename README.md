@@ -18,7 +18,7 @@ An open research initiative exploring AI-driven quantum computing research. We b
 | QRNG Certification | Tuna-9 raw + debiased, Emulator | Raw fails NIST; debiased passes all |
 | Randomized Benchmarking | Emulator | 99.95% gate fidelity |
 | QAOA MaxCut | Emulator | 87% approximation ratio |
-| Quantum Volume | Emulator | QV 8 (2q + 3q pass) |
+| Quantum Volume | Emulator + Tuna-9 | QV 16 (4q pass, 8/10 circuits) |
 
 Additional hardware experiments: connectivity probe (Tuna-9 topology), repetition code (3q QEC), detection code (emulator).
 

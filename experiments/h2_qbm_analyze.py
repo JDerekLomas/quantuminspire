@@ -14,15 +14,15 @@ COEFFS = {
 
 # Hardware job IDs
 IBM_JOBS = {
-    'T0.1_Z': 'd66rgv8qbmes739ej540',
-    'T0.1_X': 'd66rgvoqbmes739ej550',
-    'T0.1_Y': 'd66rh01v6o8c73d4lukg',
-    'T0.5_Z': 'd66rh0re4kfs73d13i50',
-    'T0.5_X': 'd66rh1be4kfs73d13i70',
-    'T0.5_Y': 'd66rh1oqbmes739ej5ag',
-    'T2.0_Z': 'd66rh2be4kfs73d13i8g',
-    'T2.0_X': 'd66rh2tbujdc73cv5250',
-    'T2.0_Y': 'd66rh3gqbmes739ej5d0',
+    'T0.1_Z': 'd67123gqbmes739epltg',
+    'T0.1_X': 'd67124dbujdc73cvbc50',
+    'T0.1_Y': 'd671258qbmes739epm0g',
+    'T0.5_Z': 'd671269v6o8c73d4sgu0',
+    'T0.5_X': 'd671279v6o8c73d4sgvg',
+    'T0.5_Y': 'd671283e4kfs73d1a290',
+    'T2.0_Z': 'd67129dbujdc73cvbcbg',
+    'T2.0_X': 'd6712a9v6o8c73d4sh5g',
+    'T2.0_Y': 'd6712bhv6o8c73d4sh70',
 }
 
 QI_JOBS = {

@@ -1,0 +1,344 @@
+{
+  "experiment": "qaoa-tuna9-native-circuits",
+  "description": "QAOA MaxCut on 4-cycle subgraphs of Tuna-9 using native gate set (CZ, Ry, Rz). All gates decomposed from H/CNOT/Rx with consecutive same-axis rotations merged and near-zero rotations removed.",
+  "gate_set": [
+    "CZ",
+    "Ry",
+    "Rz"
+  ],
+  "n_circuits": 3,
+  "tuna9_connectivity": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      8,
+      6
+    ],
+    [
+      8,
+      7
+    ]
+  ],
+  "shots": 8192,
+  "timestamp": "2026-02-14T10:07:25.453991+00:00",
+  "circuits": {
+    "cycle1_p1": {
+      "cqasm": "version 3.0\nqubit[9] q\nbit[9] b\n\n// p=1 on 4-cycle {1,3,6,4}, gamma=pi/4, beta=pi/8\n// Classical max cut = 4\n// All gates in native set: CZ, Ry, Rz\n\n// QAOA MaxCut p=1: 4-cycle {1,3,6,4}\n// gamma = pi/4 = 0.785398, beta = pi/8 = 0.392699\n// Edges: [(1, 3), (3, 6), (4, 6), (1, 4)]\n// Native gate set: CZ, Ry, Rz\n// \n// 1. Initial superposition (H = Rz(pi) Ry(pi/2))\n// \n// 2. Cost unitary: ZZ(-gamma) per edge via CNOT-Rz-CNOT\n//   Edge (1,3)\nRz(3.141593) q[1]\nRy(1.570796) q[1]\nRz(3.141593) q[3]\nCZ q[1], q[3]\nRy(1.570796) q[3]\nRz(-0.785398) q[3]\nRy(-1.570796) q[3]\nCZ q[1], q[3]\n//   Edge (3,6)\nRy(1.570796) q[3]\nRz(3.141593) q[6]\nCZ q[3], q[6]\nRy(1.570796) q[6]\nRz(-0.785398) q[6]\nRy(-1.570796) q[6]\nCZ q[3], q[6]\n//   Edge (4,6)\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(-0.785398) q[6]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\n//   Edge (1,4)\nRy(-1.570796) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\nRz(-0.785398) q[4]\nRy(-1.570796) q[4]\nCZ q[1], q[4]\n// \n// 3. Mixer: Rx(2*beta) = Rz(-pi/2) Ry(2*beta) Rz(pi/2)\nRz(-1.570796) q[1]\nRy(0.785398) q[1]\nRz(1.570796) q[1]\nRz(-1.570796) q[3]\nRy(0.785398) q[3]\nRz(1.570796) q[3]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(0.785398) q[4]\nRz(1.570796) q[4]\nRy(1.570796) q[6]\nRz(-1.570796) q[6]\nRy(0.785398) q[6]\nRz(1.570796) q[6]\n\nb = measure q\n",
+      "qubits": [
+        1,
+        3,
+        4,
+        6
+      ],
+      "edges": [
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "gate_counts": {
+        "CZ": 8,
+        "Ry": 18,
+        "Rz": 16,
+        "X": 0,
+        "total_1q": 34,
+        "total_2q": 8,
+        "total": 42
+      },
+      "params": {
+        "gamma": 0.7853981633974483,
+        "beta": 0.39269908169872414
+      },
+      "p": 1,
+      "cycle": "{1,3,6,4}",
+      "description": "p=1 on 4-cycle {1,3,6,4}, gamma=pi/4, beta=pi/8"
+    },
+    "cycle1_p2": {
+      "cqasm": "version 3.0\nqubit[9] q\nbit[9] b\n\n// p=2 on 4-cycle {1,3,6,4}, gamma1=0.3/beta1=0.7, gamma2=0.8/beta2=0.3\n// Classical max cut = 4\n// All gates in native set: CZ, Ry, Rz\n\n// QAOA MaxCut p=2: 4-cycle {1,3,6,4}\n// Layer 1: gamma1=0.3, beta1=0.7\n// Layer 2: gamma2=0.8, beta2=0.3\n// Edges: [(1, 3), (3, 6), (4, 6), (1, 4)]\n// Native gate set: CZ, Ry, Rz\n// \n// 1. Initial superposition\n// \n// ====== LAYER 1 ======\n// Cost unitary: ZZ(gamma1)\n//   Edge (1,3)\nRz(3.141593) q[1]\nRy(1.570796) q[1]\nRz(3.141593) q[3]\nCZ q[1], q[3]\nRy(1.570796) q[3]\nRz(-0.300000) q[3]\nRy(-1.570796) q[3]\nCZ q[1], q[3]\n//   Edge (3,6)\nRy(1.570796) q[3]\nRz(3.141593) q[6]\nCZ q[3], q[6]\nRy(1.570796) q[6]\nRz(-0.300000) q[6]\nRy(-1.570796) q[6]\nCZ q[3], q[6]\n//   Edge (4,6)\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(-0.300000) q[6]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\n//   Edge (1,4)\nRy(-1.570796) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\nRz(-0.300000) q[4]\nRy(-1.570796) q[4]\nCZ q[1], q[4]\n// Mixer: Rx(2*beta1)\n// \n// ====== LAYER 2 ======\n// Cost unitary: ZZ(gamma2)\n//   Edge (1,3)\nRz(-1.570796) q[1]\nRy(1.400000) q[1]\nRz(1.570796) q[1]\nRz(-1.570796) q[3]\nRy(1.400000) q[3]\nRz(1.570796) q[3]\nRy(-1.570796) q[3]\nCZ q[1], q[3]\nRy(1.570796) q[3]\nRz(-0.800000) q[3]\nRy(-1.570796) q[3]\nCZ q[1], q[3]\n//   Edge (3,6)\nRy(1.570796) q[3]\nRy(1.570796) q[6]\nRz(-1.570796) q[6]\nRy(1.400000) q[6]\nRz(1.570796) q[6]\nRy(-1.570796) q[6]\nCZ q[3], q[6]\nRy(1.570796) q[6]\nRz(-0.800000) q[6]\nRy(-1.570796) q[6]\nCZ q[3], q[6]\n//   Edge (4,6)\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(1.400000) q[4]\nRz(1.570796) q[4]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(-0.800000) q[6]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\n//   Edge (1,4)\nRy(-1.570796) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\nRz(-0.800000) q[4]\nRy(-1.570796) q[4]\nCZ q[1], q[4]\n// Mixer: Rx(2*beta2)\nRz(-1.570796) q[1]\nRy(0.600000) q[1]\nRz(1.570796) q[1]\nRz(-1.570796) q[3]\nRy(0.600000) q[3]\nRz(1.570796) q[3]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(0.600000) q[4]\nRz(1.570796) q[4]\nRy(1.570796) q[6]\nRz(-1.570796) q[6]\nRy(0.600000) q[6]\nRz(1.570796) q[6]\n\nb = measure q\n",
+      "qubits": [
+        1,
+        3,
+        4,
+        6
+      ],
+      "edges": [
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "gate_counts": {
+        "CZ": 16,
+        "Ry": 36,
+        "Rz": 28,
+        "X": 0,
+        "total_1q": 64,
+        "total_2q": 16,
+        "total": 80
+      },
+      "params": {
+        "gamma1": 0.3,
+        "beta1": 0.7,
+        "gamma2": 0.8,
+        "beta2": 0.3
+      },
+      "p": 2,
+      "cycle": "{1,3,6,4}",
+      "description": "p=2 on 4-cycle {1,3,6,4}, gamma1=0.3/beta1=0.7, gamma2=0.8/beta2=0.3"
+    },
+    "cycle2_p1": {
+      "cqasm": "version 3.0\nqubit[9] q\nbit[9] b\n\n// p=1 on 4-cycle {0,1,4,2}, gamma=pi/4, beta=pi/8\n// Classical max cut = 4\n// All gates in native set: CZ, Ry, Rz\n\n// QAOA MaxCut p=1: 4-cycle {0,1,4,2}\n// gamma = pi/4 = 0.785398, beta = pi/8 = 0.392699\n// Edges: [(0, 1), (1, 4), (2, 4), (0, 2)]\n// Native gate set: CZ, Ry, Rz\n// \n// 1. Initial superposition\n// \n// 2. Cost unitary: ZZ(-gamma) per edge\n//   Edge (0,1)\nRz(3.141593) q[0]\nRy(1.570796) q[0]\nRz(3.141593) q[1]\nCZ q[0], q[1]\nRy(1.570796) q[1]\nRz(-0.785398) q[1]\nRy(-1.570796) q[1]\nCZ q[0], q[1]\n//   Edge (1,4)\nRy(1.570796) q[1]\nRz(3.141593) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\nRz(-0.785398) q[4]\nRy(-1.570796) q[4]\nCZ q[1], q[4]\n//   Edge (2,4)\nRz(3.141593) q[2]\nRy(1.570796) q[2]\nCZ q[2], q[4]\nRy(1.570796) q[4]\nRz(-0.785398) q[4]\nRy(-1.570796) q[4]\nCZ q[2], q[4]\n//   Edge (0,2)\nRy(-1.570796) q[2]\nCZ q[0], q[2]\nRy(1.570796) q[2]\nRz(-0.785398) q[2]\nRy(-1.570796) q[2]\nCZ q[0], q[2]\n// \n// 3. Mixer: Rx(2*beta)\nRz(-1.570796) q[0]\nRy(0.785398) q[0]\nRz(1.570796) q[0]\nRz(-1.570796) q[1]\nRy(0.785398) q[1]\nRz(1.570796) q[1]\nRy(1.570796) q[2]\nRz(-1.570796) q[2]\nRy(0.785398) q[2]\nRz(1.570796) q[2]\nRy(1.570796) q[4]\nRz(-1.570796) q[4]\nRy(0.785398) q[4]\nRz(1.570796) q[4]\n\nb = measure q\n",
+      "qubits": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "gate_counts": {
+        "CZ": 8,
+        "Ry": 18,
+        "Rz": 16,
+        "X": 0,
+        "total_1q": 34,
+        "total_2q": 8,
+        "total": 42
+      },
+      "params": {
+        "gamma": 0.7853981633974483,
+        "beta": 0.39269908169872414
+      },
+      "p": 1,
+      "cycle": "{0,1,4,2}",
+      "description": "p=1 on 4-cycle {0,1,4,2}, gamma=pi/4, beta=pi/8"
+    }
+  },
+  "results": {
+    "cycle1_p1": {
+      "label": "p=1 on 4-cycle {1,3,6,4}, gamma=pi/4, beta=pi/8",
+      "qubits": [
+        1,
+        3,
+        4,
+        6
+      ],
+      "edges": [
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "shots": 8192,
+      "expected_cut": 1.0078,
+      "approximation_ratio": 0.252,
+      "maxcut_probability": 0.0314,
+      "cut_distribution": {
+        "0": 4321,
+        "2": 3614,
+        "4": 257
+      },
+      "top_states": {
+        "0000": 2176,
+        "1111": 2145,
+        "1100": 663,
+        "0101": 643,
+        "0011": 642,
+        "1010": 641,
+        "1000": 135,
+        "1110": 132,
+        "1101": 132,
+        "0010": 130
+      }
+    },
+    "cycle1_p2": {
+      "label": "p=2 on 4-cycle {1,3,6,4}, gamma1=0.3/beta1=0.7, gamma2=0.8/beta2=0.3",
+      "qubits": [
+        1,
+        3,
+        4,
+        6
+      ],
+      "edges": [
+        [
+          1,
+          3
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "shots": 8192,
+      "expected_cut": 0.9097,
+      "approximation_ratio": 0.2274,
+      "maxcut_probability": 0.0009,
+      "cut_distribution": {
+        "0": 4473,
+        "2": 3712,
+        "4": 7
+      },
+      "top_states": {
+        "1111": 2244,
+        "0000": 2229,
+        "0011": 452,
+        "1100": 448,
+        "1010": 438,
+        "0101": 410,
+        "1000": 257,
+        "0001": 250,
+        "0010": 249,
+        "1011": 248
+      }
+    },
+    "cycle2_p1": {
+      "label": "p=1 on 4-cycle {0,1,4,2}, gamma=pi/4, beta=pi/8",
+      "qubits": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "shots": 8192,
+      "expected_cut": 1.0049,
+      "approximation_ratio": 0.2512,
+      "maxcut_probability": 0.0312,
+      "cut_distribution": {
+        "0": 4332,
+        "2": 3604,
+        "4": 256
+      },
+      "top_states": {
+        "0000": 2219,
+        "1111": 2113,
+        "0101": 652,
+        "1100": 646,
+        "0011": 633,
+        "1010": 626,
+        "1011": 155,
+        "0111": 146,
+        "1000": 138,
+        "1101": 134
+      }
+    }
+  },
+  "metadata": {
+    "classical_max_cut": 4,
+    "random_baseline_ratio": 0.5,
+    "p1_theoretical_ratio_4cycle": 0.75,
+    "qubit_error_rates": {
+      "1": 0.037,
+      "3": 0.052,
+      "4": 0.019,
+      "6": 0.027
+    }
+  }
+}

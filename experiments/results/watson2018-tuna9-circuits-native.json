@@ -1,0 +1,31 @@
+{
+  "experiment": "Watson 2018 Replication \u2014 Tuna-9 native",
+  "circuits": {
+    "bell_PhiPlus_ZZ": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PhiPlus_XX": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PhiPlus_YY": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PhiMinus_ZZ": "version 3.0\nqubit[9] q\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PhiMinus_XX": "version 3.0\nqubit[9] q\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PhiMinus_YY": "version 3.0\nqubit[9] q\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PsiPlus_ZZ": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[6]\nbit[9] b\nb = measure q",
+    "bell_PsiPlus_XX": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PsiPlus_YY": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PsiMinus_ZZ": "version 3.0\nqubit[9] q\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[6]\nbit[9] b\nb = measure q",
+    "bell_PsiMinus_XX": "version 3.0\nqubit[9] q\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "bell_PsiMinus_YY": "version 3.0\nqubit[9] q\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(1.570796) q[4]\nRy(1.570796) q[4]\nRz(1.570796) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "dj_constant_0": "version 3.0\nqubit[9] q\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "dj_constant_1": "version 3.0\nqubit[9] q\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "dj_balanced_id": "version 3.0\nqubit[9] q\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "dj_balanced_not": "version 3.0\nqubit[9] q\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nRy(-1.570796) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nbit[9] b\nb = measure q",
+    "grover_target_00": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "grover_target_01": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "grover_target_10": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q",
+    "grover_target_11": "version 3.0\nqubit[9] q\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[6]\nCZ q[4], q[6]\nRy(1.570796) q[6]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nX q[4]\nX q[6]\nRz(3.141593) q[4]\nRy(1.570796) q[4]\nRz(3.141593) q[6]\nRy(1.570796) q[6]\nbit[9] b\nb = measure q"
+  },
+  "gate_set": "native (CZ, Ry, Rz, X)",
+  "qubit_pair": [
+    4,
+    6
+  ],
+  "n_circuits": 20
+}

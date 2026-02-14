@@ -1,0 +1,265 @@
+{
+  "experiment_id": "kandala2017-h2-depth-study",
+  "paper": {
+    "title": "Hardware-efficient VQE for small molecules and quantum magnets",
+    "authors": "Kandala et al.",
+    "journal": "Nature 549, 242 (2017)",
+    "arxiv": "1704.05018"
+  },
+  "molecule": "H2",
+  "basis": "STO-3G",
+  "mapping": "jordan_wigner",
+  "n_qubits": 4,
+  "ansatz": "hardware_efficient (RX-RZ + [CNOT + RZ-RX-RZ] x depth)",
+  "optimizer": "COBYLA",
+  "timestamp": "2026-02-13T14:28:47.941633+00:00",
+  "depth_comparison": {
+    "d1": {
+      "depth": 1,
+      "n_parameters": 20,
+      "results_by_distance": [
+        {
+          "bond_distance": 0.3,
+          "fci_energy": -0.6018037107656871,
+          "vqe_energy": -0.601803704456977,
+          "error_mhartree": 6.308710109870219e-06,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.5,
+          "fci_energy": -1.0551597944706248,
+          "vqe_energy": -1.055159793563371,
+          "error_mhartree": 9.072538276200248e-07,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.7,
+          "fci_energy": -1.1361894540659225,
+          "vqe_energy": -1.1361894529183474,
+          "error_mhartree": 1.1475751460210404e-06,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.9,
+          "fci_energy": -1.1205602812999882,
+          "vqe_energy": -1.120560280257961,
+          "error_mhartree": 1.0420271312483464e-06,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.1,
+          "fci_energy": -1.079192944969075,
+          "vqe_energy": -1.0791929316080304,
+          "error_mhartree": 1.33610444930099e-05,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.3,
+          "fci_energy": -1.035186266434255,
+          "vqe_energy": -1.0351862636728746,
+          "error_mhartree": 2.761380457627638e-06,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.5,
+          "fci_energy": -0.9981493534714101,
+          "vqe_energy": -0.9981493517809241,
+          "error_mhartree": 1.690485973426803e-06,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.7,
+          "fci_energy": -0.971426688458341,
+          "vqe_energy": -0.9714266823086722,
+          "error_mhartree": 6.149668774213524e-06,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 2.0,
+          "fci_energy": -0.9486411121761857,
+          "vqe_energy": -0.9486407228477913,
+          "error_mhartree": 0.0003893283944123027,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 2.5,
+          "fci_energy": -0.9360549199556061,
+          "vqe_energy": -0.9360448262556028,
+          "error_mhartree": 0.01009370000326637,
+          "chemical_accuracy": true
+        }
+      ],
+      "summary": {
+        "mae_mhartree": 0.001,
+        "max_error_mhartree": 0.01,
+        "n_chemical_accuracy": 10,
+        "n_distances": 10
+      }
+    },
+    "d2": {
+      "depth": 2,
+      "n_parameters": 32,
+      "results_by_distance": [
+        {
+          "bond_distance": 0.3,
+          "fci_energy": -0.6018037107656871,
+          "vqe_energy": -0.6011840589706496,
+          "error_mhartree": 0.6196517950374236,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.5,
+          "fci_energy": -1.0551597944706248,
+          "vqe_energy": -1.0550463950108155,
+          "error_mhartree": 0.11339945980926025,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.7,
+          "fci_energy": -1.1361894540659225,
+          "vqe_energy": -1.1360930995834964,
+          "error_mhartree": 0.09635448242617528,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.9,
+          "fci_energy": -1.1205602812999882,
+          "vqe_energy": -1.1205019351230634,
+          "error_mhartree": 0.058346176924795046,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.1,
+          "fci_energy": -1.079192944969075,
+          "vqe_energy": -1.079168807673459,
+          "error_mhartree": 0.0241372956160113,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.3,
+          "fci_energy": -1.035186266434255,
+          "vqe_energy": -1.0351858266929883,
+          "error_mhartree": 0.00043974126673340663,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.5,
+          "fci_energy": -0.9981493534714101,
+          "vqe_energy": -0.9981442171540997,
+          "error_mhartree": 0.005136317310361349,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.7,
+          "fci_energy": -0.971426688458341,
+          "vqe_energy": -0.9714218068440457,
+          "error_mhartree": 0.004881614295348946,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 2.0,
+          "fci_energy": -0.9486411121761857,
+          "vqe_energy": -0.9486375653179033,
+          "error_mhartree": 0.0035468582824105255,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 2.5,
+          "fci_energy": -0.9360549199556061,
+          "vqe_energy": -0.936003889311085,
+          "error_mhartree": 0.0510306445210551,
+          "chemical_accuracy": true
+        }
+      ],
+      "summary": {
+        "mae_mhartree": 0.098,
+        "max_error_mhartree": 0.62,
+        "n_chemical_accuracy": 10,
+        "n_distances": 10
+      }
+    },
+    "d3": {
+      "depth": 3,
+      "n_parameters": 44,
+      "results_by_distance": [
+        {
+          "bond_distance": 0.3,
+          "fci_energy": -0.6018037107656871,
+          "vqe_energy": -0.6010043389043105,
+          "error_mhartree": 0.7993718613765743,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.5,
+          "fci_energy": -1.0551597944706248,
+          "vqe_energy": -1.0544803308500372,
+          "error_mhartree": 0.6794636205875726,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.7,
+          "fci_energy": -1.1361894540659225,
+          "vqe_energy": -1.1359157932479484,
+          "error_mhartree": 0.27366081797408626,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 0.9,
+          "fci_energy": -1.1205602812999882,
+          "vqe_energy": -1.1204624912658643,
+          "error_mhartree": 0.0977900341239124,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.1,
+          "fci_energy": -1.079192944969075,
+          "vqe_energy": -1.0791647115314889,
+          "error_mhartree": 0.02823343758606711,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.3,
+          "fci_energy": -1.035186266434255,
+          "vqe_energy": -1.0351275458402427,
+          "error_mhartree": 0.05872059401235141,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.5,
+          "fci_energy": -0.9981493534714101,
+          "vqe_energy": -0.9981301384976377,
+          "error_mhartree": 0.01921497377244119,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 1.7,
+          "fci_energy": -0.971426688458341,
+          "vqe_energy": -0.9713961033565522,
+          "error_mhartree": 0.030585101788771496,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 2.0,
+          "fci_energy": -0.9486411121761857,
+          "vqe_energy": -0.9485918795873166,
+          "error_mhartree": 0.04923258886913029,
+          "chemical_accuracy": true
+        },
+        {
+          "bond_distance": 2.5,
+          "fci_energy": -0.9360549199556061,
+          "vqe_energy": -0.9360283916252254,
+          "error_mhartree": 0.0265283303806374,
+          "chemical_accuracy": true
+        }
+      ],
+      "summary": {
+        "mae_mhartree": 0.206,
+        "max_error_mhartree": 0.799,
+        "n_chemical_accuracy": 10,
+        "n_distances": 10
+      }
+    }
+  },
+  "key_finding": "Depth scaling PARTIAL: d=1: 0.001 mHa, d=2: 0.098 mHa, d=3: 0.206 mHa. Not strictly monotonic \u2014 optimizer may be trapped at higher depth."
+}

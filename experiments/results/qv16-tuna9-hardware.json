@@ -1,0 +1,104 @@
+{
+  "experiment": "qv16-tuna9-hardware",
+  "description": "Quantum Volume 16 test on Tuna-9. 10 random SU(4) circuits, 4 qubits (q4,q6,q7,q8), 4 layers, 8 CNOTs each.",
+  "backend": "tuna-9",
+  "date": "2026-02-13",
+  "physical_qubits": [
+    4,
+    6,
+    7,
+    8
+  ],
+  "n_circuits": 10,
+  "n_layers": 4,
+  "shots": 4096,
+  "results": [
+    {
+      "circuit": "qv16_c0",
+      "job_id": 425239,
+      "heavy_count": 3014,
+      "total": 4096,
+      "hof": 0.7358,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c1",
+      "job_id": 425241,
+      "heavy_count": 2718,
+      "total": 4096,
+      "hof": 0.6636,
+      "pass": false
+    },
+    {
+      "circuit": "qv16_c2",
+      "job_id": 425252,
+      "heavy_count": 2754,
+      "total": 4096,
+      "hof": 0.6724,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c3",
+      "job_id": 425254,
+      "heavy_count": 2841,
+      "total": 4096,
+      "hof": 0.6936,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c4",
+      "job_id": 425256,
+      "heavy_count": 2895,
+      "total": 4096,
+      "hof": 0.7068,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c5",
+      "job_id": 425258,
+      "heavy_count": 2723,
+      "total": 4096,
+      "hof": 0.6648,
+      "pass": false
+    },
+    {
+      "circuit": "qv16_c6",
+      "job_id": 425260,
+      "heavy_count": 2762,
+      "total": 4096,
+      "hof": 0.6743,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c7",
+      "job_id": 425262,
+      "heavy_count": 3170,
+      "total": 4096,
+      "hof": 0.7739,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c8",
+      "job_id": 425264,
+      "heavy_count": 2970,
+      "total": 4096,
+      "hof": 0.7251,
+      "pass": true
+    },
+    {
+      "circuit": "qv16_c9",
+      "job_id": 425266,
+      "heavy_count": 3168,
+      "total": 4096,
+      "hof": 0.7734,
+      "pass": true
+    }
+  ],
+  "summary": {
+    "n_pass": 8,
+    "mean_hof": 0.7084,
+    "std_hof": 0.0423,
+    "lower_bound_2sigma": 0.6816,
+    "qv16_certified": true
+  }
+}

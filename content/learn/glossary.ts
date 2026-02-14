@@ -218,7 +218,7 @@ export const GLOSSARY: GlossaryEntry[] = [
   },
   {
     term: 'Quantum volume',
-    definition: 'A single-number benchmark (IBM) that captures the largest random circuit a processor can execute reliably. QV = 2^n where n is the effective number of qubits that can maintain sufficient fidelity through n layers of random 2-qubit gates. Higher is better. We measured QV=8 on Tuna-9 and QV=32 on IBM Torino and IQM Garnet.',
+    definition: 'A single-number benchmark (IBM) that captures the largest random circuit a processor can execute reliably. QV = 2^n where n is the effective number of qubits that can maintain sufficient fidelity through n layers of random 2-qubit gates. Higher is better. We measured QV=16 on Tuna-9 and QV=32 on IBM Torino and IQM Garnet.',
     category: 'metrics',
     expLink: { label: 'QV across 3 backends', href: '/experiments/quantum-volume' },
     related: ['Circuit depth', 'Fidelity'],

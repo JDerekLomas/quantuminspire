@@ -124,7 +124,8 @@ Created three new scripts that address the replication gaps identified above:
 - Submits to IBM Fez with EstimatorV2 `resilience_level=2` (ZNE)
 - Modern equivalent of Kandala's Richardson extrapolation
 - Per-term expectation value analysis + comparison with previous TREX results
-- Not yet submitted — waiting for classical verification (now complete)
+- **Submitted:** job `d66seq0qbmes739ek700` on ibm_fez, 27 PUBs, currently QUEUED
+- Transpiled circuit: depth 27, 32 Rz + 28 Sx + 6 CZ gates
 
 ## Remaining gaps
 
@@ -142,7 +143,119 @@ Created three new scripts that address the replication gaps identified above:
 - **H2 at R=2.0:** VQE still fails (24 mHa), likely needs more optimizer starts or depth=3
 
 ### Next steps
-- Submit LiH to IBM Fez with ZNE (`lih_zne.py`)
+- Retrieve LiH ZNE results when job `d66seq0qbmes739ek700` completes
 - Submit H2 to QI Tuna-9 emulator and hardware for cross-platform comparison
 - Consider depth=3 for H2 at R=2.0 (or accept it as a known limitation)
 - Consider parity mapping with tapering for a closer Kandala match
+
+## Batch Hardware Experiments — 2026-02-13
+
+### Completed experiments on QI Tuna-9 (32 jobs, all COMPLETED)
+
+#### QV=16 (Cross 2019) — CERTIFIED
+- 10 random SU(4) circuits, 4 qubits (q4,q6,q7,q8), 4 layers, 8 CNOTs each
+- 8/10 pass (HOF > 2/3), mean HOF = 0.7084 +/- 0.0423
+- 2-sigma lower bound 0.6816 > threshold 0.6667
+- First QV=16 result for Tuna-9
+- Jobs: 425239-425266
+- Results: `experiments/results/qv16-tuna9-hardware.json`
+- Report updated: `research/replication-reports/cross2019.json`
+
+#### Kicked Ising 12-edge (Kim 2023)
+- Full 12-edge Tuna-9 topology (vs prior 10-edge), Clifford point
+- Mz decay: d1=0.913, d3=0.767, d5=0.657
+- ZNE (fold 1,3): extrapolated Mz=1.011, 8.0x improvement (best hardware ZNE result)
+- Prior 10-edge was 3.1x; 12 edges give more uniform noise amplification
+- Jobs: 425203-425208
+- Results: `experiments/results/kim2023-ising-tuna9-hardware.json`
+- Report updated: `research/replication-reports/kim2023.json`
+
+#### QAOA MaxCut on 4-cycles (Harrigan 2021) — FAILED
+- 3 circuits on two 4-cycle subgraphs: cycle_a (q4-q6-q8-q7), cycle_b (q2-q4-q7-q5)
+- All ratios ~0.34, below random baseline 0.50
+- T1 decay biases toward |0000> (0 cuts), pulling ratio below random
+- 8+ CNOTs exceed Tuna-9 noise budget; p=2 (16 CNOTs) even worse
+- Emulator achieves 0.75 on same cycles — confirms hardware noise as cause
+- Jobs: 425280-425282
+- Results: `experiments/results/qaoa-tuna9-hardware.json`
+- Report updated: `research/replication-reports/harrigan2021.json`
+
+#### VQE H2 PS+REM repeatability (Sagastizabal 2019)
+- 5 identical runs for statistical analysis (PS only, no confusion-matrix calibration)
+- Mean energy: -1.099 Ha, error 38.13 mHa, std 16.97 mHa
+- NOT chemical accuracy — confirms REM calibration is essential (0.92 kcal/mol WITH vs 23.9 kcal/mol WITHOUT)
+- Run 004 was outlier (66 mHa), runs 005-008 better (22-39 mHa)
+- Jobs: 425234-425279
+- Results: `experiments/results/vqe-tuna9-rem-004-008.json`
+- Report updated: `research/replication-reports/sagastizabal2019.json`
+
+### Key analysis scripts
+- `experiments/analyze_batch1.py` — Ising 12-edge, VQE REM-004, QV c0/c1
+- `experiments/analyze_batch2.py` — All remaining: QV c2-c9, VQE 005-008, QAOA
+
+#### Watson 2018 Replication (Bell, Deutsch-Josza, Grover)
+- **Paper:** Watson et al., "A programmable two-qubit quantum processor in silicon", Nature 555, 633-637 (2018)
+- **Original:** Si/SiGe spin qubits at QuTech/TU Delft — 2 qubits
+- **Our platform:** Tuna-9 superconducting transmons, best pair q[4]-q[6] (93.5% Bell fidelity)
+- **20 circuits total:** 12 Bell tomography (4 states x ZZ/XX/YY) + 4 Deutsch-Josza + 4 Grover
+- **Critical bug found & fixed:** qxelarator/QI bitstring convention is MSB-first (bs[0]=q_{n-1}), not LSB-first. Prior VQE experiments used total observables (sum over all qubits) which are convention-independent, masking this. Discovered by running known Bell states and checking which bits flip.
+
+**Results — Bell State Tomography:**
+| State | ZZ | XX | YY | Fidelity | Concurrence |
+|-------|------|------|------|----------|-------------|
+| Phi+ | +0.780 | +0.790 | -0.742 | 0.828 | 0.656 |
+| Phi- | +0.786 | -0.739 | +0.708 | 0.808 | 0.617 |
+| Psi+ | -0.801 | +0.794 | +0.772 | 0.842 | 0.684 |
+| Psi- | -0.805 | -0.813 | -0.741 | 0.840 | 0.680 |
+| **Mean** | | | | **0.829** | **0.659** |
+| Watson | | | | 0.85-0.89 | 0.73-0.82 |
+
+- Tuna-9 slightly below Watson. Expected: Watson's chip was purpose-built for 2-qubit experiments; Tuna-9 uses 2 of 9 qubits on a general-purpose processor.
+- YY correlators consistently weakest → suggests phase coherence (T2*) is the limiting factor.
+
+**Results — Deutsch-Josza:**
+- 4/4 correct (matches Watson)
+- Constant oracles: P(correct) = 99.3-99.6%
+- Balanced oracles: P(correct) = 87.1-87.3%
+- Mean success probability: 93.3%
+
+**Results — Grover Search:**
+| Target | P(target) | Watson |
+|--------|-----------|--------|
+| \|00> | 89.8% | ~80% |
+| \|01> | 91.4% | ~80% |
+| \|10> | 87.5% | ~80% |
+| \|11> | 88.0% | ~80% |
+| **Mean** | **89.2%** | **~80%** |
+
+- **Tuna-9 EXCEEDS Watson's silicon results by ~9 percentage points.** The Grover circuit has 5 CNOTs (oracle + diffusion); superconducting 2-qubit gates accumulate less error than Si/SiGe exchange gates over this depth.
+- Interesting asymmetry: targets requiring q6=1 (01, 11) slightly lower — q6 has higher error rate than q4.
+
+**Key insight:** Platform comparison reveals that superconducting transmons outperform Si/SiGe spin qubits for multi-gate algorithms (Grover) but not for single-gate entanglement (Bell states). This makes physical sense: superconducting gates are individually noisier but faster, so cumulative decoherence over many gates can be lower.
+
+- Jobs: 425359-425378
+- Scripts: `experiments/watson2018_replication.py` (circuit generation + emulator), `experiments/watson2018_analyze.py` (hardware analysis)
+- Results: `experiments/results/watson2018-tuna9-hardware.json`
+- Report: `research/replication-reports/watson2018.json`
+
+#### LiH CASCI(4,4) 8-Qubit VQE (emulator, COMPLETED)
+- Expanded active space: CASCI(4,4) → 8 qubits, 193 Pauli terms, 85 measurement circuits
+- CASCI(4,4) captures 1.2 of 20.5 mHa correlation (5.8%) — still small but 5x more than CASCI(2,2)
+- VQE converged: 0.176 mHa error (chemical accuracy)
+- HF reference state: |00001111> (occupied qubits [4,5,6,7])
+- 14 CNOTs per circuit, 40 variational parameters
+- **Emulator result: 1.3 mHa error** (chemical accuracy on emulator!)
+- Post-selection hurts (5.6 mHa) — discards 69% of shots, statistical noise > filtering benefit at 8 qubits
+- Script: `experiments/lih_8qubit_vqe.py`
+- Results: `experiments/results/lih-8qubit-vqe-emulator.json`
+
+**Critical bitstring convention lesson:**
+- The initial emulator run gave 6019 mHa error due to incorrect bitstring indexing
+- OpenFermion Pauli labels use qubit 0 = MSB of state vector = bitstring[0] in MSB-first ordering
+- Physical qubit 0 = LSB = bitstring[-1] in MSB-first ordering
+- For OpenFermion-labeled code: `bitstring[q]` is correct (NOT `bitstring[-(q+1)]`)
+- For physical-qubit-labeled code (Ising, Bell tests): `bitstring[-(q+1)]` is correct
+- This dual convention is now documented in MEMORY.md
+
+### Pending
+- IBM ZNE job `d66seq0qbmes739ek700` — quota exceeded, pending

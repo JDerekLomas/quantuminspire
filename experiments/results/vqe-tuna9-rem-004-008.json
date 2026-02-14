@@ -1,0 +1,35 @@
+{
+  "experiment": "vqe-tuna9-rem-004-008",
+  "description": "VQE H2 with Post-Selection + Randomized Expectation-value Measurement. 5 identical runs for REM statistics.",
+  "backend": "tuna-9",
+  "date": "2026-02-13",
+  "parameters": {
+    "shots_per_run": 4096,
+    "n_runs": 5,
+    "bond_distance": 0.735,
+    "alpha": -0.2234,
+    "qubits": [
+      2,
+      4
+    ],
+    "g0": -0.321124,
+    "g1": 0.397937,
+    "g2": -0.397937,
+    "g3": 0.0,
+    "g4": 0.090466,
+    "g5": 0.090466,
+    "fci_energy": -1.137306
+  },
+  "individual_energies": [
+    -1.070868,
+    -1.109276,
+    -1.114568,
+    -1.098695,
+    -1.102476
+  ],
+  "mean_energy": -1.099177,
+  "std_energy": 0.016966,
+  "stderr_energy": 0.007588,
+  "error_mHa": 38.13,
+  "chemical_accuracy": false
+}

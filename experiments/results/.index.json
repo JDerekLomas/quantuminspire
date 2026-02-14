@@ -1,0 +1,1108 @@
+{
+  "files": {
+    "amplification-threshold-analysis.json": {
+      "filename": "amplification-threshold-analysis.json",
+      "size_bytes": 15213,
+      "modified": "2026-02-11T02:04:19.299479",
+      "description": "Coefficient amplification threshold: how |g1|/|g4| predicts VQE hardware error",
+      "type": "results"
+    },
+    "autonomous-characterization-full.json": {
+      "filename": "autonomous-characterization-full.json",
+      "size_bytes": 8660,
+      "modified": "2026-02-10T19:14:49.751938",
+      "experiment": "autonomous-hardware-characterization",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "bell-calibration-001-ibm-torino.json": {
+      "filename": "bell-calibration-001-ibm-torino.json",
+      "size_bytes": 920,
+      "modified": "2026-02-10T19:14:49.753976",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "bell-calibration-001-ibm.json": {
+      "filename": "bell-calibration-001-ibm.json",
+      "size_bytes": 768,
+      "modified": "2026-02-10T19:14:49.754485",
+      "backend": "ibm_marrakesh",
+      "type": "results"
+    },
+    "bell-calibration-001-tuna9.json": {
+      "filename": "bell-calibration-001-tuna9.json",
+      "size_bytes": 1126,
+      "modified": "2026-02-10T19:14:49.755192",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "bell-calibration-001.json": {
+      "filename": "bell-calibration-001.json",
+      "size_bytes": 1051,
+      "modified": "2026-02-10T19:14:49.755802",
+      "backend": "qxelarator (emulator)",
+      "type": "results"
+    },
+    "bell-emulator-test-001.json": {
+      "filename": "bell-emulator-test-001.json",
+      "size_bytes": 996,
+      "modified": "2026-02-10T19:14:49.756582",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "bell-iqm-garnet-001.json": {
+      "filename": "bell-iqm-garnet-001.json",
+      "size_bytes": 577,
+      "modified": "2026-02-10T19:28:16.049959",
+      "experiment": "bell-calibration",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "bell-iqm-garnet-sweep.json": {
+      "filename": "bell-iqm-garnet-sweep.json",
+      "size_bytes": 7827,
+      "modified": "2026-02-10T21:13:40.260655",
+      "experiment": "bell-connectivity-sweep",
+      "backend": "iqm-garnet",
+      "result_count": 22,
+      "type": "results"
+    },
+    "bell-tomography-cross-platform.json": {
+      "filename": "bell-tomography-cross-platform.json",
+      "size_bytes": 4996,
+      "modified": "2026-02-10T19:14:49.757792",
+      "backend": "multi-source",
+      "type": "results"
+    },
+    "bell-tuna9-daemon-001.json": {
+      "filename": "bell-tuna9-daemon-001.json",
+      "size_bytes": 1015,
+      "modified": "2026-02-10T19:14:49.758501",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "bell-tuna9-recal-001.json": {
+      "filename": "bell-tuna9-recal-001.json",
+      "size_bytes": 902,
+      "modified": "2026-02-10T19:52:04.362701",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "connectivity-probe-001-tuna9.json": {
+      "filename": "connectivity-probe-001-tuna9.json",
+      "size_bytes": 2990,
+      "modified": "2026-02-13T13:29:22.361373",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "cross2019-ibm-torino.json": {
+      "filename": "cross2019-ibm-torino.json",
+      "size_bytes": 6241,
+      "modified": "2026-02-10T19:24:29.289994",
+      "backend": "ibm-torino",
+      "type": "results"
+    },
+    "cross2019-iqm-garnet.json": {
+      "filename": "cross2019-iqm-garnet.json",
+      "size_bytes": 7950,
+      "modified": "2026-02-11T03:40:39.957196",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "cross2019-qv-iqm-garnet.json": {
+      "filename": "cross2019-qv-iqm-garnet.json",
+      "size_bytes": 1103,
+      "modified": "2026-02-10T20:09:16.298796",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "cross2019-qv-tuna9.json": {
+      "filename": "cross2019-qv-tuna9.json",
+      "size_bytes": 2632,
+      "modified": "2026-02-10T19:14:49.759626",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "cross2019-rb-iqm-garnet.json": {
+      "filename": "cross2019-rb-iqm-garnet.json",
+      "size_bytes": 2502,
+      "modified": "2026-02-10T20:09:52.021569",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "cross2019-rb-tuna9.json": {
+      "filename": "cross2019-rb-tuna9.json",
+      "size_bytes": 1962,
+      "modified": "2026-02-10T19:14:49.759974",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "decoder-comparison-repetition-tuna9.json": {
+      "filename": "decoder-comparison-repetition-tuna9.json",
+      "size_bytes": 902,
+      "modified": "2026-02-10T19:14:49.760683",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "detection-code-001-emulator.json": {
+      "filename": "detection-code-001-emulator.json",
+      "size_bytes": 8427,
+      "modified": "2026-02-10T19:14:49.761934",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "detection-code-001-ibm-torino.json": {
+      "filename": "detection-code-001-ibm-torino.json",
+      "size_bytes": 26211,
+      "modified": "2026-02-13T13:29:25.415183",
+      "backend": "ibm-torino",
+      "type": "results"
+    },
+    "detection-code-001-tuna9.json": {
+      "filename": "detection-code-001-tuna9.json",
+      "size_bytes": 4294,
+      "modified": "2026-02-13T13:28:52.471514",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "ghz-003-ibm-torino.json": {
+      "filename": "ghz-003-ibm-torino.json",
+      "size_bytes": 1073,
+      "modified": "2026-02-10T19:14:49.765075",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "ghz-003-ibm.json": {
+      "filename": "ghz-003-ibm.json",
+      "size_bytes": 827,
+      "modified": "2026-02-10T19:14:49.765307",
+      "backend": "ibm_marrakesh",
+      "type": "results"
+    },
+    "ghz-003-tuna9.json": {
+      "filename": "ghz-003-tuna9.json",
+      "size_bytes": 1324,
+      "modified": "2026-02-10T19:14:49.765929",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "ghz-003.json": {
+      "filename": "ghz-003.json",
+      "size_bytes": 1121,
+      "modified": "2026-02-10T19:14:49.766213",
+      "backend": "qxelarator (emulator)",
+      "type": "results"
+    },
+    "ghz-tuna9-daemon-001.json": {
+      "filename": "ghz-tuna9-daemon-001.json",
+      "size_bytes": 1157,
+      "modified": "2026-02-10T19:14:49.766956",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "h2-4qubit-tuna9-circuits-native.json": {
+      "filename": "h2-4qubit-tuna9-circuits-native.json",
+      "size_bytes": 4761,
+      "modified": "2026-02-14T09:04:42.248296",
+      "circuit_count": 5,
+      "type": "circuits"
+    },
+    "h2-4qubit-tuna9-circuits-nory.json": {
+      "filename": "h2-4qubit-tuna9-circuits-nory.json",
+      "size_bytes": 5811,
+      "modified": "2026-02-14T01:40:29.398108",
+      "circuit_count": 5,
+      "type": "circuits"
+    },
+    "h2-4qubit-tuna9-circuits.json": {
+      "filename": "h2-4qubit-tuna9-circuits.json",
+      "size_bytes": 3862,
+      "modified": "2026-02-14T01:23:53.187735",
+      "circuit_count": 5,
+      "type": "circuits"
+    },
+    "h2-4qubit-tuna9-hardware-results.json": {
+      "filename": "h2-4qubit-tuna9-hardware-results.json",
+      "size_bytes": 11687,
+      "modified": "2026-02-14T09:09:44.604384",
+      "type": "hardware-results"
+    },
+    "h2-4qubit-tuna9-jobids.json": {
+      "filename": "h2-4qubit-tuna9-jobids.json",
+      "size_bytes": 288,
+      "modified": "2026-02-14T09:08:58.259694",
+      "backend": "Tuna-9",
+      "circuit_count": 36,
+      "type": "job-tracking"
+    },
+    "h2-4qubit-vqe-tuna9-summary.json": {
+      "filename": "h2-4qubit-vqe-tuna9-summary.json",
+      "size_bytes": 725,
+      "modified": "2026-02-14T09:10:07.709695",
+      "experiment": "H2 4-qubit VQE on Tuna-9",
+      "backend": "Tuna-9",
+      "type": "summary"
+    },
+    "h2-sweep-tuna9-circuits-native.json": {
+      "filename": "h2-sweep-tuna9-circuits-native.json",
+      "size_bytes": 12556,
+      "modified": "2026-02-14T10:58:28.242513",
+      "experiment": "H2 2-qubit bond sweep \u2014 Tuna-9 native",
+      "circuit_count": 39,
+      "type": "circuits"
+    },
+    "h2-sweep-tuna9-jobids.json": {
+      "filename": "h2-sweep-tuna9-jobids.json",
+      "size_bytes": 1084,
+      "modified": "2026-02-14T11:08:40.401235",
+      "backend": "Tuna-9",
+      "type": "job-tracking"
+    },
+    "h2-vqe-hardware-error-bars.json": {
+      "filename": "h2-vqe-hardware-error-bars.json",
+      "size_bytes": 1172,
+      "modified": "2026-02-14T01:10:33.598576",
+      "experiment": "H2 VQE hardware error bars (2q Sagastizabal)",
+      "type": "hardware-results"
+    },
+    "h2_r20_fix.json": {
+      "filename": "h2_r20_fix.json",
+      "size_bytes": 1459,
+      "modified": "2026-02-13T13:50:05.827690",
+      "experiment": "H2 VQE R=2.0 strong correlation fix",
+      "type": "results"
+    },
+    "harrigan2021-qaoa-compiled.json": {
+      "filename": "harrigan2021-qaoa-compiled.json",
+      "size_bytes": 9052,
+      "modified": "2026-02-13T15:21:18.010677",
+      "backend": "emulator + noise model",
+      "type": "results"
+    },
+    "harrigan2021-qaoa-emulator.json": {
+      "filename": "harrigan2021-qaoa-emulator.json",
+      "size_bytes": 16663,
+      "modified": "2026-02-10T19:25:23.507189",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "heh-coefficients.json": {
+      "filename": "heh-coefficients.json",
+      "size_bytes": 5368,
+      "modified": "2026-02-10T20:58:25.975574",
+      "type": "results"
+    },
+    "ibm-torino-diagnostic-suite.json": {
+      "filename": "ibm-torino-diagnostic-suite.json",
+      "size_bytes": 3524,
+      "modified": "2026-02-10T19:52:26.614127",
+      "experiment": "cross-platform-diagnostic-suite",
+      "backend": "ibm-torino",
+      "type": "results"
+    },
+    "ibm-torino-qv-ideal.json": {
+      "filename": "ibm-torino-qv-ideal.json",
+      "size_bytes": 17253,
+      "modified": "2026-02-10T19:50:35.579738",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "iqm-garnet-diagnostic-suite.json": {
+      "filename": "iqm-garnet-diagnostic-suite.json",
+      "size_bytes": 4648,
+      "modified": "2026-02-10T19:40:19.204697",
+      "experiment": "cross-platform-diagnostic-suite",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "kandala2017-h2-depth-study.json": {
+      "filename": "kandala2017-h2-depth-study.json",
+      "size_bytes": 8292,
+      "modified": "2026-02-13T15:28:47.942774",
+      "molecule": "H2",
+      "type": "results"
+    },
+    "kandala2017-h2-sweep.json": {
+      "filename": "kandala2017-h2-sweep.json",
+      "size_bytes": 2475,
+      "modified": "2026-02-10T22:17:16.959711",
+      "molecule": "H2",
+      "type": "results"
+    },
+    "kim2023-ising-12edge-circuits.json": {
+      "filename": "kim2023-ising-12edge-circuits.json",
+      "size_bytes": 14100,
+      "modified": "2026-02-13T13:43:21.256970",
+      "experiment": "kim2023_ising_12edge",
+      "circuit_count": 4,
+      "type": "circuits"
+    },
+    "kim2023-ising-emulator-cqasm.json": {
+      "filename": "kim2023-ising-emulator-cqasm.json",
+      "size_bytes": 1531,
+      "modified": "2026-02-11T02:07:36.086121",
+      "backend": "qxelarator",
+      "result_count": 5,
+      "type": "emulator-results"
+    },
+    "kim2023-ising-ibm-torino.json": {
+      "filename": "kim2023-ising-ibm-torino.json",
+      "size_bytes": 4372,
+      "modified": "2026-02-11T02:20:07.171130",
+      "backend": "ibm_torino",
+      "job_count": 4,
+      "type": "results"
+    },
+    "kim2023-ising-tuna9-hardware.json": {
+      "filename": "kim2023-ising-tuna9-hardware.json",
+      "size_bytes": 17376,
+      "modified": "2026-02-13T14:01:01.369825",
+      "experiment": "kim2023-ising-12edge-tuna9-hardware",
+      "backend": "tuna-9",
+      "description": "Kicked Ising model on full 12-edge Tuna-9 topology. Clifford point (theta_j=-pi/4, theta_h=0). Depth sweep d=1,3,5 plus ZNE fold=3.",
+      "result_count": 4,
+      "type": "hardware-results"
+    },
+    "kim2023-ising-tuna9.json": {
+      "filename": "kim2023-ising-tuna9.json",
+      "size_bytes": 8569,
+      "modified": "2026-02-10T21:31:43.209859",
+      "type": "results"
+    },
+    "lih-8qubit-circuits-openqasm.json": {
+      "filename": "lih-8qubit-circuits-openqasm.json",
+      "size_bytes": 119336,
+      "modified": "2026-02-14T00:42:00.551626",
+      "type": "circuits"
+    },
+    "lih-8qubit-vqe-emulator.json": {
+      "filename": "lih-8qubit-vqe-emulator.json",
+      "size_bytes": 121733,
+      "modified": "2026-02-14T00:36:27.941738",
+      "experiment": "LiH 8-qubit VQE \u2014 CASCI(4,4) on QI emulator",
+      "molecule": "LiH",
+      "type": "emulator-results"
+    },
+    "peruzzo2014-cross-platform.json": {
+      "filename": "peruzzo2014-cross-platform.json",
+      "size_bytes": 8274,
+      "modified": "2026-02-13T15:21:36.760877",
+      "backend": "pennylane (default.qubit + default.mixed)",
+      "molecule": "HeH+",
+      "type": "results"
+    },
+    "peruzzo2014-heh-sweep.json": {
+      "filename": "peruzzo2014-heh-sweep.json",
+      "size_bytes": 5050,
+      "modified": "2026-02-10T19:14:49.768621",
+      "backend": "pennylane (default.qubit + default.mixed)",
+      "molecule": "HeH+",
+      "type": "results"
+    },
+    "peruzzo2014-ibm-torino.json": {
+      "filename": "peruzzo2014-ibm-torino.json",
+      "size_bytes": 12103,
+      "modified": "2026-02-10T19:24:14.299917",
+      "backend": "ibm-torino",
+      "type": "results"
+    },
+    "poetry-decoherence-emulator.json": {
+      "filename": "poetry-decoherence-emulator.json",
+      "size_bytes": 4766,
+      "modified": "2026-02-14T12:48:17.751784",
+      "experiment": "poetry-decoherence-gradient",
+      "backend": "qxelarator emulator",
+      "result_count": 3,
+      "type": "emulator-results"
+    },
+    "poetry-interference-emulator.json": {
+      "filename": "poetry-interference-emulator.json",
+      "size_bytes": 51541,
+      "modified": "2026-02-14T12:48:16.659572",
+      "experiment": "poetry-interference-draft",
+      "backend": "qxelarator emulator",
+      "type": "emulator-results"
+    },
+    "qaoa-4cycle-emulator.json": {
+      "filename": "qaoa-4cycle-emulator.json",
+      "size_bytes": 5778,
+      "modified": "2026-02-13T13:46:24.621804",
+      "experiment": "qaoa-4cycle-emulator-verification",
+      "description": "QAOA MaxCut on 4-cycle subgraphs of Tuna-9 (12-edge topology). First non-tree graphs testable on this hardware.",
+      "circuit_count": 3,
+      "result_count": 3,
+      "type": "emulator-results"
+    },
+    "qaoa-4cycle-tuna9-circuits-native.json": {
+      "filename": "qaoa-4cycle-tuna9-circuits-native.json",
+      "size_bytes": 3627,
+      "modified": "2026-02-14T10:58:28.241997",
+      "experiment": "QAOA MaxCut 4-cycle \u2014 Tuna-9 native",
+      "circuit_count": 3,
+      "type": "circuits"
+    },
+    "qaoa-maxcut-001.json": {
+      "filename": "qaoa-maxcut-001.json",
+      "size_bytes": 31503,
+      "modified": "2026-02-10T19:14:49.771118",
+      "backend": "qxelarator",
+      "type": "results"
+    },
+    "qaoa-tuna9-hardware.json": {
+      "filename": "qaoa-tuna9-hardware.json",
+      "size_bytes": 1684,
+      "modified": "2026-02-13T14:07:25.639306",
+      "experiment": "qaoa-maxcut-4cycle-tuna9",
+      "backend": "tuna-9",
+      "description": "QAOA MaxCut on 4-cycle subgraphs of Tuna-9 topology. Cycle A: q4-q6-q8-q7, Cycle B: q2-q4-q7-q5.",
+      "result_count": 3,
+      "type": "hardware-results"
+    },
+    "qaoa-tuna9-native-circuits.json": {
+      "filename": "qaoa-tuna9-native-circuits.json",
+      "size_bytes": 10517,
+      "modified": "2026-02-14T11:07:25.456288",
+      "experiment": "qaoa-tuna9-native-circuits",
+      "description": "QAOA MaxCut on 4-cycle subgraphs of Tuna-9 using native gate set (CZ, Ry, Rz). All gates decomposed from H/CNOT/Rx with consecutive same-axis rotations merged and near-zero rotations removed.",
+      "circuit_count": 3,
+      "result_count": 3,
+      "type": "circuits"
+    },
+    "qaoa-tuna9-path4-001.json": {
+      "filename": "qaoa-tuna9-path4-001.json",
+      "size_bytes": 33501,
+      "modified": "2026-02-10T19:35:06.532129",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "qaoa-tuna9-tree4-001.json": {
+      "filename": "qaoa-tuna9-tree4-001.json",
+      "size_bytes": 957,
+      "modified": "2026-02-10T19:34:40.440360",
+      "backend": "tuna-9",
+      "job_count": 1,
+      "result_count": 8,
+      "type": "results"
+    },
+    "qiskit-transpiler-baseline-ghz5.json": {
+      "filename": "qiskit-transpiler-baseline-ghz5.json",
+      "size_bytes": 2323,
+      "modified": "2026-02-10T19:27:52.587737",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "qrng-certification-001.json": {
+      "filename": "qrng-certification-001.json",
+      "size_bytes": 6421,
+      "modified": "2026-02-10T19:14:49.772042",
+      "backend": "multi-source",
+      "type": "results"
+    },
+    "quantum-poetry-bell-test.json": {
+      "filename": "quantum-poetry-bell-test.json",
+      "size_bytes": 10603,
+      "modified": "2026-02-14T12:10:00.174257",
+      "experiment": "quantum-poetry-bell-test",
+      "job_count": 5,
+      "type": "results"
+    },
+    "quantum-poetry-experiment1.json": {
+      "filename": "quantum-poetry-experiment1.json",
+      "size_bytes": 9749,
+      "modified": "2026-02-14T09:23:53.520391",
+      "type": "results"
+    },
+    "quantum-poetry-marriage-ghz-raw.json": {
+      "filename": "quantum-poetry-marriage-ghz-raw.json",
+      "size_bytes": 2778,
+      "modified": "2026-02-14T09:41:19.841592",
+      "type": "results"
+    },
+    "quantum-poetry-marriage-jobs.json": {
+      "filename": "quantum-poetry-marriage-jobs.json",
+      "size_bytes": 440,
+      "modified": "2026-02-14T09:33:54.921693",
+      "experiment": "quantum-poetry-marriage",
+      "backend": "Tuna-9 (backend_type_id=6)",
+      "circuit_count": 3,
+      "type": "job-tracking"
+    },
+    "quantum-poetry-marriage-results.json": {
+      "filename": "quantum-poetry-marriage-results.json",
+      "size_bytes": 14365,
+      "modified": "2026-02-14T09:41:24.352486",
+      "experiment": "quantum-poetry-marriage",
+      "description": "Marriage as quantum superposition. Same state, two readings. Neither is more real.",
+      "circuit_count": 3,
+      "type": "results"
+    },
+    "quantum-poetry-marriage-x-basis-raw.json": {
+      "filename": "quantum-poetry-marriage-x-basis-raw.json",
+      "size_bytes": 3673,
+      "modified": "2026-02-14T09:41:19.841483",
+      "type": "results"
+    },
+    "quantum-poetry-marriage-z-basis-raw.json": {
+      "filename": "quantum-poetry-marriage-z-basis-raw.json",
+      "size_bytes": 5614,
+      "modified": "2026-02-14T09:41:19.841340",
+      "type": "results"
+    },
+    "qv-001.json": {
+      "filename": "qv-001.json",
+      "size_bytes": 3096,
+      "modified": "2026-02-10T19:14:49.772990",
+      "backend": "qxelarator",
+      "type": "results"
+    },
+    "qv16-tuna9-circuits-native.json": {
+      "filename": "qv16-tuna9-circuits-native.json",
+      "size_bytes": 26297,
+      "modified": "2026-02-14T10:58:28.241397",
+      "experiment": "QV=16 \u2014 Tuna-9 native",
+      "circuit_count": 10,
+      "type": "circuits"
+    },
+    "qv16-tuna9-emulator.json": {
+      "filename": "qv16-tuna9-emulator.json",
+      "size_bytes": 35145,
+      "modified": "2026-02-13T13:46:26.625221",
+      "backend": "qxelarator",
+      "circuit_count": 10,
+      "type": "emulator-results"
+    },
+    "qv16-tuna9-hardware.json": {
+      "filename": "qv16-tuna9-hardware.json",
+      "size_bytes": 2021,
+      "modified": "2026-02-13T14:07:25.638577",
+      "experiment": "qv16-tuna9-hardware",
+      "backend": "tuna-9",
+      "description": "Quantum Volume 16 test on Tuna-9. 10 random SU(4) circuits, 4 qubits (q4,q6,q7,q8), 4 layers, 8 CNOTs each.",
+      "result_count": 10,
+      "type": "hardware-results"
+    },
+    "qv16-tuna9-v2-circuits-native.json": {
+      "filename": "qv16-tuna9-v2-circuits-native.json",
+      "size_bytes": 56089,
+      "modified": "2026-02-14T11:08:08.739766",
+      "circuit_count": 10,
+      "type": "circuits"
+    },
+    "rb-1qubit-001.json": {
+      "filename": "rb-1qubit-001.json",
+      "size_bytes": 2124,
+      "modified": "2026-02-10T19:14:49.773448",
+      "backend": "qxelarator",
+      "type": "results"
+    },
+    "rb-tuna9-q0-001.json": {
+      "filename": "rb-tuna9-q0-001.json",
+      "size_bytes": 2775,
+      "modified": "2026-02-10T19:24:14.274961",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "rb-tuna9-q2-001.json": {
+      "filename": "rb-tuna9-q2-001.json",
+      "size_bytes": 4671,
+      "modified": "2026-02-10T19:54:36.219892",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "readout-cal-emulator-q24-001.json": {
+      "filename": "readout-cal-emulator-q24-001.json",
+      "size_bytes": 2449,
+      "modified": "2026-02-10T20:23:53.822111",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "readout-cal-ibm-torino-001.json": {
+      "filename": "readout-cal-ibm-torino-001.json",
+      "size_bytes": 1585,
+      "modified": "2026-02-10T20:51:33.669967",
+      "backend": "ibm-torino",
+      "type": "results"
+    },
+    "readout-cal-iqm-garnet-001.json": {
+      "filename": "readout-cal-iqm-garnet-001.json",
+      "size_bytes": 1513,
+      "modified": "2026-02-10T21:18:56.913288",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "readout-cal-tuna9-q24-001.json": {
+      "filename": "readout-cal-tuna9-q24-001.json",
+      "size_bytes": 4042,
+      "modified": "2026-02-10T20:23:52.185469",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "repetition-code-001-emulator.json": {
+      "filename": "repetition-code-001-emulator.json",
+      "size_bytes": 2846,
+      "modified": "2026-02-10T19:14:49.774219",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "repetition-code-001-tuna9.json": {
+      "filename": "repetition-code-001-tuna9.json",
+      "size_bytes": 6897,
+      "modified": "2026-02-10T19:14:49.775099",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "sagastizabal2019-sv-ideal.json": {
+      "filename": "sagastizabal2019-sv-ideal.json",
+      "size_bytes": 9129,
+      "modified": "2026-02-13T15:11:50.296338",
+      "backend": "emulator (pennylane statevector + shot noise)",
+      "type": "results"
+    },
+    "sagastizabal2019-sv-noise0.05.json": {
+      "filename": "sagastizabal2019-sv-noise0.05.json",
+      "size_bytes": 9259,
+      "modified": "2026-02-13T15:11:50.646358",
+      "backend": "emulator (pennylane statevector + shot noise)",
+      "type": "results"
+    },
+    "sagastizabal2019-sv-noise0.1.json": {
+      "filename": "sagastizabal2019-sv-noise0.1.json",
+      "size_bytes": 9257,
+      "modified": "2026-02-13T15:11:50.971788",
+      "backend": "emulator (pennylane statevector + shot noise)",
+      "type": "results"
+    },
+    "sagastizabal2019-sv-noise0.15.json": {
+      "filename": "sagastizabal2019-sv-noise0.15.json",
+      "size_bytes": 9251,
+      "modified": "2026-02-13T15:11:51.303360",
+      "backend": "emulator (pennylane statevector + shot noise)",
+      "type": "results"
+    },
+    "tuna9-connectivity-discovery.json": {
+      "filename": "tuna9-connectivity-discovery.json",
+      "size_bytes": 4651,
+      "modified": "2026-02-10T19:14:49.776020",
+      "experiment": "autonomous-connectivity-discovery",
+      "backend": "tuna-9",
+      "method": "Bell state probe (H + CNOT) on all qubit pairs, 1024 shots each",
+      "type": "results"
+    },
+    "tuna9-missing-analysis.json": {
+      "filename": "tuna9-missing-analysis.json",
+      "size_bytes": 1694,
+      "modified": "2026-02-10T21:11:59.541153",
+      "type": "results"
+    },
+    "tuna9-missing-couplers.json": {
+      "filename": "tuna9-missing-couplers.json",
+      "size_bytes": 1930,
+      "modified": "2026-02-13T13:03:21.198646",
+      "experiment": "Bell state fidelity for missing coupler pairs",
+      "backend": "Tuna-9 (backend_type_id=6)",
+      "type": "results"
+    },
+    "tuna9-missing-raw.json": {
+      "filename": "tuna9-missing-raw.json",
+      "size_bytes": 5862,
+      "modified": "2026-02-10T20:47:12.196491",
+      "job_count": 10,
+      "type": "results"
+    },
+    "tuna9-rem-reanalysis.json": {
+      "filename": "tuna9-rem-reanalysis.json",
+      "size_bytes": 12940,
+      "modified": "2026-02-10T20:31:10.280918",
+      "result_count": 21,
+      "type": "results"
+    },
+    "variance-analysis-001.json": {
+      "filename": "variance-analysis-001.json",
+      "size_bytes": 3616,
+      "modified": "2026-02-10T19:24:14.300858",
+      "description": "Run-to-run variance measurement: same circuits submitted twice to same backends",
+      "type": "results"
+    },
+    "vqe-emulator-sweep-050.json": {
+      "filename": "vqe-emulator-sweep-050.json",
+      "size_bytes": 1184,
+      "modified": "2026-02-10T19:52:12.111315",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-sweep-073.json": {
+      "filename": "vqe-emulator-sweep-073.json",
+      "size_bytes": 1192,
+      "modified": "2026-02-10T19:52:12.113002",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-sweep-100.json": {
+      "filename": "vqe-emulator-sweep-100.json",
+      "size_bytes": 1189,
+      "modified": "2026-02-10T19:52:12.113875",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-sweep-150.json": {
+      "filename": "vqe-emulator-sweep-150.json",
+      "size_bytes": 1191,
+      "modified": "2026-02-10T19:52:12.114507",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-sweep-200.json": {
+      "filename": "vqe-emulator-sweep-200.json",
+      "size_bytes": 1192,
+      "modified": "2026-02-10T19:52:12.114834",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-sweep-250.json": {
+      "filename": "vqe-emulator-sweep-250.json",
+      "size_bytes": 1188,
+      "modified": "2026-02-10T19:52:12.115050",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-zne-f3-001.json": {
+      "filename": "vqe-emulator-zne-f3-001.json",
+      "size_bytes": 1990,
+      "modified": "2026-02-10T20:02:23.575979",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-emulator-zne-f5-001.json": {
+      "filename": "vqe-emulator-zne-f5-001.json",
+      "size_bytes": 2026,
+      "modified": "2026-02-10T20:02:23.576109",
+      "backend": "emulator",
+      "type": "emulator-results"
+    },
+    "vqe-equilibrium-001-ibm-marrakesh.json": {
+      "filename": "vqe-equilibrium-001-ibm-marrakesh.json",
+      "size_bytes": 1629,
+      "modified": "2026-02-10T19:14:49.776350",
+      "backend": "ibm_marrakesh",
+      "type": "results"
+    },
+    "vqe-equilibrium-001-ibm.json": {
+      "filename": "vqe-equilibrium-001-ibm.json",
+      "size_bytes": 1990,
+      "modified": "2026-02-10T19:14:49.776982",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "vqe-equilibrium-001-iqm-garnet.INVALID.json": {
+      "filename": "vqe-equilibrium-001-iqm-garnet.INVALID.json",
+      "size_bytes": 1604,
+      "modified": "2026-02-10T19:38:50.245670",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "vqe-equilibrium-001-tuna9.json": {
+      "filename": "vqe-equilibrium-001-tuna9.json",
+      "size_bytes": 1747,
+      "modified": "2026-02-10T19:14:49.777237",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-equilibrium-001.json": {
+      "filename": "vqe-equilibrium-001.json",
+      "size_bytes": 1855,
+      "modified": "2026-02-10T19:14:49.777875",
+      "backend": "qxelarator (emulator)",
+      "type": "results"
+    },
+    "vqe-equilibrium-002-ibm-torino.json": {
+      "filename": "vqe-equilibrium-002-ibm-torino.json",
+      "size_bytes": 1451,
+      "modified": "2026-02-10T19:14:49.778513",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "vqe-h2-sagastizabal-ibm.json": {
+      "filename": "vqe-h2-sagastizabal-ibm.json",
+      "size_bytes": 1588,
+      "modified": "2026-02-10T19:14:49.778845",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "vqe-h2-sagastizabal-tuna9-q68.json": {
+      "filename": "vqe-h2-sagastizabal-tuna9-q68.json",
+      "size_bytes": 4453,
+      "modified": "2026-02-10T21:12:27.928482",
+      "backend": "tuna9",
+      "type": "results"
+    },
+    "vqe-h2-sweep-emulator.json": {
+      "filename": "vqe-h2-sweep-emulator.json",
+      "size_bytes": 9701,
+      "modified": "2026-02-10T17:15:03.798395",
+      "type": "emulator-results"
+    },
+    "vqe-h2-sweep-reference.json": {
+      "filename": "vqe-h2-sweep-reference.json",
+      "size_bytes": 5269,
+      "modified": "2026-02-10T17:15:03.800694",
+      "type": "results"
+    },
+    "vqe-heh-mitigation-ladder-001-ibm.json": {
+      "filename": "vqe-heh-mitigation-ladder-001-ibm.json",
+      "size_bytes": 9984,
+      "modified": "2026-02-10T21:06:18.553791",
+      "backend": "ibm_torino",
+      "molecule": "HeH+",
+      "type": "results"
+    },
+    "vqe-heh-peruzzo-tuna9-q46.json": {
+      "filename": "vqe-heh-peruzzo-tuna9-q46.json",
+      "size_bytes": 3375,
+      "modified": "2026-02-10T21:12:41.995342",
+      "backend": "tuna9",
+      "type": "results"
+    },
+    "vqe-ibm-torino-rem-001.json": {
+      "filename": "vqe-ibm-torino-rem-001.json",
+      "size_bytes": 1572,
+      "modified": "2026-02-10T20:54:01.191358",
+      "backend": "ibm-torino",
+      "type": "results"
+    },
+    "vqe-iqm-garnet-rem-001.json": {
+      "filename": "vqe-iqm-garnet-rem-001.json",
+      "size_bytes": 1639,
+      "modified": "2026-02-10T21:18:56.914276",
+      "backend": "iqm-garnet",
+      "type": "results"
+    },
+    "vqe-mitigation-ladder-001-ibm.json": {
+      "filename": "vqe-mitigation-ladder-001-ibm.json",
+      "size_bytes": 14773,
+      "modified": "2026-02-10T20:27:57.401933",
+      "backend": "ibm_torino",
+      "type": "results"
+    },
+    "vqe-tuna9-bestpair-001.json": {
+      "filename": "vqe-tuna9-bestpair-001.json",
+      "size_bytes": 2554,
+      "modified": "2026-02-10T19:52:04.371823",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-daemon-001.json": {
+      "filename": "vqe-tuna9-daemon-001.json",
+      "size_bytes": 2036,
+      "modified": "2026-02-10T19:14:49.779894",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-q46-001.json": {
+      "filename": "vqe-tuna9-q46-001.json",
+      "size_bytes": 1933,
+      "modified": "2026-02-10T19:35:06.540708",
+      "backend": "tuna-9",
+      "job_count": 7,
+      "result_count": 16,
+      "type": "results"
+    },
+    "vqe-tuna9-rem-001.json": {
+      "filename": "vqe-tuna9-rem-001.json",
+      "size_bytes": 3040,
+      "modified": "2026-02-10T20:32:32.808566",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-rem-002.json": {
+      "filename": "vqe-tuna9-rem-002.json",
+      "size_bytes": 3136,
+      "modified": "2026-02-10T20:32:32.810727",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-rem-003.json": {
+      "filename": "vqe-tuna9-rem-003.json",
+      "size_bytes": 3192,
+      "modified": "2026-02-10T20:32:32.812754",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-rem-004-008.json": {
+      "filename": "vqe-tuna9-rem-004-008.json",
+      "size_bytes": 761,
+      "modified": "2026-02-13T14:07:25.638924",
+      "experiment": "vqe-tuna9-rem-004-008",
+      "backend": "tuna-9",
+      "description": "VQE H2 with Post-Selection + Randomized Expectation-value Measurement. 5 identical runs for REM statistics.",
+      "type": "results"
+    },
+    "vqe-tuna9-rem-004.json": {
+      "filename": "vqe-tuna9-rem-004.json",
+      "size_bytes": 2367,
+      "modified": "2026-02-13T14:01:01.370488",
+      "experiment": "VQE H2 PS+REM run 004",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-sweep-050.json": {
+      "filename": "vqe-tuna9-sweep-050.json",
+      "size_bytes": 2668,
+      "modified": "2026-02-10T19:35:06.532302",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-sweep-100.json": {
+      "filename": "vqe-tuna9-sweep-100.json",
+      "size_bytes": 2669,
+      "modified": "2026-02-10T19:35:06.532428",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-sweep-150.json": {
+      "filename": "vqe-tuna9-sweep-150.json",
+      "size_bytes": 2674,
+      "modified": "2026-02-10T19:35:06.532550",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-sweep-200.json": {
+      "filename": "vqe-tuna9-sweep-200.json",
+      "size_bytes": 2731,
+      "modified": "2026-02-10T19:35:06.532669",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-sweep-250.json": {
+      "filename": "vqe-tuna9-sweep-250.json",
+      "size_bytes": 2691,
+      "modified": "2026-02-10T19:52:04.372436",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f1-001.json": {
+      "filename": "vqe-tuna9-zne-f1-001.json",
+      "size_bytes": 2715,
+      "modified": "2026-02-10T20:03:27.768057",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f1-002.json": {
+      "filename": "vqe-tuna9-zne-f1-002.json",
+      "size_bytes": 2609,
+      "modified": "2026-02-10T20:13:22.802793",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f1-003.json": {
+      "filename": "vqe-tuna9-zne-f1-003.json",
+      "size_bytes": 2682,
+      "modified": "2026-02-10T20:13:22.803082",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f1-004.json": {
+      "filename": "vqe-tuna9-zne-f1-004.json",
+      "size_bytes": 2696,
+      "modified": "2026-02-10T20:13:22.803306",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f3-001.json": {
+      "filename": "vqe-tuna9-zne-f3-001.json",
+      "size_bytes": 2658,
+      "modified": "2026-02-10T20:03:27.768491",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f3-002.json": {
+      "filename": "vqe-tuna9-zne-f3-002.json",
+      "size_bytes": 2675,
+      "modified": "2026-02-10T20:13:22.803598",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f3-003.json": {
+      "filename": "vqe-tuna9-zne-f3-003.json",
+      "size_bytes": 2642,
+      "modified": "2026-02-10T20:13:22.804438",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f3-004.json": {
+      "filename": "vqe-tuna9-zne-f3-004.json",
+      "size_bytes": 2694,
+      "modified": "2026-02-10T20:13:22.804898",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f5-001.json": {
+      "filename": "vqe-tuna9-zne-f5-001.json",
+      "size_bytes": 2747,
+      "modified": "2026-02-10T20:03:27.768669",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f5-002.json": {
+      "filename": "vqe-tuna9-zne-f5-002.json",
+      "size_bytes": 2729,
+      "modified": "2026-02-10T20:13:22.805655",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f5-003.json": {
+      "filename": "vqe-tuna9-zne-f5-003.json",
+      "size_bytes": 2725,
+      "modified": "2026-02-10T20:13:22.806146",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "vqe-tuna9-zne-f5-004.json": {
+      "filename": "vqe-tuna9-zne-f5-004.json",
+      "size_bytes": 2695,
+      "modified": "2026-02-10T20:13:22.806655",
+      "backend": "tuna-9",
+      "type": "results"
+    },
+    "watson2018-replication-emulator.json": {
+      "filename": "watson2018-replication-emulator.json",
+      "size_bytes": 10242,
+      "modified": "2026-02-13T14:24:40.343177",
+      "experiment": "Watson et al. 2018 Replication",
+      "backend": "emulator (qxelarator)",
+      "type": "emulator-results"
+    },
+    "watson2018-tuna9-circuits-native.json": {
+      "filename": "watson2018-tuna9-circuits-native.json",
+      "size_bytes": 5908,
+      "modified": "2026-02-14T10:58:28.239312",
+      "experiment": "Watson 2018 Replication \u2014 Tuna-9 native",
+      "circuit_count": 20,
+      "type": "circuits"
+    },
+    "watson2018-tuna9-hardware.json": {
+      "filename": "watson2018-tuna9-hardware.json",
+      "size_bytes": 21268,
+      "modified": "2026-02-13T14:37:57.051728",
+      "experiment": "Watson et al. 2018 Replication \u2014 Tuna-9 Hardware",
+      "backend": "Quantum Inspire Tuna-9",
+      "type": "hardware-results"
+    },
+    "watson2018-tuna9-jobids.json": {
+      "filename": "watson2018-tuna9-jobids.json",
+      "size_bytes": 853,
+      "modified": "2026-02-14T11:08:01.592094",
+      "backend": "Tuna-9",
+      "type": "job-tracking"
+    },
+    "watson2018-tuna9-jobs.json": {
+      "filename": "watson2018-tuna9-jobs.json",
+      "size_bytes": 808,
+      "modified": "2026-02-13T14:27:04.067241",
+      "experiment": "Watson et al. 2018 Replication on Tuna-9",
+      "backend": "tuna9",
+      "type": "job-tracking"
+    }
+  },
+  "last_updated": "2026-02-14T12:56:33.796952",
+  "total_files": 151
+}

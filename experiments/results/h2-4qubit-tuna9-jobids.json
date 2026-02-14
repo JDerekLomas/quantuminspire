@@ -1,0 +1,13 @@
+{
+  "circuits": "h2-4qubit-tuna9-circuits-native.json",
+  "backend": "Tuna-9",
+  "n_shots": 4096,
+  "compile_stage": "ROUTING",
+  "job_ids": {
+    "Z": 426070,
+    "q0Y_q1X_q2X_q3Y": 426071,
+    "q0Y_q1Y_q2X_q3X": 426072,
+    "q0X_q1X_q2Y_q3Y": 426073,
+    "q0X_q1Y_q2Y_q3X": 426074
+  }
+}

@@ -52,6 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Experiences
     { url: `${BASE_URL}/see`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/tuna9`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/poetry`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/how-it-works`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/how-qubits-work`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/how-qubits-work/spectroscopy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

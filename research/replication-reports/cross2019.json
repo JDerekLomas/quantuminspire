@@ -108,6 +108,31 @@
       }
     },
     {
+      "claim_id": "qv-pass-4q",
+      "description": "4-qubit QV circuits pass heavy output test (> 2/3) — Quantum Volume 16",
+      "published_value": true,
+      "published_error": null,
+      "unit": "boolean",
+      "figure": "Fig. 3",
+      "results_by_backend": {
+        "tuna9": {
+          "measured_value": true,
+          "discrepancy": 0,
+          "within_published_error": true,
+          "failure_mode": "success",
+          "failure_description": "QV=16 CERTIFIED on Tuna-9. 8/10 random SU(4) circuits pass (HOF > 2/3). Mean HOF 0.7084 +/- 0.0423. 2-sigma lower bound 0.6816 > threshold 0.6667. Physical qubits q4,q6,q7,q8 (best-connected 4-qubit cluster). 4 layers, 8 CNOTs per circuit, 4096 shots each.",
+          "severity": "none",
+          "heavy_output_fraction": 0.7084,
+          "std_hof": 0.0423,
+          "n_pass": 8,
+          "n_circuits": 10,
+          "lower_bound_2sigma": 0.6816,
+          "physical_qubits": [4, 6, 7, 8],
+          "job_ids": [425239, 425241, 425252, 425254, 425256, 425258, 425260, 425262, 425264, 425266]
+        }
+      }
+    },
+    {
       "claim_id": "rb-gate-fidelity",
       "description": "Randomized benchmarking gives gate fidelity > 99%",
       "published_value": 0.99,
@@ -153,11 +178,11 @@
     }
   ],
   "summary": {
-    "total_claims_tested": 3,
-    "successes": 3,
+    "total_claims_tested": 4,
+    "successes": 4,
     "success_rate": 1.0,
     "failure_mode_counts": {
-      "success": 3
+      "success": 4
     },
     "backends_tested": [
       "emulator",
@@ -165,6 +190,6 @@
       "ibm_torino",
       "iqm_garnet"
     ],
-    "notes": "Cross-platform comparison: QV=8 on emulator, Tuna-9, and IBM Torino. IQM Garnet passes QV n=2 but fails n=3 (high variance). RB on IBM Torino and IQM Garnet both show compilation artifacts — Clifford sequences get optimized away, making survival rates insensitive to sequence length. Tuna-9 RB (99.82%) is most reliable since cQASM compiler preserves gate structure."
+    "notes": "Updated 2026-02-13. QV=16 CERTIFIED on Tuna-9 (8/10 pass, mean HOF 0.7084, 2-sigma lower bound 0.6816 > 0.6667). QV=8 passes on emulator, Tuna-9, and IBM Torino. IQM Garnet passes QV n=2 but fails n=3. RB on IBM Torino and IQM Garnet show compilation artifacts. Tuna-9 RB (99.82%) most reliable."
   }
 }

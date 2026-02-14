@@ -54,6 +54,37 @@ def _get_remote():
     return _remote_backend
 
 
+def _reset_remote():
+    """Discard the cached RemoteBackend so the next call picks up fresh tokens."""
+    global _remote_backend
+    _remote_backend = None
+    logger.info("RemoteBackend singleton reset")
+
+
+_AUTH_ERROR_KEYWORDS = ("invalid_grant", "unauthorized", "401", "token", "refresh",
+                        "authentication", "forbidden", "403", "expired")
+
+
+def _is_auth_error(exc: Exception) -> bool:
+    """Check whether an exception looks like a stale-token / auth failure."""
+    msg = str(exc).lower()
+    return any(kw in msg for kw in _AUTH_ERROR_KEYWORDS)
+
+
+def _with_auth_retry(func, *args, **kwargs):
+    """Call *func*; if it raises an auth-related error, reset the remote
+    backend singleton and retry once with a fresh RemoteBackend."""
+    try:
+        return func(*args, **kwargs)
+    except Exception as first_exc:
+        if not _is_auth_error(first_exc):
+            raise
+        logger.warning("Auth error detected (%s), resetting RemoteBackend and retrying...",
+                       first_exc)
+        _reset_remote()
+        return func(*args, **kwargs)
+
+
 def _get_local():
     global _local_backend
     if _local_backend is None:
@@ -63,10 +94,19 @@ def _get_local():
     return _local_backend
 
 
-def _make_cqasm_algorithm(circuit: str, name: str = "mcp_circuit"):
+def _make_cqasm_algorithm(circuit: str, name: str = "mcp_circuit", compile_stage=None):
     """Create a CqasmAlgorithm from a raw cQASM string."""
     from quantuminspire.sdk.models.cqasm_algorithm import CqasmAlgorithm
-    algo = CqasmAlgorithm(platform_name="Quantum Inspire", program_name=name)
+
+    if compile_stage is not None:
+        # Subclass to override the compile_stage property
+        class _Algo(CqasmAlgorithm):
+            @property
+            def compile_stage(self):
+                return compile_stage
+        algo = _Algo(platform_name="Quantum Inspire", program_name=name)
+    else:
+        algo = CqasmAlgorithm(platform_name="Quantum Inspire", program_name=name)
     algo._content = circuit
     return algo
 
@@ -83,7 +123,7 @@ def qi_list_backends() -> str:
     qubit count, and whether the backend is currently available.
     Requires QI authentication (~/.quantuminspire/config.json).
     """
-    try:
+    def _do():
         backend = _get_remote()
         backend_types = backend.get_backend_types()
 
@@ -100,6 +140,9 @@ def qi_list_backends() -> str:
             results.append(entry)
 
         return json.dumps(results, indent=2, default=str)
+
+    try:
+        return _with_auth_retry(_do)
     except Exception as e:
         return json.dumps({"error": str(e), "traceback": traceback.format_exc()})
 
@@ -110,6 +153,7 @@ def qi_submit_circuit(
     backend_type_id: int,
     number_of_shots: int = 1024,
     name: str = "mcp_circuit",
+    compile_stage: str = "none",
 ) -> str:
     """Submit a cQASM 3.0 circuit to Quantum Inspire remote hardware.
 
@@ -121,11 +165,17 @@ def qi_submit_circuit(
         backend_type_id: QI backend type ID (use qi_list_backends to find available backends, e.g. 6 for Tuna-9)
         number_of_shots: Number of measurement shots (1-4096, default 1024)
         name: Optional name for the circuit project
+        compile_stage: Compilation stage. Use 'routing' for pre-compiled circuits in native gate set
+            (CZ, Ry, Rz) to skip server-side compilation. Options: none, decomposition, mapping,
+            optimization, routing. Default 'none' applies full compilation.
     """
-    try:
+    def _do():
+        from compute_api_client import CompileStage
         from quantuminspire.sdk.models.job_options import JobOptions
 
-        algo = _make_cqasm_algorithm(circuit, name)
+        stage = CompileStage(compile_stage.lower())
+        algo = _make_cqasm_algorithm(circuit, name, compile_stage=stage)
+
         options = JobOptions(number_of_shots=number_of_shots)
         backend = _get_remote()
         job_id = backend.run(algo, backend_type_id=backend_type_id, options=options)
@@ -135,8 +185,12 @@ def qi_submit_circuit(
             "status": "SUBMITTED",
             "backend_type_id": backend_type_id,
             "number_of_shots": number_of_shots,
+            "compile_stage": compile_stage,
             "message": f"Circuit submitted. Use qi_check_job({job_id}) to check status.",
         })
+
+    try:
+        return _with_auth_retry(_do)
     except Exception as e:
         return json.dumps({"error": str(e), "traceback": traceback.format_exc()})
 
@@ -150,17 +204,22 @@ def qi_check_job(job_id: int) -> str:
     Args:
         job_id: The job ID returned by qi_submit_circuit
     """
-    try:
+    def _do():
         backend = _get_remote()
         job = backend.get_job(job_id)
 
         result = {"job_id": job_id}
-        for attr in ["status", "created_on", "started_on", "completed_on"]:
+        for attr in ["status", "created_on", "started_on", "completed_on",
+                      "status_message", "error_message", "message", "nshots",
+                      "queued_at"]:
             if hasattr(job, attr):
                 val = getattr(job, attr)
                 result[attr] = str(val) if val is not None else None
 
         return json.dumps(result, default=str)
+
+    try:
+        return _with_auth_retry(_do)
     except Exception as e:
         return json.dumps({"error": str(e), "traceback": traceback.format_exc()})
 
@@ -175,7 +234,7 @@ def qi_get_results(job_id: int) -> str:
     Args:
         job_id: The job ID returned by qi_submit_circuit
     """
-    try:
+    def _do():
         backend = _get_remote()
 
         # get_results returns a PageResult — access .items for the list
@@ -201,6 +260,9 @@ def qi_get_results(job_id: int) -> str:
             "status": status,
             "message": "Job not yet completed or no results available.",
         })
+
+    try:
+        return _with_auth_retry(_do)
     except Exception as e:
         return json.dumps({"error": str(e), "traceback": traceback.format_exc()})
 

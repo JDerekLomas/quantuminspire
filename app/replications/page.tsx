@@ -282,7 +282,7 @@ export default function ReplicationsPage() {
                   { metric: 'GHZ-3 fidelity', tuna9: '88.9%', iqm: '93.9%', ibm: '82.9%', best: 'iqm' },
                   { metric: 'GHZ-5 fidelity', tuna9: '83.8%', iqm: '81.8%', ibm: '76.6%', best: 'tuna9' },
                   { metric: 'GHZ-10', tuna9: 'n/a', iqm: '54.7%', ibm: '62.2%', best: 'ibm' },
-                  { metric: 'Quantum Volume', tuna9: '8', iqm: '32', ibm: '32', best: 'both' },
+                  { metric: 'Quantum Volume', tuna9: '16', iqm: '32', ibm: '32', best: 'both' },
                   { metric: 'RB gate fidelity', tuna9: '99.82%', iqm: '99.82%', ibm: '99.99%*', best: 'tuna9' },
                   { metric: 'VQE H2 (kcal/mol)', tuna9: '0.92', iqm: '--', ibm: '0.22', best: 'ibm' },
                   { metric: 'Dominant noise', tuna9: 'Dephasing', iqm: 'Dephasing', ibm: 'Depolarizing', best: '' },

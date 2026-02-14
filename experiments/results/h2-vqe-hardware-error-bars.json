@@ -1,0 +1,35 @@
+{
+  "experiment": "H2 VQE hardware error bars (2q Sagastizabal)",
+  "E_FCI": -1.137306,
+  "backends": {
+    "ibm_torino": {
+      "energy_Ha": -1.119720955078125,
+      "error_mHa": 17.585044921874847,
+      "sigma_analytical_mHa": 3.3085700076454003,
+      "sigma_bootstrap_mHa": 3.957374606251487,
+      "error_over_sigma": 4.443613928814233,
+      "chemical_accuracy": false
+    },
+    "ibm_marrakesh": {
+      "energy_Ha": -1.0955397890624998,
+      "error_mHa": 41.766210937500105,
+      "sigma_analytical_mHa": 4.57186804926949,
+      "sigma_bootstrap_mHa": 6.089364739587401,
+      "error_over_sigma": 6.8588781791924776,
+      "chemical_accuracy": false
+    },
+    "tuna9": {
+      "energy_Ha": -1.1020199091796876,
+      "error_mHa": 35.28609082031231,
+      "sigma_analytical_mHa": 3.6209831995139683,
+      "sigma_bootstrap_mHa": 4.081818396326648,
+      "error_over_sigma": 8.644698855800966,
+      "chemical_accuracy": false,
+      "ps_energy_Ha": -1.1315621864639516,
+      "ps_error_mHa": 5.743813536048359,
+      "ps_sigma_analytical_mHa": 2.8062786144514815,
+      "ps_sigma_bootstrap_mHa": 3.4128242761186653,
+      "ps_kept_pct": 96.19140625
+    }
+  }
+}

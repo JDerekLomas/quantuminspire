@@ -1,0 +1,105 @@
+{
+  "experiment": "qaoa-maxcut-4cycle-tuna9",
+  "description": "QAOA MaxCut on 4-cycle subgraphs of Tuna-9 topology. Cycle A: q4-q6-q8-q7, Cycle B: q2-q4-q7-q5.",
+  "backend": "tuna-9",
+  "date": "2026-02-13",
+  "shots": 4096,
+  "results": {
+    "cycle_a_p1": {
+      "job_id": 425280,
+      "physical_qubits": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "cycle_edges": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "cnots": 8,
+      "expected_cuts": 1.3672,
+      "max_cuts": 4,
+      "approximation_ratio": 0.3418,
+      "beats_random": false
+    },
+    "cycle_a_p2": {
+      "job_id": 425281,
+      "physical_qubits": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "cycle_edges": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "cnots": 16,
+      "expected_cuts": 1.292,
+      "max_cuts": 4,
+      "approximation_ratio": 0.323,
+      "beats_random": false
+    },
+    "cycle_b_p1": {
+      "job_id": 425282,
+      "physical_qubits": [
+        2,
+        4,
+        5,
+        7
+      ],
+      "cycle_edges": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "cnots": 8,
+      "expected_cuts": 1.3682,
+      "max_cuts": 4,
+      "approximation_ratio": 0.342,
+      "beats_random": false
+    }
+  }
+}

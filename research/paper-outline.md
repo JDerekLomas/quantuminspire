@@ -75,7 +75,7 @@ agent transcripts are publicly available.
 | Platform | Qubits | Topology | Native Gates | Noise Type |
 |----------|--------|----------|-------------|------------|
 | IBM Torino | 133 | Heavy-hex | CZ, SX, RZ | Depolarizing |
-| QI Tuna-9 | 9 | Irregular (10 edges) | CZ, Ry, X | Dephasing |
+| QI Tuna-9 | 9 | Diamond lattice (12 edges) | CZ, Ry, X | Dephasing |
 | IQM Garnet | 20 | Square-lattice-like | PRX, CZ | Dephasing |
 | Emulator | 9 | All-to-all | Any | None |
 

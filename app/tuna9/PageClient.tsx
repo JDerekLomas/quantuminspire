@@ -52,11 +52,10 @@ const TUNA9 = {
   ],
 
   // Bell fidelities per connected pair (from our experiments)
-  // 4-7 and 5-7 confirmed by API topology but not yet measured by us
   bellFidelities: {
     '0-1': 0.870, '0-2': 0.858, '1-3': 0.913, '1-4': 0.898,
     '2-4': 0.923, '2-5': 0.914, '3-6': 0.871, '4-6': 0.935,
-    '4-7': 0, '5-7': 0,  // unmeasured — Tuna-9 offline
+    '4-7': 0.906, '5-7': 0.900,
     '6-8': 0.913, '7-8': 0.883,
   } as Record<string, number>,
 
@@ -65,7 +64,7 @@ const TUNA9 = {
 
   // Benchmarks
   gateFidelity: 0.9982,  // single-qubit RB, cross2019-rb-tuna9.json
-  qv: 8,                  // cross2019-qv-tuna9.json
+  qv: 16,                 // cross2019-qv-tuna9.json (certified: 8/10 pass, 2σ lower=0.68 > 2/3)
 
   // Ising model: per-qubit Z expectations at 3 depths
   // Source: kim2023-ising-tuna9-hardware.json
@@ -131,7 +130,7 @@ function makeSections(): Section[] {
       whatYouHear:
         'Nine tones enter one by one, each at the audible equivalent of that qubit\u2019s resonance frequency (5.15\u20135.46 GHz mapped to 375\u2013530 Hz). They\u2019re panned across stereo: q0 at left, q8 at right. Together they form a dense chord \u2014 the tight cluster reflects how close real transmon frequencies are.',
       dataNote:
-        'Frequencies from published DiCarlo lab devices (arxiv 2503.13225). 12-edge topology from QI API. Bell fidelities measured on 10 of 12 pairs; 2 (q4-q7, q5-q7) pending.',
+        'Frequencies from published DiCarlo lab devices (arxiv 2503.13225). 12-edge topology from QI API. Bell fidelities measured on all 12 pairs, Feb 2026.',
       durationMs: 7000,
       color: '#00d4ff',
       play: (ctx, master) => {
@@ -992,7 +991,7 @@ function VisualCoda({ playing }: { playing: boolean }) {
   const stats = [
     { label: 'Gate fidelity', value: '99.82%', x: 30, y: 35 },
     { label: 'Best pair', value: 'q4\u2013q6 (93.5%)', x: 420, y: 35 },
-    { label: 'Quantum Volume', value: 'QV = 8', x: 30, y: 350 },
+    { label: 'Quantum Volume', value: 'QV = 16', x: 30, y: 350 },
     { label: 'ZNE improvement', value: '3.1\u00D7', x: 420, y: 350 },
   ]
 

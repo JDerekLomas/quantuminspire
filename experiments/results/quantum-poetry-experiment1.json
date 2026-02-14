@@ -1,0 +1,335 @@
+{
+  "title": "Quantum Poetry Experiment 1",
+  "date": "2026-02-14T09:23:53.519652",
+  "platform": "qxelarator (emulator)",
+  "experiments": {
+    "ghz_haiku": {
+      "experiment": "GHZ-9 Haiku",
+      "circuit": "ghz9",
+      "total_shots": 1024,
+      "unique_outcomes": 2,
+      "raw_results": {
+        "000000000": 526,
+        "111111111": 498
+      },
+      "poems": [
+        {
+          "bitstring": "000000000",
+          "shots": 526,
+          "fraction": 0.5137,
+          "poem": "the winter morning\nsomething opens like a wound\nthe salt on my tongue"
+        },
+        {
+          "bitstring": "111111111",
+          "shots": 498,
+          "fraction": 0.4863,
+          "poem": "along the cliff edge\nthe world holds still and does not speak\nbone under the snow"
+        }
+      ],
+      "notes": "9-qubit GHZ state produces exactly 2 haiku with perfect qubit correlations."
+    },
+    "bell_couplets": {
+      "experiment": "Bell Couplets",
+      "circuit": "bell_couplets",
+      "total_shots": 1024,
+      "unique_outcomes": 16,
+      "raw_results": {
+        "00000000": 65,
+        "00000011": 64,
+        "00001100": 53,
+        "00001111": 72,
+        "00110000": 64,
+        "00110011": 60,
+        "00111100": 68,
+        "00111111": 67,
+        "11000000": 76,
+        "11000011": 71,
+        "11001100": 58,
+        "11001111": 71,
+        "11110000": 55,
+        "11110011": 51,
+        "11111100": 66,
+        "11111111": 63
+      },
+      "bell_pair_correlations": {
+        "pair0": 1.0,
+        "pair1": 1.0,
+        "pair2": 1.0,
+        "pair3": 1.0
+      },
+      "couplets": [
+        {
+          "key": "0000",
+          "shots": 65,
+          "fraction": 0.0635,
+          "semantics": {
+            "time": "dawn",
+            "element": "rain",
+            "action": "gathers",
+            "quality": "sound"
+          },
+          "line1": "At dawn the rain gathers without a sound",
+          "line2": "the morning river finds its way slowly home",
+          "contributing_bitstrings": [
+            "00000000"
+          ]
+        },
+        {
+          "key": "0001",
+          "shots": 76,
+          "fraction": 0.0742,
+          "semantics": {
+            "time": "dawn",
+            "element": "rain",
+            "action": "gathers",
+            "quality": "wound"
+          },
+          "line1": "At dawn the rain gathers like an open wound",
+          "line2": "the morning river finds its way into the unknown",
+          "contributing_bitstrings": [
+            "11000000"
+          ]
+        },
+        {
+          "key": "0010",
+          "shots": 64,
+          "fraction": 0.0625,
+          "semantics": {
+            "time": "dawn",
+            "element": "rain",
+            "action": "scatters",
+            "quality": "sound"
+          },
+          "line1": "At dawn the rain scatters without a sound",
+          "line2": "the morning river forgets its name slowly home",
+          "contributing_bitstrings": [
+            "00110000"
+          ]
+        },
+        {
+          "key": "0011",
+          "shots": 55,
+          "fraction": 0.0537,
+          "semantics": {
+            "time": "dawn",
+            "element": "rain",
+            "action": "scatters",
+            "quality": "wound"
+          },
+          "line1": "At dawn the rain scatters like an open wound",
+          "line2": "the morning river forgets its name into the unknown",
+          "contributing_bitstrings": [
+            "11110000"
+          ]
+        },
+        {
+          "key": "0100",
+          "shots": 53,
+          "fraction": 0.0518,
+          "semantics": {
+            "time": "dawn",
+            "element": "fire",
+            "action": "gathers",
+            "quality": "sound"
+          },
+          "line1": "At dawn the fire gathers without a sound",
+          "line2": "the morning ember finds its way slowly home",
+          "contributing_bitstrings": [
+            "00001100"
+          ]
+        },
+        {
+          "key": "0101",
+          "shots": 58,
+          "fraction": 0.0566,
+          "semantics": {
+            "time": "dawn",
+            "element": "fire",
+            "action": "gathers",
+            "quality": "wound"
+          },
+          "line1": "At dawn the fire gathers like an open wound",
+          "line2": "the morning ember finds its way into the unknown",
+          "contributing_bitstrings": [
+            "11001100"
+          ]
+        },
+        {
+          "key": "0110",
+          "shots": 68,
+          "fraction": 0.0664,
+          "semantics": {
+            "time": "dawn",
+            "element": "fire",
+            "action": "scatters",
+            "quality": "sound"
+          },
+          "line1": "At dawn the fire scatters without a sound",
+          "line2": "the morning ember forgets its name slowly home",
+          "contributing_bitstrings": [
+            "00111100"
+          ]
+        },
+        {
+          "key": "0111",
+          "shots": 66,
+          "fraction": 0.0645,
+          "semantics": {
+            "time": "dawn",
+            "element": "fire",
+            "action": "scatters",
+            "quality": "wound"
+          },
+          "line1": "At dawn the fire scatters like an open wound",
+          "line2": "the morning ember forgets its name into the unknown",
+          "contributing_bitstrings": [
+            "11111100"
+          ]
+        },
+        {
+          "key": "1000",
+          "shots": 64,
+          "fraction": 0.0625,
+          "semantics": {
+            "time": "dusk",
+            "element": "rain",
+            "action": "gathers",
+            "quality": "sound"
+          },
+          "line1": "At dusk the rain gathers without a sound",
+          "line2": "the evening river finds its way slowly home",
+          "contributing_bitstrings": [
+            "00000011"
+          ]
+        },
+        {
+          "key": "1001",
+          "shots": 71,
+          "fraction": 0.0693,
+          "semantics": {
+            "time": "dusk",
+            "element": "rain",
+            "action": "gathers",
+            "quality": "wound"
+          },
+          "line1": "At dusk the rain gathers like an open wound",
+          "line2": "the evening river finds its way into the unknown",
+          "contributing_bitstrings": [
+            "11000011"
+          ]
+        },
+        {
+          "key": "1010",
+          "shots": 60,
+          "fraction": 0.0586,
+          "semantics": {
+            "time": "dusk",
+            "element": "rain",
+            "action": "scatters",
+            "quality": "sound"
+          },
+          "line1": "At dusk the rain scatters without a sound",
+          "line2": "the evening river forgets its name slowly home",
+          "contributing_bitstrings": [
+            "00110011"
+          ]
+        },
+        {
+          "key": "1011",
+          "shots": 51,
+          "fraction": 0.0498,
+          "semantics": {
+            "time": "dusk",
+            "element": "rain",
+            "action": "scatters",
+            "quality": "wound"
+          },
+          "line1": "At dusk the rain scatters like an open wound",
+          "line2": "the evening river forgets its name into the unknown",
+          "contributing_bitstrings": [
+            "11110011"
+          ]
+        },
+        {
+          "key": "1100",
+          "shots": 72,
+          "fraction": 0.0703,
+          "semantics": {
+            "time": "dusk",
+            "element": "fire",
+            "action": "gathers",
+            "quality": "sound"
+          },
+          "line1": "At dusk the fire gathers without a sound",
+          "line2": "the evening ember finds its way slowly home",
+          "contributing_bitstrings": [
+            "00001111"
+          ]
+        },
+        {
+          "key": "1101",
+          "shots": 71,
+          "fraction": 0.0693,
+          "semantics": {
+            "time": "dusk",
+            "element": "fire",
+            "action": "gathers",
+            "quality": "wound"
+          },
+          "line1": "At dusk the fire gathers like an open wound",
+          "line2": "the evening ember finds its way into the unknown",
+          "contributing_bitstrings": [
+            "11001111"
+          ]
+        },
+        {
+          "key": "1110",
+          "shots": 67,
+          "fraction": 0.0654,
+          "semantics": {
+            "time": "dusk",
+            "element": "fire",
+            "action": "scatters",
+            "quality": "sound"
+          },
+          "line1": "At dusk the fire scatters without a sound",
+          "line2": "the evening ember forgets its name slowly home",
+          "contributing_bitstrings": [
+            "00111111"
+          ]
+        },
+        {
+          "key": "1111",
+          "shots": 63,
+          "fraction": 0.0615,
+          "semantics": {
+            "time": "dusk",
+            "element": "fire",
+            "action": "scatters",
+            "quality": "wound"
+          },
+          "line1": "At dusk the fire scatters like an open wound",
+          "line2": "the evening ember forgets its name into the unknown",
+          "contributing_bitstrings": [
+            "11111111"
+          ]
+        }
+      ],
+      "chi_squared": 11.88,
+      "uniform_p_value_approx": "pass",
+      "notes": "4 Bell pairs produce 16 couplets with perfectly correlated semantic dimensions between lines. Each pair controls one thematic axis: time, element, action, quality.",
+      "correlation_analysis": {
+        "intra_pair_mean_correlation": 1.0,
+        "inter_pair_mean_abs_correlation": 0.0319
+      }
+    }
+  },
+  "summary": {
+    "ghz_haiku_count": 2,
+    "ghz_total_shots": 1024,
+    "bell_couplet_count": 16,
+    "bell_total_shots": 1024,
+    "bell_intra_pair_correlation": 1.0,
+    "bell_inter_pair_correlation": 0.0319
+  }
+}

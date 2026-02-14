@@ -1,0 +1,156 @@
+{
+  "experiment": "qaoa-4cycle-emulator-verification",
+  "description": "QAOA MaxCut on 4-cycle subgraphs of Tuna-9 (12-edge topology). First non-tree graphs testable on this hardware.",
+  "shots": 8192,
+  "circuits": {
+    "cycle_a_p1": "version 3.0\nqubit[9] q\nbit[9] b\n\n// QAOA MaxCut p=1: 4-cycle q4-q6-q8-q7\n// gamma = pi/4 = 0.785398, beta = pi/8 = 0.392699\n// Edges: (4,6), (6,8), (7,8), (4,7)\n// Classical max cut = 4\n// ZZ decomposition: CNOT-Rz(-gamma)-CNOT = exp(+i*gamma/2 * ZZ)\n\n// 1. Initial superposition\nH q[4]\nH q[6]\nH q[7]\nH q[8]\n\n// 2. Cost unitary: exp(-i*gamma*C) where C = sum (1-ZZ)/2\n// Edge (4,6): CNOT-Rz(-gamma)-CNOT\nCNOT q[4], q[6]\nRz(-0.785398) q[6]\nCNOT q[4], q[6]\n\n// Edge (6,8): CNOT-Rz(-gamma)-CNOT\nCNOT q[6], q[8]\nRz(-0.785398) q[8]\nCNOT q[6], q[8]\n\n// Edge (7,8): CNOT-Rz(-gamma)-CNOT\nCNOT q[7], q[8]\nRz(-0.785398) q[8]\nCNOT q[7], q[8]\n\n// Edge (4,7): CNOT-Rz(-gamma)-CNOT\nCNOT q[4], q[7]\nRz(-0.785398) q[7]\nCNOT q[4], q[7]\n\n// 3. Mixer unitary: Rx(2*beta) on each qubit\nRx(0.785398) q[4]\nRx(0.785398) q[6]\nRx(0.785398) q[7]\nRx(0.785398) q[8]\n\n// 4. Measure\nb = measure q\n",
+    "cycle_a_p2": "version 3.0\nqubit[9] q\nbit[9] b\n\n// QAOA MaxCut p=2: 4-cycle q4-q6-q8-q7\n// Layer 1: gamma1=0.3, beta1=0.7\n// Layer 2: gamma2=0.8, beta2=0.3\n// Edges: (4,6), (6,8), (7,8), (4,7)\n// Classical max cut = 4\n\n// 1. Initial superposition\nH q[4]\nH q[6]\nH q[7]\nH q[8]\n\n// ====== LAYER 1 ======\n// Cost unitary: ZZ(gamma1) for each edge\nCNOT q[4], q[6]\nRz(-0.300000) q[6]\nCNOT q[4], q[6]\n\nCNOT q[6], q[8]\nRz(-0.300000) q[8]\nCNOT q[6], q[8]\n\nCNOT q[7], q[8]\nRz(-0.300000) q[8]\nCNOT q[7], q[8]\n\nCNOT q[4], q[7]\nRz(-0.300000) q[7]\nCNOT q[4], q[7]\n\n// Mixer unitary: Rx(2*beta1) on each qubit\nRx(1.400000) q[4]\nRx(1.400000) q[6]\nRx(1.400000) q[7]\nRx(1.400000) q[8]\n\n// ====== LAYER 2 ======\n// Cost unitary: ZZ(gamma2) for each edge\nCNOT q[4], q[6]\nRz(-0.800000) q[6]\nCNOT q[4], q[6]\n\nCNOT q[6], q[8]\nRz(-0.800000) q[8]\nCNOT q[6], q[8]\n\nCNOT q[7], q[8]\nRz(-0.800000) q[8]\nCNOT q[7], q[8]\n\nCNOT q[4], q[7]\nRz(-0.800000) q[7]\nCNOT q[4], q[7]\n\n// Mixer unitary: Rx(2*beta2) on each qubit\nRx(0.600000) q[4]\nRx(0.600000) q[6]\nRx(0.600000) q[7]\nRx(0.600000) q[8]\n\n// Measure\nb = measure q\n",
+    "cycle_b_p1": "version 3.0\nqubit[9] q\nbit[9] b\n\n// QAOA MaxCut p=1: 4-cycle q2-q4-q7-q5\n// gamma = pi/4 = 0.785398, beta = pi/8 = 0.392699\n// Edges: (2,4), (4,7), (5,7), (2,5)\n// Classical max cut = 4\n// ZZ decomposition: CNOT-Rz(-gamma)-CNOT = exp(+i*gamma/2 * ZZ)\n\n// 1. Initial superposition\nH q[2]\nH q[4]\nH q[5]\nH q[7]\n\n// 2. Cost unitary: exp(-i*gamma*C) where C = sum (1-ZZ)/2\n// Edge (2,4): CNOT-Rz(-gamma)-CNOT\nCNOT q[2], q[4]\nRz(-0.785398) q[4]\nCNOT q[2], q[4]\n\n// Edge (4,7): CNOT-Rz(-gamma)-CNOT\nCNOT q[4], q[7]\nRz(-0.785398) q[7]\nCNOT q[4], q[7]\n\n// Edge (5,7): CNOT-Rz(-gamma)-CNOT\nCNOT q[5], q[7]\nRz(-0.785398) q[7]\nCNOT q[5], q[7]\n\n// Edge (2,5): CNOT-Rz(-gamma)-CNOT\nCNOT q[2], q[5]\nRz(-0.785398) q[5]\nCNOT q[2], q[5]\n\n// 3. Mixer unitary: Rx(2*beta) on each qubit\nRx(0.785398) q[2]\nRx(0.785398) q[4]\nRx(0.785398) q[5]\nRx(0.785398) q[7]\n\n// 4. Measure\nb = measure q\n"
+  },
+  "results": {
+    "cycle_a_p1": {
+      "label": "Cycle A (q4-q6-q8-q7) p=1, gamma=pi/4, beta=pi/8",
+      "qubits": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "edges": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          4,
+          7
+        ]
+      ],
+      "shots": 8192,
+      "expected_cut": 3.0115,
+      "approximation_ratio": 0.7529,
+      "maxcut_probability": 0.5343,
+      "cut_distribution": {
+        "0": 234,
+        "2": 3581,
+        "4": 4377
+      },
+      "top_states": {
+        "1001": 2209,
+        "0110": 2168,
+        "0011": 694,
+        "1010": 644,
+        "0101": 641,
+        "1100": 620,
+        "1110": 140,
+        "0100": 127,
+        "1000": 126,
+        "1101": 123
+      }
+    },
+    "cycle_a_p2": {
+      "label": "Cycle A (q4-q6-q8-q7) p=2, gamma1=0.3/beta1=0.7, gamma2=0.8/beta2=0.3",
+      "qubits": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "edges": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          4,
+          7
+        ]
+      ],
+      "shots": 8192,
+      "expected_cut": 3.0977,
+      "approximation_ratio": 0.7744,
+      "maxcut_probability": 0.5496,
+      "cut_distribution": {
+        "0": 6,
+        "2": 3684,
+        "4": 4502
+      },
+      "top_states": {
+        "1001": 2324,
+        "0110": 2178,
+        "0011": 449,
+        "1100": 444,
+        "1010": 397,
+        "0101": 391,
+        "1110": 271,
+        "1101": 271,
+        "0111": 267,
+        "1000": 258
+      }
+    },
+    "cycle_b_p1": {
+      "label": "Cycle B (q2-q4-q7-q5) p=1, gamma=pi/4, beta=pi/8",
+      "qubits": [
+        2,
+        4,
+        5,
+        7
+      ],
+      "edges": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "shots": 8192,
+      "expected_cut": 3.0164,
+      "approximation_ratio": 0.7541,
+      "maxcut_probability": 0.5405,
+      "cut_distribution": {
+        "0": 265,
+        "2": 3499,
+        "4": 4428
+      },
+      "top_states": {
+        "0110": 2252,
+        "1001": 2176,
+        "1100": 626,
+        "0101": 626,
+        "1010": 612,
+        "0011": 610,
+        "0001": 147,
+        "0000": 143,
+        "1101": 139,
+        "1110": 134
+      }
+    }
+  }
+}

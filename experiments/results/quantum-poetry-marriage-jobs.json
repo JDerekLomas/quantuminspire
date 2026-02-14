@@ -1,0 +1,21 @@
+{
+  "experiment": "quantum-poetry-marriage",
+  "date": "2026-02-14T09:33:54Z",
+  "backend": "Tuna-9 (backend_type_id=6)",
+  "shots": 4096,
+  "compile_stage": "ROUTING",
+  "circuits": {
+    "marriage-z-basis": {
+      "job_id": 426093,
+      "status": "SUBMITTED"
+    },
+    "marriage-x-basis": {
+      "job_id": 426094,
+      "status": "SUBMITTED"
+    },
+    "marriage-ghz": {
+      "job_id": 426095,
+      "status": "SUBMITTED"
+    }
+  }
+}

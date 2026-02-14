@@ -1055,7 +1055,7 @@
     "num_ancilla_qubits": 2,
     "transpiled_depth_range": "44-55",
     "native_gate_count": "24-26 CZ gates",
-    "interpretation": "[[4,2,2]] detection code on IBM Torino: 92.7% error detection rate, 14.0% false positive rate. All 13 circuit variants compiled and executed successfully (transpiled depth 44-55, 24-26 CZ gates). X errors detected at 89.1% avg, Z errors at 94.0% avg, Y errors at 95.1% avg. Cross-platform: emulator 100%/0%, IBM Torino 92.7%/14.0%, Tuna-9 FAILED (topology).",
+    "interpretation": "[[4,2,2]] detection code on IBM Torino: 92.7% error detection rate, 14.0% false positive rate. All 13 circuit variants compiled and executed successfully (transpiled depth 44-55, 24-26 CZ gates). X errors detected at 89.1% avg, Z errors at 94.0% avg, Y errors at 95.1% avg. Cross-platform: emulator 100%/0%, IBM Torino 92.7%/14.0%, Tuna-9 66.6%/30.9% (10 CNOTs via single degree-4 ancilla q4).",
     "decoder_comparison": {
       "nn_accuracy": 0.6169,
       "nn_accuracy_std": 0.0021,

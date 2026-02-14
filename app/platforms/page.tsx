@@ -9,7 +9,7 @@ export const metadata = {
 /* ────────────────────────── data ────────────────────────── */
 
 const platforms = [
-  { id: 'tuna9', name: 'Tuna-9', provider: 'Quantum Inspire / QuTech', qubits: 9, edges: 10, maxDeg: 3, topology: 'Irregular tree', native: 'H, CNOT', color: '#00d4ff', qv: 8 },
+  { id: 'tuna9', name: 'Tuna-9', provider: 'Quantum Inspire / QuTech', qubits: 9, edges: 12, maxDeg: 4, topology: 'Diamond lattice', native: 'H, CNOT', color: '#00d4ff', qv: 8 },
   { id: 'garnet', name: 'IQM Garnet', provider: 'IQM Resonance', qubits: 20, edges: 29, maxDeg: 4, topology: 'Square lattice', native: 'PRX, CZ', color: '#f59e0b', qv: 32 },
   { id: 'ibm', name: 'IBM Torino', provider: 'IBM Quantum', qubits: 133, edges: 'Heavy-hex', maxDeg: 3, topology: 'Heavy-hex', native: 'CZ, SX, RZ', color: '#8b5cf6', qv: 32 },
 ]
@@ -293,7 +293,7 @@ function QVComparison() {
       ))}
       {/* Legend */}
       <g transform={`translate(${padL + 10}, ${padT + 8})`}>
-        <circle cx={0} cy={0} r={4} fill={colors.tuna9} /><text x={8} y={4} fill={colors.tuna9} fontSize="9" fontFamily="monospace">Tuna-9 (QV=8)</text>
+        <circle cx={0} cy={0} r={4} fill={colors.tuna9} /><text x={8} y={4} fill={colors.tuna9} fontSize="9" fontFamily="monospace">Tuna-9 (QV=16)</text>
       </g>
       <g transform={`translate(${padL + 10}, ${padT + 22})`}>
         <circle cx={0} cy={0} r={4} fill={colors.garnet} /><text x={8} y={4} fill={colors.garnet} fontSize="9" fontFamily="monospace">IQM Garnet (QV=32)</text>
@@ -475,14 +475,14 @@ export default function PlatformsPage() {
               </thead>
               <tbody className="text-gray-300">
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Qubits</td><td className="text-center">9</td><td className="text-center">20</td><td className="text-center">133</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Connectivity</td><td className="text-center">10 edges</td><td className="text-center">29 edges</td><td className="text-center">Heavy-hex</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Connectivity</td><td className="text-center">12 edges</td><td className="text-center">29 edges</td><td className="text-center">Heavy-hex</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Bell fidelity</td><td className="text-center">93.5%</td><td className="text-center font-bold">98.4%</td><td className="text-center">86.5%*</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-3</td><td className="text-center">88.9%</td><td className="text-center font-bold">93.9%</td><td className="text-center">82.9%</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-5</td><td className="text-center">83.8%</td><td className="text-center">81.8%</td><td className="text-center">76.6%</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-10</td><td className="text-center text-gray-600">n/a</td><td className="text-center">54.7%</td><td className="text-center font-bold">62.2%</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-20</td><td className="text-center text-gray-600">n/a</td><td className="text-center text-gray-600">n/a</td><td className="text-center">34.3%</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">GHZ-50</td><td className="text-center text-gray-600">n/a</td><td className="text-center text-gray-600">n/a</td><td className="text-center">8.5%</td></tr>
-                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Quantum Volume</td><td className="text-center">8</td><td className="text-center font-bold">32</td><td className="text-center font-bold">32</td></tr>
+                <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Quantum Volume</td><td className="text-center">16</td><td className="text-center font-bold">32</td><td className="text-center font-bold">32</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Dominant noise</td><td className="text-center">Dephasing</td><td className="text-center">Dephasing</td><td className="text-center">Depolarizing</td></tr>
                 <tr className="border-b border-white/5"><td className="py-2 px-4 text-gray-400">Per-qubit error</td><td className="text-center">3.5-6.2%</td><td className="text-center">1.4-5.0%</td><td className="text-center">4.6-6.1%</td></tr>
                 <tr><td className="py-2 px-4 text-gray-400">QPU time used</td><td className="text-center">~42K shots</td><td className="text-center">~70K shots</td><td className="text-center">44s / 10 min</td></tr>
@@ -507,7 +507,7 @@ export default function PlatformsPage() {
             </p>
             <p>
               <strong className="text-[#00d4ff]">Tuna-9 punches above its weight</strong> &mdash;
-              QV=8 on 9 qubits with basic gates. Best 5-qubit GHZ (83.8%) beats both IBM (76.6%) and Garnet (81.8%).
+              QV=16 on 9 qubits with basic gates. Best 5-qubit GHZ (83.8%) beats both IBM (76.6%) and Garnet (81.8%).
               Small but well-characterized.
             </p>
             <p>

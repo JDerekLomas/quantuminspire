@@ -1,0 +1,126 @@
+{
+  "experiment": "poetry-decoherence-gradient",
+  "backend": "qxelarator emulator",
+  "date": "2026-02-14T12:48:17Z",
+  "shots": 4096,
+  "chain_path": "3 -> 1 -> 4 -> 2 -> 5 -> 7 -> 8 -> 6",
+  "results": {
+    "ghz_3": {
+      "circuit": "version 3.0\nqubit[9] q\nbit[9] b\n\n// GHZ-3 state via linear CNOT chain\n// Qubits: q3, q1, q4\n// Path: 3 -> 1 -> 4\n\n// H on q3: Rz(pi); Ry(pi/2)\nRz(3.141593) q[3]\nRy(1.570796) q[3]\n\n// CNOT(q3, q1): Ry(-pi/2,1); CZ(3,1); Ry(pi/2,1)\nRy(-1.570796) q[1]\nCZ q[3], q[1]\nRy(1.570796) q[1]\n\n// CNOT(q1, q4): Ry(-pi/2,4); CZ(1,4); Ry(pi/2,4)\nRy(-1.570796) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\n\nb = measure q",
+      "raw_counts": {
+        "000000000": 2082,
+        "000011010": 2014
+      },
+      "analysis": {
+        "n_qubits": 3,
+        "qubits_used": [
+          3,
+          1,
+          4
+        ],
+        "total_shots": 4096,
+        "all_zero_count": 2082,
+        "all_one_count": 2014,
+        "ghz_fidelity": 1.0,
+        "ideal_frac_zero": 0.5083,
+        "ideal_frac_one": 0.4917,
+        "unique_outcomes": 2,
+        "entropy_bits": 1.0,
+        "max_entropy_bits": 3,
+        "entropy_fraction": 0.333,
+        "top_outcomes": [
+          {
+            "bitstring": "000",
+            "count": 2082,
+            "probability": 0.5083
+          },
+          {
+            "bitstring": "111",
+            "count": 2014,
+            "probability": 0.4917
+          }
+        ]
+      }
+    },
+    "ghz_5": {
+      "circuit": "version 3.0\nqubit[9] q\nbit[9] b\n\n// GHZ-5 state via linear CNOT chain\n// Qubits: q3, q1, q4, q2, q5\n// Path: 3 -> 1 -> 4 -> 2 -> 5\n\n// H on q3: Rz(pi); Ry(pi/2)\nRz(3.141593) q[3]\nRy(1.570796) q[3]\n\n// CNOT(q3, q1): Ry(-pi/2,1); CZ(3,1); Ry(pi/2,1)\nRy(-1.570796) q[1]\nCZ q[3], q[1]\nRy(1.570796) q[1]\n\n// CNOT(q1, q4): Ry(-pi/2,4); CZ(1,4); Ry(pi/2,4)\nRy(-1.570796) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\n\n// CNOT(q4, q2): Ry(-pi/2,2); CZ(4,2); Ry(pi/2,2)\nRy(-1.570796) q[2]\nCZ q[4], q[2]\nRy(1.570796) q[2]\n\n// CNOT(q2, q5): Ry(-pi/2,5); CZ(2,5); Ry(pi/2,5)\nRy(-1.570796) q[5]\nCZ q[2], q[5]\nRy(1.570796) q[5]\n\nb = measure q",
+      "raw_counts": {
+        "000000000": 2061,
+        "000111110": 2035
+      },
+      "analysis": {
+        "n_qubits": 5,
+        "qubits_used": [
+          3,
+          1,
+          4,
+          2,
+          5
+        ],
+        "total_shots": 4096,
+        "all_zero_count": 2061,
+        "all_one_count": 2035,
+        "ghz_fidelity": 1.0,
+        "ideal_frac_zero": 0.5032,
+        "ideal_frac_one": 0.4968,
+        "unique_outcomes": 2,
+        "entropy_bits": 1.0,
+        "max_entropy_bits": 5,
+        "entropy_fraction": 0.2,
+        "top_outcomes": [
+          {
+            "bitstring": "00000",
+            "count": 2061,
+            "probability": 0.5032
+          },
+          {
+            "bitstring": "11111",
+            "count": 2035,
+            "probability": 0.4968
+          }
+        ]
+      }
+    },
+    "ghz_7": {
+      "circuit": "version 3.0\nqubit[9] q\nbit[9] b\n\n// GHZ-7 state via linear CNOT chain\n// Qubits: q3, q1, q4, q2, q5, q7, q8\n// Path: 3 -> 1 -> 4 -> 2 -> 5 -> 7 -> 8\n\n// H on q3: Rz(pi); Ry(pi/2)\nRz(3.141593) q[3]\nRy(1.570796) q[3]\n\n// CNOT(q3, q1): Ry(-pi/2,1); CZ(3,1); Ry(pi/2,1)\nRy(-1.570796) q[1]\nCZ q[3], q[1]\nRy(1.570796) q[1]\n\n// CNOT(q1, q4): Ry(-pi/2,4); CZ(1,4); Ry(pi/2,4)\nRy(-1.570796) q[4]\nCZ q[1], q[4]\nRy(1.570796) q[4]\n\n// CNOT(q4, q2): Ry(-pi/2,2); CZ(4,2); Ry(pi/2,2)\nRy(-1.570796) q[2]\nCZ q[4], q[2]\nRy(1.570796) q[2]\n\n// CNOT(q2, q5): Ry(-pi/2,5); CZ(2,5); Ry(pi/2,5)\nRy(-1.570796) q[5]\nCZ q[2], q[5]\nRy(1.570796) q[5]\n\n// CNOT(q5, q7): Ry(-pi/2,7); CZ(5,7); Ry(pi/2,7)\nRy(-1.570796) q[7]\nCZ q[5], q[7]\nRy(1.570796) q[7]\n\n// CNOT(q7, q8): Ry(-pi/2,8); CZ(7,8); Ry(pi/2,8)\nRy(-1.570796) q[8]\nCZ q[7], q[8]\nRy(1.570796) q[8]\n\nb = measure q",
+      "raw_counts": {
+        "000000000": 2000,
+        "110111110": 2096
+      },
+      "analysis": {
+        "n_qubits": 7,
+        "qubits_used": [
+          3,
+          1,
+          4,
+          2,
+          5,
+          7,
+          8
+        ],
+        "total_shots": 4096,
+        "all_zero_count": 2000,
+        "all_one_count": 2096,
+        "ghz_fidelity": 1.0,
+        "ideal_frac_zero": 0.4883,
+        "ideal_frac_one": 0.5117,
+        "unique_outcomes": 2,
+        "entropy_bits": 1.0,
+        "max_entropy_bits": 7,
+        "entropy_fraction": 0.143,
+        "top_outcomes": [
+          {
+            "bitstring": "1111111",
+            "count": 2096,
+            "probability": 0.5117
+          },
+          {
+            "bitstring": "0000000",
+            "count": 2000,
+            "probability": 0.4883
+          }
+        ]
+      }
+    }
+  }
+}

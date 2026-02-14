@@ -167,13 +167,13 @@ export const PAPER_PIPELINE: Array<{
     type: 'Error Mitigation',
   },
   {
-    id: 'watson2022',
+    id: 'watson2018',
     title: 'A programmable two-qubit quantum processor in silicon',
     authors: 'Watson et al.',
     journal: 'Nature 555, 633-637 (2018)',
     arxiv: '1708.04214',
-    status: 'planned',
-    qubits: 6,
+    status: 'completed',
+    qubits: 2,
     type: 'Spin Qubits',
   },
   {

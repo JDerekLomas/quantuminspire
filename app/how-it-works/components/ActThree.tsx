@@ -110,7 +110,7 @@ function FrequencyRuler({ progress }: { progress: number }) {
       )}
       {showTopology && (
         <InfoBox title="Explore the hardware" link={{ href: '/platforms', label: 'Compare 3 quantum chips' }}>
-          Tuna-9 has 10 connections between 9 qubits. The best pair (Q4-Q6) achieves 93.5% Bell state fidelity.
+          Tuna-9 has 12 connections between 9 qubits. The best pair (Q4-Q6) achieves 93.5% Bell state fidelity.
           We've characterized the full topology using autonomous experiments.
           Connectivity matters: non-adjacent qubits need SWAP gates, which add noise.
         </InfoBox>

@@ -1,0 +1,29 @@
+{
+  "experiment": "Watson et al. 2018 Replication on Tuna-9",
+  "backend": "tuna9",
+  "qubit_pair": [4, 6],
+  "shots": 4096,
+  "submitted": "2026-02-13T13:25:00",
+  "job_ids": {
+    "bell_PhiPlus_ZZ": 425359,
+    "bell_PhiMinus_ZZ": 425360,
+    "bell_PsiPlus_ZZ": 425361,
+    "bell_PsiMinus_ZZ": 425362,
+    "bell_PhiPlus_XX": 425363,
+    "bell_PhiMinus_XX": 425364,
+    "bell_PsiPlus_XX": 425365,
+    "bell_PsiMinus_XX": 425366,
+    "bell_PhiPlus_YY": 425367,
+    "bell_PhiMinus_YY": 425368,
+    "bell_PsiPlus_YY": 425369,
+    "bell_PsiMinus_YY": 425370,
+    "dj_constant_0": 425371,
+    "dj_constant_1": 425372,
+    "dj_balanced_id": 425373,
+    "dj_balanced_not": 425374,
+    "grover_target_00": 425375,
+    "grover_target_01": 425376,
+    "grover_target_10": 425377,
+    "grover_target_11": 425378
+  }
+}

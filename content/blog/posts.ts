@@ -402,7 +402,7 @@ export const posts: BlogPost[] = [
 <tr><td>RB 1-qubit</td><td>Gate fidelity</td><td>99.95%</td><td>99.99%*</td><td>99.82%</td><td><strong>99.82%</strong></td></tr>
 <tr><td>VQE H2</td><td>Error (kcal/mol)</td><td>0.75</td><td><strong>0.22</strong>&Dagger;</td><td><strong>0.92</strong>&dagger;</td><td>&mdash;</td></tr>
 <tr><td>VQE HeH+</td><td>Error (kcal/mol)</td><td>0.08</td><td><strong>4.31</strong>&Dagger;</td><td>4.44&dagger;</td><td>&mdash;</td></tr>
-<tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>FAILED</td><td>&mdash;</td></tr>
+<tr><td>[[4,2,2]] QEC</td><td>Detection / FP</td><td>100% / 0%</td><td>92.7% / 14.0%</td><td>66.6% / 30.9%</td><td>&mdash;</td></tr>
 <tr><td>Bell state</td><td>Fidelity</td><td>100%</td><td>99.1%</td><td>85.8&ndash;93.5%</td><td>88.4&ndash;98.1%</td></tr>
 <tr><td>GHZ-10</td><td>Fidelity</td><td>&mdash;</td><td>&mdash;</td><td>n/a (9q)</td><td>54.7%</td></tr>
 </tbody>
@@ -415,7 +415,7 @@ export const posts: BlogPost[] = [
 <ol>
 <li><strong>Benchmarks pass everywhere, but unevenly.</strong> QV passes on all hardware, but IQM Garnet hits QV=32 while Tuna-9 tops out at QV=8. More qubits with better connectivity wins the benchmark game.</li>
 <li><strong>VQE achieves chemical accuracy on two hardware backends.</strong> IBM TREX (0.22 kcal/mol) and Tuna-9 hybrid PS+REM (0.92 kcal/mol on q[2,4], 1.32 on q[6,8]) both pass the 1.6 kcal/mol threshold. But qubit selection still matters: wrong pair on Tuna-9 gives 9.5 kcal/mol (10x worse). Error mitigation technique choice matters less than which qubits you pick.</li>
-<li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, works with 92.7% detection on IBM, and literally can't execute on Tuna-9 due to topology constraints.</li>
+<li><strong>Error correction reveals the sharpest differences.</strong> The same [[4,2,2]] code runs perfectly on the emulator, achieves 92.7% detection on IBM, and reaches 66.6% detection on Tuna-9 with a 30.9% false positive rate &mdash; functional but noisy, limited by the 10-CNOT depth needed to route through q4 (the only degree-4 qubit).</li>
 <li><strong>Compiler tricks inflate benchmarks.</strong> IBM's 99.99% RB fidelity is measuring readout error, not gate quality. Tuna-9 and IQM Garnet both report 99.82% &mdash; genuine gate fidelity measured via raw native gates with no Clifford-level compilation.</li>
 </ol>
 
@@ -474,7 +474,7 @@ export const posts: BlogPost[] = [
 
 <p><strong>The takeaway: on current NISQ hardware, smart qubit routing is the single most impactful optimization &mdash; cheaper than error mitigation and with no runtime overhead.</strong></p>
 
-<h2>Quantum Error Correction: Where Topology Kills</h2>
+<h2>Quantum Error Correction: Where Topology Taxes</h2>
 
 <p>The [[4,2,2]] error detection code encodes 2 logical qubits into 4 data qubits, with 2 ancilla (helper) qubits that check for errors by measuring collective properties called stabilizers. It can <em>detect</em> (but not correct) any single-qubit error.</p>
 
@@ -482,9 +482,9 @@ export const posts: BlogPost[] = [
 
 <p>On <strong>IBM Torino</strong> (133 qubits, heavy-hex topology): 92.7% detection rate, 14.0% false positive rate. IBM's rich connectivity easily accommodates the circuit &mdash; each helper qubit needs <a href="/learn">CNOT gates</a> (two-qubit operations) to all 4 data qubits, and IBM's topology provides this.</p>
 
-<p>On <strong>Tuna-9</strong>: <strong>Every circuit FAILED.</strong> The error check requires each helper qubit to interact with all 4 data qubits, meaning it needs 4 direct connections. Tuna-9's maximum connectivity per qubit is 3. There is no 6-qubit arrangement on Tuna-9 that can execute this circuit without SWAP gates (extra operations to move data between non-adjacent qubits) &mdash; and cQASM 3.0 doesn't support implicit routing.</p>
+<p>On <strong>Tuna-9</strong>: 66.6% detection rate, 30.9% false positive rate. This only became possible after we discovered Tuna-9's full 12-edge topology (the original characterization found 10 edges because couplers q4&ndash;q7 and q5&ndash;q7 were disabled during that calibration cycle). With 12 edges, q4 has degree 4 &mdash; the only qubit connected to 4 neighbors &mdash; making it viable as the sole ancilla. But the circuit requires 10 CNOTs (5 to encode via q4 as a bus, 1 to disentangle, 4 for syndrome extraction), compared to IBM's 6-CNOT layout. That extra depth is why detection drops from 92.7% to 66.6%.</p>
 
-<p>This is the starkest cross-platform difference in our data. The <strong>same algorithm, same encoding, same error model</strong> &mdash; one platform runs it with 93% accuracy, the other can't run it at all. Topology isn't just a performance factor; it's a hard constraint that determines which algorithms are physically possible on a given chip.</p>
+<p>This remains the sharpest cross-platform difference in our data. The <strong>same algorithm, same encoding, same error model</strong> &mdash; one platform runs it at 93% detection with a clean layout, the other manages 67% through a deeper circuit forced by sparser connectivity. Post-selection still helps: discarding flagged shots improves raw fidelity from 49.4% to 66.3% (1.34x gain). Topology doesn't make it impossible, but it determines the circuit depth tax you pay &mdash; and on noisy hardware, depth is everything.</p>
 
 <h2>Training an AI Decoder on Hardware Data</h2>
 
@@ -644,7 +644,7 @@ export const posts: BlogPost[] = [
 </tbody>
 </table>
 
-<p>All four backends pass QV&ge;8. IQM Garnet stands out by reaching QV=32 (passing n=2 through n=5). Tuna-9's n=2 result (69.2%) barely clears the threshold. IQM's 20-qubit processor with 30 connections and square-lattice topology gives it an edge over Tuna-9's 9 qubits with only 10 connections.</p>
+<p>All four backends pass QV&ge;8. IQM Garnet stands out by reaching QV=32 (passing n=2 through n=5). Tuna-9's n=2 result (69.2%) barely clears the threshold. IQM's 20-qubit processor with 30 connections and square-lattice topology gives it an edge over Tuna-9's 9 qubits with 12 connections.</p>
 
 <p>The randomized benchmarking results complement this: Tuna-9 and IQM Garnet both achieve <strong>99.82% single-qubit gate fidelity</strong> (0.18% error per gate), matching the emulator's 99.95% closely. IBM Torino shows 99.99% &mdash; though this is inflated because IBM's transpiler collapses Clifford sequences to single gates, so RB measures readout error rather than gate error. The fact that two independent backends with honest compilers converge on the same answer (99.82%) while IBM reports 99.99% strongly suggests IBM's figure is a compiler artifact. This confirms that single-qubit operations on all three hardware platforms are high quality; the VQE failures come from 2-qubit (CNOT) errors and decoherence.</p>
 

@@ -1,0 +1,437 @@
+{
+  "experiment": "quantum-poetry-marriage",
+  "description": "Marriage as quantum superposition. Same state, two readings. Neither is more real.",
+  "hardware": "Quantum Inspire Tuna-9 (9 superconducting qubits)",
+  "date": "2026-02-14",
+  "occasion": "17th wedding anniversary",
+  "shots_per_circuit": 4096,
+  "compile_stage": "ROUTING (native gates: CZ, Ry, Rz)",
+  "qubit_mapping": {
+    "line1_qubits": [
+      0,
+      1,
+      3
+    ],
+    "line2_qubits": [
+      2,
+      4,
+      6
+    ],
+    "line3_qubits": [
+      5,
+      7,
+      8
+    ],
+    "entanglement_edges": [
+      "CZ(0,2)",
+      "CZ(1,4)",
+      "CZ(4,7)",
+      "CZ(2,5)"
+    ]
+  },
+  "circuits": {
+    "z_basis_tenderness": {
+      "circuit": "marriage-z-basis",
+      "reading": "tenderness (Z-basis)",
+      "total_shots": 4096,
+      "unique_bitstrings": 307,
+      "unique_poems": 307,
+      "bitstring_entropy_bits": 6.667,
+      "poem_entropy_bits": 6.667,
+      "max_bitstring_entropy": 9.0,
+      "top_poems": [
+        {
+          "lines": [
+            "your hand finds mine",
+            "and something holds that should have broken",
+            "still, your warmth"
+          ],
+          "count": 337,
+          "probability": 0.0823,
+          "text": "your hand finds mine\nand something holds that should have broken\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "I trace the atlas of your changing face",
+            "still, your warmth"
+          ],
+          "count": 204,
+          "probability": 0.0498,
+          "text": "your hand finds mine\nI trace the atlas of your changing face\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "and something holds that should have broken",
+            "a hand-worn ring"
+          ],
+          "count": 174,
+          "probability": 0.0425,
+          "text": "your hand finds mine\nand something holds that should have broken\na hand-worn ring"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "I trace the atlas of your changing face",
+            "a hand-worn ring"
+          ],
+          "count": 147,
+          "probability": 0.0359,
+          "text": "your hand finds mine\nI trace the atlas of your changing face\na hand-worn ring"
+        },
+        {
+          "lines": [
+            "the kitchen light still on",
+            "and something holds that should have broken",
+            "still, your warmth"
+          ],
+          "count": 137,
+          "probability": 0.0334,
+          "text": "the kitchen light still on\nand something holds that should have broken\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "and something holds that should have broken",
+            "the door left open"
+          ],
+          "count": 124,
+          "probability": 0.0303,
+          "text": "your hand finds mine\nand something holds that should have broken\nthe door left open"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "I trace the atlas of your changing face",
+            "the door left open"
+          ],
+          "count": 93,
+          "probability": 0.0227,
+          "text": "your hand finds mine\nI trace the atlas of your changing face\nthe door left open"
+        },
+        {
+          "lines": [
+            "the children sleeping",
+            "and something holds that should have broken",
+            "still, your warmth"
+          ],
+          "count": 91,
+          "probability": 0.0222,
+          "text": "the children sleeping\nand something holds that should have broken\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "the kitchen light still on",
+            "I trace the atlas of your changing face",
+            "still, your warmth"
+          ],
+          "count": 90,
+          "probability": 0.022,
+          "text": "the kitchen light still on\nI trace the atlas of your changing face\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "the kitchen light still on",
+            "and something holds that should have broken",
+            "a hand-worn ring"
+          ],
+          "count": 84,
+          "probability": 0.0205,
+          "text": "the kitchen light still on\nand something holds that should have broken\na hand-worn ring"
+        }
+      ]
+    },
+    "x_basis_resentment": {
+      "circuit": "marriage-x-basis",
+      "reading": "resentment (X-basis)",
+      "total_shots": 4096,
+      "unique_bitstrings": 200,
+      "unique_poems": 200,
+      "bitstring_entropy_bits": 5.563,
+      "poem_entropy_bits": 5.563,
+      "max_bitstring_entropy": 9.0,
+      "top_poems": [
+        {
+          "lines": [
+            "your silence fills the room",
+            "and something stays that should have left by now",
+            "still, your weight"
+          ],
+          "count": 396,
+          "probability": 0.0967,
+          "text": "your silence fills the room\nand something stays that should have left by now\nstill, your weight"
+        },
+        {
+          "lines": [
+            "seventeen years of this",
+            "and something stays that should have left by now",
+            "crumbs on the table"
+          ],
+          "count": 331,
+          "probability": 0.0808,
+          "text": "seventeen years of this\nand something stays that should have left by now\ncrumbs on the table"
+        },
+        {
+          "lines": [
+            "your silence fills the room",
+            "the years have worn us thin as excuses",
+            "still, your weight"
+          ],
+          "count": 296,
+          "probability": 0.0723,
+          "text": "your silence fills the room\nthe years have worn us thin as excuses\nstill, your weight"
+        },
+        {
+          "lines": [
+            "your silence fills the room",
+            "I count the ways your face has disappointed",
+            "still, your weight"
+          ],
+          "count": 259,
+          "probability": 0.0632,
+          "text": "your silence fills the room\nI count the ways your face has disappointed\nstill, your weight"
+        },
+        {
+          "lines": [
+            "your silence fills the room",
+            "and something stays that should have left by now",
+            "crumbs on the table"
+          ],
+          "count": 232,
+          "probability": 0.0566,
+          "text": "your silence fills the room\nand something stays that should have left by now\ncrumbs on the table"
+        },
+        {
+          "lines": [
+            "seventeen years of this",
+            "the years have worn us thin as excuses",
+            "crumbs on the table"
+          ],
+          "count": 223,
+          "probability": 0.0544,
+          "text": "seventeen years of this\nthe years have worn us thin as excuses\ncrumbs on the table"
+        },
+        {
+          "lines": [
+            "seventeen years of this",
+            "and something stays that should have left by now",
+            "still, your weight"
+          ],
+          "count": 194,
+          "probability": 0.0474,
+          "text": "seventeen years of this\nand something stays that should have left by now\nstill, your weight"
+        },
+        {
+          "lines": [
+            "your silence fills the room",
+            "the fractures are just fractures, nothing more",
+            "still, your weight"
+          ],
+          "count": 149,
+          "probability": 0.0364,
+          "text": "your silence fills the room\nthe fractures are just fractures, nothing more\nstill, your weight"
+        },
+        {
+          "lines": [
+            "seventeen years of this",
+            "I count the ways your face has disappointed",
+            "crumbs on the table"
+          ],
+          "count": 139,
+          "probability": 0.0339,
+          "text": "seventeen years of this\nI count the ways your face has disappointed\ncrumbs on the table"
+        },
+        {
+          "lines": [
+            "seventeen years of this",
+            "the years have worn us thin as excuses",
+            "still, your weight"
+          ],
+          "count": 137,
+          "probability": 0.0334,
+          "text": "seventeen years of this\nthe years have worn us thin as excuses\nstill, your weight"
+        }
+      ]
+    },
+    "ghz_all_or_nothing": {
+      "circuit": "marriage-ghz",
+      "reading": "all-or-nothing (GHZ)",
+      "total_shots": 4096,
+      "unique_bitstrings": 152,
+      "unique_poems": 152,
+      "ghz_fidelity": 0.5769,
+      "all_zero_count": 1427,
+      "all_one_count": 936,
+      "ideal_poem_a": [
+        "your hand finds mine",
+        "and something holds that should have broken",
+        "still, your warmth"
+      ],
+      "ideal_poem_b": [
+        "I know your silences",
+        "the ordinary days are what I'll grieve",
+        "the long way home"
+      ],
+      "bitstring_entropy_bits": 3.688,
+      "poem_entropy_bits": 3.688,
+      "top_poems": [
+        {
+          "lines": [
+            "your hand finds mine",
+            "and something holds that should have broken",
+            "still, your warmth"
+          ],
+          "count": 1427,
+          "probability": 0.3484,
+          "text": "your hand finds mine\nand something holds that should have broken\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "I know your silences",
+            "the ordinary days are what I'll grieve",
+            "the long way home"
+          ],
+          "count": 936,
+          "probability": 0.2285,
+          "text": "I know your silences\nthe ordinary days are what I'll grieve\nthe long way home"
+        },
+        {
+          "lines": [
+            "the kitchen light still on",
+            "and something holds that should have broken",
+            "still, your warmth"
+          ],
+          "count": 360,
+          "probability": 0.0879,
+          "text": "the kitchen light still on\nand something holds that should have broken\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "you laugh and I remember",
+            "the ordinary days are what I'll grieve",
+            "the long way home"
+          ],
+          "count": 297,
+          "probability": 0.0725,
+          "text": "you laugh and I remember\nthe ordinary days are what I'll grieve\nthe long way home"
+        },
+        {
+          "lines": [
+            "we built this room together",
+            "the ordinary days are what I'll grieve",
+            "the long way home"
+          ],
+          "count": 77,
+          "probability": 0.0188,
+          "text": "we built this room together\nthe ordinary days are what I'll grieve\nthe long way home"
+        },
+        {
+          "lines": [
+            "I know your silences",
+            "the fractures are the places where light enters",
+            "the long way home"
+          ],
+          "count": 72,
+          "probability": 0.0176,
+          "text": "I know your silences\nthe fractures are the places where light enters\nthe long way home"
+        },
+        {
+          "lines": [
+            "I know your silences",
+            "the ordinary days are what I'll grieve",
+            "your scent, the sheets"
+          ],
+          "count": 55,
+          "probability": 0.0134,
+          "text": "I know your silences\nthe ordinary days are what I'll grieve\nyour scent, the sheets"
+        },
+        {
+          "lines": [
+            "your breathing in the dark",
+            "the ordinary days are what I'll grieve",
+            "the long way home"
+          ],
+          "count": 42,
+          "probability": 0.0103,
+          "text": "your breathing in the dark\nthe ordinary days are what I'll grieve\nthe long way home"
+        },
+        {
+          "lines": [
+            "I know your silences",
+            "four lives grew upward from this tangled root",
+            "the long way home"
+          ],
+          "count": 34,
+          "probability": 0.0083,
+          "text": "I know your silences\nfour lives grew upward from this tangled root\nthe long way home"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "I trace the atlas of your changing face",
+            "still, your warmth"
+          ],
+          "count": 33,
+          "probability": 0.0081,
+          "text": "your hand finds mine\nI trace the atlas of your changing face\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "we speak a language no one else can hear",
+            "still, your warmth"
+          ],
+          "count": 33,
+          "probability": 0.0081,
+          "text": "your hand finds mine\nwe speak a language no one else can hear\nstill, your warmth"
+        },
+        {
+          "lines": [
+            "your hand finds mine",
+            "and something holds that should have broken",
+            "the door left open"
+          ],
+          "count": 29,
+          "probability": 0.0071,
+          "text": "your hand finds mine\nand something holds that should have broken\nthe door left open"
+        },
+        {
+          "lines": [
+            "your breathing in the dark",
+            "the years have made us porous to each other",
+            "the door left open"
+          ],
+          "count": 27,
+          "probability": 0.0066,
+          "text": "your breathing in the dark\nthe years have made us porous to each other\nthe door left open"
+        },
+        {
+          "lines": [
+            "we built this room together",
+            "four lives grew upward from this tangled root",
+            "two clocks, one time"
+          ],
+          "count": 27,
+          "probability": 0.0066,
+          "text": "we built this room together\nfour lives grew upward from this tangled root\ntwo clocks, one time"
+        },
+        {
+          "lines": [
+            "I know your silences",
+            "the ordinary days are what I'll grieve",
+            "the door left open"
+          ],
+          "count": 26,
+          "probability": 0.0063,
+          "text": "I know your silences\nthe ordinary days are what I'll grieve\nthe door left open"
+        }
+      ]
+    }
+  },
+  "job_ids": {
+    "marriage-z-basis": 426093,
+    "marriage-x-basis": 426094,
+    "marriage-ghz": 426095
+  }
+}

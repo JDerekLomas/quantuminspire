@@ -1,0 +1,192 @@
+version 3.0
+qubit[9] q
+bit[9] b
+
+// Kicked Ising model: 3 Trotter steps, fold=1
+// theta_j = -pi/4, theta_h = 0 (Clifford point)
+// 12-edge Tuna-9 topology
+
+// --- Trotter step 1/3 ---
+// ZZ on edge (0,1)
+CNOT q[0], q[1]
+Rz(-1.5707963267948966) q[1]
+CNOT q[0], q[1]
+
+// ZZ on edge (0,2)
+CNOT q[0], q[2]
+Rz(-1.5707963267948966) q[2]
+CNOT q[0], q[2]
+
+// ZZ on edge (1,3)
+CNOT q[1], q[3]
+Rz(-1.5707963267948966) q[3]
+CNOT q[1], q[3]
+
+// ZZ on edge (1,4)
+CNOT q[1], q[4]
+Rz(-1.5707963267948966) q[4]
+CNOT q[1], q[4]
+
+// ZZ on edge (2,4)
+CNOT q[2], q[4]
+Rz(-1.5707963267948966) q[4]
+CNOT q[2], q[4]
+
+// ZZ on edge (2,5)
+CNOT q[2], q[5]
+Rz(-1.5707963267948966) q[5]
+CNOT q[2], q[5]
+
+// ZZ on edge (3,6)
+CNOT q[3], q[6]
+Rz(-1.5707963267948966) q[6]
+CNOT q[3], q[6]
+
+// ZZ on edge (4,6)
+CNOT q[4], q[6]
+Rz(-1.5707963267948966) q[6]
+CNOT q[4], q[6]
+
+// ZZ on edge (4,7)
+CNOT q[4], q[7]
+Rz(-1.5707963267948966) q[7]
+CNOT q[4], q[7]
+
+// ZZ on edge (5,7)
+CNOT q[5], q[7]
+Rz(-1.5707963267948966) q[7]
+CNOT q[5], q[7]
+
+// ZZ on edge (6,8)
+CNOT q[6], q[8]
+Rz(-1.5707963267948966) q[8]
+CNOT q[6], q[8]
+
+// ZZ on edge (7,8)
+CNOT q[7], q[8]
+Rz(-1.5707963267948966) q[8]
+CNOT q[7], q[8]
+
+// --- Trotter step 2/3 ---
+// ZZ on edge (0,1)
+CNOT q[0], q[1]
+Rz(-1.5707963267948966) q[1]
+CNOT q[0], q[1]
+
+// ZZ on edge (0,2)
+CNOT q[0], q[2]
+Rz(-1.5707963267948966) q[2]
+CNOT q[0], q[2]
+
+// ZZ on edge (1,3)
+CNOT q[1], q[3]
+Rz(-1.5707963267948966) q[3]
+CNOT q[1], q[3]
+
+// ZZ on edge (1,4)
+CNOT q[1], q[4]
+Rz(-1.5707963267948966) q[4]
+CNOT q[1], q[4]
+
+// ZZ on edge (2,4)
+CNOT q[2], q[4]
+Rz(-1.5707963267948966) q[4]
+CNOT q[2], q[4]
+
+// ZZ on edge (2,5)
+CNOT q[2], q[5]
+Rz(-1.5707963267948966) q[5]
+CNOT q[2], q[5]
+
+// ZZ on edge (3,6)
+CNOT q[3], q[6]
+Rz(-1.5707963267948966) q[6]
+CNOT q[3], q[6]
+
+// ZZ on edge (4,6)
+CNOT q[4], q[6]
+Rz(-1.5707963267948966) q[6]
+CNOT q[4], q[6]
+
+// ZZ on edge (4,7)
+CNOT q[4], q[7]
+Rz(-1.5707963267948966) q[7]
+CNOT q[4], q[7]
+
+// ZZ on edge (5,7)
+CNOT q[5], q[7]
+Rz(-1.5707963267948966) q[7]
+CNOT q[5], q[7]
+
+// ZZ on edge (6,8)
+CNOT q[6], q[8]
+Rz(-1.5707963267948966) q[8]
+CNOT q[6], q[8]
+
+// ZZ on edge (7,8)
+CNOT q[7], q[8]
+Rz(-1.5707963267948966) q[8]
+CNOT q[7], q[8]
+
+// --- Trotter step 3/3 ---
+// ZZ on edge (0,1)
+CNOT q[0], q[1]
+Rz(-1.5707963267948966) q[1]
+CNOT q[0], q[1]
+
+// ZZ on edge (0,2)
+CNOT q[0], q[2]
+Rz(-1.5707963267948966) q[2]
+CNOT q[0], q[2]
+
+// ZZ on edge (1,3)
+CNOT q[1], q[3]
+Rz(-1.5707963267948966) q[3]
+CNOT q[1], q[3]
+
+// ZZ on edge (1,4)
+CNOT q[1], q[4]
+Rz(-1.5707963267948966) q[4]
+CNOT q[1], q[4]
+
+// ZZ on edge (2,4)
+CNOT q[2], q[4]
+Rz(-1.5707963267948966) q[4]
+CNOT q[2], q[4]
+
+// ZZ on edge (2,5)
+CNOT q[2], q[5]
+Rz(-1.5707963267948966) q[5]
+CNOT q[2], q[5]
+
+// ZZ on edge (3,6)
+CNOT q[3], q[6]
+Rz(-1.5707963267948966) q[6]
+CNOT q[3], q[6]
+
+// ZZ on edge (4,6)
+CNOT q[4], q[6]
+Rz(-1.5707963267948966) q[6]
+CNOT q[4], q[6]
+
+// ZZ on edge (4,7)
+CNOT q[4], q[7]
+Rz(-1.5707963267948966) q[7]
+CNOT q[4], q[7]
+
+// ZZ on edge (5,7)
+CNOT q[5], q[7]
+Rz(-1.5707963267948966) q[7]
+CNOT q[5], q[7]
+
+// ZZ on edge (6,8)
+CNOT q[6], q[8]
+Rz(-1.5707963267948966) q[8]
+CNOT q[6], q[8]
+
+// ZZ on edge (7,8)
+CNOT q[7], q[8]
+Rz(-1.5707963267948966) q[8]
+CNOT q[7], q[8]
+
+b = measure q

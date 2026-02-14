@@ -1,0 +1,28 @@
+{
+  "experiment": "H2 4-qubit VQE on Tuna-9",
+  "R_angstrom": 0.735,
+  "E_FCI": -1.1373060357534004,
+  "E_VQE_ideal": -1.1373060253700324,
+  "n_qubits_logical": 4,
+  "n_qubits_physical": 9,
+  "qubit_map": {
+    "0": 2,
+    "1": 4,
+    "2": 6,
+    "3": 8
+  },
+  "backend": "Tuna-9",
+  "gate_set": "native (CZ, Ry, Rz, X)",
+  "compile_stage": "ROUTING",
+  "n_shots": 4096,
+  "energy": -0.8343808545509823,
+  "error_mHa": 302.92518120241806,
+  "sigma_mHa": 6.127602622655538,
+  "ps_energy": -1.085169435686728,
+  "ps_error_mHa": 52.136600066672315,
+  "ps_sigma_mHa": 3.690545177482091,
+  "ps_kept_pct": 71.044921875,
+  "sigma_boot_mHa": 7.939903790408302,
+  "ps_sigma_boot_mHa": 4.929903140791591,
+  "chemical_accuracy": false
+}

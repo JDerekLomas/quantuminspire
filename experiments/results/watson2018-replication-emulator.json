@@ -1,0 +1,288 @@
+{
+  "experiment": "Watson et al. 2018 Replication",
+  "paper": {
+    "title": "A programmable two-qubit quantum processor in silicon",
+    "authors": "Watson et al.",
+    "journal": "Nature 555, 633-637 (2018)",
+    "arxiv": "1708.04214"
+  },
+  "timestamp": "2026-02-13T14:24:40",
+  "backend": "emulator (qxelarator)",
+  "qubit_pair": [
+    4,
+    6
+  ],
+  "shots": 4096,
+  "experiments": {
+    "bell_tomography": {
+      "n_circuits": 12,
+      "states": [
+        "PhiPlus",
+        "PhiMinus",
+        "PsiPlus",
+        "PsiMinus"
+      ],
+      "bases": [
+        "ZZ",
+        "XX",
+        "YY"
+      ],
+      "analysis": {
+        "PhiPlus": {
+          "ZZ": {
+            "probs": {
+              "00": 0.496826171875,
+              "01": 0,
+              "10": 0,
+              "11": 0.503173828125
+            },
+            "correlator": 1.0
+          },
+          "XX": {
+            "probs": {
+              "00": 0.4970703125,
+              "01": 0,
+              "10": 0,
+              "11": 0.5029296875
+            },
+            "correlator": 1.0
+          },
+          "YY": {
+            "probs": {
+              "00": 0,
+              "01": 0.50634765625,
+              "10": 0.49365234375,
+              "11": 0
+            },
+            "correlator": -1.0
+          },
+          "fidelity": 1.0,
+          "concurrence": 1.0
+        },
+        "PhiMinus": {
+          "ZZ": {
+            "probs": {
+              "00": 0.503662109375,
+              "01": 0,
+              "10": 0,
+              "11": 0.496337890625
+            },
+            "correlator": 1.0
+          },
+          "XX": {
+            "probs": {
+              "00": 0,
+              "01": 0.490234375,
+              "10": 0.509765625,
+              "11": 0
+            },
+            "correlator": -1.0
+          },
+          "YY": {
+            "probs": {
+              "00": 0.49560546875,
+              "01": 0,
+              "10": 0,
+              "11": 0.50439453125
+            },
+            "correlator": 1.0
+          },
+          "fidelity": 1.0,
+          "concurrence": 1.0
+        },
+        "PsiPlus": {
+          "ZZ": {
+            "probs": {
+              "00": 0,
+              "01": 0.492431640625,
+              "10": 0.507568359375,
+              "11": 0
+            },
+            "correlator": -1.0
+          },
+          "XX": {
+            "probs": {
+              "00": 0.501220703125,
+              "01": 0,
+              "10": 0,
+              "11": 0.498779296875
+            },
+            "correlator": 1.0
+          },
+          "YY": {
+            "probs": {
+              "00": 0.507568359375,
+              "01": 0,
+              "10": 0,
+              "11": 0.492431640625
+            },
+            "correlator": 1.0
+          },
+          "fidelity": 1.0,
+          "concurrence": 1.0
+        },
+        "PsiMinus": {
+          "ZZ": {
+            "probs": {
+              "00": 0,
+              "01": 0.517333984375,
+              "10": 0.482666015625,
+              "11": 0
+            },
+            "correlator": -1.0
+          },
+          "XX": {
+            "probs": {
+              "00": 0,
+              "01": 0.48681640625,
+              "10": 0.51318359375,
+              "11": 0
+            },
+            "correlator": -1.0
+          },
+          "YY": {
+            "probs": {
+              "00": 0,
+              "01": 0.4970703125,
+              "10": 0.5029296875,
+              "11": 0
+            },
+            "correlator": -1.0
+          },
+          "fidelity": 1.0,
+          "concurrence": 1.0
+        }
+      },
+      "watson_published": {
+        "fidelity_range": [
+          0.85,
+          0.89
+        ],
+        "concurrence_range": [
+          0.73,
+          0.82
+        ]
+      }
+    },
+    "deutsch_josza": {
+      "n_circuits": 4,
+      "oracles": [
+        "constant_0",
+        "constant_1",
+        "balanced_id",
+        "balanced_not"
+      ],
+      "analysis": {
+        "constant_0": {
+          "expected": "constant",
+          "prediction": "constant",
+          "correct": true,
+          "p_qa0": 1.0,
+          "p_qa1": 0.0,
+          "success_prob": 1.0
+        },
+        "constant_1": {
+          "expected": "constant",
+          "prediction": "constant",
+          "correct": true,
+          "p_qa0": 1.0,
+          "p_qa1": 0.0,
+          "success_prob": 1.0
+        },
+        "balanced_id": {
+          "expected": "balanced",
+          "prediction": "balanced",
+          "correct": true,
+          "p_qa0": 0.0,
+          "p_qa1": 1.0,
+          "success_prob": 1.0
+        },
+        "balanced_not": {
+          "expected": "balanced",
+          "prediction": "balanced",
+          "correct": true,
+          "p_qa0": 0.0,
+          "p_qa1": 1.0,
+          "success_prob": 1.0
+        }
+      }
+    },
+    "grover_search": {
+      "n_circuits": 4,
+      "targets": [
+        "target_00",
+        "target_01",
+        "target_10",
+        "target_11"
+      ],
+      "analysis": {
+        "target_00": {
+          "target": "00",
+          "target_prob": 1.0,
+          "all_probs": {
+            "00": 1.0,
+            "01": 0,
+            "10": 0,
+            "11": 0
+          },
+          "success": true
+        },
+        "target_01": {
+          "target": "01",
+          "target_prob": 1.0,
+          "all_probs": {
+            "00": 0,
+            "01": 1.0,
+            "10": 0,
+            "11": 0
+          },
+          "success": true
+        },
+        "target_10": {
+          "target": "10",
+          "target_prob": 1.0,
+          "all_probs": {
+            "00": 0,
+            "01": 0,
+            "10": 1.0,
+            "11": 0
+          },
+          "success": true
+        },
+        "target_11": {
+          "target": "11",
+          "target_prob": 1.0,
+          "all_probs": {
+            "00": 0,
+            "01": 0,
+            "10": 0,
+            "11": 1.0
+          },
+          "success": true
+        }
+      }
+    }
+  },
+  "circuits_cqasm": {
+    "bell_PhiPlus_ZZ": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Phi+> = (|00>+|11>)/sqrt(2)\n// Measure in ZZ basis\n\nH q[4]\nCNOT q[4], q[6]\n\n\nb = measure q\n",
+    "bell_PhiPlus_XX": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Phi+> = (|00>+|11>)/sqrt(2)\n// Measure in XX basis\n\nH q[4]\nCNOT q[4], q[6]\n\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "bell_PhiPlus_YY": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Phi+> = (|00>+|11>)/sqrt(2)\n// Measure in YY basis\n\nH q[4]\nCNOT q[4], q[6]\n\nSdag q[4]\nH q[4]\nSdag q[6]\nH q[6]\n\nb = measure q\n",
+    "bell_PhiMinus_ZZ": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Phi-> = (|00>-|11>)/sqrt(2)\n// Measure in ZZ basis\n\nX q[4]\nH q[4]\nCNOT q[4], q[6]\n\n\nb = measure q\n",
+    "bell_PhiMinus_XX": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Phi-> = (|00>-|11>)/sqrt(2)\n// Measure in XX basis\n\nX q[4]\nH q[4]\nCNOT q[4], q[6]\n\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "bell_PhiMinus_YY": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Phi-> = (|00>-|11>)/sqrt(2)\n// Measure in YY basis\n\nX q[4]\nH q[4]\nCNOT q[4], q[6]\n\nSdag q[4]\nH q[4]\nSdag q[6]\nH q[6]\n\nb = measure q\n",
+    "bell_PsiPlus_ZZ": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Psi+> = (|01>+|10>)/sqrt(2)\n// Measure in ZZ basis\n\nH q[4]\nCNOT q[4], q[6]\nX q[6]\n\n\nb = measure q\n",
+    "bell_PsiPlus_XX": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Psi+> = (|01>+|10>)/sqrt(2)\n// Measure in XX basis\n\nH q[4]\nCNOT q[4], q[6]\nX q[6]\n\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "bell_PsiPlus_YY": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Psi+> = (|01>+|10>)/sqrt(2)\n// Measure in YY basis\n\nH q[4]\nCNOT q[4], q[6]\nX q[6]\n\nSdag q[4]\nH q[4]\nSdag q[6]\nH q[6]\n\nb = measure q\n",
+    "bell_PsiMinus_ZZ": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Psi-> = (|01>-|10>)/sqrt(2)\n// Measure in ZZ basis\n\nX q[4]\nH q[4]\nCNOT q[4], q[6]\nX q[6]\n\n\nb = measure q\n",
+    "bell_PsiMinus_XX": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Psi-> = (|01>-|10>)/sqrt(2)\n// Measure in XX basis\n\nX q[4]\nH q[4]\nCNOT q[4], q[6]\nX q[6]\n\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "bell_PsiMinus_YY": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Bell state: |Psi-> = (|01>-|10>)/sqrt(2)\n// Measure in YY basis\n\nX q[4]\nH q[4]\nCNOT q[4], q[6]\nX q[6]\n\nSdag q[4]\nH q[4]\nSdag q[6]\nH q[6]\n\nb = measure q\n",
+    "dj_constant_0": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Deutsch-Josza: f(x)=0 (constant)\n\nX q[6]\nH q[4]\nH q[6]\nH q[4]\n\nb = measure q\n",
+    "dj_constant_1": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Deutsch-Josza: f(x)=1 (constant)\n\nX q[6]\nH q[4]\nH q[6]\nX q[6]\nH q[4]\n\nb = measure q\n",
+    "dj_balanced_id": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Deutsch-Josza: f(x)=x (balanced)\n\nX q[6]\nH q[4]\nH q[6]\nCNOT q[4], q[6]\nH q[4]\n\nb = measure q\n",
+    "dj_balanced_not": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Deutsch-Josza: f(x)=NOT(x) (balanced)\n\nX q[6]\nH q[4]\nH q[6]\nX q[4]\nCNOT q[4], q[6]\nX q[4]\nH q[4]\n\nb = measure q\n",
+    "grover_target_00": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Grover: Search for |00>\n\nH q[4]\nH q[6]\nX q[4]\nX q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[4]\nX q[6]\nH q[4]\nH q[6]\nX q[4]\nX q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[4]\nX q[6]\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "grover_target_01": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Grover: Search for |01>\n\nH q[4]\nH q[6]\nX q[4]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[4]\nH q[4]\nH q[6]\nX q[4]\nX q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[4]\nX q[6]\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "grover_target_10": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Grover: Search for |10>\n\nH q[4]\nH q[6]\nX q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[6]\nH q[4]\nH q[6]\nX q[4]\nX q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[4]\nX q[6]\nH q[4]\nH q[6]\n\nb = measure q\n",
+    "grover_target_11": "version 3.0\n\nqubit[9] q\nbit[9] b\n\n// Grover: Search for |11>\n\nH q[4]\nH q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nH q[4]\nH q[6]\nX q[4]\nX q[6]\nH q[6]\nCNOT q[4], q[6]\nH q[6]\nX q[4]\nX q[6]\nH q[4]\nH q[6]\n\nb = measure q\n"
+  }
+}
