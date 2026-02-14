@@ -5,8 +5,8 @@ Uses the sector-projected 2-qubit Hamiltonian approach from compute_h2_coefficie
   H = g0*I + g1*Z0 + g2*Z1 + g3*Z0Z1 + g4*X0X1 + g5*Y0Y1
   where g2=-g1, g3=0, g4=g5 (H2/HeH+ STO-3G symmetries)
 
-Circuit: 1-CZ gate preparation of |ψ(α)⟩ = cos(α/2)|10⟩ - sin(α/2)|01⟩
-  X q_a; Ry(-α) q_b; CZ q_b,q_a; (CNOT target dressing on q_a)
+Circuit: 1-CZ gate preparation of |ψ(α)⟩ = cos(α/2)|10⟩ + sin(α/2)|01⟩
+  X q_a; Ry(α) q_b; CZ q_b,q_a; (CNOT target dressing on q_a)
 
 Experiments:
   1. Sagastizabal2019 — H2 VQE + symmetry verification (2-qubit, 7 distances)
@@ -84,16 +84,16 @@ def compute_2q_hamiltonian(symbols, coordinates, charge=0, mult=1):
 def gen_2q_circuit(alpha, phys_qa, phys_qb, basis='Z'):
     """Generate 2-qubit VQE circuit with 1 CZ gate.
 
-    Prepares |ψ(α)⟩ = cos(α/2)|10⟩ - sin(α/2)|01⟩
+    Prepares |ψ(α)⟩ = cos(α/2)|10⟩ + sin(α/2)|01⟩
 
     Circuit (logical → physical mapping: q0→qa, q1→qb):
       X qa              (prepare |10⟩)
-      Ry(-α) qb         (rotate qb)
+      Ry(α) qb          (rotate qb)
       Ry(-π/2) qa       (CNOT target dressing)
       CZ qb, qa         (CZ = native)
       Ry(π/2) qa        (CNOT target dressing)
 
-    After this: |ψ⟩ = cos(α/2)|10⟩ - sin(α/2)|01⟩ on (qa, qb)
+    After this: |ψ⟩ = cos(α/2)|10⟩ + sin(α/2)|01⟩ on (qa, qb)
 
     Measurement basis rotations (appended before measure):
       Z: nothing (measure I, Z0, Z1, Z0Z1)
@@ -104,7 +104,7 @@ def gen_2q_circuit(alpha, phys_qa, phys_qb, basis='Z'):
 
     # State preparation: 1 CZ = CNOT(qb→qa)
     lines.append(f"X q[{phys_qa}]")
-    lines.append(f"Ry({-alpha:.6f}) q[{phys_qb}]")
+    lines.append(f"Ry({alpha:.6f}) q[{phys_qb}]")
     lines.append(f"Ry(-1.570796) q[{phys_qa}]")
     lines.append(f"CZ q[{phys_qb}], q[{phys_qa}]")
     lines.append(f"Ry(1.570796) q[{phys_qa}]")
@@ -379,7 +379,7 @@ if __name__ == "__main__":
         "paper": "Sagastizabal et al., PRA 100, 010302(R) (2019)",
         "encoding": "sector-projected 2 qubits",
         "ansatz": "single excitation (1 CZ gate)",
-        "symmetry": "S = Z0Z1, eigenvalue +1",
+        "symmetry": "S = Z0Z1, eigenvalue -1",
         "n_circuits": len(h2_circuits),
         "distances": h2_meta,
     }
