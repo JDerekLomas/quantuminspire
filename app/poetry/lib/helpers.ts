@@ -27,12 +27,11 @@ export function useInView(threshold = 0.3) {
 // ============================================================
 
 export const C = {
-  tenderness: '#00ff88',
-  resentment: '#ff6b9d',
+  presence: '#ff6b9f',
+  absence: '#a78bfa',
   ghz: '#8b5cf6',
   noise: '#ff8c42',
-  blue: '#00d4ff',
-  pink: '#ff6b9d',
+  blue: '#a78bfa',
 }
 
 // ============================================================

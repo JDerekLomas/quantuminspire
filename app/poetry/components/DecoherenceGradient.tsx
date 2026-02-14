@@ -11,14 +11,14 @@ export default function DecoherenceGradient() {
       <div className={`max-w-3xl mx-auto transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <h2 className="text-2xl font-bold text-gray-200 mb-2">Decoherence Gradient</h2>
         <p className="text-sm text-gray-500 mb-2">
-          A GHZ state should produce exactly two poems &mdash; all qubits agree, so you get
-          total tenderness or its mirror. As the entanglement chain grows longer, the qubits
-          lose coherence. The poem dissolves.
+          A GHZ state should produce exactly two haiku &mdash; all qubits agree, so you get
+          one love poem or its mirror. As the entanglement chain grows longer, the qubits
+          lose coherence. The haiku dissolves.
         </p>
         <p className="text-sm text-gray-500 mb-8">
-          At 3 qubits (2 CZ gates), 86.5% of measurements land on the two ideal poems.
+          At 3 qubits (2 CZ gates), 86.5% of measurements land on the two ideal haiku.
           By 9 qubits (8 CZ gates), only 57.7% do. The rest leak into 152 intermediate states &mdash;
-          poems the circuit never intended, written by the hardware&apos;s imperfections.
+          haiku the circuit never intended, written by the hardware&apos;s imperfections.
         </p>
 
         <div className="space-y-4">
@@ -58,7 +58,7 @@ export default function DecoherenceGradient() {
                     />
                   </div>
                   <div className="flex justify-between text-[10px] font-mono text-gray-700 mt-1">
-                    <span>{depth.unique} unique poems</span>
+                    <span>{depth.unique} unique haiku</span>
                     <span>{depth.entropy} bits entropy</span>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export default function DecoherenceGradient() {
         <p className="text-xs text-gray-600 text-center mt-6 leading-relaxed">
           Each additional CZ gate extends the entanglement chain by one qubit and costs
           roughly 3.6% fidelity. The decoherence rate per gate: ~5.4%/CZ.
-          At 9 qubits, nearly half the poem has dissolved into noise &mdash; but the noise
+          At 9 qubits, nearly half the haiku has dissolved into noise &mdash; but the noise
           itself carries meaning the circuit never intended.
         </p>
 

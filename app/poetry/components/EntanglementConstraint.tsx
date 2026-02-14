@@ -61,7 +61,7 @@ export default function EntanglementConstraint() {
   return (
     <div ref={ref} className="px-4 sm:px-6 py-20">
       <div className={`max-w-3xl mx-auto transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-        <h2 className="text-2xl font-bold text-gray-200 mb-2">Write a Poem with Entanglement</h2>
+        <h2 className="text-2xl font-bold text-gray-200 mb-2">Write a Haiku with Entanglement</h2>
         <p className="text-sm text-gray-500 mb-3">
           Pick a first line. The last line is sampled from a distribution measured on quantum
           hardware &mdash; 4,096 shots from three Bell pairs on Tuna-9. The middle line is free:
@@ -78,7 +78,7 @@ export default function EntanglementConstraint() {
         <div className="bg-[#0a0f1a] rounded-lg border border-[#1e293b] p-6 sm:p-8">
           {/* First line section */}
           <div className="mb-2">
-            <p className="text-xs font-mono text-gray-500 mb-3">First line</p>
+            <p className="text-xs font-mono text-gray-500 mb-3">First line <span className="text-gray-700">&mdash; 5 syllables</span></p>
             <div className="flex flex-wrap gap-2">
               {ENTANGLED_LINES.map((pair, i) => {
                 const isChosen = firstIdx === i && startedFrom === 'first'
@@ -111,7 +111,7 @@ export default function EntanglementConstraint() {
             {isComplete && (
               <span className="text-[10px] font-mono ml-2 transition-opacity duration-500"
                 style={{ color: correlationHeld ? entangleColor + '60' : noiseColor + '80' }}>
-                {correlationHeld ? 'entangled — correlation held' : 'noise broke the correlation'}
+                {correlationHeld ? 'entangled \u2014 correlation held' : 'noise broke the correlation'}
               </span>
             )}
           </div>
@@ -119,7 +119,7 @@ export default function EntanglementConstraint() {
           {/* Middle line — auto-sampled, shown only in poem */}
           <div className={`mb-2 transition-all duration-500 ${isComplete ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
             <p className="text-xs font-mono text-gray-500 mb-3">
-              Middle line <span className="text-gray-700">&mdash; free qubit, uniformly random</span>
+              Middle line <span className="text-gray-700">&mdash; 7 syllables, free qubit, uniformly random</span>
             </p>
             <div className="px-3 py-1.5 rounded-full border border-[#e2e8f0]/30 text-sm inline-block"
               style={{ color: '#e2e8f0' }}>
@@ -134,7 +134,7 @@ export default function EntanglementConstraint() {
 
           {/* Last line section */}
           <div>
-            <p className="text-xs font-mono text-gray-500 mb-3">Last line</p>
+            <p className="text-xs font-mono text-gray-500 mb-3">Last line <span className="text-gray-700">&mdash; 5 syllables</span></p>
             <div className="flex flex-wrap gap-2">
               {ENTANGLED_LINES.map((pair, i) => {
                 const isChosen = lastIdx === i && startedFrom === 'last'
@@ -179,11 +179,11 @@ export default function EntanglementConstraint() {
               <p className="text-xs text-gray-600 mb-4">
                 {correlationHeld
                   ? startedFrom === 'first'
-                    ? 'You chose the first line. The hardware returned the matching last line — entanglement held across the middle.'
-                    : 'You chose the last line. The hardware returned the matching first line — entanglement held across the middle.'
+                    ? 'You chose the first line. The hardware returned the matching last line \u2014 entanglement held across the middle.'
+                    : 'You chose the last line. The hardware returned the matching first line \u2014 entanglement held across the middle.'
                   : startedFrom === 'first'
-                    ? `You chose "${ENTANGLED_LINES[firstIdx].first}" — the hardware returned "${ENTANGLED_LINES[lastIdx].last}" instead of the matching line. Noise broke the Bell pair.`
-                    : `You chose "${ENTANGLED_LINES[lastIdx].last}" — the hardware returned "${ENTANGLED_LINES[firstIdx].first}" instead of the matching line. Noise broke the Bell pair.`
+                    ? `You chose "${ENTANGLED_LINES[firstIdx].first}" \u2014 the hardware returned "${ENTANGLED_LINES[lastIdx].last}" instead of the matching line. Noise broke the Bell pair.`
+                    : `You chose "${ENTANGLED_LINES[lastIdx].last}" \u2014 the hardware returned "${ENTANGLED_LINES[firstIdx].first}" instead of the matching line. Noise broke the Bell pair.`
                 }
               </p>
 
@@ -193,7 +193,7 @@ export default function EntanglementConstraint() {
                 style={{ borderColor: entangleColor + '40', color: entangleColor }}
               >
                 {hasBuiltOnce && startedFrom === 'first'
-                  ? 'Try again — start from the last line this time'
+                  ? 'Try again \u2014 start from the last line this time'
                   : 'Build another'}
               </button>
             </div>
@@ -203,7 +203,7 @@ export default function EntanglementConstraint() {
           {!isComplete && (
             <p className="text-xs text-gray-600 mt-6 text-center italic transition-opacity duration-500">
               {hasBuiltOnce
-                ? 'Try starting from the other end. The correlation works both ways — neither line causes the other.'
+                ? 'Try starting from the other end. The correlation works both ways \u2014 neither line causes the other.'
                 : 'Click any first line or any last line to begin.'}
             </p>
           )}
@@ -215,7 +215,7 @@ export default function EntanglementConstraint() {
             onClick={() => setShowStats(!showStats)}
             className="text-xs font-mono text-gray-600 hover:text-gray-400 transition-colors flex items-center gap-1"
           >
-            <span style={{ color: entangleColor + '60' }}>{showStats ? '▼' : '▶'}</span>
+            <span style={{ color: entangleColor + '60' }}>{showStats ? '\u25BC' : '\u25B6'}</span>
             {showStats ? 'Hide' : 'Show'} CHSH entanglement certification
           </button>
 

@@ -5,42 +5,42 @@ import { useInView, C } from '../lib/helpers'
 
 export default function ComplementarityTeaser() {
   const { ref, visible } = useInView(0.2)
-  const [lens, setLens] = useState<'neither' | 'tenderness' | 'resentment'>('neither')
+  const [lens, setLens] = useState<'neither' | 'presence' | 'absence'>('neither')
 
-  const tendernessPoem = ['your hand finds mine', 'and something holds that should have broken', 'still, your warmth']
-  const resentmentPoem = ['your silence fills the room', 'and something stays that should have left by now', 'still, your weight']
+  const presencePoem = ['your hand finding mine', 'you pull me closer and stay', 'the door stays open']
+  const absencePoem = ['the empty pillow', 'I still remember your hands', 'the porch light still on']
 
   return (
     <div ref={ref} className="px-4 sm:px-6 py-20">
       <div className={`max-w-2xl mx-auto transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <p className="text-sm text-gray-500 text-center mb-8">
           Here is a quantum state, prepared on 9 superconducting qubits.
-          It contains two poems. You can only read one at a time.
+          It contains two haiku. You can only read one at a time.
         </p>
 
         {/* The two lenses */}
         <div className="flex justify-center gap-3 mb-10">
           <button
-            onClick={() => setLens(lens === 'tenderness' ? 'neither' : 'tenderness')}
+            onClick={() => setLens(lens === 'presence' ? 'neither' : 'presence')}
             className="px-5 py-2.5 rounded-full border text-sm font-medium transition-all duration-300"
             style={{
-              borderColor: lens === 'tenderness' ? C.tenderness + '80' : '#1e293b',
-              backgroundColor: lens === 'tenderness' ? C.tenderness + '15' : 'transparent',
-              color: lens === 'tenderness' ? C.tenderness : '#475569',
+              borderColor: lens === 'presence' ? C.presence + '80' : '#1e293b',
+              backgroundColor: lens === 'presence' ? C.presence + '15' : 'transparent',
+              color: lens === 'presence' ? C.presence : '#475569',
             }}
           >
-            Read with tenderness
+            Read as presence
           </button>
           <button
-            onClick={() => setLens(lens === 'resentment' ? 'neither' : 'resentment')}
+            onClick={() => setLens(lens === 'absence' ? 'neither' : 'absence')}
             className="px-5 py-2.5 rounded-full border text-sm font-medium transition-all duration-300"
             style={{
-              borderColor: lens === 'resentment' ? C.resentment + '80' : '#1e293b',
-              backgroundColor: lens === 'resentment' ? C.resentment + '15' : 'transparent',
-              color: lens === 'resentment' ? C.resentment : '#475569',
+              borderColor: lens === 'absence' ? C.absence + '80' : '#1e293b',
+              backgroundColor: lens === 'absence' ? C.absence + '15' : 'transparent',
+              color: lens === 'absence' ? C.absence : '#475569',
             }}
           >
-            Read with resentment
+            Read as absence
           </button>
         </div>
 
@@ -48,13 +48,13 @@ export default function ComplementarityTeaser() {
         <div className="min-h-[140px] flex items-center justify-center">
           {lens === 'neither' && (
             <p className="text-sm text-gray-600 italic text-center transition-opacity duration-500">
-              The poem exists in superposition. Choose a lens to collapse it.
+              The haiku exists in superposition. Choose a lens to collapse it.
             </p>
           )}
-          {lens === 'tenderness' && (
+          {lens === 'presence' && (
             <div className="text-center space-y-1.5 transition-opacity duration-500">
-              {tendernessPoem.map((line, i) => (
-                <p key={i} className="text-xl sm:text-2xl font-light italic" style={{ color: C.tenderness }}>
+              {presencePoem.map((line, i) => (
+                <p key={i} className="text-xl sm:text-2xl font-light italic" style={{ color: C.presence }}>
                   {line}
                 </p>
               ))}
@@ -63,10 +63,10 @@ export default function ComplementarityTeaser() {
               </p>
             </div>
           )}
-          {lens === 'resentment' && (
+          {lens === 'absence' && (
             <div className="text-center space-y-1.5 transition-opacity duration-500">
-              {resentmentPoem.map((line, i) => (
-                <p key={i} className="text-xl sm:text-2xl font-light italic" style={{ color: C.resentment }}>
+              {absencePoem.map((line, i) => (
+                <p key={i} className="text-xl sm:text-2xl font-light italic" style={{ color: C.absence }}>
                   {line}
                 </p>
               ))}
@@ -79,8 +79,8 @@ export default function ComplementarityTeaser() {
 
         {lens !== 'neither' && (
           <p className="text-xs text-gray-600 text-center mt-6 transition-opacity duration-500">
-            Same qubits. Same state. Different measurement, different poem.
-            {lens === 'tenderness' ? ' Now try the other lens.' : ' Now try the other lens.'}
+            Same qubits. Same state. Different measurement, different haiku.
+            Now try the other reading.
           </p>
         )}
       </div>

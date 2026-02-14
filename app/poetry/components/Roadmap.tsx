@@ -23,12 +23,12 @@ export default function Roadmap() {
                   {/* Dot */}
                   <div className="absolute left-0 top-1 w-[22px] h-[22px] rounded-full border-2 flex items-center justify-center"
                     style={{
-                      borderColor: allDone ? C.tenderness : '#334155',
-                      backgroundColor: allDone ? C.tenderness + '20' : 'transparent',
+                      borderColor: allDone ? C.presence : '#334155',
+                      backgroundColor: allDone ? C.presence + '20' : 'transparent',
                     }}>
                     {allDone && (
                       <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6l3 3 5-5" stroke={C.tenderness} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2 6l3 3 5-5" stroke={C.presence} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     )}
                   </div>
@@ -39,7 +39,7 @@ export default function Roadmap() {
                       <div key={ii} className="flex items-center gap-3">
                         {item.done ? (
                           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0">
-                            <path d="M3 7l3 3 5-5" stroke={C.tenderness} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M3 7l3 3 5-5" stroke={C.presence} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         ) : (
                           <div className="w-[14px] h-[14px] flex items-center justify-center shrink-0">

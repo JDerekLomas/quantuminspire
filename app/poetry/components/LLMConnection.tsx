@@ -5,11 +5,11 @@ import { useInView, C } from '../lib/helpers'
 export default function LLMConnection() {
   const { ref, visible } = useInView(0.15)
   const points = [
-    { term: 'Token generation', desc: 'An LLM writes one word at a time. Each word collapses possibilities for every word that follows — sequential measurement.' },
+    { term: 'Token generation', desc: 'An LLM writes one word at a time. Each word collapses possibilities for every word that follows \u2014 sequential measurement.' },
     { term: 'Temperature', desc: 'How spread out the probability is before collapse. Low temperature: predictable. High temperature: surprising, strange.' },
-    { term: 'Top-k sampling', desc: 'How many candidate words are allowed. A sonnet allows fewer possibilities than free verse. Constraint shapes meaning.' },
-    { term: 'Entanglement', desc: 'Poetry\'s core challenge: each word should be locally surprising but globally coherent. Entanglement is exactly this — maximum local uncertainty, maximum global correlation.' },
-    { term: 'The hybrid', desc: 'A quantum-LLM poet could use entanglement to keep a poem structurally coherent while letting each line be as strange as high temperature allows.' },
+    { term: 'Top-k sampling', desc: 'How many candidate words are allowed. A haiku allows fewer possibilities than free verse. Constraint shapes meaning.' },
+    { term: 'Entanglement', desc: 'Poetry\'s core challenge: each word should be locally surprising but globally coherent. Entanglement is exactly this \u2014 maximum local uncertainty, maximum global correlation.' },
+    { term: 'The hybrid', desc: 'A quantum-LLM poet could use entanglement to keep a haiku structurally coherent while letting each line be as strange as high temperature allows.' },
   ]
 
   return (
@@ -55,7 +55,7 @@ export default function LLMConnection() {
           <p className="text-sm text-gray-500 mt-4">
             Poetry lives in the middle &mdash; surprising enough to feel alive, coherent enough to mean
             something. The problem is that temperature is a single dial. Entanglement could give each
-            line its own temperature while keeping the whole poem structurally bound.
+            line of a haiku its own temperature while keeping the whole poem structurally bound.
           </p>
         </div>
       </div>

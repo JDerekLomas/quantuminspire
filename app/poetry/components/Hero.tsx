@@ -11,16 +11,18 @@ export default function Hero() {
           h + AI + qu
         </p>
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-          <span className="gradient-text-pink">Quantum Poetry</span>
+          <span className="gradient-text-pink">Quantum Haiku</span>
         </h1>
         <p className="text-gray-400 text-lg leading-relaxed mb-4 max-w-2xl mx-auto">
-          Poetry is the literary form most naturally suited to quantum computation.
+          Nine qubits. Three lines. Five-seven-five.
         </p>
         <p className="text-gray-500 text-base leading-relaxed max-w-xl mx-auto mb-8">
-          A poem holds multiple meanings at once until the reader collapses it into one.
-          Its images are entangled &mdash; touch one and the others shift. Its readings
-          interfere, amplifying some possibilities and canceling others.
-          These aren&apos;t metaphors borrowed from physics. They&apos;re the same operations.
+          A haiku holds two states of love at once until the reader collapses it into one.
+          Measure in the Z-basis and you read presence &mdash; love that is here.
+          Measure in the X-basis and the same qubits give you absence &mdash;
+          love remembered. The constraint of the form &mdash;
+          seventeen syllables, three lines &mdash; matches the hardware exactly:
+          nine qubits, three groups of three bits.
         </p>
         <div className="mt-12 animate-bounce">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="mx-auto opacity-30">

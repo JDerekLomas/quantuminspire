@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useInView, C, bitstringToPoem, weightedSample } from '../lib/helpers'
-import { TENDERNESS_LINES, RESENTMENT_LINES } from '../data/wordBanks'
+import { PRESENCE_LINES, ABSENCE_LINES } from '../data/wordBanks'
 import { DIST_Z, DIST_X, DIST_GHZ } from '../data/distributions'
 import { TOP_Z, TOP_X, TOP_GHZ, NOISE_POEMS, GHZ_HAIKU, BELL_COUPLETS } from '../data/topPoems'
 
@@ -14,9 +14,9 @@ function GHZHaikuCard() {
         <div className="flex items-start justify-between mb-6">
           <div>
             <h3 className="text-lg font-bold text-gray-200">GHZ-9 Haiku</h3>
-            <p className="text-xs font-mono text-gray-600 mt-1">9-qubit GHZ state &middot; qxelarator emulator &middot; 1,024 shots</p>
+            <p className="text-xs font-mono text-gray-600 mt-1">9-qubit GHZ state &middot; Tuna-9 hardware &middot; 4,096 shots</p>
           </div>
-          <span className="text-xs font-mono px-2 py-1 rounded" style={{ backgroundColor: C.ghz + '15', color: C.ghz }}>emulator</span>
+          <span className="text-xs font-mono px-2 py-1 rounded" style={{ backgroundColor: C.ghz + '15', color: C.ghz }}>hardware</span>
         </div>
 
         <p className="text-sm text-gray-500 mb-6">
@@ -28,12 +28,12 @@ function GHZHaikuCard() {
         <div className="grid sm:grid-cols-2 gap-6 mb-4">
           {GHZ_HAIKU.map((h, i) => (
             <div key={i} className="text-center">
-              <p className="text-xs font-mono mb-3" style={{ color: (i === 0 ? C.ghz : C.tenderness) + 'aa' }}>
+              <p className="text-xs font-mono mb-3" style={{ color: (i === 0 ? C.presence : C.ghz) + 'aa' }}>
                 |{h.bitstring}&#x27E9; &mdash; {h.shots} shots
               </p>
               <div className="space-y-0.5">
                 {h.poem.map((line, j) => (
-                  <p key={j} className="text-base font-light italic" style={{ color: i === 0 ? C.ghz : C.tenderness }}>
+                  <p key={j} className="text-base font-light italic" style={{ color: i === 0 ? C.presence : C.ghz }}>
                     {line}
                   </p>
                 ))}
@@ -61,8 +61,8 @@ function BellCoupletsCard() {
 
         <p className="text-sm text-gray-500 mb-2">
           Four pairs of entangled qubits, each pair controlling one axis of meaning:
-          time of day, element, action, quality. Within each pair, the correlation is
-          perfect &mdash; if one qubit says &ldquo;dawn&rdquo;, its partner always says &ldquo;morning&rdquo;.
+          subject, sensation, warmth, destination. Within each pair, the correlation is
+          perfect &mdash; if one qubit says &ldquo;you&rdquo;, its partner always says &ldquo;warm&rdquo;.
           Between pairs, nearly zero correlation. Independent choices, bound together.
         </p>
         <p className="text-sm text-gray-500 mb-6">
@@ -87,9 +87,9 @@ function BellCoupletsCard() {
 function ComplementaryPoems() {
   const [basis, setBasis] = useState<'Z' | 'X'>('Z')
   const isZ = basis === 'Z'
-  const color = isZ ? C.tenderness : C.resentment
+  const color = isZ ? C.presence : C.absence
   const top = isZ ? TOP_Z : TOP_X
-  const label = isZ ? 'Tenderness' : 'Resentment'
+  const label = isZ ? 'Presence' : 'Absence'
   const maxProb = top[0].prob
 
   return (
@@ -101,21 +101,21 @@ function ComplementaryPoems() {
             onClick={() => setBasis('Z')}
             className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300"
             style={{
-              backgroundColor: isZ ? C.tenderness + '20' : 'transparent',
-              color: isZ ? C.tenderness : '#475569',
+              backgroundColor: isZ ? C.presence + '20' : 'transparent',
+              color: isZ ? C.presence : '#475569',
             }}
           >
-            Tenderness
+            Presence
           </button>
           <button
             onClick={() => setBasis('X')}
             className="px-5 py-2 rounded-full text-sm font-medium transition-all duration-300"
             style={{
-              backgroundColor: !isZ ? C.resentment + '20' : 'transparent',
-              color: !isZ ? C.resentment : '#475569',
+              backgroundColor: !isZ ? C.absence + '20' : 'transparent',
+              color: !isZ ? C.absence : '#475569',
             }}
           >
-            Resentment
+            Absence
           </button>
         </div>
       </div>
@@ -140,7 +140,7 @@ function ComplementaryPoems() {
 
       {/* Bar chart */}
       <div className="mb-6">
-        <p className="text-xs font-mono text-gray-500 mb-4">Top 10 poems by probability</p>
+        <p className="text-xs font-mono text-gray-500 mb-4">Top 10 haiku by probability</p>
         <svg viewBox="0 0 700 360" className="w-full">
           {top.map((poem, i) => {
             const barW = (poem.prob / maxProb) * 380
@@ -184,12 +184,12 @@ function MeasureWidget() {
   }, [])
 
   const dists = { Z: DIST_Z, X: DIST_X, GHZ: DIST_GHZ }
-  const colors = { Z: C.tenderness, X: C.resentment, GHZ: C.ghz }
-  const labels = { Z: 'Tenderness (Z)', X: 'Resentment (X)', GHZ: 'All-or-Nothing (GHZ)' }
+  const colors = { Z: C.presence, X: C.absence, GHZ: C.ghz }
+  const labels = { Z: 'Presence (Z)', X: 'Absence (X)', GHZ: 'All-or-Nothing (GHZ)' }
 
   const measure = useCallback(() => {
     const dist = dists[activeBasis]
-    const bank = activeBasis === 'X' ? RESENTMENT_LINES : TENDERNESS_LINES
+    const bank = activeBasis === 'X' ? ABSENCE_LINES : PRESENCE_LINES
     const total = Object.values(dist).reduce((s, c) => s + c, 0)
 
     if (prefersReducedMotion.current) {
@@ -232,9 +232,9 @@ function MeasureWidget() {
     <div className="mt-8 pt-6 border-t border-[#111827]">
       <h4 className="text-base font-semibold text-gray-300 mb-2">Measure</h4>
       <p className="text-sm text-gray-500 mb-6">
-        Draw a poem from the real hardware distribution. Each click samples from 4,096 measurements
+        Draw a haiku from the real hardware distribution. Each click samples from 4,096 measurements
         made on Tuna-9 &mdash; weighted by how often the hardware actually produced each outcome.
-        Common poems appear often. Rare poems are genuinely rare.
+        Common haiku appear often. Rare haiku are genuinely rare.
       </p>
 
       {/* Basis selector */}
@@ -299,7 +299,7 @@ function MeasureWidget() {
   )
 }
 
-function MarriageCard() {
+function LoveCard() {
   const { ref, visible } = useInView(0.1)
   const [showNoise, setShowNoise] = useState(false)
 
@@ -308,25 +308,25 @@ function MarriageCard() {
       <div className="bg-[#0a0f1a] rounded-lg border border-[#1e293b] p-6 sm:p-8">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h3 className="text-lg font-bold text-gray-200">Marriage as Superposition</h3>
+            <h3 className="text-lg font-bold text-gray-200">Love as Superposition</h3>
             <p className="text-xs font-mono text-gray-600 mt-1">
               9 qubits &middot; Tuna-9 hardware &middot; 12,288 shots &middot; Valentine&apos;s Day 2026
             </p>
           </div>
-          <span className="text-xs font-mono px-2 py-1 rounded" style={{ backgroundColor: C.pink + '15', color: C.pink }}>hardware</span>
+          <span className="text-xs font-mono px-2 py-1 rounded" style={{ backgroundColor: C.presence + '15', color: C.presence }}>hardware</span>
         </div>
 
         <p className="text-sm text-gray-500 mb-2">
-          One quantum state, two ways of reading it. Measure one way and you get a poem about
-          tenderness. Measure the other way &mdash; the same state, the same qubits &mdash; and you
-          get a poem about resentment. Neither reading is more real than the other. You can&apos;t
-          read both at once. This is complementarity: the quantum principle that some truths are
-          mutually exclusive but jointly exhaustive.
+          One quantum state, two ways of reading it. Measure one way and you get a haiku of presence &mdash;
+          love that is here, now, in the room. Measure the other way &mdash; the same state, the same qubits &mdash;
+          and you get a haiku of absence &mdash; love remembered, love at a distance. Neither reading
+          is more real than the other. You can&apos;t read both at once. This is complementarity:
+          the quantum principle that some truths are mutually exclusive but jointly exhaustive.
         </p>
         <p className="text-sm text-gray-500 mb-6">
-          A third circuit uses a GHZ state for the all-or-nothing marriage: every qubit agrees,
-          so you get only two poems &mdash; total tenderness or total resentment, never a mix.
-          659 unique poems emerged from 12,288 measurements on Tuna-9 hardware.
+          A third circuit uses a GHZ state for the all-or-nothing: every qubit agrees,
+          so you get only two haiku &mdash; full presence or full intensity, never a mix.
+          659 unique haiku emerged from 12,288 measurements on Tuna-9 hardware.
         </p>
 
         <ComplementaryPoems />
@@ -339,16 +339,16 @@ function MarriageCard() {
             className="text-sm font-medium transition-colors"
             style={{ color: C.noise }}
           >
-            {showNoise ? 'Hide' : 'Show'} noise poems ({NOISE_POEMS.length})
+            {showNoise ? 'Hide' : 'Show'} noise haiku ({NOISE_POEMS.length})
           </button>
 
           {showNoise && (
             <div className="mt-6 space-y-6">
               <p className="text-sm text-gray-500">
                 Real hardware is imperfect. Qubits lose coherence, gates introduce small errors,
-                measurements go wrong. The quantum state drifts from the intended poem into
+                measurements go wrong. The quantum state drifts from the intended haiku into
                 unexpected corners of possibility. But some of those accidents &mdash;
-                the poems the hardware wrote by mistake &mdash; are worth reading.
+                the haiku the hardware wrote by mistake &mdash; are worth reading.
               </p>
               {NOISE_POEMS.map((poem, i) => (
                 <div key={i} className="border-l-2 pl-4 py-1" style={{ borderColor: C.noise + '40' }}>
@@ -380,14 +380,14 @@ export default function Experiments() {
       <div className={`max-w-3xl mx-auto transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
         <h2 className="text-2xl font-bold text-gray-200 mb-2">Experiments</h2>
         <p className="text-sm text-gray-500 mb-10">
-          Not poems about quantum mechanics &mdash; poems that are quantum. Each experiment uses a
+          Not haiku about quantum mechanics &mdash; haiku that are quantum. Each experiment uses a
           different quantum state to shape the poem&apos;s structure in ways no classical process can replicate.
         </p>
 
         <div className="space-y-8">
           <GHZHaikuCard />
           <BellCoupletsCard />
-          <MarriageCard />
+          <LoveCard />
         </div>
       </div>
     </div>
