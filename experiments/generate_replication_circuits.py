@@ -96,9 +96,10 @@ def gen_2q_circuit(alpha, phys_qa, phys_qb, basis='Z'):
     After this: |ψ⟩ = cos(α/2)|10⟩ + sin(α/2)|01⟩ on (qa, qb)
 
     Measurement basis rotations (appended before measure):
-      Z: nothing (measure I, Z0, Z1, Z0Z1)
-      X: Ry(-π/2) on both (measure X0X1 → Z0Z1 in rotated basis)
-      Y: Rx(π/2) on both = Rz(-π/2) Ry(π/2) Rz(π/2) (measure Y0Y1)
+      Z: complete CNOT dressing Ry(π/2) qa (measure I, Z0, Z1, Z0Z1)
+      X: CNOT dressing Ry(π/2) on qa cancels with X-basis Ry(-π/2) →
+         skip both, only Ry(-π/2) on qb (saves 2 gates)
+      Y: complete CNOT dressing, then Rx(-π/2) on both = Rz(-π/2) Ry(π/2) Rz(π/2)
     """
     lines = ["version 3.0", "qubit[9] q"]
 
@@ -107,21 +108,24 @@ def gen_2q_circuit(alpha, phys_qa, phys_qb, basis='Z'):
     lines.append(f"Ry({alpha:.6f}) q[{phys_qb}]")
     lines.append(f"Ry(-1.570796) q[{phys_qa}]")
     lines.append(f"CZ q[{phys_qb}], q[{phys_qa}]")
-    lines.append(f"Ry(1.570796) q[{phys_qa}]")
 
-    # Basis rotation
+    # Basis rotation (with gate cancellation where possible)
     if basis == 'X':
-        # X basis: Ry(-π/2) on both → Z measurement gives X expectation
-        lines.append(f"Ry(-1.570796) q[{phys_qa}]")
+        # X basis: CNOT dressing Ry(π/2) on qa cancels with Ry(-π/2) X-rotation
+        # → skip both, only apply Ry(-π/2) on qb (saves 2 gates on qa)
         lines.append(f"Ry(-1.570796) q[{phys_qb}]")
     elif basis == 'Y':
-        # Y basis: Rx(π/2) on both = Rz(-π/2) Ry(π/2) Rz(π/2)
+        # Y basis: complete CNOT dressing, then Rx(-π/2) = Rz(-π/2)·Ry(π/2)·Rz(π/2)
+        lines.append(f"Ry(1.570796) q[{phys_qa}]")
         lines.append(f"Rz(-1.570796) q[{phys_qa}]")
         lines.append(f"Ry(1.570796) q[{phys_qa}]")
         lines.append(f"Rz(1.570796) q[{phys_qa}]")
         lines.append(f"Rz(-1.570796) q[{phys_qb}]")
         lines.append(f"Ry(1.570796) q[{phys_qb}]")
         lines.append(f"Rz(1.570796) q[{phys_qb}]")
+    else:
+        # Z basis: complete CNOT dressing, no basis rotation needed
+        lines.append(f"Ry(1.570796) q[{phys_qa}]")
 
     # Measure
     lines.append("bit[9] b")

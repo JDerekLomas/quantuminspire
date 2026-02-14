@@ -210,13 +210,13 @@ def analyze_distance(meta, counts_z, counts_x, counts_y):
 # ── Job ID mapping ────────────────────────────────────────────────
 
 JOB_MAP = {
-    0.500: {"Z": 426400, "X": 426401, "Y": 426402},
-    0.700: {"Z": 426403, "X": 426404, "Y": 426405},
-    0.735: {"Z": 426406, "X": 426407, "Y": 426408},
-    0.900: {"Z": 426409, "X": 426410, "Y": 426411},
-    1.100: {"Z": 426412, "X": 426413, "Y": 426414},
-    1.500: {"Z": 426415, "X": 426416, "Y": 426417},
-    2.000: {"Z": 426418, "X": 426419, "Y": 426420},
+    0.500: {"X": 426697, "Y": 426698, "Z": 426699},
+    0.700: {"X": 426700, "Y": 426701, "Z": 426702},
+    0.735: {"X": 426703, "Y": 426704, "Z": 426705},
+    0.900: {"X": 426706, "Y": 426707, "Z": 426708},
+    1.100: {"X": 426709, "Y": 426710, "Z": 426711},
+    1.500: {"X": 426712, "Y": 426713, "Z": 426714},
+    2.000: {"X": 426715, "Y": 426716, "Z": 426717},
 }
 
 
@@ -246,7 +246,7 @@ if __name__ == "__main__":
         circuit_data = json.load(f)
 
     # Check for pre-fetched results file
-    results_file = Path("experiments/results/h2-2qubit-tuna9-raw-counts-v2.json")
+    results_file = Path("experiments/results/h2-2qubit-tuna9-raw-counts-v3.json")
     if not results_file.exists():
         print(f"Results file not found: {results_file}")
         print("Fetch results using MCP tools and save as:")
