@@ -103,38 +103,79 @@ function distanceColor(d: number): string {
 // WALK TOPOLOGY VISUALIZATION
 // ════════════════════════════════════════════════════════════════════════════
 
+// Which edges are "active" (carrying amplitude) at each depth
+const ACTIVE_EDGES: Record<string, Set<string>> = {
+  'start':   new Set(),
+  'depth 1': new Set(['0-1', '0-2']),
+  'depth 2': new Set(['0-1', '0-2', '1-3', '1-4', '2-4', '2-5', '3-6', '4-6', '4-7', '5-7']),
+  'depth 3': new Set(['0-1', '0-2', '1-3', '1-4', '2-4', '2-5', '3-6', '4-6', '4-7', '5-7', '6-8', '7-8']),
+}
+
 function WalkTopology({ depth, excitations }: { depth: string; excitations: number[] }) {
+  const active = ACTIVE_EDGES[depth] || new Set()
   return (
     <svg viewBox="0 0 400 440" className="w-full max-w-[400px]">
+      <defs>
+        {/* Animated dash for active edges */}
+        <style>{`
+          @keyframes flowDash { to { stroke-dashoffset: -20; } }
+          .edge-active { animation: flowDash 1.5s linear infinite; }
+        `}</style>
+      </defs>
       {/* Edges */}
-      {EDGES.map(([a, b]) => (
-        <line
-          key={`${a}-${b}`}
-          x1={POS[a][0]} y1={POS[a][1]}
-          x2={POS[b][0]} y2={POS[b][1]}
-          stroke="rgba(255,255,255,0.08)"
-          strokeWidth={2}
-        />
-      ))}
+      {EDGES.map(([a, b]) => {
+        const key = `${a}-${b}`
+        const isActive = active.has(key)
+        return (
+          <g key={key}>
+            <line
+              x1={POS[a][0]} y1={POS[a][1]}
+              x2={POS[b][0]} y2={POS[b][1]}
+              stroke={isActive ? 'rgba(0,212,255,0.25)' : 'rgba(255,255,255,0.06)'}
+              strokeWidth={isActive ? 3 : 1.5}
+            />
+            {isActive && (
+              <line
+                x1={POS[a][0]} y1={POS[a][1]}
+                x2={POS[b][0]} y2={POS[b][1]}
+                stroke="#00d4ff"
+                strokeWidth={1.5}
+                strokeDasharray="4 16"
+                className="edge-active"
+                opacity={0.6}
+              />
+            )}
+          </g>
+        )
+      })}
+      {/* Distance rings (subtle) */}
+      {depth !== 'start' && (
+        <g opacity={0.06}>
+          <circle cx={200} cy={50} r={100} fill="none" stroke="white" strokeDasharray="4 4" />
+          <circle cx={200} cy={50} r={200} fill="none" stroke="white" strokeDasharray="4 4" />
+          <circle cx={200} cy={50} r={280} fill="none" stroke="white" strokeDasharray="4 4" />
+        </g>
+      )}
       {/* Nodes */}
       {excitations.map((p, i) => {
         const r = 14 + p * 26
         const color = excitationColor(p)
+        const d = DISTANCES[i]
         return (
           <g key={i}>
             {/* Glow */}
             {p > 0.1 && (
               <circle
-                cx={POS[i][0]} cy={POS[i][1]} r={r + 8}
-                fill={color} opacity={p * 0.3}
+                cx={POS[i][0]} cy={POS[i][1]} r={r + 10}
+                fill={color} opacity={p * 0.25}
               />
             )}
             {/* Node */}
             <circle
               cx={POS[i][0]} cy={POS[i][1]} r={r}
               fill={color}
-              stroke="rgba(255,255,255,0.15)"
-              strokeWidth={1}
+              stroke={d <= 1 && depth !== 'start' && depth !== 'depth 1' ? 'rgba(255,107,157,0.4)' : 'rgba(255,255,255,0.12)'}
+              strokeWidth={d === 1 && depth === 'depth 2' ? 2 : 1}
             />
             {/* Label */}
             <text
@@ -406,12 +447,10 @@ function GHZViz() {
 // ════════════════════════════════════════════════════════════════════════════
 
 export default function PageClient() {
-  const [walkDepth, setWalkDepth] = useState<'depth 1' | 'depth 2' | 'depth 3'>('depth 2')
+  const [walkDepth, setWalkDepth] = useState<'start' | 'depth 1' | 'depth 2' | 'depth 3'>('depth 2')
   const walkRef = useInView()
   const qaoaRef = useInView()
   const ghzRef = useInView()
-
-  const depthKeys = ['depth 1', 'depth 2', 'depth 3'] as const
 
   return (
     <div className="min-h-screen bg-[#0a0a1a] text-gray-100">
@@ -447,67 +486,197 @@ export default function PageClient() {
               <div className="w-1 h-8 rounded-full bg-[#00d4ff]" />
               <div>
                 <h2 className="text-xl font-bold">Quantum Walk</h2>
-                <p className="text-sm text-gray-400">Information spreading across the chip</p>
+                <p className="text-sm text-gray-400">A photon rippling through nine coupled resonators</p>
               </div>
             </div>
           </div>
 
           <div className="p-6">
-            {/* Depth selector */}
-            <div className="flex gap-2 mb-6">
-              {depthKeys.map(d => (
+            {/* Physical intro */}
+            <div className="mb-8 max-w-2xl">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Each qubit on Tuna-9 is a tiny superconducting resonator vibrating at about 5 GHz.
+                They&apos;re connected by tunable couplers &mdash; physical links that let energy flow between neighbors.
+                We trap a single microwave photon in qubit 0, then watch what happens as we repeatedly
+                pulse the chip.
+              </p>
+            </div>
+
+            {/* Step selector — narrative labels */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {([
+                { key: 'start' as const, label: 'Drop a photon', num: '0' },
+                { key: 'depth 1' as const, label: 'First pulse', num: '1' },
+                { key: 'depth 2' as const, label: 'The surprise', num: '2' },
+                { key: 'depth 3' as const, label: 'Full spread', num: '3' },
+              ]).map(({ key, label, num }) => (
                 <button
-                  key={d}
-                  onClick={() => setWalkDepth(d)}
-                  className={`px-4 py-2 rounded-lg text-sm font-mono transition-all ${
-                    walkDepth === d
-                      ? 'bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/30'
+                  key={key}
+                  onClick={() => setWalkDepth(key)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm transition-all ${
+                    walkDepth === key
+                      ? 'bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30'
                       : 'bg-white/[0.03] text-gray-400 border border-white/5 hover:border-white/10'
                   }`}
                 >
-                  {d}
+                  <span className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-mono font-bold ${
+                    walkDepth === key ? 'bg-[#00d4ff]/30 text-[#00d4ff]' : 'bg-white/10 text-gray-500'
+                  }`}>{num}</span>
+                  <span className="font-mono">{label}</span>
                 </button>
               ))}
+            </div>
+
+            {/* Per-step narrative */}
+            <div className="mb-6 p-4 rounded-lg border" style={{
+              backgroundColor: walkDepth === 'depth 2' ? 'rgba(0,212,255,0.05)' : 'rgba(255,255,255,0.02)',
+              borderColor: walkDepth === 'depth 2' ? 'rgba(0,212,255,0.2)' : 'rgba(255,255,255,0.05)',
+            }}>
+              {walkDepth === 'start' && (
+                <div className="space-y-2">
+                  <p className="text-sm font-mono text-[#00d4ff] font-semibold">Inject a photon into q0</p>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    We send a microwave pulse at q0&apos;s resonance frequency (~5.3 GHz) to excite it from
+                    its ground state |0&rang; to |1&rang;. That pulse is about 20 nanoseconds long &mdash;
+                    a precisely shaped burst of microwave energy.
+                    All other qubits are sitting quietly in their ground states. The photon is trapped
+                    in q0&apos;s resonator, waiting.
+                  </p>
+                </div>
+              )}
+              {walkDepth === 'depth 1' && (
+                <div className="space-y-2">
+                  <p className="text-sm font-mono text-[#00d4ff] font-semibold">Nudge everything, let neighbors feel each other</p>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    Now we do two things simultaneously. First, a gentle microwave nudge on all 9 qubits &mdash;
+                    not enough to fully flip them, just enough to create a small quantum amplitude in each one
+                    (a rotation of just 30&deg;). Then we activate all 12 couplers at once: every connected pair of
+                    qubits interacts via a CZ gate, which shifts their relative phase if both have energy.
+                  </p>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    After one round, q0 still holds most of the photon&apos;s energy (80%). A tiny amount has leaked
+                    to its immediate neighbors q1 and q2 through the couplers. The distant qubits have a similar
+                    faint glow &mdash; that&apos;s from the nudge pulse, not from the photon traveling yet.
+                  </p>
+                </div>
+              )}
+              {walkDepth === 'depth 2' && (
+                <div className="space-y-2">
+                  <p className="text-sm font-mono text-[#00d4ff] font-semibold">
+                    Waves cancel at the neighbors, reinforce further out
+                  </p>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    We pulse and couple again. Now something happens that has no classical analog.
+                    The photon&apos;s quantum amplitude is traveling along <em>all paths simultaneously</em>.
+                    To reach q4 (two hops away), the wave can go q0&rarr;q1&rarr;q4 or q0&rarr;q2&rarr;q4 &mdash;
+                    two paths that arrive in phase and <strong className="text-[#00ff88]">reinforce</strong> each other.
+                  </p>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    But at q1 and q2 (the nearest neighbors), the outgoing wave and the reflected wave
+                    from the second pulse arrive with opposite phases. They partially{' '}
+                    <strong className="text-[#ff6b9d]">cancel out</strong>. This is exactly like noise-canceling headphones:
+                    two signals, perfectly out of sync, producing silence.
+                  </p>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    The result: nearest neighbors (6.4%) are <em>less excited</em> than qubits two
+                    hops away (20%). If this were a classical random walk &mdash; like a ball bouncing randomly
+                    between connected rooms &mdash; the neighbors would always be most excited. The
+                    inversion is purely quantum.
+                  </p>
+                </div>
+              )}
+              {walkDepth === 'depth 3' && (
+                <div className="space-y-2">
+                  <p className="text-sm font-mono text-[#00d4ff] font-semibold">The wave reaches every qubit</p>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    Third pulse. The photon&apos;s amplitude has now traversed the entire chip, from q0 at
+                    the top to q8 at the bottom (4 hops away). The interference pattern persists:
+                    d=1 neighbors (17%) are still less excited than d=2 qubits (32%).
+                    The wave has &ldquo;jumped over&rdquo; its nearest neighbors.
+                  </p>
+                  <p className="text-sm text-gray-400 leading-relaxed">
+                    This is what makes quantum walks useful for algorithms: the quantum version spreads
+                    <em> quadratically faster</em> than a classical random walk. A classical walker
+                    takes N&sup2; steps to explore a graph; the quantum walker does it in N.
+                    We&apos;re watching that speedup happen on real hardware.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Topology map */}
               <div className="flex flex-col items-center">
-                <WalkTopology depth={walkDepth} excitations={WALK_DATA[walkDepth]} />
+                <WalkTopology
+                  depth={walkDepth}
+                  excitations={walkDepth === 'start'
+                    ? [1, 0, 0, 0, 0, 0, 0, 0, 0]
+                    : WALK_DATA[walkDepth]}
+                />
                 <p className="text-xs text-gray-500 font-mono mt-2">
-                  Node size & color = excitation probability P(q=1)
+                  {walkDepth === 'start'
+                    ? 'Photon trapped in q0. All other qubits dark.'
+                    : 'Node brightness = probability of finding the photon there'}
                 </p>
               </div>
 
               {/* Interference chart */}
               <div className="flex flex-col items-center">
-                <h3 className="text-sm font-mono text-gray-400 mb-3">
-                  Excitation by graph distance from q0
-                </h3>
-                <InterferenceChart data={WALK_BY_DIST[walkDepth]} label={walkDepth} />
+                {walkDepth === 'start' ? (
+                  <div className="flex items-center justify-center h-full text-sm text-gray-500 font-mono">
+                    Advance to &ldquo;First pulse&rdquo; to see the walk begin
+                  </div>
+                ) : (
+                  <>
+                    <h3 className="text-sm font-mono text-gray-400 mb-3">
+                      Excitation by graph distance from q0
+                    </h3>
+                    <InterferenceChart data={WALK_BY_DIST[walkDepth]} label={walkDepth} />
+                    {walkDepth !== 'depth 1' && (
+                      <p className="text-xs text-gray-500 mt-3 text-center max-w-xs">
+                        {walkDepth === 'depth 2'
+                          ? 'The dip at d=1 is destructive interference. A classical walk would show monotonic decay.'
+                          : 'The d=1 dip persists at depth 3. The quantum wave jumped over its neighbors.'}
+                      </p>
+                    )}
+                  </>
+                )}
               </div>
             </div>
 
-            {/* The insight */}
-            {walkDepth !== 'depth 1' && (
-              <div className="mt-6 p-4 rounded-lg bg-[#00d4ff]/5 border border-[#00d4ff]/20">
-                <p className="text-sm text-[#00d4ff] font-mono font-semibold mb-1">
-                  Quantum interference on hardware
-                </p>
-                <p className="text-sm text-gray-300">
-                  {walkDepth === 'depth 2'
-                    ? 'The nearest neighbors (d=1) receive less excitation (6.4%) than qubits two hops away (d=2, ~20%). A classical random walk would show monotonic decay with distance. This inversion is destructive quantum interference — the hallmark of a quantum walk.'
-                    : 'At depth 3 the pattern persists: d=1 (16.7%) < d=2 (32.0%). The excitation has spread across the entire chip but still shows the non-classical interference signature. Distant qubits (d=3, d=4) are nearly as excited as d=2.'
-                  }
-                </p>
-              </div>
-            )}
-
-            {walkDepth === 'depth 1' && (
-              <div className="mt-6 p-4 rounded-lg bg-white/[0.03] border border-white/5">
-                <p className="text-sm text-gray-400">
-                  After one step, q0 retains most excitation (80.5%). The signal has barely left the starting qubit. Try <button onClick={() => setWalkDepth('depth 2')} className="text-[#00d4ff] underline underline-offset-2">depth 2</button> to see the interference.
-                </p>
+            {/* Classical vs quantum comparison (only at depth 2) */}
+            {walkDepth === 'depth 2' && (
+              <div className="mt-8 grid sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-white/[0.03] border border-white/5">
+                  <p className="text-xs font-mono text-gray-500 uppercase tracking-wider mb-2">Classical random walk</p>
+                  <div className="flex items-end gap-1 h-16">
+                    {[80, 40, 15, 5, 1].map((h, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                        <div className="w-full rounded-t bg-gray-600/40" style={{ height: `${h}%` }} />
+                        <span className="text-[9px] font-mono text-gray-600">d={i}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">Energy decays monotonically with distance. Always.</p>
+                </div>
+                <div className="p-4 rounded-lg bg-[#00d4ff]/5 border border-[#00d4ff]/15">
+                  <p className="text-xs font-mono text-[#00d4ff] uppercase tracking-wider mb-2">Quantum walk (this experiment)</p>
+                  <div className="flex items-end gap-1 h-16">
+                    {[76, 8, 24, 25, 24].map((h, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                        <div className="w-full rounded-t" style={{
+                          height: `${h}%`,
+                          backgroundColor: i === 1 ? '#ff6b9d' : '#00d4ff',
+                          opacity: i === 1 ? 0.8 : 0.6,
+                        }} />
+                        <span className="text-[9px] font-mono text-gray-500">d={i}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2">
+                    <span className="text-[#ff6b9d]">d=1 dips below d=2.</span> Destructive interference at the nearest neighbors.
+                  </p>
+                </div>
               </div>
             )}
           </div>
