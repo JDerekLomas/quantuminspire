@@ -1,0 +1,62 @@
+{
+  "experiment": "tuna9-trio",
+  "date": "2026-02-15",
+  "backend": "Tuna-9 (QI backend_type_id=6)",
+  "shots": 4096,
+  "compile_stage": "routing",
+  "description": "Three experiments on Tuna-9: 9-qubit GHZ state, QAOA MaxCut on Tuna-9's own topology, quantum walk information spreading",
+  "jobs": {
+    "ghz_z": 429972,
+    "ghz_x": 429973,
+    "qaoa_maxcut": 429974,
+    "walk_d1": 429975,
+    "walk_d2": 429976,
+    "walk_d3": 429977
+  },
+  "results": {
+    "ghz": {
+      "f_z": 0.5936,
+      "p_all_zeros": 0.3644,
+      "p_all_ones": 0.2292,
+      "x_expectation": 0.5410,
+      "fidelity_lower_bound": 0.5673,
+      "genuinely_entangled": true,
+      "note": "Fidelity > 0.5 proves genuine 9-qubit entanglement. Top error: q3 readout (both 0→1 and 1→0). Asymmetry (|0⟩ favored over |1⟩) consistent with T1 relaxation during readout."
+    },
+    "qaoa": {
+      "gamma": 1.5707963268,
+      "beta": 0.7853981634,
+      "max_cut": 12,
+      "approx_ratio_hardware": 0.5020,
+      "approx_ratio_emulator": 0.6910,
+      "p_optimal_hardware": 0.0032,
+      "p_optimal_emulator": 0.1110,
+      "random_baseline": 0.5000,
+      "note": "24 CZ gates too deep for Tuna-9 noise levels. Hardware result indistinguishable from random. The circuit is correct (verified on emulator) but noise destroys the signal."
+    },
+    "walk": {
+      "starting_qubit": 0,
+      "step_gate": "Ry(pi/6) all + CZ all edges",
+      "depths": {
+        "1": {
+          "excitation_by_distance": {"0": 0.805, "1": 0.076, "2": 0.076, "3": 0.069, "4": 0.061},
+          "total_excitation": 1.382,
+          "interference_visible": false,
+          "note": "Excitation mostly retained at origin. Monotonic decay with distance."
+        },
+        "2": {
+          "excitation_by_distance": {"0": 0.646, "1": 0.064, "2": 0.201, "3": 0.208, "4": 0.205},
+          "total_excitation": 1.999,
+          "interference_visible": true,
+          "note": "QUANTUM INTERFERENCE: d=1 neighbors (0.064) have LESS excitation than d=2 (0.201) and even d=4 (0.205). Destructive interference at nearest neighbors confirmed on hardware."
+        },
+        "3": {
+          "excitation_by_distance": {"0": 0.470, "1": 0.167, "2": 0.320, "3": 0.312, "4": 0.311},
+          "total_excitation": 2.698,
+          "interference_visible": true,
+          "note": "Interference pattern persists: d=1 (0.167) < d=2 (0.320). Excitation spreading across full chip."
+        }
+      }
+    }
+  }
+}
