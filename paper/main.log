@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  11 FEB 2026 03:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  15 FEB 2026 19:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**main
+**main.tex
 (./main.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -524,6 +524,11 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\\' on input line 39.
 
 
+Underfull \hbox (badness 1210) in paragraph at lines 60--61
+ \OT1/cmr/m/n/10 at each it-er-a-tion, achiev-ing chem-i-cal ac-cu-racy
+ []
+
+
 Underfull \hbox (badness 1742) in paragraph at lines 74--77
 \OT1/cmr/m/n/10 text Pro-to-col (MCP) tool servers---lightweight pro-
  []
@@ -542,11 +547,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 163--164
  []\OT1/cmr/bx/n/10 VQE en-ergy\OT1/cmr/m/n/10 : within chem-i-cal ac-cu-racy
  []
 
-[2{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts
-1.enc}]
+[2]
 
 LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 167.
+ on input line 164.
 
 
 Underfull \hbox (badness 2042) in paragraph at lines 177--179
@@ -563,170 +567,204 @@ Underfull \hbox (badness 10000) in paragraph at lines 177--179
 \OT1/cmr/m/n/10 In-spire, and/or IQM Res-o-nance (all of-fer free
  []
 
-<figures/fig2_noise_fingerprint.pdf, id=188, 227.3431pt x 135.00626pt>
+<figures/fig2_noise_fingerprint.pdf, id=187, 227.3431pt x 135.00626pt>
 File: figures/fig2_noise_fingerprint.pdf Graphic file (type pdf)
 <use figures/fig2_noise_fingerprint.pdf>
 Package pdftex.def Info: figures/fig2_noise_fingerprint.pdf  used on input line
  232.
 (pdftex.def)             Requested size: 246.0pt x 146.09297pt.
-[3 <./figures/fig2_noise_fingerprint.pdf>]
-<figures/fig1_ghz_scaling.pdf, id=259, 229.58585pt x 156.51837pt>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/fig1_ghz_scaling.pdf, id=189, 229.58585pt x 156.51837pt>
 File: figures/fig1_ghz_scaling.pdf Graphic file (type pdf)
 <use figures/fig1_ghz_scaling.pdf>
 Package pdftex.def Info: figures/fig1_ghz_scaling.pdf  used on input line 244.
 (pdftex.def)             Requested size: 246.0pt x 167.7118pt.
 
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts
+1.enc}]
+
+LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
+ on input line 272.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<figures/fig3_quantum_volume.pdf, id=262, 231.81293pt x 148.05501pt>
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 2
+95.
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 295.
+<figures/fig3_quantum_volume.pdf, id=205, 231.81293pt x 148.05501pt>
 File: figures/fig3_quantum_volume.pdf Graphic file (type pdf)
 <use figures/fig3_quantum_volume.pdf>
-Package pdftex.def Info: figures/fig3_quantum_volume.pdf  used on input line 29
-7.
+Package pdftex.def Info: figures/fig3_quantum_volume.pdf  used on input line 30
+2.
 (pdftex.def)             Requested size: 246.0pt x 157.12505pt.
-<figures/fig4_scorecard.pdf, id=265, 684.13779pt x 159.81024pt>
+ [4 <./figures/fig2_noise_fingerprint.pdf> <./figures/fig1_ghz_scaling.pdf> <./
+figures/fig3_quantum_volume.pdf>]
+<figures/fig4_scorecard.pdf, id=379, 684.13779pt x 159.81024pt>
 File: figures/fig4_scorecard.pdf Graphic file (type pdf)
 <use figures/fig4_scorecard.pdf>
-Package pdftex.def Info: figures/fig4_scorecard.pdf  used on input line 313.
+Package pdftex.def Info: figures/fig4_scorecard.pdf  used on input line 318.
 (pdftex.def)             Requested size: 510.0pt x 119.13313pt.
-
-Underfull \hbox (badness 1077) in paragraph at lines 373--376
-\OMS/cmsy/m/n/10 ^^@\OT1/cmr/m/n/10 1\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 138 []$ 
-($0\OML/cmm/m/it/10 :\OT1/cmr/m/n/10 22 []$) with TREX er-ror mit-i-ga-
- []
-
-[4 <./figures/fig1_ghz_scaling.pdf> <./figures/fig3_quantum_volume.pdf>]
-<figures/fig5_vqe_h2.pdf, id=389, 237.69427pt x 158.52588pt>
+<figures/fig5_vqe_h2.pdf, id=388, 237.69427pt x 158.52588pt>
 File: figures/fig5_vqe_h2.pdf Graphic file (type pdf)
 <use figures/fig5_vqe_h2.pdf>
-Package pdftex.def Info: figures/fig5_vqe_h2.pdf  used on input line 379.
+Package pdftex.def Info: figures/fig5_vqe_h2.pdf  used on input line 384.
 (pdftex.def)             Requested size: 246.0pt x 164.06718pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[5 <./figures/fig4_scorecard.pdf>]
 
-LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
- on input line 390.
-
-
-Underfull \hbox (badness 2189) in paragraph at lines 402--405
-[]\OT1/cmr/m/n/10 An in-ter-est-ing find-ing emerged from ran-dom-ized
+Underfull \hbox (badness 1946) in paragraph at lines 411--411
+[]\OT1/cmr/m/n/9 TABLE VII. []Single-qubit ran-dom-ized bench-mark-ing on
  []
 
-[6 <./figures/fig5_vqe_h2.pdf>] [7]
-Underfull \hbox (badness 4291) in paragraph at lines 538--539
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[5]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 2426) in paragraph at lines 481--484
+[]\OT1/cmr/m/n/10 The most ef-fec-tive strat-egy is stacked REM +
+ []
+
+[6 <./figures/fig4_scorecard.pdf>]
+
+LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix]
+ on input line 484.
+
+
+Overfull \hbox (30.52261pt too wide) in alignment at lines 489--496
+ [] [] [] [] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[7 <./figures/fig5_vqe_h2.pdf>] [8]
+Underfull \hbox (badness 1831) in paragraph at lines 575--580
+[]\OT1/cmr/m/n/10 A no-table method-olog-i-cal find-ing: the \OT1/cmr/m/it/10 o
+r-der \OT1/cmr/m/n/10 of
+ []
+
+
+Underfull \hbox (badness 4291) in paragraph at lines 611--612
  \OT1/cmr/m/n/10 counts, meta-data, and check-sums): []$\OT1/cmtt/m/n/10 https 
 :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 538--539
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
  \OT1/cmtt/m/n/10 / / github . com / JDerekLomas / quantuminspire /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 539--540
+Underfull \hbox (badness 10000) in paragraph at lines 612--613
  []\OT1/cmr/bx/n/10 Replication re-ports \OT1/cmr/m/n/10 (struc-tured JSON +
  []
 
 
-Underfull \hbox (badness 1394) in paragraph at lines 539--540
+Underfull \hbox (badness 1394) in paragraph at lines 612--613
  \OT1/cmr/m/n/10 nar-ra-tive mark-down for each pa-per): []$\OT1/cmtt/m/n/10 ht
 tps :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 539--540
+Underfull \hbox (badness 10000) in paragraph at lines 612--613
  \OT1/cmtt/m/n/10 / / github . com / JDerekLomas / quantuminspire /
  []
 
 
-Underfull \hbox (badness 1590) in paragraph at lines 540--541
+Underfull \hbox (badness 1590) in paragraph at lines 613--614
  []\OT1/cmr/bx/n/10 Tabular dataset \OT1/cmr/m/n/10 (CSV sum-maries for cross-
  []
 
 
-Underfull \hbox (badness 6157) in paragraph at lines 540--541
+Underfull \hbox (badness 6157) in paragraph at lines 613--614
  \OT1/cmr/m/n/10 platform com-par-i-son): []$\OT1/cmtt/m/n/10 https : / / githu
 b . com /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 540--541
+Underfull \hbox (badness 10000) in paragraph at lines 613--614
  \OT1/cmtt/m/n/10 JDerekLomas / quantuminspire / tree / main /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 541--542
+Underfull \hbox (badness 10000) in paragraph at lines 614--615
  []\OT1/cmr/bx/n/10 Replication scripts \OT1/cmr/m/n/10 (cir-cuit gen-er-a-tion
  +
  []
 
 
-Underfull \hbox (badness 5741) in paragraph at lines 541--542
+Underfull \hbox (badness 5741) in paragraph at lines 614--615
  \OT1/cmr/m/n/10 anal-y-sis): []$\OT1/cmtt/m/n/10 https : / / github . com / JD
 erekLomas /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 542--543
+Underfull \hbox (badness 10000) in paragraph at lines 615--616
  []\OT1/cmr/bx/n/10 Molecular Hamil-to-ni-ans \OT1/cmr/m/n/10 (canon-i-cal co-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 542--543
+Underfull \hbox (badness 10000) in paragraph at lines 615--616
  \OT1/cmr/m/n/10 ef-fi-cients for H$[]$ and HeH$[]$): []$\OT1/cmtt/m/n/10 https
  :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 542--543
+Underfull \hbox (badness 10000) in paragraph at lines 615--616
  \OT1/cmtt/m/n/10 / / github . com / JDerekLomas / quantuminspire /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 543--544
+Underfull \hbox (badness 10000) in paragraph at lines 616--617
  []\OT1/cmr/bx/n/10 Interactive dash-board\OT1/cmr/m/n/10 : []$\OT1/cmtt/m/n/10
  https : / /
  []
 
 
-Package hyperref Warning: Suppressing empty link on input line 552.
+Package hyperref Warning: Suppressing empty link on input line 625.
 
-(./main.bbl [8]
-Underfull \hbox (badness 1112) in paragraph at lines 82--91
- []\OT1/cmr/m/n/9 A. Kan-dala, A. Mez-za-capo, K. Temme, M. Takita,
- []
-
-
-Underfull \hbox (badness 6412) in paragraph at lines 82--91
+[9] (./main.bbl
+Underfull \hbox (badness 3942) in paragraph at lines 82--91
  \OT1/cmr/m/n/9 efficient vari-a-tional quan-tum eigen-solver for small
  []
 
 
-Underfull \hbox (badness 1132) in paragraph at lines 100--108
- \OT1/cmr/m/n/9 A vari-a-tional eigen-value solver on a pho-tonic quan-
+Underfull \hbox (badness 1565) in paragraph at lines 82--91
+ \OT1/cmr/m/n/9 molecules and quan-tum mag-nets, []Na-ture \OT1/cmr/bx/n/9 549\
+OT1/cmr/m/n/9 , 242
  []
 
-) [9] (./main.aux)
+) [10] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 930D66D9D4216FEF7CCFC430A2C3EFFD;5346.
+(rerunfilecheck)             Checksum: A051D49A71BB92854E47A4851FAC0353;5371.
  ) 
 Here is how much of TeX's memory you used:
- 15407 strings out of 474662
- 278877 string characters out of 5751110
- 684770 words of memory out of 5000000
- 38215 multiletter control sequences out of 15000+600000
+ 15445 strings out of 474662
+ 279499 string characters out of 5751110
+ 692256 words of memory out of 5000000
+ 38245 multiletter control sequences out of 15000+600000
  568072 words of font info for 72 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,13n,79p,545b,1205s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,79p,546b,1102s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
 0.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mbx12.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/
@@ -743,20 +781,21 @@ onts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025basic/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025basic/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2025basic/texmf-
 dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025basic/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025basic
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025ba
-sic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/202
-5basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive
-/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texl
-ive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/
-texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/loc
-al/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb
-></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/cm-super/sfrm1000.
-pfb>
-Output written on main.pdf (9 pages, 432548 bytes).
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025basic
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025ba
+sic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/202
+5basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/
+2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texl
+ive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/t
+exlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/loc
+al/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/
+local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.
+pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/cm-super/sfrm10
+00.pfb>
+Output written on main.pdf (10 pages, 450705 bytes).
 PDF statistics:
- 732 PDF objects out of 1000 (max. 8388607)
- 408 compressed objects within 5 object streams
- 76 named destinations out of 1000 (max. 500000)
+ 757 PDF objects out of 1000 (max. 8388607)
+ 430 compressed objects within 5 object streams
+ 81 named destinations out of 1000 (max. 500000)
  274 words of extra memory for PDF output out of 10000 (max. 10000000)
 
