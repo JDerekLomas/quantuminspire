@@ -260,99 +260,124 @@ export default function QuantumSynthBlogPost() {
               what this tool does and doesn&rsquo;t represent.
             </p>
 
-            <h3>What&rsquo;s genuinely quantum</h3>
+            <h3>Molecules really do make frequencies</h3>
 
             <p>
-              The eigenvalues are real. They come from diagonalizing the molecular Hamiltonian
-              computed from first principles &mdash; the same operator that a quantum computer
-              would implement. The energy level structure, degeneracies, and how they change
-              with bond distance are all physical. If you ran this Hamiltonian on a perfect
-              quantum computer, you&rsquo;d get the same numbers.
+              This isn&rsquo;t just an artistic mapping. Molecules are oscillators. A diatomic bond
+              vibrates at a characteristic frequency &mdash; H<sub>2</sub>&rsquo;s fundamental
+              vibrational mode is ~4,400 cm<sup>&minus;1</sup> (~132 THz). These are real
+              mechanical oscillations of the nuclei on the potential energy surface. The energy
+              levels we compute define that surface.
             </p>
 
-            <h3>What&rsquo;s arbitrary</h3>
+            <p>
+              Near equilibrium, the potential well is approximately parabolic, and the
+              vibrational energy levels are evenly spaced &mdash; the <strong>harmonic</strong>
+              approximation. This is why the synth sounds like a clean chord at the equilibrium
+              bond distance: the partials have regular intervals, like overtones of a vibrating
+              string.
+            </p>
 
             <p>
-              Almost everything about the audio mapping is a design choice, not physics:
+              Stretch the bond further and the potential becomes asymmetric &mdash;
+              <strong>anharmonic</strong>. The levels crowd together. The equal spacing breaks
+              down. Eventually, at dissociation, the bound states converge into a continuum.
+              The sound of harmonics collapsing into noise is a genuine representation of the
+              harmonic-to-anharmonic transition. That physics is real.
+            </p>
+
+            <h3>What we&rsquo;re computing vs. what vibrates</h3>
+
+            <p>
+              An important distinction: the eigenvalues in this synth are <strong>electronic</strong>
+              energy levels at fixed nuclear positions (the Born-Oppenheimer approximation). These
+              define the potential energy surface. The actual <em>vibrational</em> frequencies come
+              from nuclear motion <em>on</em> that surface &mdash; they&rsquo;re solutions to a
+              second quantum problem (the nuclear Schr&ouml;dinger equation) using our electronic
+              energies as the potential.
+            </p>
+
+            <p>
+              So we&rsquo;re not directly sonifying vibrational modes. We&rsquo;re sonifying the
+              electronic spectrum at each geometry. But the two are deeply connected: the shape
+              of the electronic energy curve <em>determines</em> the vibrational frequencies. The
+              curvature at equilibrium gives the harmonic frequency. The asymmetry gives the
+              anharmonic corrections. When you drag the bond distance slider, you&rsquo;re tracing
+              the same potential energy surface that governs real molecular vibration.
+            </p>
+
+            <h3>What&rsquo;s a design choice</h3>
+
+            <p>
+              Some aspects of the mapping are genuine choices rather than physics:
             </p>
 
             <ul>
               <li>
-                <strong>The frequency mapping is exponential</strong>, which makes musical sense
-                (octaves are doublings) but isn&rsquo;t the only option. A linear mapping would
-                sound very different. The &ldquo;right&rdquo; mapping doesn&rsquo;t exist &mdash;
-                there&rsquo;s no physical reason energy gaps should map to frequency ratios
-                rather than frequency differences.
+                <strong>The absolute pitch is shifted.</strong> Real electronic transitions happen
+                at ~10<sup>14</sup> Hz (UV/visible light). We compress this into 65&ndash;4,000 Hz
+                &mdash; like transposing a piece of music down ~40 octaves. The intervals are
+                preserved in ratio, but the base pitch is arbitrary.
               </li>
               <li>
-                <strong>The base frequency (65 Hz) is arbitrary.</strong> Real molecular
-                transitions happen at ~10<sup>14</sup> Hz (visible/UV light). We&rsquo;re compressing
-                an enormous frequency range into the audible band. The intervals between levels
-                are preserved in ratio, but the absolute pitch is meaningless.
+                <strong>We play all levels simultaneously.</strong> A real spectrum shows transitions
+                between specific pairs of states, governed by selection rules (&Delta;S = 0,
+                dipole-allowed transitions, etc.). We skip selection rules and play every energy
+                level as a continuous tone. This is more like showing the full eigenspectrum than
+                simulating a specific physical process.
               </li>
               <li>
-                <strong>Boltzmann weighting is a simplification.</strong> In a real molecule, state
-                populations depend on temperature, selection rules, transition dipole moments,
-                and the excitation mechanism. We use a single &ldquo;excitation&rdquo; parameter
-                as a stand-in for thermal population, ignoring selection rules entirely. Every
-                transition is allowed here; in reality, most are forbidden.
+                <strong>Boltzmann weighting is simplified.</strong> Real state populations depend
+                on temperature, selection rules, and the excitation mechanism. Our single
+                &ldquo;excitation&rdquo; knob is a stand-in &mdash; useful for exploring the
+                spectrum, but not a rigorous thermal model.
               </li>
               <li>
-                <strong>We&rsquo;re using all eigenvalues, not just physical transitions.</strong>
-                A real absorption spectrum shows transitions between specific pairs of states,
-                governed by selection rules (&Delta;S = 0, etc.). We&rsquo;re instead playing
-                all energy levels simultaneously as continuous tones, which has no direct
-                physical analogue.
-              </li>
-              <li>
-                <strong>Waveform choice is purely aesthetic.</strong> Quantum energy levels don&rsquo;t
-                have a &ldquo;waveform.&rdquo; The sine/triangle/sawtooth selector changes the
-                timbre but has no connection to the physics.
+                <strong>Waveform is purely aesthetic.</strong> Sine, triangle, sawtooth &mdash;
+                these shape the timbre but have no quantum analogue.
               </li>
             </ul>
 
-            <h3>What it&rsquo;s actually good for</h3>
-
-            <p>
-              Despite the arbitrary mapping, the synth faithfully represents several real
-              physical phenomena:
-            </p>
+            <h3>What&rsquo;s genuinely physical</h3>
 
             <ul>
               <li>
-                <strong>Energy level convergence at dissociation</strong> is real. As a bond
-                stretches, excited states really do crowd toward the ground state. The sound
-                of harmonics collapsing is a legitimate representation of this.
+                <strong>The eigenvalues are exact</strong> (within the STO-3G basis). Same numbers
+                a perfect quantum computer would produce.
               </li>
               <li>
-                <strong>Degeneracy patterns are physical.</strong> The &times;2 and &times;3
-                degeneracies come from orbital and spin symmetry. They&rsquo;re not artifacts of
-                the mapping.
+                <strong>Harmonic-to-anharmonic transition</strong> as you stretch the bond.
+                The sound of regular intervals dissolving into convergence is the real physics
+                of a potential well opening up.
               </li>
               <li>
-                <strong>H<sub>2</sub> really is simpler than LiH.</strong> The difference in
-                harmonic complexity directly reflects the difference in electronic structure.
-                H<sub>2</sub>&rsquo;s 4 spin-orbitals vs. LiH&rsquo;s 12 is a real distinction, not an
-                aesthetic choice.
+                <strong>Degeneracy patterns</strong> come from orbital and spin symmetry. The
+                &times;2 and &times;3 multiplicities are physical, not artifacts.
               </li>
               <li>
-                <strong>The equilibrium distance is special.</strong> The minimum in the
-                potential energy curve corresponds to a genuine physical feature &mdash; the
-                bond length where the molecule is most stable. The fact that the sound is
-                &ldquo;most spread out&rdquo; there reflects the deepest well in the energy surface.
+                <strong>H<sub>2</sub> is genuinely simpler than LiH.</strong> The difference in
+                timbral complexity maps directly to electronic structure: 4 vs. 12 spin-orbitals,
+                covalent vs. ionic bonding.
+              </li>
+              <li>
+                <strong>The equilibrium distance sounds different</strong> because it <em>is</em>
+                different. The deepest point in the potential well has the widest level spacing
+                and the most harmonic character. Moving away in either direction breaks that
+                regularity.
               </li>
             </ul>
 
             <h3>The honest summary</h3>
 
             <p>
-              This is a <em>sonification</em>, not a <em>simulation</em>. The data is real
-              quantum chemistry. The mapping to sound is artistically motivated, with real
-              physical structure preserved in the relative spacing and how it changes with
-              geometry. It won&rsquo;t teach you what hydrogen &ldquo;sounds like&rdquo; (molecules
-              don&rsquo;t make sound). But it will give you an intuitive feel for how energy
-              level structure changes during a chemical bond stretch &mdash; something that&rsquo;s
-              surprisingly hard to convey with static diagrams alone.
+              This is closer to reality than most sonification projects. The data is exact
+              quantum chemistry. The frequency structure &mdash; which levels are close, which
+              are far, how that changes with geometry &mdash; is physical. The absolute pitch is
+              transposed to the audible range, selection rules are ignored, and the waveform is
+              aesthetic. But the core experience &mdash; hearing a harmonic chord dissolve into
+              anharmonic collapse as a bond breaks &mdash; represents a real quantum mechanical
+              phenomenon. It&rsquo;s the sound of a potential energy surface, shifted down 40
+              octaves so your ears can parse what your eyes see in an energy diagram.
             </p>
 
           </div>
