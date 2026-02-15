@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Nav from '@/components/Nav'
-import { getAllResults, getQueue, getStats, getAllStudies, typeLabels, typeColors, getSweepEmulator, getSweepReference, type ExperimentResult, type SweepPoint, type SweepReference } from '@/lib/experiments'
+import { getAllResults, getQueue, getStats, getAllStudies, typeLabels, typeColors, getSweepEmulator, getSweepReference, getSweepHardware, type ExperimentResult, type SweepPoint, type SweepReference } from '@/lib/experiments'
 import {
   isEmulator,
   backendLabel,
@@ -1280,6 +1280,7 @@ export default function ExperimentsPage() {
   const stats = getStats()
   const sweepEmulator = getSweepEmulator()
   const sweepReference = getSweepReference()
+  const sweepHardware = getSweepHardware()
 
   const pending = queue.filter(q => q.status === 'pending')
 
@@ -1433,7 +1434,7 @@ export default function ExperimentsPage() {
         <section className="px-6 pb-12">
           <div className="max-w-6xl mx-auto space-y-6">
             {sweepEmulator.length > 0 && (
-              <DissociationCurve sweep={sweepEmulator} reference={sweepReference} />
+              <DissociationCurve sweep={sweepEmulator} reference={sweepReference} hardware={sweepHardware} />
             )}
             <FidelityComparisonChart results={results} />
           </div>

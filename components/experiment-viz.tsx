@@ -366,8 +366,8 @@ export function MultiBasisCounts({ rawCounts }: { rawCounts: Record<string, any>
 // H2 Dissociation Curve (SVG)
 // ---------------------------------------------------------------------------
 
-export function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; reference: SweepReference[] }) {
-  if (sweep.length === 0 && reference.length === 0) return null
+export function DissociationCurve({ sweep, reference, hardware = [] }: { sweep: SweepPoint[]; reference: SweepReference[]; hardware?: SweepPoint[] }) {
+  if (sweep.length === 0 && reference.length === 0 && hardware.length === 0) return null
 
   const svgW = 640
   const svgH = 340
@@ -382,11 +382,12 @@ export function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; r
     ...reference.map(r => r.fci_energy),
     ...reference.map(r => r.hf_energy),
     ...sweep.map(s => s.energy_measured),
+    ...hardware.map(s => s.energy_measured),
   ]
   const minE = Math.min(...allEnergies) - 0.04
   const maxE = Math.max(...allEnergies) + 0.04
 
-  const allR = [...reference.map(r => r.bond_distance), ...sweep.map(s => s.bond_distance)]
+  const allR = [...reference.map(r => r.bond_distance), ...sweep.map(s => s.bond_distance), ...hardware.map(s => s.bond_distance)]
   const minR = Math.min(...allR) - 0.05
   const maxR = Math.max(...allR) + 0.1
 
@@ -419,12 +420,16 @@ export function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; r
     <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6">
       <div className="flex items-center gap-3 mb-1">
         <h3 className="text-white font-bold">H&#8322; Dissociation Curve</h3>
-        <span className="text-[10px] font-mono text-gray-500">{sweep.length} points, 65k shots each</span>
+        <span className="text-[10px] font-mono text-gray-500">
+          {sweep.length > 0 && `${sweep.length} emulator points`}
+          {sweep.length > 0 && hardware.length > 0 && ' + '}
+          {hardware.length > 0 && `${hardware.length} hardware points`}
+        </span>
       </div>
       <p className="text-xs text-gray-400 mb-4 max-w-xl leading-relaxed">
-        Energy vs. bond distance for molecular hydrogen. The VQE emulator matches the exact (FCI) curve
-        within chemical accuracy at all 14 distances -- from compressed (0.3 &#197;) through equilibrium (0.735 &#197;)
-        to fully dissociated (3.0 &#197;).
+        Energy vs. bond distance for molecular hydrogen.
+        {sweep.length > 0 && <> The VQE emulator matches the exact (FCI) curve within chemical accuracy at all {sweep.length} distances.</>}
+        {hardware.length > 0 && <> Purple diamonds show Tuna-9 hardware results with readout error mitigation (sector-projected 2-qubit ansatz, native CZ gate set).</>}
       </p>
       <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full" xmlns="http://www.w3.org/2000/svg">
         <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="4" />
@@ -470,6 +475,24 @@ export function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; r
           )
         })}
 
+        {hardware.map(pt => {
+          const cx = xScale(pt.bond_distance)
+          const cy = yScale(pt.energy_measured)
+          return (
+            <rect
+              key={`hw-${pt.bond_distance}`}
+              x={cx - 4}
+              y={cy - 4}
+              width="8"
+              height="8"
+              fill="#8b5cf6"
+              stroke="rgba(0,0,0,0.5)"
+              strokeWidth="0.5"
+              transform={`rotate(45, ${cx}, ${cy})`}
+            />
+          )
+        })}
+
         {reference.find(r => Math.abs(r.bond_distance - 0.735) < 0.01) && (
           <>
             <line
@@ -492,6 +515,13 @@ export function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; r
 
           <circle cx="10" cy="32" r="4" fill="#00ff88" />
           <text x="26" y="35" fill="#00ff88" fontFamily="monospace" fontSize="9">VQE Emulator</text>
+
+          {hardware.length > 0 && (
+            <>
+              <rect x="6" y="44" width="8" height="8" fill="#8b5cf6" transform="rotate(45, 10, 48)" />
+              <text x="26" y="51" fill="#8b5cf6" fontFamily="monospace" fontSize="9">Tuna-9 + REM</text>
+            </>
+          )}
         </g>
 
         <text
@@ -510,22 +540,30 @@ export function DissociationCurve({ sweep, reference }: { sweep: SweepPoint[]; r
       </svg>
 
       <div className="flex flex-wrap gap-4 mt-4 text-xs font-mono">
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Equilibrium energy: </span>
-          <span className="text-[#00ff88] font-bold">{eqSweep?.energy_measured?.toFixed(4) || '?'} Ha</span>
-        </div>
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Max error: </span>
-          <span className="text-white font-bold">{Math.max(...sweep.map(s => s.error_kcal)).toFixed(2)} kcal/mol</span>
-        </div>
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Points within chem. accuracy: </span>
-          <span className="text-[#00ff88] font-bold">{sweep.filter(s => s.error_kcal < 1.0).length}/{sweep.length}</span>
-        </div>
-        <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-          <span className="text-gray-500">Correlation energy captured: </span>
-          <span className="text-[#8b5cf6] font-bold">100%</span>
-        </div>
+        {sweep.length > 0 && (
+          <>
+            <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+              <span className="text-gray-500">Emulator eq. energy: </span>
+              <span className="text-[#00ff88] font-bold">{eqSweep?.energy_measured?.toFixed(4) || '?'} Ha</span>
+            </div>
+            <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+              <span className="text-gray-500">Emulator max error: </span>
+              <span className="text-white font-bold">{Math.max(...sweep.map(s => s.error_kcal)).toFixed(2)} kcal/mol</span>
+            </div>
+          </>
+        )}
+        {hardware.length > 0 && (
+          <>
+            <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+              <span className="text-gray-500">Hardware eq. energy: </span>
+              <span className="text-[#8b5cf6] font-bold">{hardware.find(s => Math.abs(s.bond_distance - 0.735) < 0.01)?.energy_measured?.toFixed(4) || '?'} Ha</span>
+            </div>
+            <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+              <span className="text-gray-500">Hardware best error: </span>
+              <span className="text-[#8b5cf6] font-bold">{Math.min(...hardware.map(s => s.error_kcal)).toFixed(1)} kcal/mol</span>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

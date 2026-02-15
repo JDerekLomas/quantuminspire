@@ -129,3 +129,13 @@ export function getSweepReference(): SweepReference[] {
     return []
   }
 }
+
+export function getSweepHardware(): SweepPoint[] {
+  const file = path.join(RESULTS_DIR, 'vqe-h2-sweep-tuna9.json')
+  if (!fs.existsSync(file)) return []
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf-8'))
+  } catch {
+    return []
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "experiment": "H2 2-qubit VQE dissociation curve with REM",
+  "backend": "Tuna-9",
+  "physical_qubits": [
+    4,
+    6
+  ],
+  "gate_set": "native (CZ, Ry, Rz, X)",
+  "compile_stage": "routing",
+  "shots_per_basis": 4096,
+  "total_shots": 86016,
+  "mitigation": "Readout Error Mitigation (confusion matrix inversion)",
+  "calibration_jobs": {
+    "00": 429920,
+    "10": 429921,
+    "01": 429922,
+    "11": 429923
+  },
+  "confusion_matrix": [
+    [
+      0.96875,
+      0.024169921875,
+      0.016845703125,
+      0.000244140625
+    ],
+    [
+      0.01318359375,
+      0.95703125,
+      0.0,
+      0.0185546875
+    ],
+    [
+      0.017578125,
+      0.000244140625,
+      0.96826171875,
+      0.02197265625
+    ],
+    [
+      0.00048828125,
+      0.0185546875,
+      0.014892578125,
+      0.959228515625
+    ]
+  ],
+  "confusion_matrix_condition": 1.08,
+  "analyzed": "2026-02-15T12:17:32.907012+00:00",
+  "job_map": {
+    "0.5": {
+      "X": 426697,
+      "Y": 426698,
+      "Z": 426699
+    },
+    "0.7": {
+      "X": 426700,
+      "Y": 426701,
+      "Z": 426702
+    },
+    "0.735": {
+      "X": 426703,
+      "Y": 426704,
+      "Z": 426705
+    },
+    "0.9": {
+      "X": 426706,
+      "Y": 426707,
+      "Z": 426708
+    },
+    "1.1": {
+      "X": 426709,
+      "Y": 426710,
+      "Z": 426711
+    },
+    "1.5": {
+      "X": 426712,
+      "Y": 426713,
+      "Z": 426714
+    },
+    "2.0": {
+      "X": 426715,
+      "Y": 426716,
+      "Z": 426717
+    }
+  },
+  "results": [
+    {
+      "bond_distance": 0.5,
+      "fci_energy": -1.05515976,
+      "optimal_alpha": -0.143585,
+      "g0": 0.12316306,
+      "g1": 0.58307965,
+      "g4": 0.08443511,
+      "raw_energy": -1.01181697,
+      "raw_error_mHa": 43.3428,
+      "rem_expvals": {
+        "Z0": -0.970799,
+        "Z1": 0.987829,
+        "Z0Z1": -0.98297,
+        "X0X1": -0.141198,
+        "Y0Y1": -0.149023
+      },
+      "rem_symmetry_Z0Z1": -0.983,
+      "rem_energy": -1.043378,
+      "rem_error_mHa": 11.7818,
+      "rem_error_kcal_mol": 7.39,
+      "rem_sigma_mHa": 4.4634,
+      "improvement_factor": 3.7,
+      "chemical_accuracy": false
+    },
+    {
+      "bond_distance": 0.7,
+      "fci_energy": -1.13618945,
+      "optimal_alpha": -0.209565,
+      "g0": -0.27643762,
+      "g1": 0.42045571,
+      "g4": 0.08950029,
+      "raw_energy": -1.10123393,
+      "raw_error_mHa": 34.9555,
+      "rem_expvals": {
+        "Z0": -0.961667,
+        "Z1": 0.969977,
+        "Z0Z1": -0.99169,
+        "X0X1": -0.207602,
+        "Y0Y1": -0.219082
+      },
+      "rem_symmetry_Z0Z1": -0.9917,
+      "rem_energy": -1.12679657,
+      "rem_error_mHa": 9.3929,
+      "rem_error_kcal_mol": 5.89,
+      "rem_sigma_mHa": 4.1965,
+      "improvement_factor": 3.7,
+      "chemical_accuracy": false
+    },
+    {
+      "bond_distance": 0.735,
+      "fci_energy": -1.13730604,
+      "optimal_alpha": -0.22339,
+      "g0": -0.32112409,
+      "g1": 0.39793745,
+      "g4": 0.0904656,
+      "raw_energy": -1.11416627,
+      "raw_error_mHa": 23.1398,
+      "rem_expvals": {
+        "Z0": -0.965353,
+        "Z1": 0.970393,
+        "Z0Z1": -0.99496,
+        "X0X1": -0.23982,
+        "Y0Y1": -0.243453
+      },
+      "rem_symmetry_Z0Z1": -0.995,
+      "rem_energy": -1.13514917,
+      "rem_error_mHa": 2.1569,
+      "rem_error_kcal_mol": 1.35,
+      "rem_sigma_mHa": 3.8962,
+      "improvement_factor": 10.7,
+      "chemical_accuracy": false
+    },
+    {
+      "bond_distance": 0.9,
+      "fci_energy": -1.12056029,
+      "optimal_alpha": -0.298167,
+      "g0": -0.47233944,
+      "g1": 0.30978731,
+      "g4": 0.09528584,
+      "raw_energy": -1.09862177,
+      "raw_error_mHa": 21.9385,
+      "rem_expvals": {
+        "Z0": -0.945187,
+        "Z1": 0.959908,
+        "Z0Z1": -0.985279,
+        "X0X1": -0.285775,
+        "Y0Y1": -0.290962
+      },
+      "rem_symmetry_Z0Z1": -0.9853,
+      "rem_energy": -1.11746843,
+      "rem_error_mHa": 3.0919,
+      "rem_error_kcal_mol": 1.94,
+      "rem_sigma_mHa": 3.68,
+      "improvement_factor": 7.1,
+      "chemical_accuracy": false
+    },
+    {
+      "bond_distance": 1.1,
+      "fci_energy": -1.07919296,
+      "optimal_alpha": -0.413789,
+      "g0": -0.5737471,
+      "g1": 0.2313959,
+      "g4": 0.10161111,
+      "raw_energy": -1.06127804,
+      "raw_error_mHa": 17.9149,
+      "rem_expvals": {
+        "Z0": -0.902131,
+        "Z1": 0.912323,
+        "Z0Z1": -0.989808,
+        "X0X1": -0.424164,
+        "Y0Y1": -0.397769
+      },
+      "rem_symmetry_Z0Z1": -0.9898,
+      "rem_energy": -1.07712206,
+      "rem_error_mHa": 2.0709,
+      "rem_error_kcal_mol": 1.3,
+      "rem_sigma_mHa": 3.6991,
+      "improvement_factor": 8.7,
+      "chemical_accuracy": false
+    },
+    {
+      "bond_distance": 1.5,
+      "fci_energy": -0.99814937,
+      "optimal_alpha": -0.726723,
+      "g0": -0.65267092,
+      "g1": 0.12910133,
+      "g4": 0.11476796,
+      "raw_energy": -0.97143119,
+      "raw_error_mHa": 26.7182,
+      "rem_expvals": {
+        "Z0": -0.721708,
+        "Z1": 0.727118,
+        "Z0Z1": -0.994591,
+        "X0X1": -0.63939,
+        "Y0Y1": -0.646944
+      },
+      "rem_symmetry_Z0Z1": -0.9946,
+      "rem_energy": -0.98734626,
+      "rem_error_mHa": 10.8031,
+      "rem_error_kcal_mol": 6.78,
+      "rem_sigma_mHa": 3.4927,
+      "improvement_factor": 2.5,
+      "chemical_accuracy": false
+    },
+    {
+      "bond_distance": 2.0,
+      "fci_energy": -0.94864112,
+      "optimal_alpha": -1.133286,
+      "g0": -0.66253664,
+      "g1": 0.06062802,
+      "g4": 0.12956923,
+      "raw_energy": -0.92452042,
+      "raw_error_mHa": 24.1207,
+      "rem_expvals": {
+        "Z0": -0.388491,
+        "Z1": 0.397098,
+        "Z0Z1": -0.991393,
+        "X0X1": -0.897031,
+        "Y0Y1": -0.899501
+      },
+      "rem_symmetry_Z0Z1": -0.9914,
+      "rem_energy": -0.94294061,
+      "rem_error_mHa": 5.7005,
+      "rem_error_kcal_mol": 3.58,
+      "rem_sigma_mHa": 2.4535,
+      "improvement_factor": 4.2,
+      "chemical_accuracy": false
+    }
+  ]
+}

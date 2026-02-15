@@ -178,21 +178,55 @@
           "job_id": "d65o9s8qbmes739d5gm0"
         }
       }
+    },
+    {
+      "claim_id": "dissociation-curve-sector-projected",
+      "description": "H2 dissociation curve (7 bond distances) using sector-projected 2-qubit ansatz on hardware",
+      "published_value": -1.1373,
+      "published_error": 0.05,
+      "unit": "Hartree (equilibrium)",
+      "figure": "Extended (not in original paper)",
+      "results_by_backend": {
+        "tuna9_sector_projected": {
+          "measured_value": -1.11416627,
+          "discrepancy": 0.023140,
+          "within_published_error": true,
+          "failure_mode": "partial_noise",
+          "failure_description": "7-distance H2 dissociation curve on Tuna-9 using sector-projected 2-qubit Hamiltonian (native CZ gate set, 1 CZ per circuit). Errors range 11-27 kcal/mol across bond distances (17-43 mHa). Best: R=1.1 at 11.2 kcal/mol. Equilibrium (R=0.735): 14.5 kcal/mol. Not chemical accuracy without error mitigation, but demonstrates correct dissociation curve shape.",
+          "severity": "minor",
+          "physical_qubits": [4, 6],
+          "gate_set": "native (CZ, Ry, Rz, X)",
+          "gates_per_circuit": "5-9 (basis-dependent, X-basis optimized)",
+          "shots_per_basis": 4096,
+          "total_shots": 86016,
+          "bond_distances": [0.5, 0.7, 0.735, 0.9, 1.1, 1.5, 2.0],
+          "errors_mHa": [43.3, 35.0, 23.1, 21.9, 17.9, 26.7, 24.1],
+          "errors_kcal_mol": [27.2, 21.9, 14.5, 13.8, 11.2, 16.8, 15.1],
+          "avg_error_mHa": 27.4,
+          "best_error_mHa": 17.9,
+          "symmetry_Z0Z1_range": [-0.949, -0.925],
+          "postselection_retention_pct": 95.0,
+          "job_ids_range": "426697-426717",
+          "results_file": "experiments/results/h2-2qubit-vqe-tuna9-analysis.json",
+          "raw_counts_file": "experiments/results/h2-2qubit-tuna9-raw-counts-v3.json",
+          "note": "Sector projection reduces 4-qubit JW Hamiltonian to 2 qubits by exploiting particle-number and Z2 symmetry. Only 1 CZ gate needed (vs 6 for 4q Kandala circuit). Raw errors dominated by ~5-7% depolarization on CZ gate. Post-selection has negligible effect (95% retention, <1 mHa improvement) since sector projection already enforces correct symmetry sector. Gate optimization: X-basis circuits save 2 gates via Ry(pi/2)·Ry(-pi/2) cancellation."
+        }
+      }
     }
   ],
   "summary": {
-    "total_claims_tested": 3,
+    "total_claims_tested": 4,
     "successes": 3,
-    "success_rate": 1.0,
+    "success_rate": 0.75,
     "failure_mode_counts": {
       "success": 3,
-      "partial_noise": 0
+      "partial_noise": 1
     },
     "backends_tested": [
       "emulator",
       "tuna9",
       "ibm_torino"
     ],
-    "notes": "Updated 2026-02-13. ALL CLAIMS PASS. Three mitigation strategies tested: (1) EMULATOR: Paper's actual Z2 symmetry verification protocol — 1.9x improvement at p=0.05 noise, matching paper's ~2x claim. S=Z0Z1Z2Z3, ⟨P⟩_SV = (⟨P⟩ + s·⟨S·P⟩)/(1+s·⟨S⟩). (2) TUNA-9: Hybrid post-selection + readout error mitigation — chemical accuracy on q[2,4] (0.92 kcal/mol) and q[6,8] (1.32 kcal/mol). (3) IBM TORINO: TREX (resilience_level=1) — 0.22 kcal/mol, 119x improvement. SV emulator results in experiments/results/sagastizabal2019-sv-noise*.json."
+    "notes": "Updated 2026-02-15. Claims 1-3 ALL PASS. Claim 4 (dissociation curve) is partial_noise — correct curve shape but 17-43 mHa errors without error mitigation. Three mitigation strategies tested on claim 1: (1) EMULATOR: Z2 symmetry verification — 1.9x improvement. (2) TUNA-9: Hybrid PS+REM — chemical accuracy on q[2,4] (0.92 kcal/mol). (3) IBM TORINO: TREX — 0.22 kcal/mol, 119x improvement. Claim 4 uses sector-projected 2q Hamiltonian on q[4,6], native gate set, no error mitigation."
   }
 }

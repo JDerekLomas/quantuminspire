@@ -9,6 +9,7 @@ import {
   getResultGitHubUrl,
   getSweepEmulator,
   getSweepReference,
+  getSweepHardware,
   typeLabels,
   typeColors,
   type ExperimentResult,
@@ -271,11 +272,12 @@ function VQEResults({ results }: { results: ExperimentResult[] }) {
   const hwResults = results.filter(r => !isEmulator(r.backend))
   const sweep = getSweepEmulator()
   const reference = getSweepReference()
+  const hardware = getSweepHardware()
 
   return (
     <div className="space-y-6">
-      {sweep.length > 0 && (
-        <DissociationCurve sweep={sweep} reference={reference} />
+      {(sweep.length > 0 || hardware.length > 0) && (
+        <DissociationCurve sweep={sweep} reference={reference} hardware={hardware} />
       )}
       {results.map(r => {
         const comparison = isEmulator(r.backend) ? hwResults[0] : emulatorResult
