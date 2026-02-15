@@ -1,0 +1,628 @@
+{
+  "experiment": "QV=16 Tuna-9 hardware",
+  "completed": "2026-02-15T15:51:14.815603+00:00",
+  "backend": "Tuna-9",
+  "physical_qubits": [
+    4,
+    6,
+    7,
+    8
+  ],
+  "n_circuits": 100,
+  "n_shots": 1024,
+  "seed": 42,
+  "analysis": {
+    "quantum_volume": 16,
+    "mean_heavy_output_fraction": 0.757021484375,
+    "std_error": 0.005436878651162656,
+    "ci_lower_2sigma": 0.7461477270726747,
+    "threshold": 0.6666666666666666,
+    "passed": true,
+    "n_circuits_passed": 97,
+    "hof_min": 0.6552734375,
+    "hof_max": 0.8984375,
+    "hof_median": 0.7529296875
+  },
+  "per_circuit": [
+    {
+      "circuit": "qv16_c000",
+      "heavy_output_fraction": 0.841796875,
+      "ideal_heavy_output_fraction": 0.9050780426564345,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c001",
+      "heavy_output_fraction": 0.798828125,
+      "ideal_heavy_output_fraction": 0.8634368095481763,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c002",
+      "heavy_output_fraction": 0.7734375,
+      "ideal_heavy_output_fraction": 0.846470293931418,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c003",
+      "heavy_output_fraction": 0.7890625,
+      "ideal_heavy_output_fraction": 0.8969573701430386,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c004",
+      "heavy_output_fraction": 0.75390625,
+      "ideal_heavy_output_fraction": 0.8460297622653739,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c005",
+      "heavy_output_fraction": 0.734375,
+      "ideal_heavy_output_fraction": 0.9021495028881803,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c006",
+      "heavy_output_fraction": 0.7294921875,
+      "ideal_heavy_output_fraction": 0.8068345869095433,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c007",
+      "heavy_output_fraction": 0.7509765625,
+      "ideal_heavy_output_fraction": 0.8216082689446114,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c008",
+      "heavy_output_fraction": 0.80859375,
+      "ideal_heavy_output_fraction": 0.9235240843725201,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c009",
+      "heavy_output_fraction": 0.7939453125,
+      "ideal_heavy_output_fraction": 0.8784459024364477,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c010",
+      "heavy_output_fraction": 0.7099609375,
+      "ideal_heavy_output_fraction": 0.8215271116534446,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c011",
+      "heavy_output_fraction": 0.69140625,
+      "ideal_heavy_output_fraction": 0.776561616547585,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c012",
+      "heavy_output_fraction": 0.7666015625,
+      "ideal_heavy_output_fraction": 0.8207409133048074,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c013",
+      "heavy_output_fraction": 0.75390625,
+      "ideal_heavy_output_fraction": 0.8379009251711405,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c014",
+      "heavy_output_fraction": 0.708984375,
+      "ideal_heavy_output_fraction": 0.7850923638592632,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c015",
+      "heavy_output_fraction": 0.765625,
+      "ideal_heavy_output_fraction": 0.8219820976111462,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c016",
+      "heavy_output_fraction": 0.728515625,
+      "ideal_heavy_output_fraction": 0.8147860138161261,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c017",
+      "heavy_output_fraction": 0.7607421875,
+      "ideal_heavy_output_fraction": 0.8545163346204269,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c018",
+      "heavy_output_fraction": 0.873046875,
+      "ideal_heavy_output_fraction": 0.9464765145227421,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c019",
+      "heavy_output_fraction": 0.8125,
+      "ideal_heavy_output_fraction": 0.8960044717106354,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c020",
+      "heavy_output_fraction": 0.77734375,
+      "ideal_heavy_output_fraction": 0.8945770293455678,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c021",
+      "heavy_output_fraction": 0.7919921875,
+      "ideal_heavy_output_fraction": 0.8460820501577755,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c022",
+      "heavy_output_fraction": 0.8642578125,
+      "ideal_heavy_output_fraction": 0.9436637681933319,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c023",
+      "heavy_output_fraction": 0.6552734375,
+      "ideal_heavy_output_fraction": 0.7256272433529107,
+      "passed": false
+    },
+    {
+      "circuit": "qv16_c024",
+      "heavy_output_fraction": 0.6953125,
+      "ideal_heavy_output_fraction": 0.7924604157892987,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c025",
+      "heavy_output_fraction": 0.7021484375,
+      "ideal_heavy_output_fraction": 0.8609782207390926,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c026",
+      "heavy_output_fraction": 0.7138671875,
+      "ideal_heavy_output_fraction": 0.801103048808162,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c027",
+      "heavy_output_fraction": 0.802734375,
+      "ideal_heavy_output_fraction": 0.9172449752943768,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c028",
+      "heavy_output_fraction": 0.79296875,
+      "ideal_heavy_output_fraction": 0.849513603524632,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c029",
+      "heavy_output_fraction": 0.818359375,
+      "ideal_heavy_output_fraction": 0.8918682527767664,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c030",
+      "heavy_output_fraction": 0.7431640625,
+      "ideal_heavy_output_fraction": 0.8129471389491318,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c031",
+      "heavy_output_fraction": 0.818359375,
+      "ideal_heavy_output_fraction": 0.9325999120919607,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c032",
+      "heavy_output_fraction": 0.6650390625,
+      "ideal_heavy_output_fraction": 0.7259473110117708,
+      "passed": false
+    },
+    {
+      "circuit": "qv16_c033",
+      "heavy_output_fraction": 0.6826171875,
+      "ideal_heavy_output_fraction": 0.7914649510364155,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c034",
+      "heavy_output_fraction": 0.7001953125,
+      "ideal_heavy_output_fraction": 0.7659358595716107,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c035",
+      "heavy_output_fraction": 0.6650390625,
+      "ideal_heavy_output_fraction": 0.730924530194097,
+      "passed": false
+    },
+    {
+      "circuit": "qv16_c036",
+      "heavy_output_fraction": 0.7548828125,
+      "ideal_heavy_output_fraction": 0.8284698373922582,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c037",
+      "heavy_output_fraction": 0.7861328125,
+      "ideal_heavy_output_fraction": 0.9114262024318414,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c038",
+      "heavy_output_fraction": 0.6943359375,
+      "ideal_heavy_output_fraction": 0.7899367975272369,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c039",
+      "heavy_output_fraction": 0.8447265625,
+      "ideal_heavy_output_fraction": 0.8831369622129596,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c040",
+      "heavy_output_fraction": 0.7158203125,
+      "ideal_heavy_output_fraction": 0.7768356957896505,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c041",
+      "heavy_output_fraction": 0.685546875,
+      "ideal_heavy_output_fraction": 0.8205922840658944,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c042",
+      "heavy_output_fraction": 0.78125,
+      "ideal_heavy_output_fraction": 0.897970359032576,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c043",
+      "heavy_output_fraction": 0.6669921875,
+      "ideal_heavy_output_fraction": 0.7620463906035561,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c044",
+      "heavy_output_fraction": 0.7451171875,
+      "ideal_heavy_output_fraction": 0.8459589597539137,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c045",
+      "heavy_output_fraction": 0.6904296875,
+      "ideal_heavy_output_fraction": 0.7549374208339247,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c046",
+      "heavy_output_fraction": 0.794921875,
+      "ideal_heavy_output_fraction": 0.8411303642261742,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c047",
+      "heavy_output_fraction": 0.8095703125,
+      "ideal_heavy_output_fraction": 0.8933867498774801,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c048",
+      "heavy_output_fraction": 0.7265625,
+      "ideal_heavy_output_fraction": 0.8103076896955703,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c049",
+      "heavy_output_fraction": 0.7314453125,
+      "ideal_heavy_output_fraction": 0.7952907437918322,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c050",
+      "heavy_output_fraction": 0.697265625,
+      "ideal_heavy_output_fraction": 0.7419713417286605,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c051",
+      "heavy_output_fraction": 0.8134765625,
+      "ideal_heavy_output_fraction": 0.9026368504528592,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c052",
+      "heavy_output_fraction": 0.8671875,
+      "ideal_heavy_output_fraction": 0.9546607684678436,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c053",
+      "heavy_output_fraction": 0.693359375,
+      "ideal_heavy_output_fraction": 0.7331181103482067,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c054",
+      "heavy_output_fraction": 0.76171875,
+      "ideal_heavy_output_fraction": 0.8522297649050217,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c055",
+      "heavy_output_fraction": 0.6875,
+      "ideal_heavy_output_fraction": 0.784402427928131,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c056",
+      "heavy_output_fraction": 0.7705078125,
+      "ideal_heavy_output_fraction": 0.8746950387417332,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c057",
+      "heavy_output_fraction": 0.685546875,
+      "ideal_heavy_output_fraction": 0.7967367939978632,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c058",
+      "heavy_output_fraction": 0.810546875,
+      "ideal_heavy_output_fraction": 0.9217000632314043,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c059",
+      "heavy_output_fraction": 0.8984375,
+      "ideal_heavy_output_fraction": 0.9699333103419673,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c060",
+      "heavy_output_fraction": 0.6875,
+      "ideal_heavy_output_fraction": 0.8054301299384619,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c061",
+      "heavy_output_fraction": 0.73046875,
+      "ideal_heavy_output_fraction": 0.8158117822478084,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c062",
+      "heavy_output_fraction": 0.7822265625,
+      "ideal_heavy_output_fraction": 0.8328002402704361,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c063",
+      "heavy_output_fraction": 0.6982421875,
+      "ideal_heavy_output_fraction": 0.7810235101966198,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c064",
+      "heavy_output_fraction": 0.7587890625,
+      "ideal_heavy_output_fraction": 0.8636555459494328,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c065",
+      "heavy_output_fraction": 0.7939453125,
+      "ideal_heavy_output_fraction": 0.8630780100387407,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c066",
+      "heavy_output_fraction": 0.7490234375,
+      "ideal_heavy_output_fraction": 0.8697724787783444,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c067",
+      "heavy_output_fraction": 0.7255859375,
+      "ideal_heavy_output_fraction": 0.8407180496049256,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c068",
+      "heavy_output_fraction": 0.8056640625,
+      "ideal_heavy_output_fraction": 0.896052678751414,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c069",
+      "heavy_output_fraction": 0.7919921875,
+      "ideal_heavy_output_fraction": 0.9096605507914964,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c070",
+      "heavy_output_fraction": 0.7197265625,
+      "ideal_heavy_output_fraction": 0.791499672141655,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c071",
+      "heavy_output_fraction": 0.8271484375,
+      "ideal_heavy_output_fraction": 0.8680828721516991,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c072",
+      "heavy_output_fraction": 0.75,
+      "ideal_heavy_output_fraction": 0.8248308177872349,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c073",
+      "heavy_output_fraction": 0.73046875,
+      "ideal_heavy_output_fraction": 0.7859617469304498,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c074",
+      "heavy_output_fraction": 0.736328125,
+      "ideal_heavy_output_fraction": 0.7898804853894369,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c075",
+      "heavy_output_fraction": 0.853515625,
+      "ideal_heavy_output_fraction": 0.9331455820381348,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c076",
+      "heavy_output_fraction": 0.7705078125,
+      "ideal_heavy_output_fraction": 0.8632873742231864,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c077",
+      "heavy_output_fraction": 0.744140625,
+      "ideal_heavy_output_fraction": 0.8315088590421861,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c078",
+      "heavy_output_fraction": 0.755859375,
+      "ideal_heavy_output_fraction": 0.8246125359142396,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c079",
+      "heavy_output_fraction": 0.767578125,
+      "ideal_heavy_output_fraction": 0.8542182723905462,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c080",
+      "heavy_output_fraction": 0.7314453125,
+      "ideal_heavy_output_fraction": 0.8461113190836351,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c081",
+      "heavy_output_fraction": 0.6962890625,
+      "ideal_heavy_output_fraction": 0.8173192397007192,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c082",
+      "heavy_output_fraction": 0.734375,
+      "ideal_heavy_output_fraction": 0.8455910905141986,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c083",
+      "heavy_output_fraction": 0.888671875,
+      "ideal_heavy_output_fraction": 0.9349559920198048,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c084",
+      "heavy_output_fraction": 0.7431640625,
+      "ideal_heavy_output_fraction": 0.8709428105025068,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c085",
+      "heavy_output_fraction": 0.796875,
+      "ideal_heavy_output_fraction": 0.9082459413747305,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c086",
+      "heavy_output_fraction": 0.671875,
+      "ideal_heavy_output_fraction": 0.7661364977499148,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c087",
+      "heavy_output_fraction": 0.7333984375,
+      "ideal_heavy_output_fraction": 0.8532401235458226,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c088",
+      "heavy_output_fraction": 0.7978515625,
+      "ideal_heavy_output_fraction": 0.8872570895952718,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c089",
+      "heavy_output_fraction": 0.7421875,
+      "ideal_heavy_output_fraction": 0.8462805069917311,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c090",
+      "heavy_output_fraction": 0.8232421875,
+      "ideal_heavy_output_fraction": 0.9444468201718633,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c091",
+      "heavy_output_fraction": 0.72265625,
+      "ideal_heavy_output_fraction": 0.7760862746572225,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c092",
+      "heavy_output_fraction": 0.69921875,
+      "ideal_heavy_output_fraction": 0.7939720276667933,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c093",
+      "heavy_output_fraction": 0.8251953125,
+      "ideal_heavy_output_fraction": 0.9071134205182599,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c094",
+      "heavy_output_fraction": 0.83203125,
+      "ideal_heavy_output_fraction": 0.8936574671025973,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c095",
+      "heavy_output_fraction": 0.703125,
+      "ideal_heavy_output_fraction": 0.7458227759559726,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c096",
+      "heavy_output_fraction": 0.751953125,
+      "ideal_heavy_output_fraction": 0.8306473017381686,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c097",
+      "heavy_output_fraction": 0.7724609375,
+      "ideal_heavy_output_fraction": 0.8488168537039178,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c098",
+      "heavy_output_fraction": 0.7275390625,
+      "ideal_heavy_output_fraction": 0.822030290063701,
+      "passed": true
+    },
+    {
+      "circuit": "qv16_c099",
+      "heavy_output_fraction": 0.7822265625,
+      "ideal_heavy_output_fraction": 0.8432619308470328,
+      "passed": true
+    }
+  ]
+}
