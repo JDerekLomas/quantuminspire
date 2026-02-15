@@ -26,6 +26,7 @@ const pillars = [
       { href: '/see', label: 'See', desc: 'What a qubit looks like — scroll-driven tour' },
       { href: '/tuna9', label: 'Tuna-9', desc: 'Meeting a 9-qubit quantum computer' },
       { href: '/sonification', label: 'Sonification Lab', desc: 'Play real experiment data as sound' },
+      { href: '/synth', label: 'Quantum Synth', desc: 'Hear H\u2082 energy levels as harmonics' },
       { href: '/how-qubits-work', label: 'How Qubits Work', desc: '6-part physics series' },
       { href: '/noise', label: 'Noise Channels', desc: 'T\u2081/T\u2082, dephasing, error budgets' },
       { href: '/error-mitigation', label: 'Error Mitigation', desc: '15 techniques ranked on hardware' },

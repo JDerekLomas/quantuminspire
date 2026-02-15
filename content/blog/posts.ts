@@ -2,6 +2,23 @@ import { BlogPost } from "@/lib/blogTypes"
 
 export const posts: BlogPost[] = [
   {
+    slug: 'quantum-synth',
+    title: 'What Does a Molecule Sound Like?',
+    subtitle: 'We turned quantum chemistry eigenspectra into sound. Energy levels become harmonics, bond stretching becomes a pitch sweep, and dissociation sounds like a chord collapsing.',
+    date: '2026-02-16',
+    author: 'AI x Quantum Research Team',
+    category: 'technical',
+    tags: ['sonification', 'quantum chemistry', 'Web Audio', 'eigenspectrum', 'H2', 'LiH', 'PySCF', 'OpenFermion'],
+    excerpt: 'Map each energy eigenvalue to an audio oscillator. The ground state becomes a fundamental. Excited states become harmonics. Stretch the bond and hear the spectrum shift. Two molecules (H\u2082 and LiH), computed from first principles, sonified in real time.',
+    content: '<p>This is an interactive post. <a href="/blog/quantum-synth">View the full interactive version</a>.</p>',
+    sources: [
+      { label: 'PySCF', url: 'https://pyscf.org' },
+      { label: 'OpenFermion', url: 'https://quantumai.google/openfermion' },
+      { label: 'Web Audio API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API' },
+      { label: 'Quantum Synth (interactive)', url: 'https://haiqu.org/synth' },
+    ],
+  },
+  {
     slug: 'lithium-hydride-from-scratch',
     title: 'We Computed a Molecule from First Principles and Ran It on Three Quantum Platforms',
     subtitle: 'From molecular geometry to quantum hardware measurements in one automated pipeline. The emulator nailed it. IBM Fez tried its best.',
