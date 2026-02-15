@@ -24,6 +24,12 @@ export interface SweepPoint {
   shots: number
   raw_counts?: Record<string, any>
   coefficients?: Record<string, number>
+  // Statistical fields (from multi-rep runs)
+  error_std_kcal?: number
+  error_mHa?: number
+  error_std_mHa?: number
+  n_reps?: number
+  mitigation?: string
 }
 
 export const typeLabels: Record<string, string> = {

@@ -429,7 +429,7 @@ export function DissociationCurve({ sweep, reference, hardware = [] }: { sweep: 
       <p className="text-xs text-gray-400 mb-4 max-w-xl leading-relaxed">
         Energy vs. bond distance for molecular hydrogen.
         {sweep.length > 0 && <> The VQE emulator matches the exact (FCI) curve within chemical accuracy at all {sweep.length} distances.</>}
-        {hardware.length > 0 && <> Purple diamonds show Tuna-9 hardware results with readout error mitigation (sector-projected 2-qubit ansatz, native CZ gate set).</>}
+        {hardware.length > 0 && <> Purple diamonds show Tuna-9 hardware results with readout error mitigation (sector-projected 2-qubit ansatz, native CZ gate set).{hardware[0]?.n_reps != null && <> Error bars show &#177;1&#963; across {hardware[0].n_reps} independent hardware runs.</>}</>}
       </p>
       <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full" xmlns="http://www.w3.org/2000/svg">
         <rect x={padL} y={padT} width={chartW} height={chartH} fill="rgba(255,255,255,0.01)" rx="4" />
@@ -478,18 +478,41 @@ export function DissociationCurve({ sweep, reference, hardware = [] }: { sweep: 
         {hardware.map(pt => {
           const cx = xScale(pt.bond_distance)
           const cy = yScale(pt.energy_measured)
+          // Error bars: convert std in mHa to Hartree for y-axis
+          const hasErrorBar = pt.error_std_mHa != null && pt.error_std_mHa > 0
+          const stdHa = (pt.error_std_mHa || 0) / 1000
           return (
-            <rect
-              key={`hw-${pt.bond_distance}`}
-              x={cx - 4}
-              y={cy - 4}
-              width="8"
-              height="8"
-              fill="#8b5cf6"
-              stroke="rgba(0,0,0,0.5)"
-              strokeWidth="0.5"
-              transform={`rotate(45, ${cx}, ${cy})`}
-            />
+            <g key={`hw-${pt.bond_distance}`}>
+              {hasErrorBar && (
+                <>
+                  <line
+                    x1={cx} y1={yScale(pt.energy_measured + stdHa)}
+                    x2={cx} y2={yScale(pt.energy_measured - stdHa)}
+                    stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5"
+                  />
+                  <line
+                    x1={cx - 3} y1={yScale(pt.energy_measured + stdHa)}
+                    x2={cx + 3} y2={yScale(pt.energy_measured + stdHa)}
+                    stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5"
+                  />
+                  <line
+                    x1={cx - 3} y1={yScale(pt.energy_measured - stdHa)}
+                    x2={cx + 3} y2={yScale(pt.energy_measured - stdHa)}
+                    stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5"
+                  />
+                </>
+              )}
+              <rect
+                x={cx - 4}
+                y={cy - 4}
+                width="8"
+                height="8"
+                fill="#8b5cf6"
+                stroke="rgba(0,0,0,0.5)"
+                strokeWidth="0.5"
+                transform={`rotate(45, ${cx}, ${cy})`}
+              />
+            </g>
           )
         })}
 
@@ -519,7 +542,9 @@ export function DissociationCurve({ sweep, reference, hardware = [] }: { sweep: 
           {hardware.length > 0 && (
             <>
               <rect x="6" y="44" width="8" height="8" fill="#8b5cf6" transform="rotate(45, 10, 48)" />
-              <text x="26" y="51" fill="#8b5cf6" fontFamily="monospace" fontSize="9">Tuna-9 + REM</text>
+              <text x="26" y="51" fill="#8b5cf6" fontFamily="monospace" fontSize="9">
+                Tuna-9 + REM{hardware[0]?.n_reps != null ? ` (${hardware[0].n_reps} reps)` : ''}
+              </text>
             </>
           )}
         </g>
@@ -552,18 +577,36 @@ export function DissociationCurve({ sweep, reference, hardware = [] }: { sweep: 
             </div>
           </>
         )}
-        {hardware.length > 0 && (
-          <>
-            <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-              <span className="text-gray-500">Hardware eq. energy: </span>
-              <span className="text-[#8b5cf6] font-bold">{hardware.find(s => Math.abs(s.bond_distance - 0.735) < 0.01)?.energy_measured?.toFixed(4) || '?'} Ha</span>
-            </div>
-            <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
-              <span className="text-gray-500">Hardware best error: </span>
-              <span className="text-[#8b5cf6] font-bold">{Math.min(...hardware.map(s => s.error_kcal)).toFixed(1)} kcal/mol</span>
-            </div>
-          </>
-        )}
+        {hardware.length > 0 && (() => {
+          const eqPt = hardware.find(s => Math.abs(s.bond_distance - 0.735) < 0.01)
+          const nReps = hardware[0]?.n_reps
+          const hasStd = hardware.some(s => s.error_std_mHa != null)
+          return (
+            <>
+              <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+                <span className="text-gray-500">Hardware eq. energy: </span>
+                <span className="text-[#8b5cf6] font-bold">
+                  {eqPt?.energy_measured?.toFixed(4) || '?'} Ha
+                  {hasStd && eqPt?.error_std_mHa != null && (
+                    <span className="text-gray-500 font-normal text-[10px]"> &#177;{eqPt.error_std_mHa.toFixed(1)} mHa</span>
+                  )}
+                </span>
+              </div>
+              <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+                <span className="text-gray-500">Hardware mean error: </span>
+                <span className="text-[#8b5cf6] font-bold">
+                  {(hardware.reduce((s, h) => s + h.error_kcal, 0) / hardware.length).toFixed(1)} kcal/mol
+                </span>
+              </div>
+              {nReps != null && (
+                <div className="bg-white/[0.02] rounded px-3 py-2 border border-white/[0.03]">
+                  <span className="text-gray-500">Repetitions: </span>
+                  <span className="text-[#8b5cf6] font-bold">{nReps}</span>
+                </div>
+              )}
+            </>
+          )
+        })()}
       </div>
     </div>
   )

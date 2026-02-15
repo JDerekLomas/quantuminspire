@@ -1,0 +1,45 @@
+{
+  "experiment": "REM hardware verification",
+  "purpose": "Validate REM pipeline by re-running calibration + VQE on fresh hardware",
+  "date": "2026-02-15",
+  "backend": "Tuna-9",
+  "physical_qubits": [4, 6],
+  "verification_bond_distance": 0.735,
+  "fci_energy": -1.13730604,
+  "new_jobs": {
+    "cal_00": 429925, "cal_10": 429926, "cal_01": 429927, "cal_11": 429928,
+    "vqe_z": 429929, "vqe_x": 429930, "vqe_y": 429931
+  },
+  "original_jobs": {
+    "cal_00": 429924, "cal_10": 429921, "cal_01": 429922, "cal_11": 429923,
+    "vqe_z": 426705, "vqe_x": 426703, "vqe_y": 426704
+  },
+  "confusion_matrix_comparison": {
+    "max_element_difference": 0.0066,
+    "frobenius_norm_difference": 0.0112,
+    "condition_old": 1.08,
+    "condition_new": 1.08,
+    "stable": true
+  },
+  "per_qubit_readout_errors": {
+    "q4_P1given0": {"old": 0.0181, "new": 0.0195},
+    "q4_P0given1": {"old": 0.0168, "new": 0.0212},
+    "q6_P1given0": {"old": 0.0137, "new": 0.0161},
+    "q6_P0given1": {"old": 0.0244, "new": 0.0222}
+  },
+  "cross_validation": {
+    "old_cal_old_vqe": {"raw_mHa": 23.1, "rem_mHa": 2.2},
+    "old_cal_new_vqe": {"raw_mHa": 39.6, "rem_mHa": 13.9},
+    "new_cal_old_vqe": {"raw_mHa": 23.1, "rem_mHa": 0.7},
+    "new_cal_new_vqe": {"raw_mHa": 39.6, "rem_mHa": 11.9}
+  },
+  "stored_result_reproduced": true,
+  "conclusions": [
+    "Confusion matrix stable (max drift 0.66%)",
+    "Code exactly reproduces stored REM results",
+    "REM consistently improves all combinations (2-4x reduction)",
+    "Run-to-run gate noise variation is dominant error source (23 vs 40 mHa raw)",
+    "REM correctly targets readout error only, leaves gate errors unchanged",
+    "Pipeline validated on real hardware"
+  ]
+}
