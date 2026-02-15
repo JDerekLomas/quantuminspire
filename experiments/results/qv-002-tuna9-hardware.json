@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "id": "qv-002-tuna9-hardware",
+  "type": "quantum_volume",
+  "backend": "tuna-9",
+  "backend_qubits": [
+    4,
+    6,
+    7,
+    8
+  ],
+  "job_id": "430131-430320",
+  "submitted": "2026-02-15T14:00:00+00:00",
+  "completed": "2026-02-15T15:51:14.815603+00:00",
+  "parameters": {
+    "shots": 1024,
+    "qubit_counts": [
+      4
+    ],
+    "num_circuits": 100,
+    "seed": 42
+  },
+  "raw_counts": {},
+  "analysis": {
+    "quantum_volume": 16,
+    "results_by_qubit_count": {
+      "4": {
+        "heavy_output_fraction": 0.757021484375,
+        "passed": true,
+        "threshold": 0.6666666666666666,
+        "num_circuits": 100,
+        "n_circuits_passed": 97,
+        "std_error": 0.005436878651162656,
+        "ci_lower_2sigma": 0.7461477270726747,
+        "hof_min": 0.6552734375,
+        "hof_max": 0.8984375
+      }
+    },
+    "qubit_counts_tested": [
+      4
+    ],
+    "interpretation": "QV=16 CERTIFIED on Tuna-9 hardware. 100 circuits, mean HOF=0.757, 2\u03c3 lower=0.746 >> 2/3. 97/100 passed."
+  },
+  "circuit_cqasm": "",
+  "errors": null
+}

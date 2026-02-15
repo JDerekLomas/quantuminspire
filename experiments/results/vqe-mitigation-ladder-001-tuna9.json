@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "id": "vqe-mitigation-ladder-001-tuna9",
+  "type": "vqe_mitigation_ladder",
+  "backend": "tuna-9",
+  "backend_qubits": [
+    4,
+    6
+  ],
+  "job_id": "430118-430540",
+  "submitted": "2026-02-15T14:00:00+00:00",
+  "completed": "2026-02-15T17:59:44.405408+00:00",
+  "parameters": {
+    "molecule": "H2",
+    "qubits": 2,
+    "bond_distances": 7,
+    "folds": [
+      1,
+      3,
+      5
+    ],
+    "shots": 4096,
+    "reps": 5
+  },
+  "raw_counts": {},
+  "analysis": {
+    "mitigation_methods": [
+      {
+        "name": "Raw",
+        "avg_error_mHa": 31.82581099274557,
+        "n_chemical_accuracy": 0
+      },
+      {
+        "name": "REM",
+        "avg_error_mHa": 7.386269519803973,
+        "n_chemical_accuracy": 0
+      },
+      {
+        "name": "REM+ZNE(linear)",
+        "avg_error_mHa": 8.60992322762401,
+        "n_chemical_accuracy": 0
+      },
+      {
+        "name": "REM+ZNE(quadratic)",
+        "avg_error_mHa": 2.9329918900718055,
+        "n_chemical_accuracy": 3
+      }
+    ],
+    "per_distance": [
+      {
+        "bond_distance": 0.5,
+        "raw_mHa": 52.711048346679945,
+        "rem_mHa": 14.245141777472492,
+        "zne_linear_mHa": 7.890528367243466,
+        "zne_quadratic_mHa": 1.5203456784933511
+      },
+      {
+        "bond_distance": 0.7,
+        "raw_mHa": 35.312860174804726,
+        "rem_mHa": 6.194359782995651,
+        "zne_linear_mHa": 9.979152316825779,
+        "zne_quadratic_mHa": 0.4379448308931
+      },
+      {
+        "bond_distance": 0.735,
+        "raw_mHa": 37.60411512207007,
+        "rem_mHa": 9.927053059362034,
+        "zne_linear_mHa": 5.149667510654599,
+        "zne_quadratic_mHa": 4.8844633368179124
+      },
+      {
+        "bond_distance": 0.9,
+        "raw_mHa": 31.69832094921898,
+        "rem_mHa": 8.89006271438153,
+        "zne_linear_mHa": 6.263485271540858,
+        "zne_quadratic_mHa": 0.5841934648262992
+      },
+      {
+        "bond_distance": 1.1,
+        "raw_mHa": 22.00588535546877,
+        "rem_mHa": 2.6626512478826747,
+        "zne_linear_mHa": 11.444501643867788,
+        "zne_quadratic_mHa": 4.254849802710625
+      },
+      {
+        "bond_distance": 1.5,
+        "raw_mHa": 20.283756522460948,
+        "rem_mHa": 3.8326689786575274,
+        "zne_linear_mHa": 8.55544674289932,
+        "zne_quadratic_mHa": 4.16122245327899
+      },
+      {
+        "bond_distance": 2.0,
+        "raw_mHa": 23.16469047851555,
+        "rem_mHa": 5.951949077875884,
+        "zne_linear_mHa": 10.986680740336263,
+        "zne_quadratic_mHa": 4.687923663482363
+      }
+    ],
+    "best_method": "REM+ZNE(quadratic)",
+    "best_avg_error_mHa": 2.9329918900718055,
+    "chemical_accuracy_threshold_mHa": 1.6,
+    "interpretation": "Error mitigation ladder for H2 VQE on Tuna-9. REM+ZNE(quadratic) achieves 2.9 mHa avg, 3/7 at chemical accuracy. Best: R=0.7 at 0.4 mHa."
+  },
+  "circuit_cqasm": "",
+  "errors": null
+}
