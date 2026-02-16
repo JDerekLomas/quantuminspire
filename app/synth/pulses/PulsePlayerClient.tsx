@@ -368,6 +368,64 @@ function modulateToAudio(envelope: PulseEnvelope, gate: GateInstance): Float32Ar
   return buffer
 }
 
+// ─── Pulse Scheduling ────────────────────────────────────────────────────────────
+// Places gates on a timeline allowing parallelism across qubits.
+// In real hardware, gates on independent qubits execute simultaneously.
+
+const GATE_GAP_NS = 4 // ~4 ns buffer between sequential gates (hardware scheduling granularity)
+
+interface ScheduledGate {
+  gateIdx: number
+  gate: GateInstance
+  startNs: number
+  endNs: number
+  startAudio: number  // seconds (time-stretched for audio playback)
+  endAudio: number
+  channels: number[]  // qubit indices this gate occupies
+}
+
+function scheduleCircuit(circuit: CircuitDefinition): { scheduled: ScheduledGate[]; totalNs: number } {
+  const qubitAvail: number[] = new Array(circuit.numQubits).fill(0)
+  const scheduled: ScheduledGate[] = []
+
+  for (let i = 0; i < circuit.gates.length; i++) {
+    const gate = circuit.gates[i]
+    const durationNs = REAL_DURATIONS_NS[gate.type]
+
+    // Affected qubits
+    const qubits = gate.type === 'CZ' && gate.controlQubit !== undefined
+      ? [gate.qubit, gate.controlQubit]
+      : [gate.qubit]
+
+    // Earliest start: max availability across affected qubits
+    let startNs = Math.max(...qubits.map(q => qubitAvail[q]))
+
+    // Add gap after previous gate (skip for first gate or virtual gates)
+    if (startNs > 0 && durationNs > 0) startNs += GATE_GAP_NS
+
+    const endNs = startNs + durationNs
+
+    // Update availability
+    const nextAvail = durationNs > 0 ? endNs : startNs // Rz doesn't block
+    for (const q of qubits) {
+      qubitAvail[q] = nextAvail
+    }
+
+    scheduled.push({
+      gateIdx: i,
+      gate,
+      startNs,
+      endNs,
+      startAudio: startNs * TIME_STRETCH / 1e9,
+      endAudio: startNs * TIME_STRETCH / 1e9 + GATE_DURATIONS[gate.type],
+      channels: qubits,
+    })
+  }
+
+  const maxEnd = scheduled.length > 0 ? Math.max(...scheduled.map(sg => sg.endNs)) : 1
+  return { scheduled, totalNs: Math.max(maxEnd, 1) }
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────────
 
 export default function PulsePlayerClient() {
@@ -378,23 +436,24 @@ export default function PulsePlayerClient() {
   const [speed, setSpeed] = useState(1)
   const [volume, setVolume] = useState(0.5)
   const [looping, setLooping] = useState(false)
-  const [iqMode, setIqMode] = useState<'overlay' | 'split'>('overlay')
 
   // Refs
   const ctxRef = useRef<AudioContext | null>(null)
-  const analyserRef = useRef<AnalyserNode | null>(null)
   const masterRef = useRef<GainNode | null>(null)
   const sourcesRef = useRef<AudioBufferSourceNode[]>([])
-  const playbackRef = useRef<{ startTime: number; gateTimings: { start: number; end: number }[] } | null>(null)
+  const playbackRef = useRef<{ startTime: number } | null>(null)
+  const endTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const rafRef = useRef<number>(0)
   const waveCanvasRef = useRef<HTMLCanvasElement>(null)
-  const timeDomainRef = useRef<Float32Array<ArrayBuffer> | null>(null)
   const loopingRef = useRef(looping)
   loopingRef.current = looping
   const playingRef = useRef(playing)
   playingRef.current = playing
 
   const circuit = CIRCUITS[circuitIdx]
+
+  // Schedule gates on timeline (parallel where possible)
+  const { scheduled: scheduledGates, totalNs } = useMemo(() => scheduleCircuit(circuit), [circuit])
 
   // Pre-compute envelopes and audio buffers
   const gateEnvelopes = useMemo(() => circuit.gates.map(generateEnvelope), [circuit])
@@ -403,18 +462,22 @@ export default function PulsePlayerClient() {
     [circuit, gateEnvelopes],
   )
 
+  // Total audio duration (accounts for parallel scheduling)
+  const totalAudioDuration = useMemo(() => {
+    if (scheduledGates.length === 0) return 0
+    return Math.max(...scheduledGates.map(sg => {
+      const audioDur = gatePulses[sg.gateIdx].length / SAMPLE_RATE
+      return sg.startAudio + audioDur
+    }))
+  }, [scheduledGates, gatePulses])
+
   // Audio setup
   const ensureCtx = useCallback(() => {
     if (!ctxRef.current) {
       ctxRef.current = new AudioContext({ sampleRate: SAMPLE_RATE })
-      analyserRef.current = ctxRef.current.createAnalyser()
-      analyserRef.current.fftSize = 2048
-      analyserRef.current.smoothingTimeConstant = 0.6
       masterRef.current = ctxRef.current.createGain()
       masterRef.current.gain.value = volume
-      masterRef.current.connect(analyserRef.current)
-      analyserRef.current.connect(ctxRef.current.destination)
-      timeDomainRef.current = new Float32Array(analyserRef.current.fftSize) as Float32Array<ArrayBuffer>
+      masterRef.current.connect(ctxRef.current.destination)
     }
     if (ctxRef.current.state === 'suspended') ctxRef.current.resume()
     return ctxRef.current
@@ -425,68 +488,53 @@ export default function PulsePlayerClient() {
     sourcesRef.current.forEach(s => { try { s.stop() } catch {} })
     sourcesRef.current = []
     playbackRef.current = null
+    if (endTimerRef.current) { clearTimeout(endTimerRef.current); endTimerRef.current = null }
     setPlaying(false)
     setCurrentGateIdx(-1)
   }, [])
 
-  // Schedule and play circuit
+  // Schedule and play circuit with parallel timing
   const playCircuit = useCallback(() => {
     const ctx = ensureCtx()
     stopPlayback()
 
     const sources: AudioBufferSourceNode[] = []
-    const gateTimings: { start: number; end: number }[] = []
-    let offset = 0.05 // small initial delay
+    const baseTime = ctx.currentTime + 0.05
 
-    for (let i = 0; i < gatePulses.length; i++) {
-      const pulse = gatePulses[i]
-      const duration = pulse.length / SAMPLE_RATE
+    for (let i = 0; i < scheduledGates.length; i++) {
+      const sg = scheduledGates[i]
+      const pulse = gatePulses[sg.gateIdx]
+
       const audioBuffer = ctx.createBuffer(1, pulse.length, SAMPLE_RATE)
       audioBuffer.getChannelData(0).set(pulse)
-
       const source = ctx.createBufferSource()
       source.buffer = audioBuffer
       source.playbackRate.value = speed
       source.connect(masterRef.current!)
 
-      const startTime = ctx.currentTime + offset / speed
-      source.start(startTime)
+      // Start at scheduled time — parallel gates play simultaneously
+      source.start(baseTime + sg.startAudio / speed)
       sources.push(source)
-
-      gateTimings.push({
-        start: offset,
-        end: offset + duration,
-      })
-
-      offset += duration + GAP_DURATION
     }
 
-    // Handle end of playback
-    const lastSource = sources[sources.length - 1]
-    if (lastSource) {
-      lastSource.onended = () => {
-        if (loopingRef.current && playingRef.current) {
-          playCircuit()
-        } else {
-          setPlaying(false)
-          setCurrentGateIdx(-1)
-          playbackRef.current = null
-        }
+    // End-of-playback timer
+    endTimerRef.current = setTimeout(() => {
+      if (loopingRef.current && playingRef.current) {
+        playCircuit()
+      } else {
+        setPlaying(false)
+        setCurrentGateIdx(-1)
+        playbackRef.current = null
       }
-    }
+    }, (totalAudioDuration / speed + 0.15) * 1000)
 
     sourcesRef.current = sources
-    playbackRef.current = {
-      startTime: ctx.currentTime,
-      gateTimings,
-    }
+    playbackRef.current = { startTime: baseTime }
     setPlaying(true)
     setCurrentGateIdx(0)
-  }, [ensureCtx, stopPlayback, gatePulses, speed])
+  }, [ensureCtx, stopPlayback, scheduledGates, gatePulses, speed, totalAudioDuration])
 
-  // Track current gate during playback + compute playhead position within gate
-  const gateProgressRef = useRef(0)
-
+  // Track current gate during playback
   useEffect(() => {
     if (!playing || !playbackRef.current) return
 
@@ -494,29 +542,22 @@ export default function PulsePlayerClient() {
     function tick() {
       if (!alive || !playbackRef.current || !ctxRef.current) return
       const elapsed = (ctxRef.current.currentTime - playbackRef.current.startTime) * speed
-      const timings = playbackRef.current.gateTimings
 
-      let gateIdx = -1
-      for (let i = 0; i < timings.length; i++) {
-        if (elapsed >= timings[i].start && elapsed < timings[i].end + GAP_DURATION) {
-          gateIdx = i
-          // Compute progress within this gate (0–1)
-          const gateDuration = timings[i].end - timings[i].start
-          gateProgressRef.current = Math.min(1, (elapsed - timings[i].start) / gateDuration)
+      // Find the most recently started gate
+      let activeIdx = -1
+      for (let i = scheduledGates.length - 1; i >= 0; i--) {
+        const sg = scheduledGates[i]
+        if (elapsed >= sg.startAudio && elapsed < sg.endAudio + 0.03) {
+          activeIdx = sg.gateIdx
           break
         }
       }
-      if (gateIdx === -1 && elapsed < timings[timings.length - 1].end + GAP_DURATION) {
-        for (let i = 0; i < timings.length; i++) {
-          if (elapsed < timings[i].start) { gateIdx = i; gateProgressRef.current = 0; break }
-        }
-      }
-      setCurrentGateIdx(gateIdx)
+      setCurrentGateIdx(activeIdx)
       requestAnimationFrame(tick)
     }
     tick()
     return () => { alive = false }
-  }, [playing, speed])
+  }, [playing, speed, scheduledGates])
 
   // Volume update
   useEffect(() => {
@@ -529,25 +570,26 @@ export default function PulsePlayerClient() {
   useEffect(() => {
     return () => {
       cancelAnimationFrame(rafRef.current)
+      if (endTimerRef.current) clearTimeout(endTimerRef.current)
       sourcesRef.current.forEach(s => { try { s.stop() } catch {} })
       ctxRef.current?.close()
     }
   }, [])
 
-  // ─── Waveform Visualization ────────────────────────────────────────────────
-  // Always shows I/Q envelopes of the current (or previewed) gate.
-  // During playback: animated playhead sweeps across the envelope.
-  // Split mode: I on top half, Q on bottom half.
+  // ─── Pulse Schedule Canvas ──────────────────────────────────────────────────
+  // Multi-qubit view: each qubit gets a horizontal lane, pulses placed at
+  // their scheduled time positions with actual envelope shapes.
 
-  // Keep refs for RAF loop
   const currentGateIdxRef = useRef(currentGateIdx)
   currentGateIdxRef.current = currentGateIdx
-  const iqModeRef = useRef(iqMode)
-  iqModeRef.current = iqMode
+  const scheduledGatesRef = useRef(scheduledGates)
+  scheduledGatesRef.current = scheduledGates
   const gateEnvelopesRef = useRef(gateEnvelopes)
   gateEnvelopesRef.current = gateEnvelopes
   const circuitRef = useRef(circuit)
   circuitRef.current = circuit
+  const totalNsRef = useRef(totalNs)
+  totalNsRef.current = totalNs
 
   useEffect(() => {
     const canvas = waveCanvasRef.current
@@ -568,173 +610,292 @@ export default function PulsePlayerClient() {
 
       const w = canvas.width
       const h = canvas.height
+      const circ = circuitRef.current
+      const sched = scheduledGatesRef.current
+      const envelopes = gateEnvelopesRef.current
+      const tNs = totalNsRef.current
+      const nQ = circ.numQubits
 
       // Background
       ctx2d.fillStyle = '#05050f'
       ctx2d.fillRect(0, 0, w, h)
 
-      // Determine which gate to show
-      const gIdx = currentGateIdxRef.current
-      const envelopes = gateEnvelopesRef.current
-      const circ = circuitRef.current
-      const showIdx = gIdx >= 0 && gIdx < envelopes.length ? gIdx : 0
-      const env = envelopes[showIdx]
-      const gate = circ.gates[showIdx]
-      const mode = iqModeRef.current
+      // Layout
+      const marginLeft = 52 * dpr
+      const marginRight = 16 * dpr
+      const marginTop = 8 * dpr
+      const marginBottom = 28 * dpr
+      const plotW = w - marginLeft - marginRight
+      const plotH = h - marginTop - marginBottom
+      const laneH = plotH / nQ
+      const envHalf = laneH * 0.38
 
-      if (env) {
-        const { I, Q: Qch } = env
-        const len = I.length
-        const step = Math.max(1, Math.floor(len / (w / dpr)))
-        const hasQ = Qch.some(v => Math.abs(v) > 0.001)
+      // Time mapping
+      const displayNs = Math.max(tNs * 1.04, 10) // 4% right padding
+      const nsToX = (ns: number) => marginLeft + (ns / displayNs) * plotW
 
-        // Find max amplitude for scaling
-        let maxI = 0, maxQ = 0
-        for (let i = 0; i < len; i++) {
-          if (Math.abs(I[i]) > maxI) maxI = Math.abs(I[i])
-          if (Math.abs(Qch[i]) > maxQ) maxQ = Math.abs(Qch[i])
-        }
-        const maxVal = Math.max(maxI, maxQ, 0.01)
+      // ── Channel lanes ──
+      for (let q = 0; q < nQ; q++) {
+        const laneTop = marginTop + q * laneH
+        const centerY = laneTop + laneH / 2
 
-        if (mode === 'split' && hasQ) {
-          // Split mode: I on top half, Q on bottom half
-          const midY = h / 2
-
-          // Divider line
-          ctx2d.strokeStyle = 'rgba(255,255,255,0.08)'
-          ctx2d.lineWidth = 1
-          ctx2d.beginPath()
-          ctx2d.moveTo(0, midY)
-          ctx2d.lineTo(w, midY)
-          ctx2d.stroke()
-
-          // Labels
-          ctx2d.fillStyle = 'rgba(0,212,255,0.4)'
-          ctx2d.font = `${10 * dpr}px monospace`
-          ctx2d.textAlign = 'right'
-          ctx2d.fillText('I(t)', w - 8 * dpr, 16 * dpr)
-          ctx2d.fillStyle = 'rgba(139,92,246,0.4)'
-          ctx2d.fillText('Q(t)', w - 8 * dpr, midY + 16 * dpr)
-
-          // I-channel (top half)
-          drawEnvelopeLine(ctx2d, I, len, step, w, midY / 2, midY * 0.4, maxVal, '#00d4ff', dpr)
-
-          // Q-channel (bottom half)
-          drawEnvelopeLine(ctx2d, Qch, len, step, w, midY + midY / 2, midY * 0.4, maxVal, '#8b5cf6', dpr)
-
-          // Center lines for each half
-          for (const cy of [midY / 2, midY + midY / 2]) {
-            ctx2d.strokeStyle = 'rgba(255,255,255,0.04)'
-            ctx2d.lineWidth = 1
-            ctx2d.beginPath()
-            ctx2d.moveTo(0, cy)
-            ctx2d.lineTo(w, cy)
-            ctx2d.stroke()
-          }
-        } else {
-          // Overlay mode: both on same axes
-          const centerY = h / 2
-
-          // I-channel (cyan)
-          drawEnvelopeLine(ctx2d, I, len, step, w, centerY, h * 0.38, maxVal, '#00d4ff', dpr)
-
-          // I-channel glow
-          ctx2d.save()
-          ctx2d.shadowColor = '#00d4ff'
-          ctx2d.shadowBlur = 6 * dpr
-          drawEnvelopeLine(ctx2d, I, len, step, w, centerY, h * 0.38, maxVal, 'rgba(0,212,255,0.15)', dpr, 4)
-          ctx2d.restore()
-
-          // Q-channel (purple) — only if present
-          if (hasQ) {
-            drawEnvelopeLine(ctx2d, Qch, len, step, w, centerY, h * 0.38, maxVal, '#8b5cf6', dpr)
-            // Glow
-            ctx2d.save()
-            ctx2d.shadowColor = '#8b5cf6'
-            ctx2d.shadowBlur = 6 * dpr
-            drawEnvelopeLine(ctx2d, Qch, len, step, w, centerY, h * 0.38, maxVal, 'rgba(139,92,246,0.15)', dpr, 4)
-            ctx2d.restore()
-          }
-
-          // Center line
-          ctx2d.strokeStyle = 'rgba(255,255,255,0.05)'
-          ctx2d.lineWidth = 1
-          ctx2d.beginPath()
-          ctx2d.moveTo(0, centerY)
-          ctx2d.lineTo(w, centerY)
-          ctx2d.stroke()
-
-          // Legend
-          ctx2d.fillStyle = 'rgba(0,212,255,0.5)'
-          ctx2d.font = `${10 * dpr}px monospace`
-          ctx2d.textAlign = 'right'
-          ctx2d.fillText('I(t)', w - 8 * dpr, 16 * dpr)
-          if (hasQ) {
-            ctx2d.fillStyle = 'rgba(139,92,246,0.5)'
-            ctx2d.fillText('Q(t)', w - 8 * dpr, 30 * dpr)
-          }
+        // Alternating background
+        if (q % 2 === 1) {
+          ctx2d.fillStyle = 'rgba(255,255,255,0.012)'
+          ctx2d.fillRect(marginLeft, laneTop, plotW, laneH)
         }
 
-        // Playhead
-        if (gIdx >= 0 && playing) {
-          const progress = gateProgressRef.current
-          const x = progress * w
-          ctx2d.strokeStyle = 'rgba(255,255,255,0.5)'
+        // Zero line
+        ctx2d.strokeStyle = 'rgba(255,255,255,0.06)'
+        ctx2d.lineWidth = 1
+        ctx2d.beginPath()
+        ctx2d.moveTo(marginLeft, centerY)
+        ctx2d.lineTo(w - marginRight, centerY)
+        ctx2d.stroke()
+
+        // Lane separator
+        if (q > 0) {
+          ctx2d.strokeStyle = 'rgba(255,255,255,0.04)'
+          ctx2d.beginPath()
+          ctx2d.moveTo(marginLeft, laneTop)
+          ctx2d.lineTo(w - marginRight, laneTop)
+          ctx2d.stroke()
+        }
+
+        // Qubit label
+        const qp = QUBIT_PARAMS[q]
+        ctx2d.fillStyle = qp?.color ?? '#666'
+        ctx2d.font = `bold ${11 * dpr}px monospace`
+        ctx2d.textAlign = 'right'
+        ctx2d.textBaseline = 'middle'
+        ctx2d.fillText(qp?.label ?? `Q${q}`, marginLeft - 10 * dpr, centerY - 6 * dpr)
+
+        // Frequency
+        ctx2d.fillStyle = 'rgba(255,255,255,0.18)'
+        ctx2d.font = `${8 * dpr}px monospace`
+        ctx2d.fillText(`${qp?.driveFreqGHz ?? '?'}G`, marginLeft - 10 * dpr, centerY + 8 * dpr)
+      }
+
+      // ── Gate envelopes ──
+      for (const sg of sched) {
+        const env = envelopes[sg.gateIdx]
+        if (!env) continue
+
+        const gate = sg.gate
+        const color = GATE_COLORS[gate.type]
+        const isActive = sg.gateIdx === currentGateIdxRef.current
+        const q = gate.qubit
+        const centerY = marginTop + q * laneH + laneH / 2
+
+        const x1 = nsToX(sg.startNs)
+        const x2 = nsToX(sg.endNs)
+        const gateW = x2 - x1
+
+        // ── Virtual Rz: dashed marker ──
+        if (gate.type === 'Rz') {
+          ctx2d.strokeStyle = isActive ? color : `${color}70`
           ctx2d.lineWidth = 2 * dpr
+          ctx2d.setLineDash([4 * dpr, 3 * dpr])
           ctx2d.beginPath()
-          ctx2d.moveTo(x, 0)
-          ctx2d.lineTo(x, h)
+          ctx2d.moveTo(x1, centerY - envHalf * 0.8)
+          ctx2d.lineTo(x1, centerY + envHalf * 0.8)
           ctx2d.stroke()
+          ctx2d.setLineDash([])
 
-          // Playhead glow
-          ctx2d.save()
-          ctx2d.shadowColor = 'rgba(255,255,255,0.6)'
-          ctx2d.shadowBlur = 8 * dpr
-          ctx2d.strokeStyle = 'rgba(255,255,255,0.3)'
+          // Label
+          ctx2d.fillStyle = isActive ? color : `${color}50`
+          ctx2d.font = `${8 * dpr}px monospace`
+          ctx2d.textAlign = 'center'
+          ctx2d.textBaseline = 'bottom'
+          ctx2d.fillText('Rz', x1, centerY - envHalf * 0.8 - 2 * dpr)
+          continue
+        }
+
+        // ── CZ connection line ──
+        if (gate.type === 'CZ' && gate.controlQubit !== undefined) {
+          const ctrlCenterY = marginTop + gate.controlQubit * laneH + laneH / 2
+          const midX = (x1 + x2) / 2
+
+          // Dashed connection
+          ctx2d.strokeStyle = isActive ? `${color}70` : `${color}25`
+          ctx2d.lineWidth = 2 * dpr
+          ctx2d.setLineDash([3 * dpr, 3 * dpr])
           ctx2d.beginPath()
-          ctx2d.moveTo(x, 0)
-          ctx2d.lineTo(x, h)
+          ctx2d.moveTo(midX, Math.min(centerY, ctrlCenterY) - envHalf * 0.3)
+          ctx2d.lineTo(midX, Math.max(centerY, ctrlCenterY) + envHalf * 0.3)
           ctx2d.stroke()
+          ctx2d.setLineDash([])
+
+          // Control dot
+          ctx2d.beginPath()
+          ctx2d.arc(midX, ctrlCenterY, 4 * dpr, 0, Math.PI * 2)
+          ctx2d.fillStyle = isActive ? color : `${color}50`
+          ctx2d.fill()
+        }
+
+        // ── Envelope shape ──
+        const { I } = env
+        const len = I.length
+
+        // Find max for normalization
+        let maxAbs = 0
+        for (let s = 0; s < len; s++) {
+          if (Math.abs(I[s]) > maxAbs) maxAbs = Math.abs(I[s])
+        }
+        maxAbs = Math.max(maxAbs, 0.01)
+
+        // Active glow
+        if (isActive) {
+          ctx2d.save()
+          ctx2d.shadowColor = color
+          ctx2d.shadowBlur = 10 * dpr
+          ctx2d.fillStyle = `${color}10`
+          ctx2d.fillRect(x1, centerY - envHalf, gateW, envHalf * 2)
           ctx2d.restore()
         }
 
-        // Gate info overlay
-        if (gate) {
-          const color = GATE_COLORS[gate.type]
-          ctx2d.fillStyle = color
-          ctx2d.font = `bold ${14 * dpr}px monospace`
-          ctx2d.textAlign = 'left'
-          ctx2d.fillText(gate.label, 12 * dpr, 24 * dpr)
+        // Filled envelope path
+        const pixStep = Math.max(1, Math.floor(len / Math.max(gateW / dpr, 1)))
+        ctx2d.beginPath()
+        ctx2d.moveTo(x1, centerY)
+        for (let s = 0; s < len; s += pixStep) {
+          const x = x1 + (s / len) * gateW
+          const y = centerY - (I[s] / maxAbs) * envHalf
+          ctx2d.lineTo(x, y)
+        }
+        ctx2d.lineTo(x2, centerY)
+        ctx2d.closePath()
 
-          ctx2d.fillStyle = 'rgba(255,255,255,0.35)'
-          ctx2d.font = `${10 * dpr}px monospace`
-          const qLabel = QUBIT_PARAMS[gate.qubit]?.label ?? `Q${gate.qubit}`
-          const realNs = REAL_DURATIONS_NS[gate.type]
-          const durationLabel = realNs === 0 ? 'virtual (0 ns)' : `${realNs} ns`
-          ctx2d.fillText(`${qLabel}  ${durationLabel}`, 12 * dpr, 42 * dpr)
+        ctx2d.fillStyle = isActive ? `${color}35` : `${color}18`
+        ctx2d.fill()
 
-          // Pulse type annotation
-          const pulseType = gate.type === 'Ry' || gate.type === 'X' ? 'DRAG'
-            : gate.type === 'CZ' ? 'SNZ flux'
-            : gate.type === 'Measure' ? 'GaussianSquare'
-            : 'Virtual'
-          ctx2d.fillText(pulseType, 12 * dpr, 56 * dpr)
+        // Envelope stroke
+        ctx2d.strokeStyle = isActive ? color : `${color}70`
+        ctx2d.lineWidth = (isActive ? 2 : 1.5) * dpr
+        ctx2d.beginPath()
+        for (let s = 0; s < len; s += pixStep) {
+          const x = x1 + (s / len) * gateW
+          const y = centerY - (I[s] / maxAbs) * envHalf
+          if (s === 0) ctx2d.moveTo(x, y)
+          else ctx2d.lineTo(x, y)
+        }
+        ctx2d.stroke()
+
+        // CZ: mirror envelope on control qubit lane (smaller)
+        if (gate.type === 'CZ' && gate.controlQubit !== undefined) {
+          const ctrlCenterY = marginTop + gate.controlQubit * laneH + laneH / 2
+          const smallHalf = envHalf * 0.5
+
+          ctx2d.beginPath()
+          ctx2d.moveTo(x1, ctrlCenterY)
+          for (let s = 0; s < len; s += pixStep) {
+            const x = x1 + (s / len) * gateW
+            const y = ctrlCenterY - (I[s] / maxAbs) * smallHalf
+            ctx2d.lineTo(x, y)
+          }
+          ctx2d.lineTo(x2, ctrlCenterY)
+          ctx2d.closePath()
+          ctx2d.fillStyle = isActive ? `${color}20` : `${color}0c`
+          ctx2d.fill()
+        }
+
+        // Gate label
+        if (gateW > 20 * dpr) {
+          ctx2d.fillStyle = isActive ? '#fff' : `${color}80`
+          ctx2d.font = `${(isActive ? 10 : 9) * dpr}px monospace`
+          ctx2d.textAlign = 'center'
+          ctx2d.textBaseline = 'bottom'
+          ctx2d.fillText(gate.label, (x1 + x2) / 2, centerY - envHalf - 3 * dpr)
         }
       }
 
-      // Time axis markers
-      if (gateEnvelopesRef.current[currentGateIdxRef.current >= 0 ? currentGateIdxRef.current : 0]) {
-        const env2 = gateEnvelopesRef.current[currentGateIdxRef.current >= 0 ? currentGateIdxRef.current : 0]
-        const realNs = REAL_DURATIONS_NS[circuitRef.current.gates[currentGateIdxRef.current >= 0 ? currentGateIdxRef.current : 0].type]
-        if (realNs > 0) {
-          ctx2d.fillStyle = 'rgba(255,255,255,0.2)'
-          ctx2d.font = `${9 * dpr}px monospace`
-          ctx2d.textAlign = 'left'
-          ctx2d.fillText('0 ns', 4 * dpr, h - 6 * dpr)
+      // ── Time axis ──
+      const axisY = h - marginBottom
+      ctx2d.strokeStyle = 'rgba(255,255,255,0.1)'
+      ctx2d.lineWidth = 1
+      ctx2d.beginPath()
+      ctx2d.moveTo(marginLeft, axisY)
+      ctx2d.lineTo(w - marginRight, axisY)
+      ctx2d.stroke()
+
+      // Tick marks
+      const nTicks = Math.min(10, Math.max(3, Math.floor(plotW / (70 * dpr))))
+      const rawStep = tNs / nTicks
+      const niceStep = rawStep < 10 ? Math.ceil(rawStep) :
+                       rawStep < 50 ? Math.ceil(rawStep / 5) * 5 :
+                       rawStep < 100 ? Math.ceil(rawStep / 10) * 10 :
+                       rawStep < 500 ? Math.ceil(rawStep / 50) * 50 :
+                       Math.ceil(rawStep / 100) * 100
+
+      ctx2d.fillStyle = 'rgba(255,255,255,0.25)'
+      ctx2d.font = `${9 * dpr}px monospace`
+      ctx2d.textBaseline = 'top'
+
+      for (let ns = 0; ns <= tNs + niceStep * 0.5; ns += Math.max(niceStep, 1)) {
+        const x = nsToX(ns)
+        if (x > w - marginRight + 5 * dpr) break
+
+        // Tick
+        ctx2d.strokeStyle = 'rgba(255,255,255,0.08)'
+        ctx2d.beginPath()
+        ctx2d.moveTo(x, axisY)
+        ctx2d.lineTo(x, axisY + 4 * dpr)
+        ctx2d.stroke()
+
+        // Grid line
+        ctx2d.strokeStyle = 'rgba(255,255,255,0.025)'
+        ctx2d.beginPath()
+        ctx2d.moveTo(x, marginTop)
+        ctx2d.lineTo(x, axisY)
+        ctx2d.stroke()
+
+        // Label
+        ctx2d.fillStyle = 'rgba(255,255,255,0.25)'
+        ctx2d.textAlign = 'center'
+        ctx2d.fillText(`${ns}`, x, axisY + 5 * dpr)
+      }
+
+      // Unit label
+      ctx2d.textAlign = 'right'
+      ctx2d.fillStyle = 'rgba(255,255,255,0.2)'
+      ctx2d.fillText('ns', w - marginRight, axisY + 5 * dpr)
+
+      // Total duration annotation
+      ctx2d.textAlign = 'left'
+      ctx2d.fillStyle = 'rgba(255,255,255,0.2)'
+      ctx2d.font = `${8 * dpr}px monospace`
+      const seqNs = circuit.gates.reduce((s, g) => s + REAL_DURATIONS_NS[g.type] + GATE_GAP_NS, 0)
+      const speedup = seqNs > 0 ? (seqNs / tNs).toFixed(1) : '1.0'
+      ctx2d.fillText(
+        `${tNs} ns total` + (nQ > 1 ? ` (${speedup}× vs sequential)` : ''),
+        marginLeft, h - 2 * dpr,
+      )
+
+      // ── Playhead ──
+      if (playing && playbackRef.current && ctxRef.current) {
+        const elapsed = (ctxRef.current.currentTime - playbackRef.current.startTime) * speed
+        const elapsedNs = elapsed * 1e9 / TIME_STRETCH
+        if (elapsedNs >= 0 && elapsedNs <= displayNs) {
+          const x = nsToX(elapsedNs)
+
+          // Glow
+          ctx2d.save()
+          ctx2d.shadowColor = 'rgba(255,255,255,0.6)'
+          ctx2d.shadowBlur = 10 * dpr
+          ctx2d.strokeStyle = 'rgba(255,255,255,0.7)'
+          ctx2d.lineWidth = 2 * dpr
+          ctx2d.beginPath()
+          ctx2d.moveTo(x, marginTop)
+          ctx2d.lineTo(x, axisY)
+          ctx2d.stroke()
+          ctx2d.restore()
+
+          // Timestamp
+          ctx2d.fillStyle = 'rgba(255,255,255,0.4)'
+          ctx2d.font = `${8 * dpr}px monospace`
           ctx2d.textAlign = 'center'
-          ctx2d.fillText(`${Math.round(realNs / 2)} ns`, w / 2, h - 6 * dpr)
-          ctx2d.textAlign = 'right'
-          ctx2d.fillText(`${realNs} ns`, w - 4 * dpr, h - 6 * dpr)
+          ctx2d.textBaseline = 'bottom'
+          ctx2d.fillText(`${Math.round(elapsedNs)} ns`, x, marginTop - 1 * dpr)
         }
       }
 
@@ -743,9 +904,11 @@ export default function PulsePlayerClient() {
 
     draw()
     return () => { alive = false; cancelAnimationFrame(rafRef.current) }
-  }, [playing, currentGateIdx, circuit, gateEnvelopes, iqMode])
+  }, [playing, currentGateIdx, circuit, gateEnvelopes, scheduledGates, totalNs])
 
   // ─── Render ───────────────────────────────────────────────────────────────────
+
+  const canvasHeight = Math.max(280, circuit.numQubits * 120 + 40)
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -760,9 +923,8 @@ export default function PulsePlayerClient() {
           </h1>
           <p className="text-gray-400 max-w-2xl text-sm leading-relaxed">
             Superconducting qubits are controlled by shaped microwave pulses at ~5 GHz.
-            DRAG pulses for rotations, sudden net-zero flux pulses for entanglement,
-            GaussianSquare readout for measurement. These are the real waveforms from the
-            literature — time-stretched to audible frequencies.
+            The schedule shows how pulses play across multiple qubits simultaneously —
+            gates on independent qubits overlap in time, just like real hardware.
           </p>
           <div className="flex flex-wrap gap-2 mt-3 text-xs font-mono text-gray-500">
             <span>Time-stretched 10{'\u2077'}{'\u00d7'}</span>
@@ -796,37 +958,41 @@ export default function PulsePlayerClient() {
           ))}
           <span className="text-xs font-mono text-gray-500 self-center ml-2">
             {circuit.numQubits} qubit{circuit.numQubits > 1 ? 's' : ''} &middot; {circuit.gates.length} gates
+            {circuit.numQubits > 1 && (
+              <span className="text-gray-600 ml-1">
+                &middot; {scheduledGates.filter((sg, i, arr) =>
+                  arr.some((other, j) => j !== i && sg.startNs < other.endNs && other.startNs < sg.endNs)
+                ).length} parallel
+              </span>
+            )}
           </span>
         </div>
 
         <p className="text-xs text-gray-500 mb-4">{circuit.description}</p>
 
-        {/* Visualization — two CRT panels */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-          {/* Circuit diagram */}
+        {/* Pulse Schedule */}
+        <div className="mb-4">
+          <CRTMonitor label="Pulse Schedule" rightLabel={`${totalNs} ns`}>
+            {playing && (
+              <div className="absolute top-3 right-4 z-10 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-[10px] font-mono text-red-400">PLAYING</span>
+              </div>
+            )}
+            <canvas ref={waveCanvasRef} className="w-full" style={{ height: `${canvasHeight}px` }} />
+          </CRTMonitor>
+        </div>
+
+        {/* Circuit diagram */}
+        <div className="mb-4">
           <CRTMonitor label="Circuit" rightLabel={circuit.name}>
-            <div className="p-4" style={{ height: '320px', overflow: 'hidden' }}>
+            <div className="p-4" style={{ height: '180px', overflow: 'hidden' }}>
               <CircuitDiagram
                 circuit={circuit}
                 currentGateIdx={currentGateIdx}
               />
             </div>
           </CRTMonitor>
-
-          {/* Waveform display */}
-          <div className="lg:col-span-2">
-            <CRTMonitor label="Pulse Envelope" rightLabel={
-              currentGateIdx >= 0 ? circuit.gates[currentGateIdx]?.label : 'Select a circuit'
-            }>
-              {playing && (
-                <div className="absolute top-3 right-4 z-10 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[10px] font-mono text-red-400">PLAYING</span>
-                </div>
-              )}
-              <canvas ref={waveCanvasRef} className="w-full" style={{ height: '320px' }} />
-            </CRTMonitor>
-          </div>
         </div>
 
         {/* Controls */}
@@ -863,18 +1029,6 @@ export default function PulsePlayerClient() {
               }`}
             >
               Loop
-            </button>
-
-            {/* I/Q toggle */}
-            <button
-              onClick={() => setIqMode(iqMode === 'overlay' ? 'split' : 'overlay')}
-              className={`text-xs font-mono px-3 py-2 rounded-lg border transition-all ${
-                iqMode === 'split'
-                  ? 'bg-purple-500/20 border-purple-500/40 text-purple-300'
-                  : 'bg-white/[0.03] border-white/10 text-gray-400 hover:text-white hover:border-white/20'
-              }`}
-            >
-              I/Q: {iqMode}
             </button>
 
             <div className="flex-1" />
@@ -969,13 +1123,22 @@ export default function PulsePlayerClient() {
           <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">How It Works</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-gray-400">
             <div>
+              <p className="text-white font-bold mb-1">Parallel Scheduling</p>
+              <p>
+                Gates on independent qubits execute simultaneously, just like real hardware.
+                The schedule shows how a {circuit.numQubits > 1 ? `${circuit.numQubits}-qubit` : 'single-qubit'} circuit
+                maps to physical pulses. CZ gates block both qubits; single-qubit gates only block one.
+                {circuit.numQubits > 1 && ` This circuit takes ${totalNs} ns — shorter than
+                sequential because parallel gates overlap.`}
+              </p>
+            </div>
+            <div>
               <p className="text-white font-bold mb-1">DRAG Pulses</p>
               <p>
                 Derivative Removal by Adiabatic Gate (Motzoi et al., 2009).
                 The I-channel is a Gaussian truncated at {'\u00b1'}4{'\u03c3'}, lifted so edges
                 are exactly zero. The Q-channel carries {'\u03b2'}{'\u00d7'}dG/dt, a derivative
                 correction that suppresses leakage to the transmon{'\u2019'}s |2{'\u27E9'} state.
-                We use {'\u03b2'} = 0.5 (DRAG-P regime, Gambetta et al. 2011).
               </p>
             </div>
             <div>
@@ -985,17 +1148,7 @@ export default function PulsePlayerClient() {
                 lobes of opposite polarity, separated by an idle gap. The {'\u201C'}sudden{'\u201D'}
                 shape intentionally maximizes leakage per lobe — then the two lobes
                 destructively interfere, canceling leakage while accumulating a
-                conditional {'\u03C0'}-phase. Net-zero constraint: {'\u222B'}{'\u03A6'}(t)dt = 0.
-              </p>
-            </div>
-            <div>
-              <p className="text-white font-bold mb-1">IQ Modulation</p>
-              <p>
-                In hardware, baseband envelopes are IQ-modulated onto a microwave
-                carrier: s(t) = I(t)cos({'\u03C9'}t) {'\u2212'} Q(t)sin({'\u03C9'}t). We do the same
-                at audible frequencies. The display shows the baseband envelopes
-                I(t) and Q(t); the audio is the modulated signal you{'\u2019'}d see on
-                an oscilloscope at the qubit drive line.
+                conditional {'\u03C0'}-phase.
               </p>
             </div>
           </div>
@@ -1019,33 +1172,6 @@ export default function PulsePlayerClient() {
   )
 }
 
-// ─── Drawing Helpers ────────────────────────────────────────────────────────────
-
-function drawEnvelopeLine(
-  ctx: CanvasRenderingContext2D,
-  data: Float32Array,
-  len: number,
-  step: number,
-  w: number,
-  centerY: number,
-  halfHeight: number,
-  maxVal: number,
-  color: string,
-  dpr: number,
-  lineWidth?: number,
-) {
-  ctx.strokeStyle = color
-  ctx.lineWidth = (lineWidth ?? 2) * dpr
-  ctx.beginPath()
-  for (let i = 0; i < len; i += step) {
-    const x = (i / len) * w
-    const y = centerY - (data[i] / maxVal) * halfHeight
-    if (i === 0) ctx.moveTo(x, y)
-    else ctx.lineTo(x, y)
-  }
-  ctx.stroke()
-}
-
 // ─── Sub-components ─────────────────────────────────────────────────────────────
 
 function GateLegendItem({ type, desc, realNs }: { type: GateType; desc: string; realNs: number }) {
@@ -1066,7 +1192,7 @@ function GateLegendItem({ type, desc, realNs }: { type: GateType; desc: string; 
 }
 
 function CircuitDiagram({ circuit, currentGateIdx }: { circuit: CircuitDefinition; currentGateIdx: number }) {
-  const wireY = (q: number) => 40 + q * 70
+  const wireY = (q: number) => 30 + q * 50
   const gateWidth = 44
   const gateGap = 12
   const startX = 60
@@ -1076,9 +1202,9 @@ function CircuitDiagram({ circuit, currentGateIdx }: { circuit: CircuitDefinitio
 
   return (
     <svg
-      viewBox={`0 0 ${totalWidth} ${40 + circuit.numQubits * 70}`}
+      viewBox={`0 0 ${totalWidth} ${30 + circuit.numQubits * 50}`}
       className="w-full h-full"
-      style={{ maxHeight: '280px' }}
+      style={{ maxHeight: '160px' }}
     >
       {/* Qubit wires */}
       {Array.from({ length: circuit.numQubits }, (_, q) => (
