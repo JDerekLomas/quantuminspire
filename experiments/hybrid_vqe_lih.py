@@ -106,10 +106,28 @@ CONFUSION_INV = None
 
 
 def load_confusion_matrix():
-    """Load and invert confusion matrix from existing LiH calibration."""
+    """Load and invert confusion matrix from calibration data.
+
+    Prefers fresh calibration (lih-cal-today.json) over old data.
+    """
     global CONFUSION_INV
-    counts_file = RESULTS_DIR / "lih-4qubit-tuna9-counts.json"
-    with open(counts_file) as f:
+
+    # Try fresh calibration first
+    fresh_file = RESULTS_DIR / "lih-cal-today.json"
+    old_file = RESULTS_DIR / "lih-4qubit-tuna9-counts.json"
+
+    if fresh_file.exists():
+        with open(fresh_file) as f:
+            cal_data = json.load(f)
+        if "confusion_matrix" in cal_data:
+            confusion = np.array(cal_data["confusion_matrix"])
+            cond = np.linalg.cond(confusion)
+            print(f"  Confusion matrix (fresh): cond={cond:.3f}")
+            CONFUSION_INV = np.linalg.inv(confusion)
+            return
+
+    # Fall back to old calibration
+    with open(old_file) as f:
         all_data = json.load(f)
 
     n_states = 16
@@ -132,7 +150,7 @@ def load_confusion_matrix():
             confusion[meas_idx, prep_idx] += count / total
 
     cond = np.linalg.cond(confusion)
-    print(f"  Confusion matrix condition: {cond:.3f}")
+    print(f"  Confusion matrix (old): cond={cond:.3f}")
     CONFUSION_INV = np.linalg.inv(confusion)
 
 
@@ -373,6 +391,19 @@ class HybridVQE:
         tag = "EMU" if self.use_emulator else "HW"
         print(f"  [{tag}+REM] iter {self.iteration:3d}: "
               f"E={energy:.6f} Ha, err={error_mha:.1f} mHa", flush=True)
+
+        # Save checkpoint after each iteration (crash-resilient)
+        if not self.use_emulator:
+            checkpoint = {
+                "experiment": "Hybrid VQE LiH (checkpoint)",
+                "updated": datetime.now(timezone.utc).isoformat(),
+                "backend": "Tuna-9",
+                "iteration": self.iteration,
+                "history": self.history,
+            }
+            ckpt_path = RESULTS_DIR / "hybrid-vqe-lih-R1.6-tuna9-checkpoint.json"
+            with open(ckpt_path, "w") as f:
+                json.dump(checkpoint, f, indent=2)
 
         return energy
 

@@ -463,10 +463,23 @@ at 4 qubits compares favorably with literature: Kandala et al. (2017)
 reported ~10 mHa for LiH on IBM 6-qubit hardware with a more
 expensive hardware-efficient ansatz.
 
-[TODO: Add hybrid VQE results when hardware run completes — COBYLA
-optimizer with 30 iterations, 8 parameters, targeting hardware-in-the-loop
-optimization. Emulator test achieved 0.056 mHa (chemical accuracy)
-in 8 iterations.]
+**Hybrid VQE on hardware — calibration drift as negative result**:
+The hardware-in-the-loop optimization was attempted the following day
+(~18 hours after the ZNE run). The same pre-computed parameters that
+yielded 23.4 mHa error (REM) on day 1 produced 108 mHa on day 2.
+Fresh calibration circuits confirmed readout was unchanged (condition
+number 1.185 vs 1.209), but the HF preparation circuit + CZ chain
+showed dominant state |1101⟩ at 64.8% instead of |1100⟩ at 87.9%.
+The CZ gates had drifted significantly overnight.
+
+COBYLA optimization (6 iterations, 54 circuits) could not compensate:
+best energy -7.759 Ha (103 mHa error). This demonstrates:
+(a) pre-computed VQE parameters are invalidated by gate calibration
+drift within hours on current hardware; (b) REM cannot correct gate
+errors, only readout bias; (c) hybrid VQE in the high-noise regime
+fails to converge because the optimizer cannot distinguish signal from
+noise. The emulator benchmark (0.056 mHa in 8 iterations) confirms
+the algorithm works; the hardware noise floor is the bottleneck.
 
 ### 3.8 AI Quantum Code Generation Benchmark
 
