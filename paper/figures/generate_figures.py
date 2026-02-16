@@ -339,6 +339,103 @@ def fig_vqe():
 
 
 # =====================================================================
+# Figure 6: LiH ZNE mitigation ladder + fold-energy plot
+# =====================================================================
+def fig_lih():
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(FULL_W, 2.2),
+                                     gridspec_kw={'width_ratios': [1.2, 1]})
+
+    # --- Left panel: mitigation ladder bar chart ---
+    methods = ['Raw', 'REM', 'REM+ZNE\n(linear)', 'REM+ZNE\n(quadratic)']
+    errors = [33.1, 23.4, 8.1, 6.9]
+    stds = [3.8, 3.3, 5.6, 9.2]
+    colors = ['#AAAAAA', '#999999', '#5B9BD5', C_TUNA]
+
+    bars = ax1.bar(range(4), errors, color=colors, edgecolor='white',
+                   linewidth=0.5, width=0.65)
+    ax1.errorbar(range(4), errors, yerr=stds, fmt='none', capsize=3,
+                 capthick=0.8, ecolor='#333333', linewidth=0.8)
+
+    # Chemical accuracy threshold
+    ax1.axhline(y=1.6, color='#2ECC71', linestyle='--', linewidth=1.0, zorder=0)
+    ax1.text(3.4, 2.4, 'chem. acc.', fontsize=6, color='#2ECC71', ha='right')
+
+    # Value labels on bars
+    for i, (e, s) in enumerate(zip(errors, stds)):
+        ax1.text(i, e + s + 1.5, f'{e:.1f}', ha='center', va='bottom',
+                 fontsize=7, fontweight='bold')
+
+    # Reduction percentages
+    for i, (e, label) in enumerate(zip(errors, ['', '29%', '75%', '79%'])):
+        if label:
+            ax1.text(i, -3.5, label, ha='center', va='top', fontsize=6,
+                     color=colors[i], fontweight='bold')
+
+    ax1.set_xticks(range(4))
+    ax1.set_xticklabels(methods, fontsize=6.5)
+    ax1.set_ylabel('Error (mHa)')
+    ax1.set_ylim(-5, 52)
+    ax1.set_title('LiH mitigation ladder ($R = 1.6$ Å)', fontsize=8)
+    ax1.grid(True, axis='y', alpha=0.3, linewidth=0.5)
+
+    # --- Right panel: fold-energy plot with extrapolation ---
+    folds = [1, 3, 5]
+
+    # REM fold energies (from zne-lih-analysis.json)
+    E_rem_folds = [-7.8387, -7.8082, -7.7811]
+    E_rem_stds = [0.0033, 0.0054, 0.0043]
+
+    # Raw fold energies
+    E_raw_folds = [-7.8290, -7.7981, -7.7713]
+    E_raw_stds = [0.0038, 0.0049, 0.0041]
+
+    # Extrapolated values
+    E_casci = -7.862129
+
+    # Quadratic fit for extrapolation curve
+    folds_dense = np.linspace(0, 5.5, 50)
+
+    # Fit quadratic through REM fold points
+    coeffs = np.polyfit(folds, E_rem_folds, 2)
+    E_fit = np.polyval(coeffs, folds_dense)
+    E_extrap = np.polyval(coeffs, 0)  # zero-noise extrapolation
+
+    ax2.plot(folds_dense, E_fit, '-', color=C_TUNA, linewidth=0.8, alpha=0.5, zorder=1)
+    ax2.errorbar(folds, E_rem_folds, yerr=E_rem_stds, fmt='o-', color=C_TUNA,
+                 label='REM', markersize=5, capsize=3, capthick=0.8, zorder=3)
+    ax2.errorbar(folds, E_raw_folds, yerr=E_raw_stds, fmt='s--', color='#999999',
+                 label='Raw', markersize=4, capsize=3, capthick=0.8, zorder=2)
+
+    # Mark extrapolated point
+    ax2.plot(0, E_extrap, '*', color='#CC0000', markersize=10, zorder=5,
+             markeredgecolor='white', markeredgewidth=0.5, label=f'ZNE extrap.')
+
+    # Exact energy
+    ax2.axhline(y=E_casci, color='black', linestyle='-', linewidth=1.0, zorder=0)
+    ax2.text(5.3, E_casci + 0.001, '$E_\\mathrm{CASCI}$', fontsize=6,
+             va='bottom', ha='right')
+
+    # Annotate error
+    ax2.annotate(f'{abs(E_extrap - E_casci)*1000:.1f} mHa',
+                 xy=(0, E_extrap), xytext=(1.2, E_extrap - 0.005),
+                 fontsize=6, color='#CC0000',
+                 arrowprops=dict(arrowstyle='->', color='#CC0000', lw=0.6))
+
+    ax2.set_xlabel('CZ fold factor')
+    ax2.set_ylabel('Energy (Ha)')
+    ax2.set_xlim(-0.5, 5.5)
+    ax2.set_xticks([0, 1, 3, 5])
+    ax2.set_title('Richardson extrapolation', fontsize=8)
+    ax2.legend(loc='upper right', framealpha=0.9, fontsize=6.5)
+    ax2.grid(True, alpha=0.3, linewidth=0.5)
+
+    fig.tight_layout()
+    fig.savefig('fig6_lih_zne.pdf')
+    print('  fig6_lih_zne.pdf')
+    plt.close(fig)
+
+
+# =====================================================================
 # Run all
 # =====================================================================
 if __name__ == '__main__':
@@ -348,4 +445,5 @@ if __name__ == '__main__':
     fig_qv()
     fig_scorecard()
     fig_vqe()
+    fig_lih()
     print('Done.')

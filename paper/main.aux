@@ -60,37 +60,43 @@
 \newlabel{tab:replication}{{VI}{5}{Replication scorecard. \PASS {} = claim replicated within stated criteria, \FAIL {} = claim not met, --- = not tested. Superscripts: $^a$TREX mitigation, $^b$post-selection, $^c$Torino only, $^d$PS+REM hybrid, $^e$hybrid VQE+REM}{table.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Quantum volume comparison. Dashed line indicates the $2/3$ pass threshold. Both Garnet and Torino achieve QV~$= 32$; Tuna-9 achieves QV~$= 16$. Each point is the mean heavy output fraction over 5 random SU(4) circuit trials, except Tuna-9 at $n=4$ which uses 100 circuits.}}{5}{figure.4}\protected@file@percent }
 \newlabel{fig:qv}{{4}{5}{Quantum volume comparison. Dashed line indicates the $2/3$ pass threshold. Both Garnet and Torino achieve QV~$= 32$; Tuna-9 achieves QV~$= 16$. Each point is the mean heavy output fraction over 5 random SU(4) circuit trials, except Tuna-9 at $n=4$ which uses 100 circuits}{figure.4}{}}
-\citation{cross2019}
+\citation{kandala2017}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Replication scorecard across six papers and three backends. Green = PASS (claim replicated within stated criteria), red = FAIL, grey = not tested on that platform. Both failures are HeH$^+$ VQE claims where coefficient amplification makes hardware noise exceed molecular signal.}}{6}{figure.5}\protected@file@percent }
 \newlabel{fig:scorecard}{{5}{6}{Replication scorecard across six papers and three backends. Green = PASS (claim replicated within stated criteria), red = FAIL, grey = not tested on that platform. Both failures are HeH$^+$ VQE claims where coefficient amplification makes hardware noise exceed molecular signal}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces H$_2$ potential energy surface on Tuna-9 across the error mitigation ladder. Exact FCI values (black), REM only (grey circles, 5-rep mean $\pm $ std), REM+ZNE quadratic (blue squares), and hybrid VQE with COBYLA optimizer (red star, 0.9\,mHa at $R = 0.735$\,\r A). Green band shows chemical accuracy ($\pm 1.6$\,mHa). ZNE reduces average error from 7.4 to 2.9\,mHa; the hybrid loop achieves chemical accuracy.}}{6}{figure.6}\protected@file@percent }
 \newlabel{fig:vqe}{{6}{6}{H$_2$ potential energy surface on Tuna-9 across the error mitigation ladder. Exact FCI values (black), REM only (grey circles, 5-rep mean $\pm $ std), REM+ZNE quadratic (blue squares), and hybrid VQE with COBYLA optimizer (red star, 0.9\,mHa at $R = 0.735$\,\AA ). Green band shows chemical accuracy ($\pm 1.6$\,mHa). ZNE reduces average error from 7.4 to 2.9\,mHa; the hybrid loop achieves chemical accuracy}{figure.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}Quantum Volume and Randomized Benchmarking}{6}{section*.17}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces LiH mitigation ladder on Tuna-9 ($R = 1.6$\,\r A, $E_\text  {CASCI} = -7.862$\,\text  {Ha}, 5 reps, 4096 shots). Chemical accuracy: 1.6\,mHa.}}{6}{table.7}\protected@file@percent }
+\newlabel{tab:lih_mitigation}{{VII}{6}{LiH mitigation ladder on Tuna-9 ($R = 1.6$\,\AA , $E_\text {CASCI} = -7.862$\Ha , 5 reps, 4096 shots). Chemical accuracy: 1.6\,mHa}{table.7}{}}
+\citation{cross2019}
 \citation{harrigan2021}
-\citation{powell1994}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces Single-qubit randomized benchmarking on Tuna-9 (all 9 qubits, 1024 shots, 5 seeds per length).}}{7}{table.7}\protected@file@percent }
-\newlabel{tab:rb}{{VII}{7}{Single-qubit randomized benchmarking on Tuna-9 (all 9 qubits, 1024 shots, 5 seeds per length)}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces LiH VQE on Tuna-9 (4 qubits, CASCI(2,2), $R = 1.6$\,\r A). \textbf  {Left:} Mitigation ladder showing error reduction from raw (33.1\,mHa) through REM (23.4\,mHa) to REM+ZNE quadratic (6.9\,mHa, 79\% reduction). Error bars show $\pm 1\sigma $ across 5 reps. Dashed green line marks chemical accuracy (1.6\,mHa). \textbf  {Right:} Richardson extrapolation from CZ gate folding at fold factors 1, 3, 5. The fold-energy relationship is monotonic and well-fit by a quadratic, confirming noise scales predictably with gate count. The extrapolated zero-noise energy (red star) recovers $-7.855$\,\text  {Ha}{} vs.\ the CASCI target of $-7.862$\,\text  {Ha}.}}{7}{figure.7}\protected@file@percent }
+\newlabel{fig:lih}{{7}{7}{LiH VQE on Tuna-9 (4 qubits, CASCI(2,2), $R = 1.6$\,\AA ). \textbf {Left:} Mitigation ladder showing error reduction from raw (33.1\,mHa) through REM (23.4\,mHa) to REM+ZNE quadratic (6.9\,mHa, 79\% reduction). Error bars show $\pm 1\sigma $ across 5 reps. Dashed green line marks chemical accuracy (1.6\,mHa). \textbf {Right:} Richardson extrapolation from CZ gate folding at fold factors 1, 3, 5. The fold-energy relationship is monotonic and well-fit by a quadratic, confirming noise scales predictably with gate count. The extrapolated zero-noise energy (red star) recovers $-7.855$\Ha {} vs.\ the CASCI target of $-7.862$\Ha }{figure.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Quantum Volume and Randomized Benchmarking}{7}{section*.17}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Single-qubit randomized benchmarking on Tuna-9 (all 9 qubits, 1024 shots, 5 seeds per length).}}{7}{table.8}\protected@file@percent }
+\newlabel{tab:rb}{{VIII}{7}{Single-qubit randomized benchmarking on Tuna-9 (all 9 qubits, 1024 shots, 5 seeds per length)}{table.8}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}QAOA Replication}{7}{section*.18}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {}Mitigation Technique Ranking}{7}{section*.19}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {VIII}{\ignorespaces Mitigation ladder on IBM Torino (H$_2$ VQE, $R = 0.735$\,\r A, 4096 shots). Chemical accuracy threshold: $1.6\,\text  {kcal/mol}$.}}{7}{table.8}\protected@file@percent }
-\newlabel{tab:mitigation}{{VIII}{7}{Mitigation ladder on IBM Torino (H$_2$ VQE, $R = 0.735$\,\AA , 4096 shots). Chemical accuracy threshold: $1.6\kcalmol $}{table.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}Error Mitigation on Tuna-9}{7}{section*.20}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces Error mitigation ladder on Tuna-9 (H$_2$ VQE, 7 bond distances, 5 reps, 4096 shots). Chemical accuracy: 1.6\,mHa.}}{7}{table.9}\protected@file@percent }
-\newlabel{tab:tuna9_mitigation}{{IX}{7}{Error mitigation ladder on Tuna-9 (H$_2$ VQE, 7 bond distances, 5 reps, 4096 shots). Chemical accuracy: 1.6\,mHa}{table.9}{}}
+\citation{powell1994}
 \citation{kim2023}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Mitigation Technique Ranking}{8}{section*.19}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {IX}{\ignorespaces Mitigation ladder on IBM Torino (H$_2$ VQE, $R = 0.735$\,\r A, 4096 shots). Chemical accuracy threshold: $1.6\,\text  {kcal/mol}$.}}{8}{table.9}\protected@file@percent }
+\newlabel{tab:mitigation}{{IX}{8}{Mitigation ladder on IBM Torino (H$_2$ VQE, $R = 0.735$\,\AA , 4096 shots). Chemical accuracy threshold: $1.6\kcalmol $}{table.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}Error Mitigation on Tuna-9}{8}{section*.20}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {X}{\ignorespaces Error mitigation ladder on Tuna-9 (H$_2$ VQE, 7 bond distances, 5 reps, 4096 shots). Chemical accuracy: 1.6\,mHa.}}{8}{table.10}\protected@file@percent }
+\newlabel{tab:tuna9_mitigation}{{X}{8}{Error mitigation ladder on Tuna-9 (H$_2$ VQE, 7 bond distances, 5 reps, 4096 shots). Chemical accuracy: 1.6\,mHa}{table.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {}Kim et al.\ (2023): Utility-Scale Circuits}{8}{section*.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {}Failure Taxonomy}{8}{section*.22}\protected@file@percent }
-\newlabel{sec:failures}{{}{8}{}{section*.22}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}Discussion}{8}{section*.23}\protected@file@percent }
-\newlabel{sec:discussion}{{}{8}{}{section*.23}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {}What Replication Gaps Reveal}{8}{section*.24}\protected@file@percent }
-\citation{temme2017,li2017}
+\@writefile{toc}{\contentsline {section}{\numberline {}Failure Taxonomy}{9}{section*.22}\protected@file@percent }
+\newlabel{sec:failures}{{}{9}{}{section*.22}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}Discussion}{9}{section*.23}\protected@file@percent }
+\newlabel{sec:discussion}{{}{9}{}{section*.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}What Replication Gaps Reveal}{9}{section*.24}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {}Cross-Platform Insights}{9}{section*.25}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {}AI as Replication Infrastructure}{9}{section*.26}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {}ZNE Extrapolation Order Matters}{9}{section*.27}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {}Conclusion}{9}{section*.28}\protected@file@percent }
-\newlabel{sec:conclusion}{{}{9}{}{section*.28}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {}Data Availability}{9}{section*.29}\protected@file@percent }
+\citation{temme2017,li2017}
+\@writefile{toc}{\contentsline {subsection}{\numberline {}ZNE Extrapolation Order Matters}{10}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {}Conclusion}{10}{section*.28}\protected@file@percent }
+\newlabel{sec:conclusion}{{}{10}{}{section*.28}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {}Data Availability}{10}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {}Acknowledgments}{10}{section*.30}\protected@file@percent }
 \bibdata{mainNotes,references}
 \bibcite{baker2016}{{1}{2016}{{Baker}}{{}}}
 \bibcite{sagastizabal2019}{{2}{2019}{{Sagastizabal\ \emph  {et~al.}}}{{Sagastizabal \emph  {et~al.}}}}
@@ -105,8 +111,7 @@
 \bibstyle{apsrev4-2}
 \citation{REVTEX42Control}
 \citation{apsrev42Control}
-\@writefile{toc}{\contentsline {section}{\numberline {}Acknowledgments}{10}{section*.30}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {}References}{10}{section*.31}\protected@file@percent }
-\newlabel{LastBibItem}{{10}{10}{}{section*.31}{}}
-\newlabel{LastPage}{{}{10}{}{}{}}
-\gdef \@abspage@last{10}
+\@writefile{toc}{\contentsline {section}{\numberline {}References}{11}{section*.31}\protected@file@percent }
+\newlabel{LastBibItem}{{10}{11}{}{section*.31}{}}
+\newlabel{LastPage}{{}{11}{}{}{}}
+\gdef \@abspage@last{11}

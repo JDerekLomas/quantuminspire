@@ -353,14 +353,22 @@ export default function ResearchPage() {
               </p>
               <p>
                 <a
-                  href="https://github.com/JDerekLomas/quantuminspire/blob/main/research/paper-outline.md"
+                  href="/haiqu-paper.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#00ff88] hover:underline"
                 >
-                  Paper outline
+                  Read the paper (PDF)
                 </a>{' '}
-                is available on GitHub. Preprint coming soon.
+                &mdash;{' '}
+                <a
+                  href="https://github.com/JDerekLomas/quantuminspire/blob/main/research/paper-outline.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#00d4ff] hover:underline"
+                >
+                  outline on GitHub
+                </a>
               </p>
             </div>
             <div className="space-y-3">
