@@ -921,18 +921,18 @@ export default function PulsePlayerClient() {
           <h1 className="text-4xl sm:text-5xl font-black leading-tight mb-3">
             Hear Quantum Gate Pulses
           </h1>
-          <p className="text-gray-400 max-w-2xl text-sm leading-relaxed">
+          <p className="text-gray-300 max-w-2xl text-sm leading-relaxed">
             Superconducting qubits are controlled by shaped microwave pulses at ~5 GHz.
-            The schedule shows how pulses play across multiple qubits simultaneously —
-            gates on independent qubits overlap in time, just like real hardware.
+            Each pulse is tuned to its qubit{'\u2019'}s resonant frequency — the same way a radio
+            picks up only its station. Press play to hear them.
           </p>
-          <div className="flex flex-wrap gap-2 mt-3 text-xs font-mono text-gray-500">
+          <div className="flex flex-wrap gap-2 mt-3 text-xs font-mono text-gray-400">
             <span>Time-stretched 10{'\u2077'}{'\u00d7'}</span>
-            <span>&middot;</span>
+            <span className="text-gray-600">&middot;</span>
             <span>30 ns {'\u2192'} 0.3 s</span>
-            <span>&middot;</span>
+            <span className="text-gray-600">&middot;</span>
             <span>5 GHz {'\u2192'} 440 Hz</span>
-            <span>&middot;</span>
+            <span className="text-gray-600">&middot;</span>
             <span>Native gate set: Ry, Rz, CZ, X</span>
           </div>
         </section>
@@ -956,10 +956,10 @@ export default function PulsePlayerClient() {
               {c.name}
             </button>
           ))}
-          <span className="text-xs font-mono text-gray-500 self-center ml-2">
+          <span className="text-xs font-mono text-gray-400 self-center ml-2">
             {circuit.numQubits} qubit{circuit.numQubits > 1 ? 's' : ''} &middot; {circuit.gates.length} gates
             {circuit.numQubits > 1 && (
-              <span className="text-gray-600 ml-1">
+              <span className="text-gray-500 ml-1">
                 &middot; {scheduledGates.filter((sg, i, arr) =>
                   arr.some((other, j) => j !== i && sg.startNs < other.endNs && other.startNs < sg.endNs)
                 ).length} parallel
@@ -968,7 +968,7 @@ export default function PulsePlayerClient() {
           </span>
         </div>
 
-        <p className="text-xs text-gray-500 mb-4">{circuit.description}</p>
+        <p className="text-xs text-gray-400 mb-4">{circuit.description}</p>
 
         {/* Pulse Schedule */}
         <div className="mb-4">
@@ -1059,7 +1059,7 @@ export default function PulsePlayerClient() {
                 onChange={e => setSpeed(parseFloat(e.target.value))}
                 className="w-full accent-cyan-400"
               />
-              <p className="text-[10px] text-gray-600 mt-0.5">Pitch shift is physically accurate</p>
+              <p className="text-[10px] text-gray-500 mt-0.5">Pitch shift is physically accurate</p>
             </div>
             <div>
               <div className="flex items-center justify-between mb-1">
@@ -1077,7 +1077,7 @@ export default function PulsePlayerClient() {
                 <label className="text-xs font-mono text-gray-400">Time Stretch</label>
                 <span className="text-xs font-mono text-gray-300">10{'\u2077'}{'\u00d7'}</span>
               </div>
-              <div className="text-[10px] text-gray-500 mt-1">
+              <div className="text-[10px] text-gray-400 mt-1">
                 Real pulses: ~30 ns at ~5 GHz. We stretch time 10{'\u2077'}{'\u00d7'} so 30 ns becomes 0.3 s,
                 and 5 GHz maps to ~440 Hz.
               </div>
@@ -1085,119 +1085,114 @@ export default function PulsePlayerClient() {
           </div>
         </div>
 
-        {/* Gate Legend */}
-        <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 mb-4">
-          <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">Gate Pulse Types</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <GateLegendItem type="Ry" desc="DRAG pulse (Motzoi 2009): lifted Gaussian I-channel, β×derivative Q-channel. 4σ truncation suppresses spectral leakage to |2⟩." realNs={REAL_DURATIONS_NS.Ry} />
-            <GateLegendItem type="X" desc="π-rotation DRAG. Same shape, scaled to full flip. I(t) = A×G(t), Q(t) = β×dG/dt." realNs={REAL_DURATIONS_NS.X} />
-            <GateLegendItem type="CZ" desc="Sudden Net-Zero flux (Negirneac 2021): two rectangular lobes of opposite polarity. Leakage from each lobe destructively interferes." realNs={REAL_DURATIONS_NS.CZ} />
-            <GateLegendItem type="Rz" desc="Virtual Z-gate (McKay 2017): phase update in software, zero duration, zero error. No physical pulse — just a frame rotation." realNs={REAL_DURATIONS_NS.Rz} />
-            <GateLegendItem type="Measure" desc="GaussianSquare readout: flat-top pulse at resonator frequency with Gaussian rise/fall ramps to limit bandwidth." realNs={REAL_DURATIONS_NS.Measure} />
-          </div>
+        {/* ── Section: What You're Hearing ───────────────────────────── */}
+        <div className="mt-8 mb-6">
+          <h2 className="text-sm font-bold text-white mb-1">What You{'\u2019'}re Hearing</h2>
+          <p className="text-xs text-gray-400">Each gate type produces a different pulse shape. Here{'\u2019'}s the legend.</p>
         </div>
 
-        {/* Qubit Frequencies */}
-        <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 mb-8">
-          <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">Qubit Parameters</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {QUBIT_PARAMS.slice(0, circuit.numQubits).map((q, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: q.color }} />
-                <div>
-                  <div className="text-xs font-mono text-white">{q.label}: {q.driveFreqGHz} GHz {'\u2192'} {q.audioBaseHz} Hz</div>
-                  <div className="text-[10px] text-gray-500">
-                    Readout: {(q.driveFreqGHz * READOUT_FREQ_RATIO).toFixed(1)} GHz {'\u2192'} {Math.round(q.audioBaseHz * READOUT_FREQ_RATIO)} Hz
-                  </div>
-                  <div className="text-[10px] text-gray-500">
-                    Anharmonicity: {q.anharmonicityMHz} MHz
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+          {([
+            { type: 'Ry' as GateType, desc: 'DRAG pulse (Motzoi 2009): lifted Gaussian I-channel, \u03B2\u00D7derivative Q-channel. Suppresses leakage to |2\u27E9.', ns: REAL_DURATIONS_NS.Ry },
+            { type: 'X' as GateType, desc: '\u03C0-rotation DRAG. Same shape as Ry, scaled to a full flip.', ns: REAL_DURATIONS_NS.X },
+            { type: 'CZ' as GateType, desc: 'Sudden Net-Zero flux (Negirneac 2021): two rectangular lobes of opposite polarity. Leakage destructively interferes.', ns: REAL_DURATIONS_NS.CZ },
+            { type: 'Rz' as GateType, desc: 'Virtual Z-gate (McKay 2017): phase update in software. Zero duration, zero error, no physical pulse.', ns: REAL_DURATIONS_NS.Rz },
+            { type: 'Measure' as GateType, desc: 'GaussianSquare readout: flat-top pulse at the resonator frequency with Gaussian rise/fall ramps.', ns: REAL_DURATIONS_NS.Measure },
+          ]).map(({ type, desc, ns }) => (
+            <div key={type} className="p-4 rounded-lg border-l-2 bg-white/[0.02]" style={{ borderColor: GATE_COLORS[type] }}>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-mono font-bold text-white">{type}</span>
+                <span className="text-[10px] font-mono text-gray-400">
+                  {ns === 0 ? '0 ns' : `${ns} ns`}
+                </span>
               </div>
-            ))}
+              <p className="text-[11px] text-gray-300 leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Qubit frequency map — inline, compact */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 rounded-lg bg-white/[0.02] border border-white/5 mb-8">
+          <span className="text-xs font-mono text-gray-400">Qubits:</span>
+          {QUBIT_PARAMS.slice(0, circuit.numQubits).map((q, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: q.color }} />
+              <span className="text-xs font-mono text-gray-200">{q.label}</span>
+              <span className="text-[11px] font-mono text-gray-400">
+                {q.driveFreqGHz} GHz {'\u2192'} {q.audioBaseHz} Hz
+              </span>
+              <span className="text-[10px] font-mono text-gray-500">
+                (readout {(q.driveFreqGHz * READOUT_FREQ_RATIO).toFixed(1)} GHz)
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Section: Why It Sounds Like This ─────────────────────── */}
+        <div className="mb-6">
+          <h2 className="text-sm font-bold text-white mb-1">Why It Sounds Like This</h2>
+          <p className="text-xs text-gray-400">The physics behind the frequencies, shapes, and timing.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+          {/* Resonance */}
+          <div className="p-5 rounded-lg border-l-2 border-l-[#f59e0b] bg-white/[0.02]">
+            <p className="text-white font-bold text-sm mb-2">Resonance</p>
+            <p className="text-[12px] text-gray-300 leading-relaxed mb-3">
+              These pulses work because the microwave frequency matches the qubit{'\u2019'}s
+              energy gap: E{'\u2009'}={'\u2009'}h{'\u00d7'}f. A 5 GHz qubit absorbs 5 GHz photons. Off-resonance,
+              the pulse bounces off. This is why each qubit sounds like a different pitch —
+              they{'\u2019'}re fabricated at different frequencies so pulses don{'\u2019'}t crosstalk.
+            </p>
+            <a
+              href="/resonance"
+              className="inline-flex items-center gap-1.5 text-xs text-[#f59e0b] hover:underline font-mono"
+            >
+              Explore resonance {'\u2192'}
+            </a>
+          </div>
+
+          {/* Scheduling */}
+          <div className="p-5 rounded-lg border-l-2 border-l-cyan-400 bg-white/[0.02]">
+            <p className="text-white font-bold text-sm mb-2">Parallel Scheduling</p>
+            <p className="text-[12px] text-gray-300 leading-relaxed">
+              Gates on independent qubits execute simultaneously, just like real hardware.
+              CZ gates block both qubits; single-qubit gates only block one.
+              {circuit.numQubits > 1 && ` This ${circuit.numQubits}-qubit circuit takes ${totalNs} ns — shorter than
+              sequential because parallel gates overlap.`}
+              {' '}The schedule above shows exactly when each pulse fires.
+            </p>
+          </div>
+
+          {/* DRAG */}
+          <div className="p-5 rounded-lg border-l-2 border-l-[#00d4ff] bg-white/[0.02]">
+            <p className="text-white font-bold text-sm mb-2">Why DRAG Pulses Are Shaped This Way</p>
+            <p className="text-[12px] text-gray-300 leading-relaxed">
+              A transmon isn{'\u2019'}t a perfect two-level system — it has a third level |2{'\u27E9'} nearby.
+              A plain Gaussian would leak population there. DRAG adds a derivative correction
+              on the Q-channel ({'\u03b2'}{'\u00d7'}dG/dt) that cancels this leakage. The 4{'\u03c3'} truncation
+              and lifted baseline ensure the pulse starts and ends at exactly zero.
+            </p>
+          </div>
+
+          {/* SNZ */}
+          <div className="p-5 rounded-lg border-l-2 border-l-[#ff6b9d] bg-white/[0.02]">
+            <p className="text-white font-bold text-sm mb-2">Why CZ Pulses Have Two Lobes</p>
+            <p className="text-[12px] text-gray-300 leading-relaxed">
+              The Sudden Net-Zero CZ (Negirneac 2021) intentionally maximizes leakage
+              in each lobe — then the two opposite-polarity lobes destructively interfere,
+              canceling the leakage while accumulating a conditional {'\u03C0'}-phase. The net-zero
+              constraint ({'\u222B'}{'\u03A6'}dt{'\u2009'}={'\u2009'}0) also cancels low-frequency flux noise.
+            </p>
           </div>
         </div>
 
-        {/* How it works */}
-        <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 mb-4">
-          <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">How It Works</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-gray-400">
-            <div>
-              <p className="text-white font-bold mb-1">Parallel Scheduling</p>
-              <p>
-                Gates on independent qubits execute simultaneously, just like real hardware.
-                The schedule shows how a {circuit.numQubits > 1 ? `${circuit.numQubits}-qubit` : 'single-qubit'} circuit
-                maps to physical pulses. CZ gates block both qubits; single-qubit gates only block one.
-                {circuit.numQubits > 1 && ` This circuit takes ${totalNs} ns — shorter than
-                sequential because parallel gates overlap.`}
-              </p>
-            </div>
-            <div>
-              <p className="text-white font-bold mb-1">DRAG Pulses</p>
-              <p>
-                Derivative Removal by Adiabatic Gate (Motzoi et al., 2009).
-                The I-channel is a Gaussian truncated at {'\u00b1'}4{'\u03c3'}, lifted so edges
-                are exactly zero. The Q-channel carries {'\u03b2'}{'\u00d7'}dG/dt, a derivative
-                correction that suppresses leakage to the transmon{'\u2019'}s |2{'\u27E9'} state.
-              </p>
-            </div>
-            <div>
-              <p className="text-white font-bold mb-1">SNZ Flux Pulses</p>
-              <p>
-                Sudden Net-Zero CZ (Negirneac et al., 2021). Two rectangular flux
-                lobes of opposite polarity, separated by an idle gap. The {'\u201C'}sudden{'\u201D'}
-                shape intentionally maximizes leakage per lobe — then the two lobes
-                destructively interfere, canceling leakage while accumulating a
-                conditional {'\u03C0'}-phase.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Why these frequencies */}
-        <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 mb-4">
-          <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">Why These Frequencies</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-gray-400">
-            <div>
-              <p className="text-white font-bold mb-1">Resonance</p>
-              <p>
-                These pulses only work because the microwave frequency matches the qubit{'\u2019'}s
-                energy gap: E = h{'\u00d7'}f. A 5 GHz qubit absorbs 5 GHz photons. Off-resonance,
-                the pulse bounces off. This is the same physics as tuning a radio — you pick up
-                the station that matches your antenna{'\u2019'}s resonant frequency.
-              </p>
-            </div>
-            <div>
-              <p className="text-white font-bold mb-1">Frequency Multiplexing</p>
-              <p>
-                Each qubit is fabricated at a slightly different frequency (5.0, 5.2, 5.4 GHz).
-                A pulse at 5.0 GHz rotates Q0 without disturbing Q1 or Q2 — like
-                speaking to one person in a room by using their name. This is why you hear
-                different pitches for each qubit.
-              </p>
-            </div>
-            <div>
-              <p className="text-white font-bold mb-1">Explore Further</p>
-              <p className="mb-2">
-                The Resonance module covers spectroscopy, Lorentzian peaks, and
-                avoided crossings — the physics that determines these frequencies.
-              </p>
-              <a
-                href="/resonance"
-                className="inline-flex items-center gap-1.5 text-[#f59e0b] hover:underline font-mono"
-              >
-                Resonance {'\u2192'}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* References */}
-        <details className="bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden">
-          <summary className="px-6 py-3 text-xs font-mono text-gray-400 cursor-pointer hover:text-gray-300 transition-colors">
+        {/* References — collapsible */}
+        <details className="rounded-lg overflow-hidden border border-white/5 mb-4">
+          <summary className="px-5 py-3 text-xs font-mono text-gray-400 cursor-pointer hover:text-gray-200 transition-colors bg-white/[0.02]">
             References
           </summary>
-          <div className="px-6 pb-4 text-xs text-gray-500 space-y-1.5 font-mono">
+          <div className="px-5 pb-4 pt-2 text-xs text-gray-400 space-y-1.5 font-mono bg-white/[0.01]">
             <p>Motzoi et al., {'\u201C'}Simple pulses for elimination of leakage in weakly nonlinear qubits,{'\u201D'} PRL 103, 110501 (2009)</p>
             <p>Gambetta et al., {'\u201C'}Analytic control methods for high-fidelity unitary operations,{'\u201D'} PRA 83, 012308 (2011)</p>
             <p>McKay et al., {'\u201C'}Efficient Z gates for quantum computing,{'\u201D'} PRA 96, 022330 (2017)</p>
@@ -1211,23 +1206,6 @@ export default function PulsePlayerClient() {
 }
 
 // ─── Sub-components ─────────────────────────────────────────────────────────────
-
-function GateLegendItem({ type, desc, realNs }: { type: GateType; desc: string; realNs: number }) {
-  return (
-    <div className="flex items-start gap-2">
-      <div className="w-2.5 h-2.5 rounded-sm mt-0.5 shrink-0" style={{ backgroundColor: GATE_COLORS[type] }} />
-      <div>
-        <div className="text-xs font-mono font-bold text-white">
-          {type}
-          <span className="text-gray-500 font-normal ml-1.5">
-            {realNs === 0 ? '0 ns' : `${realNs} ns`}
-          </span>
-        </div>
-        <p className="text-[10px] text-gray-500 leading-relaxed">{desc}</p>
-      </div>
-    </div>
-  )
-}
 
 function CircuitDiagram({ circuit, currentGateIdx }: { circuit: CircuitDefinition; currentGateIdx: number }) {
   const wireY = (q: number) => 30 + q * 50
