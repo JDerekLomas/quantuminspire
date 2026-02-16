@@ -1,0 +1,251 @@
+{
+  "experiment": "LiH 4-qubit ZNE (CZ gate folding)",
+  "submitted": "2026-02-16T08:02:18.217281+00:00",
+  "backend": "Tuna-9",
+  "physical_qubits": {
+    "0": 2,
+    "1": 4,
+    "2": 6,
+    "3": 8
+  },
+  "n_shots": 4096,
+  "n_reps": 5,
+  "fold_factors": [
+    3,
+    5
+  ],
+  "fold1_data": "lih-4qubit-tuna9-counts.json",
+  "fold1_cal": "reusing calibration from fold=1 run",
+  "n_circuits": 90,
+  "job_ids": {
+    "f3_rep0_Z": 433747,
+    "f3_rep0_q0Y_q2Y": 433748,
+    "f3_rep0_q0X_q2X": 433749,
+    "f3_rep0_q1Y_q3Y": 433750,
+    "f3_rep0_q1X_q3X": 433751,
+    "f3_rep0_q0Y_q1X_q2X_q3Y": 433752,
+    "f3_rep0_q0Y_q1Y_q2X_q3X": 433753,
+    "f3_rep0_q0X_q1X_q2Y_q3Y": 433754,
+    "f3_rep0_q0X_q1Y_q2Y_q3X": 433755,
+    "f3_rep1_Z": 433756,
+    "f3_rep1_q0Y_q2Y": 433757,
+    "f3_rep1_q0X_q2X": 433758,
+    "f3_rep1_q1Y_q3Y": 433759,
+    "f3_rep1_q1X_q3X": 433760,
+    "f3_rep1_q0Y_q1X_q2X_q3Y": 433761,
+    "f3_rep1_q0Y_q1Y_q2X_q3X": 433762,
+    "f3_rep1_q0X_q1X_q2Y_q3Y": 433763,
+    "f3_rep1_q0X_q1Y_q2Y_q3X": 433764,
+    "f3_rep2_Z": 433765,
+    "f3_rep2_q0Y_q2Y": 433766,
+    "f3_rep2_q0X_q2X": 433767,
+    "f3_rep2_q1Y_q3Y": 433768,
+    "f3_rep2_q1X_q3X": 433769,
+    "f3_rep2_q0Y_q1X_q2X_q3Y": 433770,
+    "f3_rep2_q0Y_q1Y_q2X_q3X": 433771,
+    "f3_rep2_q0X_q1X_q2Y_q3Y": 433772,
+    "f3_rep2_q0X_q1Y_q2Y_q3X": 433773,
+    "f3_rep3_Z": 433774,
+    "f3_rep3_q0Y_q2Y": 433775,
+    "f3_rep3_q0X_q2X": 433776,
+    "f3_rep3_q1Y_q3Y": 433777,
+    "f3_rep3_q1X_q3X": 433778,
+    "f3_rep3_q0Y_q1X_q2X_q3Y": 433779,
+    "f3_rep3_q0Y_q1Y_q2X_q3X": 433780,
+    "f3_rep3_q0X_q1X_q2Y_q3Y": 433781,
+    "f3_rep3_q0X_q1Y_q2Y_q3X": 433782,
+    "f3_rep4_Z": 433783,
+    "f3_rep4_q0Y_q2Y": 433784,
+    "f3_rep4_q0X_q2X": 433785,
+    "f3_rep4_q1Y_q3Y": 433786,
+    "f3_rep4_q1X_q3X": 433787,
+    "f3_rep4_q0Y_q1X_q2X_q3Y": 433788,
+    "f3_rep4_q0Y_q1Y_q2X_q3X": 433789,
+    "f3_rep4_q0X_q1X_q2Y_q3Y": 433790,
+    "f3_rep4_q0X_q1Y_q2Y_q3X": 433791,
+    "f5_rep0_Z": 433792,
+    "f5_rep0_q0Y_q2Y": 433793,
+    "f5_rep0_q0X_q2X": 433794,
+    "f5_rep0_q1Y_q3Y": 433795,
+    "f5_rep0_q1X_q3X": 433796,
+    "f5_rep0_q0Y_q1X_q2X_q3Y": 433797,
+    "f5_rep0_q0Y_q1Y_q2X_q3X": 433798,
+    "f5_rep0_q0X_q1X_q2Y_q3Y": 433799,
+    "f5_rep0_q0X_q1Y_q2Y_q3X": 433800,
+    "f5_rep1_Z": 433801,
+    "f5_rep1_q0Y_q2Y": 433802,
+    "f5_rep1_q0X_q2X": 433803,
+    "f5_rep1_q1Y_q3Y": 433804,
+    "f5_rep1_q1X_q3X": 433805,
+    "f5_rep1_q0Y_q1X_q2X_q3Y": 433806,
+    "f5_rep1_q0Y_q1Y_q2X_q3X": 433807,
+    "f5_rep1_q0X_q1X_q2Y_q3Y": 433808,
+    "f5_rep1_q0X_q1Y_q2Y_q3X": 433809,
+    "f5_rep2_Z": 433810,
+    "f5_rep2_q0Y_q2Y": 433811,
+    "f5_rep2_q0X_q2X": 433812,
+    "f5_rep2_q1Y_q3Y": 433813,
+    "f5_rep2_q1X_q3X": 433814,
+    "f5_rep2_q0Y_q1X_q2X_q3Y": 433815,
+    "f5_rep2_q0Y_q1Y_q2X_q3X": 433816,
+    "f5_rep2_q0X_q1X_q2Y_q3Y": 433817,
+    "f5_rep2_q0X_q1Y_q2Y_q3X": 433818,
+    "f5_rep3_Z": 433819,
+    "f5_rep3_q0Y_q2Y": 433820,
+    "f5_rep3_q0X_q2X": 433821,
+    "f5_rep3_q1Y_q3Y": 433822,
+    "f5_rep3_q1X_q3X": 433823,
+    "f5_rep3_q0Y_q1X_q2X_q3Y": 433824,
+    "f5_rep3_q0Y_q1Y_q2X_q3X": 433825,
+    "f5_rep3_q0X_q1X_q2Y_q3Y": 433826,
+    "f5_rep3_q0X_q1Y_q2Y_q3X": 433827,
+    "f5_rep4_Z": 433828,
+    "f5_rep4_q0Y_q2Y": 433829,
+    "f5_rep4_q0X_q2X": 433830,
+    "f5_rep4_q1Y_q3Y": 433831,
+    "f5_rep4_q1X_q3X": 433832,
+    "f5_rep4_q0Y_q1X_q2X_q3Y": 433833,
+    "f5_rep4_q0Y_q1Y_q2X_q3X": 433834,
+    "f5_rep4_q0X_q1X_q2Y_q3Y": 433835,
+    "f5_rep4_q0X_q1Y_q2Y_q3X": 433836
+  },
+  "n_submitted": 90,
+  "n_failed": 0,
+  "optimal_params": [
+    0.038174879800962555,
+    -2.8710483985762977e-05,
+    -3.3674130395102014e-05,
+    3.106838748116853,
+    -5.5928043028862676e-05,
+    -3.1413840024522823,
+    -0.00011881317251419843,
+    3.17639539952274
+  ],
+  "measurement_groups": {
+    "Z": [],
+    "q0Y_q2Y": [
+      [
+        0,
+        "Y"
+      ],
+      [
+        2,
+        "Y"
+      ]
+    ],
+    "q0X_q2X": [
+      [
+        0,
+        "X"
+      ],
+      [
+        2,
+        "X"
+      ]
+    ],
+    "q1Y_q3Y": [
+      [
+        1,
+        "Y"
+      ],
+      [
+        3,
+        "Y"
+      ]
+    ],
+    "q1X_q3X": [
+      [
+        1,
+        "X"
+      ],
+      [
+        3,
+        "X"
+      ]
+    ],
+    "q0Y_q1X_q2X_q3Y": [
+      [
+        0,
+        "Y"
+      ],
+      [
+        1,
+        "X"
+      ],
+      [
+        2,
+        "X"
+      ],
+      [
+        3,
+        "Y"
+      ]
+    ],
+    "q0Y_q1Y_q2X_q3X": [
+      [
+        0,
+        "Y"
+      ],
+      [
+        1,
+        "Y"
+      ],
+      [
+        2,
+        "X"
+      ],
+      [
+        3,
+        "X"
+      ]
+    ],
+    "q0X_q1X_q2Y_q3Y": [
+      [
+        0,
+        "X"
+      ],
+      [
+        1,
+        "X"
+      ],
+      [
+        2,
+        "Y"
+      ],
+      [
+        3,
+        "Y"
+      ]
+    ],
+    "q0X_q1Y_q2Y_q3X": [
+      [
+        0,
+        "X"
+      ],
+      [
+        1,
+        "Y"
+      ],
+      [
+        2,
+        "Y"
+      ],
+      [
+        3,
+        "X"
+      ]
+    ]
+  },
+  "E_CASCI": -7.862128833438587,
+  "richardson_coefficients": {
+    "linear_f1_f3": {
+      "f1": 1.5,
+      "f3": -0.5
+    },
+    "quadratic_f1_f3_f5": {
+      "f1": 1.875,
+      "f3": -1.25,
+      "f5": 0.375
+    }
+  }
+}

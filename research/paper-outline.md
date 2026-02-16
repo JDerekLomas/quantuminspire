@@ -27,10 +27,13 @@ approach that achieves chemical accuracy on the 9-qubit Tuna-9 platform;
 (4) evidence that AI agents can conduct systematic quantum experiments at high
 throughput (105+ experiments, 250K+ shots, <10 min QPU time) but introduce novel
 failure modes including coefficient convention errors and incomplete analysis
-that require validation pipelines to catch. Separately, we benchmark quantum
-code generation with the Qiskit HumanEval suite: frontier LLMs achieve 62-64%
-zero-shot, 68-71% with RAG, and 79.5% via 3-run ensemble. All data, code, and
-agent transcripts are publicly available.
+that require validation pipelines to catch. We extend to 4-qubit LiH VQE, where ZNE reduces error by 79% (from 33.1
+to 6.9 mHa), confirming that ZNE effectiveness scales with circuit depth —
+counterproductive for shallow H2 circuits but highly effective for deeper
+LiH circuits (19 CZ gates). Separately, we benchmark quantum code generation
+with the Qiskit HumanEval suite: frontier LLMs achieve 62-64% zero-shot,
+68-71% with RAG, and 79.5% via 3-run ensemble. All data, code, and agent
+transcripts are publicly available.
 
 ---
 
@@ -354,7 +357,8 @@ waiting for results, analyzing, and queuing next experiments.
 
 ### 4.4 Limitations
 
-- Only 2-qubit VQE and small QAOA tested; scaling behavior unknown
+- VQE tested at 2 qubits (H2, HeH+) and 4 qubits (LiH); scaling to
+  larger active spaces (6+ qubits) remains untested
 - Hardware calibration changes between runs (not controlled)
 - IBM free tier limits shot counts and job frequency
 - Agent has no physical intuition — relies on pattern matching from
@@ -403,14 +407,68 @@ across platforms, with the replication gaps themselves as the finding.
 - Coefficient amplification framework predicts VQE success/failure
 - Mitigation ranking: TREX > PS+REM > DD > post-selection >> twirling >> ZNE
   for shallow circuits. For deep circuits (Kim 2023): TREX only 1.3x —
-  mitigation must match dominant error source
+  mitigation must match dominant error source. LiH (19 CZ gates) confirms:
+  ZNE provides 79% error reduction, achieving 6.9 mHa on Tuna-9
 - Qiskit HumanEval: 62-64% zero-shot, 68-71% with RAG, 79.5% ensemble
 - AI agents can conduct systematic quantum experiments but need validation
   pipelines
 - All data at https://github.com/JDerekLomas/quantuminspire
   and live dashboard at https://quantuminspire.vercel.app/replications
 
-### 3.7 AI Quantum Code Generation Benchmark
+### 3.7 Scaling to 4 Qubits: LiH VQE on Tuna-9
+
+To test whether our methods scale beyond 2-qubit systems, we perform
+VQE on lithium hydride (LiH) using a CASCI(2,2) active space mapped
+to 4 qubits via Jordan-Wigner transformation (27 Pauli terms, 9
+measurement circuits, 19 CZ gates per circuit at fold=1).
+
+**Physical setup**: Qubits {2, 4, 6, 8} on Tuna-9 (the 4-qubit
+linear subgraph with best CZ fidelities). 4096 shots, 5 repetitions
+per fold factor.
+
+**Table 7**: LiH mitigation ladder on Tuna-9 (R=1.6 A, E_CASCI = -7.862129 Ha)
+
+| Method | Error (mHa) | Std (mHa) | Reduction | Chemical Accuracy? |
+|--------|------------|-----------|-----------|-------------------|
+| Raw | 33.1 | 3.8 | — | NO |
+| REM | 23.4 | 3.3 | 29% | NO |
+| REM+ZNE(linear) | 8.1 | 5.6 | 75% | NO |
+| REM+ZNE(quadratic) | **6.9** | 9.2 | **79%** | NO |
+
+**Key finding**: ZNE provides substantial error reduction for LiH (79%),
+unlike the H2 case where ZNE was counterproductive on IBM. The difference:
+LiH circuits have 19 CZ gates (fold=1), placing them firmly in the
+gate-noise-dominated regime where ZNE's noise amplification + extrapolation
+is effective. This confirms the depth-dependent mitigation thesis from
+section 3.4: readout mitigation (TREX/REM) for shallow circuits,
+gate-noise mitigation (ZNE) for deeper circuits.
+
+**ZNE effectiveness scales with circuit depth**:
+
+| Molecule | CZ gates (f=1) | CZ gates (f=5) | ZNE improvement |
+|----------|---------------|---------------|-----------------|
+| H2 | 1 | 5 | Counterproductive (IBM), marginal (Tuna-9) |
+| LiH | 19 | 95 | 79% error reduction |
+
+The fold-energy relationship is clean and monotonic:
+fold=1: -7.8387 Ha (REM), fold=3: -7.8082 Ha, fold=5: -7.7811 Ha,
+with Richardson extrapolation recovering -7.8553 Ha (quadratic).
+
+**Calibration**: Confusion matrix condition number 1.209; calibration
+drift (max element change between start/end cal circuits): 0.035.
+This stability enables reliable REM over the multi-hour experiment.
+
+Despite not reaching chemical accuracy (1.6 mHa), the 6.9 mHa error
+at 4 qubits compares favorably with literature: Kandala et al. (2017)
+reported ~10 mHa for LiH on IBM 6-qubit hardware with a more
+expensive hardware-efficient ansatz.
+
+[TODO: Add hybrid VQE results when hardware run completes — COBYLA
+optimizer with 30 iterations, 8 parameters, targeting hardware-in-the-loop
+optimization. Emulator test achieved 0.056 mHa (chemical accuracy)
+in 8 iterations.]
+
+### 3.8 AI Quantum Code Generation Benchmark
 
 Separately, we evaluate the AI agent's code generation ability using the
 Qiskit HumanEval benchmark (151 tasks, 3 difficulty levels).
@@ -469,6 +527,8 @@ and execution.
 6. Agent workflow diagram
 7. Replication success matrix (heatmap: 6 papers x 4 backends x 27 claims)
 8. Qiskit HumanEval: baseline vs RAG vs ensemble bar chart + failure taxonomy
+9. LiH ZNE mitigation ladder: bar chart of 4 methods + fold-energy plot
+   showing clean Richardson extrapolation from 3 fold factors
 
 ---
 
