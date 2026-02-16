@@ -32,6 +32,7 @@ Each experiment was executed on three superconducting quantum processors---QI Tu
 Of 27 claims tested, 25 (93\%) were successfully replicated, with all failures attributable to hardware noise rather than algorithmic errors.
 Chemical accuracy for H$_2$ VQE was achieved on both IBM Torino (0.22\kcalmol{} with TREX) and QI Tuna-9 (0.56\kcalmol{} via a true hybrid classical-quantum optimization loop with readout error mitigation).
 We certify QV${}=16$ on Tuna-9 with 100 random circuits (mean heavy output fraction 0.757, $2\sigma$ confidence), characterize all 9 qubits via randomized benchmarking (mean gate fidelity 99.55\%), and demonstrate that stacked readout error mitigation with quadratic zero-noise extrapolation achieves 2.9\,mHa average error across the H$_2$ dissociation curve---with 3 of 7 bond distances at chemical accuracy.
+Extending to LiH (4 qubits, CASCI(2,2) active space), we observe a $3\times$ error increase over H$_2$, consistent with the additional CZ gate layers and quantifying the scaling limit for chemistry on current hardware.
 Cross-platform execution reveals systematic differences in noise character: Tuna-9 and Garnet exhibit dephasing noise while Torino shows depolarizing noise.
 All code, data, and replication reports are available at \url{https://github.com/JDerekLomas/quantuminspire}.
 \end{abstract}
@@ -56,7 +57,7 @@ This work makes five contributions:
 \begin{enumerate}
   \item A systematic replication of six landmark quantum computing papers across three hardware platforms, achieving a 93\% overall pass rate (25/27 claims).
   \item A cross-platform diagnostic suite that reveals distinct noise fingerprints across processors: dephasing on Tuna-9 and IQM Garnet versus depolarizing on IBM Torino.
-  \item A comprehensive characterization of Tuna-9: QV${}=16$ certification (100 circuits), single-qubit randomized benchmarking on all 9 qubits (mean fidelity 99.55\%), and a stacked error mitigation ladder (Raw $\to$ REM $\to$ REM+ZNE) reducing H$_2$ VQE error from 31.8 to 2.9\,mHa.
+  \item A comprehensive characterization of Tuna-9: QV${}=16$ certification (100 circuits), single-qubit randomized benchmarking on all 9 qubits (mean fidelity 99.55\%), a stacked error mitigation ladder (Raw $\to$ REM $\to$ REM+ZNE) reducing H$_2$ VQE error from 31.8 to 2.9\,mHa, and a multi-molecule scaling study (H$_2$ to LiH) quantifying the $3\times$ error increase from 2 to 4 qubits.
   \item A true hybrid classical-quantum VQE loop with COBYLA optimization calling Tuna-9 hardware at each iteration, achieving chemical accuracy (0.9\,mHa) in 17 iterations.
   \item An open-source replication pipeline and dataset comprising 100+ experiment result files, 600{,}000+ measurement shots, and structured replication reports.
 \end{enumerate}
@@ -382,7 +383,7 @@ With pre-optimized parameters, Tuna-9 achieves $0.92\kcalmol$ using hybrid post-
 \begin{figure}[h]
   \centering
   \includegraphics[width=\columnwidth]{figures/fig5_vqe_h2.pdf}
-  \caption{H$_2$ potential energy surface. Exact FCI values (black), emulator (grey dashed, nearly indistinguishable), Tuna-9 with post-selection (blue), and IBM Torino with TREX (green diamond, single point at $R = 0.735$\,\AA{} within the chemical accuracy band). Hardware error increases at large $R$ where entanglement gates amplify noise.}
+  \caption{H$_2$ potential energy surface on Tuna-9 across the error mitigation ladder. Exact FCI values (black), REM only (grey circles, 5-rep mean $\pm$ std), REM+ZNE quadratic (blue squares), and hybrid VQE with COBYLA optimizer (red star, 0.9\,mHa at $R = 0.735$\,\AA). Green band shows chemical accuracy ($\pm 1.6$\,mHa). ZNE reduces average error from 7.4 to 2.9\,mHa; the hybrid loop achieves chemical accuracy.}
   \label{fig:vqe}
 \end{figure}
 
@@ -392,6 +393,14 @@ An initial attempt produced $60.34\kcalmol$ due to a CNOT decomposition error sp
 This negates the $\langle XX \rangle$ and $\langle YY \rangle$ correlators, producing the wrong VQE energy.
 The correct decomposition uses $R_y(\pi/2) \cdot CZ \cdot R_y(-\pi/2)$, yielding a $4.2\times$ error reduction.
 This platform-specific gate decomposition subtlety is not documented in IQM's public materials and was discovered through systematic debugging of sign-flipped expectation values.
+
+To probe noise scaling with circuit size, we extended the VQE to LiH using a CASCI(2,2) active space (4 qubits, Jordan-Wigner encoding).
+The 4-qubit circuit requires three CZ layers in the hardware-efficient ansatz---versus one for H$_2$---and the molecular Hamiltonian has 27 Pauli terms grouped into 9 measurement circuits.
+Classical VQE converges to $E_\text{CASCI} = -7.862\Ha$ with 0.015\,mHa error.
+On Tuna-9 (physical qubits q[2,4,6,8], 5 reps, 4096 shots), raw energies give $33.1 \pm 3.4$\,mHa error; REM reduces this to $23.4 \pm 3.0$\,mHa---still $15\times$ above chemical accuracy.
+The $3\times$ error increase from H$_2$ (7.4\,mHa with REM) to LiH (23.4\,mHa) is consistent with the additional CZ gates: the 2-qubit H$_2$ circuit has 1 CZ gate, while the 4-qubit LiH circuit has 3, each contributing $\sim$5--8\,mHa of accumulated gate error.
+Calibration drift during the LiH batch was minimal ($< 1\%$ mean fidelity change across 16 calibration states).
+This quantifies the practical scaling limit of Tuna-9 for chemistry: 2-qubit VQE achieves chemical accuracy with mitigation, but 4-qubit VQE requires error correction or substantially improved gate fidelities.
 
 HeH$^+$, however, proves far more challenging.
 The molecular Hamiltonian has a $|g_1|/|g_4|$ ratio of 7.8 (vs.\ 4.4 for H$_2$), meaning single-qubit $Z$ errors are amplified $\sim$20$\times$ relative to the entanglement signal.
@@ -595,6 +604,7 @@ QV~$= 16$ is certified with high confidence (100 circuits, mean HOF $= 0.757$, 9
 Randomized benchmarking across all 9 qubits reveals a wide spread in gate fidelity (98.64\%--99.96\%), with the best qubits (q6, q7) approaching the $10^{-3}$ error per Clifford threshold.
 Most significantly, stacked REM + quadratic ZNE reduces H$_2$ VQE error to 2.9\,mHa average across the full dissociation curve, with 3 of 7 bond distances at chemical accuracy---overturning our earlier finding that ZNE was ineffective on this platform.
 The true hybrid VQE loop (COBYLA optimizer calling hardware at each iteration) achieves 0.9\,mHa at equilibrium, the best single-point result and a demonstration that Tuna-9's noise is low enough for hardware-in-the-loop optimization.
+Extending to LiH (4 qubits, CASCI(2,2)) reveals a $3\times$ error increase over H$_2$ ($23.4$ vs.\ $7.4$\,mHa with REM), consistent with the tripling of CZ gate layers and establishing the practical boundary where error mitigation alone is insufficient.
 
 The cross-platform comparison---three chips, one test suite---provides a rare apples-to-apples benchmark.
 We find that noise character (dephasing vs.\ depolarizing) is a more useful hardware descriptor than headline metrics like quantum volume, particularly for predicting VQE performance.

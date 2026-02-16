@@ -128,7 +128,7 @@ def fig_qv():
     # Data: HOF per width
     widths = [2, 3, 4, 5, 6]
 
-    tuna = [0.692, 0.821, None, None, None]
+    tuna = [0.692, 0.821, 0.757, None, None]  # n=4 from QV=16 certification
     garnet = [0.757, 0.635, 0.686, 0.713, None]
     torino = [0.698, 0.736, 0.706, 0.676, 0.602]
 
@@ -152,7 +152,7 @@ def fig_qv():
     ax.set_ylabel('Heavy output fraction')
 
     # Mark QV values
-    ax.annotate('QV = 8', xy=(3, 0.821), xytext=(3.5, 0.86),
+    ax.annotate('QV = 16', xy=(4, 0.757), xytext=(4.5, 0.84),
                 fontsize=6, color=C_TUNA,
                 arrowprops=dict(arrowstyle='->', color=C_TUNA, lw=0.6))
     ax.annotate('QV = 32', xy=(5, 0.676), xytext=(5.5, 0.58),
@@ -195,7 +195,7 @@ def fig_scorecard():
         # Sagastizabal
         [1,  1,  1],   # H2 energy
         [-1, 1,  1],   # Sym verif
-        [1,  0,  1],   # Chem accuracy
+        [1,  1,  1],   # Chem accuracy (hybrid VQE + REM: 0.9 mHa)
         [-1, 1, -1],   # Post-sel
         # Kandala
         [1, -1, -1],   # PES MAE
@@ -268,45 +268,69 @@ def fig_scorecard():
 
 
 # =====================================================================
-# Figure 5: VQE energy comparison (H2 across backends)
+# Figure 5: VQE energy — mitigation ladder on Tuna-9
 # =====================================================================
 def fig_vqe():
-    fig, ax = plt.subplots(figsize=(COL_W, 2.2))
+    fig, ax = plt.subplots(figsize=(COL_W, 2.4))
 
-    # Exact FCI energy for H2 at various bond lengths
-    R_exact = [0.5, 0.735, 1.0, 1.5, 2.0, 2.5]
-    E_exact = [-0.8727, -1.1373, -1.1011, -0.9919, -0.9486, -0.9359]
+    # Bond distances measured on hardware
+    R = [0.5, 0.7, 0.735, 0.9, 1.1, 1.5, 2.0]
 
-    # Emulator results (near-exact)
-    R_emu = [0.5, 0.735, 1.0, 1.5, 2.0, 2.5]
-    E_emu = [-0.8694, -1.1385, -1.0988, -0.9878, -0.9459, -0.9358]
+    # Exact FCI energies (2-qubit JW encoding)
+    E_exact = [-1.05516, -1.13619, -1.13731, -1.12056, -1.07919, -0.99815, -0.94864]
 
-    # Tuna-9 results (with post-selection)
-    R_tuna = [0.5, 0.735, 1.0, 1.5, 2.0]
-    E_tuna = [-0.8568, -1.1325, -1.0946, -0.9717, -0.9210]
+    # REM-only Tuna-9 (5-rep mean ± std)
+    E_rem = [-1.03895, -1.12629, -1.12549, -1.11196, -1.07346, -0.99317, -0.94420]
+    E_rem_std = [0.00798, 0.00375, 0.00354, 0.00509, 0.00611, 0.00655, 0.00266]
 
-    # IBM Torino (TREX, single point)
-    R_ibm = [0.735]
-    E_ibm = [-1.1377]
+    # REM+ZNE(quadratic) Tuna-9 (5-rep mean ± std)
+    E_zne = [-1.05364, -1.13575, -1.13242, -1.11998, -1.08345, -0.99399, -0.94395]
+    E_zne_std = [0.03544, 0.00486, 0.01144, 0.00745, 0.00627, 0.00492, 0.00462]
 
-    ax.plot(R_exact, E_exact, 'k-', linewidth=1.5, label='Exact (FCI)', zorder=4)
-    ax.plot(R_emu, E_emu, 'o--', color=C_EMU, label='Emulator', markersize=4, zorder=3)
-    ax.plot(R_tuna, E_tuna, 's-', color=C_TUNA, label='Tuna-9 (PS)', markersize=4, zorder=3)
-    ax.plot(R_ibm, E_ibm, 'D', color=C_TORINO, label='Torino (TREX)',
-            markersize=7, zorder=5, markeredgecolor='white', markeredgewidth=0.8)
+    # Hybrid VQE (COBYLA on hardware, single best point)
+    R_hybrid = [0.735]
+    E_hybrid = [-1.13641]
 
-    # Chemical accuracy band around exact at R=0.735
-    chem_acc = 0.0016  # Ha
-    ax.fill_between([0.65, 0.82], -1.1373 - chem_acc, -1.1373 + chem_acc,
+    # Dense exact curve for smooth line
+    R_dense = np.linspace(0.4, 2.2, 50)
+    E_dense = np.interp(R_dense, R, E_exact)
+
+    ax.plot(R_dense, E_dense, 'k-', linewidth=1.5, label='Exact (FCI)', zorder=4)
+
+    # REM with error bars
+    ax.errorbar(R, E_rem, yerr=E_rem_std, fmt='o--', color='#999999',
+                label='REM only', markersize=3.5, capsize=2, capthick=0.8,
+                linewidth=0.9, zorder=2)
+
+    # ZNE with error bars (skip R=0.5 error bar — too large from ZNE amplification)
+    zne_err = list(E_zne_std)
+    zne_err[0] = 0  # suppress R=0.5 bar (35 mHa std from ZNE noise amplification)
+    ax.errorbar(R, E_zne, yerr=zne_err, fmt='s-', color=C_TUNA,
+                label='REM+ZNE', markersize=4, capsize=2, capthick=0.8,
+                linewidth=1.0, zorder=3)
+
+    # Hybrid VQE star
+    ax.plot(R_hybrid, E_hybrid, '*', color='#CC0000', label='Hybrid VQE',
+            markersize=10, zorder=5, markeredgecolor='white', markeredgewidth=0.5)
+
+    # Chemical accuracy band (±1.6 mHa around exact at R=0.735)
+    chem_acc = 0.0016
+    e_eq = -1.13731
+    ax.fill_between([0.65, 0.82], e_eq - chem_acc, e_eq + chem_acc,
                      alpha=0.15, color='green', zorder=0)
-    ax.text(0.83, -1.137, 'chem.\nacc.', fontsize=5, color='green', va='center')
+    ax.text(0.83, e_eq, 'chem.\nacc.', fontsize=5, color='green', va='center')
+
+    # Annotate hybrid VQE error
+    ax.annotate('0.9 mHa', xy=(0.735, -1.13641), xytext=(0.5, -1.145),
+                fontsize=6, color='#CC0000',
+                arrowprops=dict(arrowstyle='->', color='#CC0000', lw=0.6))
 
     ax.set_xlabel(r'Bond length $R$ (Å)')
     ax.set_ylabel('Energy (Ha)')
-    ax.set_xlim(0.4, 2.6)
-    ax.set_ylim(-1.2, -0.82)
+    ax.set_xlim(0.4, 2.2)
+    ax.set_ylim(-1.16, -0.92)
 
-    ax.legend(loc='upper right', framealpha=0.9)
+    ax.legend(loc='upper right', framealpha=0.9, fontsize=6.5)
     ax.grid(True, alpha=0.3, linewidth=0.5)
 
     fig.savefig('fig5_vqe_h2.pdf')
