@@ -86,6 +86,7 @@ const tools = [
   { href: '/ansatz', title: 'Ansatz Builder', desc: 'VQE circuit construction', color: '#94a3b8' },
   { href: '/hamiltonians', title: 'Hamiltonians', desc: 'Molecular Hamiltonian explorer', color: '#94a3b8' },
   { href: '/sonification', title: 'Sonification Lab', desc: 'Play real experiment data as sound', color: '#e879f9' },
+  { href: '/synth/pulses', title: 'Pulse Player', desc: 'Hear the microwave pulses that control qubits', color: '#f59e0b' },
 ]
 
 const reference = [
