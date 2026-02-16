@@ -1154,6 +1154,44 @@ export default function PulsePlayerClient() {
           </div>
         </div>
 
+        {/* Why these frequencies */}
+        <div className="bg-white/[0.02] border border-white/5 rounded-lg p-6 mb-4">
+          <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-gray-400 mb-4">Why These Frequencies</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-gray-400">
+            <div>
+              <p className="text-white font-bold mb-1">Resonance</p>
+              <p>
+                These pulses only work because the microwave frequency matches the qubit{'\u2019'}s
+                energy gap: E = h{'\u00d7'}f. A 5 GHz qubit absorbs 5 GHz photons. Off-resonance,
+                the pulse bounces off. This is the same physics as tuning a radio — you pick up
+                the station that matches your antenna{'\u2019'}s resonant frequency.
+              </p>
+            </div>
+            <div>
+              <p className="text-white font-bold mb-1">Frequency Multiplexing</p>
+              <p>
+                Each qubit is fabricated at a slightly different frequency (5.0, 5.2, 5.4 GHz).
+                A pulse at 5.0 GHz rotates Q0 without disturbing Q1 or Q2 — like
+                speaking to one person in a room by using their name. This is why you hear
+                different pitches for each qubit.
+              </p>
+            </div>
+            <div>
+              <p className="text-white font-bold mb-1">Explore Further</p>
+              <p className="mb-2">
+                The Resonance module covers spectroscopy, Lorentzian peaks, and
+                avoided crossings — the physics that determines these frequencies.
+              </p>
+              <a
+                href="/resonance"
+                className="inline-flex items-center gap-1.5 text-[#f59e0b] hover:underline font-mono"
+              >
+                Resonance {'\u2192'}
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* References */}
         <details className="bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden">
           <summary className="px-6 py-3 text-xs font-mono text-gray-400 cursor-pointer hover:text-gray-300 transition-colors">
