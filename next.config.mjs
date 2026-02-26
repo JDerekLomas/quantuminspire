@@ -4,7 +4,7 @@ const nextConfig = {
   transpilePackages: ['three'],
   async redirects() {
     return [
-      { source: '/sonification', destination: '/listen', permanent: true },
+      { source: '/listen', destination: '/sonification', permanent: true },
     ]
   },
 }
