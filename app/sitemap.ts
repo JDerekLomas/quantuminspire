@@ -63,6 +63,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/how-qubits-work/scaling`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/sonification`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/synth`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/synth/pulses`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${BASE_URL}/tuna9/trio`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 
     // Interactive tools
     { url: `${BASE_URL}/bloch-sphere`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
