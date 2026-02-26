@@ -45,6 +45,19 @@ export function generateMetadata({ params }: { params: { id: string } }) {
   return {
     title: study.title,
     description: study.researchQuestion,
+    alternates: {
+      canonical: `/experiments/${params.id}`,
+    },
+    openGraph: {
+      title: study.title,
+      description: study.researchQuestion,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image' as const,
+      title: study.title,
+      description: study.researchQuestion,
+    },
   }
 }
 
@@ -657,8 +670,19 @@ export default function ExperimentDetailPage({ params }: { params: { id: string 
   const nextStudy = currentIdx < allStudies.length - 1 ? allStudies[currentIdx + 1] : null
   const color = typeColors[study.type] || '#00d4ff'
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haiqu.org' },
+      { '@type': 'ListItem', position: 2, name: 'Experiments', item: 'https://haiqu.org/experiments' },
+      { '@type': 'ListItem', position: 3, name: study.title },
+    ],
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Nav section="experiments" />
 
       <article className="pt-24 pb-20">

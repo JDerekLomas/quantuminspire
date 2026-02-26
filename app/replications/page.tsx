@@ -6,6 +6,9 @@ import { getAllReports, PAPER_PIPELINE, type ReplicationReport } from '@/lib/rep
 export const metadata = {
   title: 'Paper Reproductions',
   description: 'Testing published quantum computing results on modern hardware with AI-generated circuits. Some are full replications, some are small-scale reproductions.',
+  alternates: {
+    canonical: '/replications',
+  },
 }
 
 // ---------------------------------------------------------------------------

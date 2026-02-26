@@ -25,6 +25,9 @@ import {
 export const metadata = {
   title: 'Live Experiments',
   description: 'Real-time results from quantum experiments running on Quantum Inspire and IBM Quantum hardware.',
+  alternates: {
+    canonical: '/experiments',
+  },
 }
 
 // ---------------------------------------------------------------------------

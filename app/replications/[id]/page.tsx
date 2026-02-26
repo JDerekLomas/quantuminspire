@@ -22,9 +22,23 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { id: string } }) {
   const report = getReportById(params.id)
   if (!report) return { title: 'Not Found' }
+  const passRate = Math.round((report.summary.successes / report.summary.total_claims_tested) * 100)
   return {
     title: `${report.paper.title} — Reproduction`,
     description: `Reproduction of ${report.paper.authors} (${report.paper.journal}). ${report.summary.successes}/${report.summary.total_claims_tested} claims tested across multiple backends.`,
+    alternates: {
+      canonical: `/replications/${params.id}`,
+    },
+    openGraph: {
+      title: `${report.paper.title} — Reproduction`,
+      description: `${passRate}% pass rate. ${report.summary.successes}/${report.summary.total_claims_tested} claims reproduced on ${report.backends_tested.length} backends.`,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image' as const,
+      title: `${report.paper.title} — Reproduction`,
+      description: `${passRate}% pass rate. ${report.summary.successes}/${report.summary.total_claims_tested} claims reproduced on ${report.backends_tested.length} backends.`,
+    },
   }
 }
 
@@ -382,8 +396,42 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
   const prevReport = currentIdx > 0 ? allReports[currentIdx - 1] : null
   const nextReport = currentIdx < allReports.length - 1 ? allReports[currentIdx + 1] : null
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ScholarlyArticle',
+    headline: `${paper.title} — Reproduction`,
+    description: `Reproduction of ${paper.authors} (${paper.journal}). ${summary.successes}/${summary.total_claims_tested} claims tested.`,
+    author: { '@type': 'Organization', name: 'haiqu — TU Delft' },
+    publisher: { '@type': 'Organization', name: 'haiqu — TU Delft' },
+    url: `https://haiqu.org/replications/${params.id}`,
+    datePublished: report.generated,
+    about: {
+      '@type': 'ScholarlyArticle',
+      name: paper.title,
+      author: paper.authors,
+      url: paper.url || `https://arxiv.org/abs/${paper.arxiv}`,
+    },
+    isPartOf: {
+      '@type': 'WebPage',
+      name: 'Paper Reproductions',
+      url: 'https://haiqu.org/replications',
+    },
+  }
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haiqu.org' },
+      { '@type': 'ListItem', position: 2, name: 'Replications', item: 'https://haiqu.org/replications' },
+      { '@type': 'ListItem', position: 3, name: paper.title },
+    ],
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <Nav section="replications" />
 
       <main id="main-content">
