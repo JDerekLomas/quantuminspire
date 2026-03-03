@@ -208,7 +208,7 @@ export default function GetStartedPage() {
               <div className="space-y-2">
                 {[
                   { step: '1', text: 'Claude reads this page and clones the repo' },
-                  { step: '2', text: 'Sets up a Python virtual environment and installs dependencies (Python 3.9-3.13)' },
+                  { step: '2', text: 'Sets up Python 3.12 (3.13 works too — 3.14 does not) and installs dependencies' },
                   { step: '3', text: 'MCP servers start automatically — 3 quantum backends become available as tools' },
                   { step: '4', text: 'You ask for an experiment in natural language. Claude writes the circuit, runs it, and analyzes results.' },
                 ].map(item => (
@@ -225,11 +225,11 @@ export default function GetStartedPage() {
             <p className="text-gray-400 text-xs mt-4">
               No quantum hardware accounts needed — the local emulator runs circuits instantly.
               Add real hardware later when you&apos;re ready.
-              Don&apos;t have Claude Code?{' '}
-              <a href="https://docs.anthropic.com/en/docs/claude-code/overview" className="text-[#00d4ff] hover:underline" target="_blank" rel="noopener noreferrer">
-                Install it first
+              New to Claude Code?{' '}
+              <a href="https://dereklomas.me/lab/claude-code" className="text-[#00d4ff] hover:underline" target="_blank" rel="noopener noreferrer">
+                Getting started guide
               </a>{' '}
-              (requires Node.js 18+ and an Anthropic API key), or see the{' '}
+              — install, first project, and tips (takes 10 minutes). Or see the{' '}
               <a href="#manual-setup" className="text-[#00d4ff] hover:underline">manual setup</a> below.
             </p>
           </div>
@@ -384,11 +384,22 @@ claude`}</CodeBlock>
           </StepCard>
 
           <StepCard step={3} title="Clone the repo and install Python environment">
-            <p>The MCP servers and all experiment code live in the repository. Python 3.9&ndash;3.13 are supported (3.14 breaks qxelarator, the local emulator).</p>
+            <p>The MCP servers and all experiment code live in the repository.</p>
+            <div className="bg-[#f59e0b]/10 border border-[#f59e0b]/30 rounded-lg p-4 my-3">
+              <p className="text-sm font-bold text-[#f59e0b] mb-1">Python version matters</p>
+              <p className="text-xs text-gray-300">
+                Use <strong className="text-white">Python 3.12</strong> (recommended) or 3.13.
+                Python 3.14 breaks <code className="text-[#f59e0b]">qxelarator</code> (the local emulator) due to C extension incompatibilities.
+                If <code className="text-[#f59e0b]">python3 --version</code> shows 3.14+, install 3.12 via{' '}
+                <code className="text-[#f59e0b]">brew install python@3.12</code> (macOS) or{' '}
+                <code className="text-[#f59e0b]">apt install python3.12</code> (Linux) and use{' '}
+                <code className="text-[#f59e0b]">python3.12 -m venv .venv</code> instead.
+              </p>
+            </div>
             <CodeBlock title="terminal">{`git clone https://github.com/JDerekLomas/quantuminspire.git
 cd quantuminspire
 
-python3 -m venv .venv
+python3.12 -m venv .venv      # or python3.13 — NOT python3.14+
 source .venv/bin/activate
 pip install -r mcp-servers/requirements.txt`}</CodeBlock>
             <p className="text-gray-400 text-xs">
