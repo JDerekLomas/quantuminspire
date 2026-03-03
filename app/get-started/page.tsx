@@ -14,7 +14,7 @@ const platforms = [
     qubits: 9,
     color: '#00d4ff',
     signupUrl: 'https://portal.quantum-inspire.com/',
-    signupSteps: 'Create account at portal.quantum-inspire.com, then run: qi login',
+    signupSteps: 'Create account at portal.quantum-inspire.com. Then run: pip install quantuminspire && qi login — it opens your browser to confirm. No API key needed.',
     configFile: '~/.quantuminspire/config.json',
     free: true,
     notes: 'Unlimited jobs. 9 superconducting qubits. cQASM 3.0 (Quantum Inspire\'s circuit language).',
