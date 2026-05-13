@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import InputWidget from '@/components/InputWidget'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://haiqu.org'),
@@ -78,7 +77,6 @@ export default function RootLayout({
           Skip to main content
         </a>
         {children}
-        <InputWidget allowedHosts={["localhost", "haiqu.org", "vercel.app"]} />
       </body>
     </html>
   )

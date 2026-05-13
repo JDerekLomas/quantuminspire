@@ -5,7 +5,6 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Stars, Line, OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import Link from 'next/link'
-import InputWidget from '@/components/InputWidget'
 import {
   blochCoords, applySingleQubitGate,
   H_GATE, X_GATE, Y_GATE, Z_GATE, S_GATE, T_GATE, SDG_GATE, TDG_GATE,
@@ -831,8 +830,6 @@ export default function QuantumShooterPage() {
       >
         &larr; bloch sphere
       </Link>
-
-      <InputWidget />
     </div>
   )
 }
