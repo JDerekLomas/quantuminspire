@@ -1,21 +1,9 @@
 {
   "mcpServers": {
-    "qrng": {
-      "type": "stdio",
-      "command": ".venv/bin/python",
-      "args": ["mcp-servers/qrng/qrng_server.py"],
-      "cwd": "."
-    },
     "qi-circuits": {
       "type": "stdio",
       "command": ".venv/bin/python",
       "args": ["mcp-servers/qi-circuits/qi_server.py"],
-      "cwd": "."
-    },
-    "ibm-quantum": {
-      "type": "stdio",
-      "command": ".venv/bin/python",
-      "args": ["mcp-servers/ibm-quantum/ibm_server.py"],
       "cwd": "."
     }
   }

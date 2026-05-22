@@ -88,10 +88,10 @@ function VibecodingSection() {
         <ScrollReveal delay={0.1}>
           <div className="rounded-lg border border-white/10 bg-white/[0.02] p-5 sm:p-6 mb-12">
             <p className="font-mono text-sm text-gray-300 leading-relaxed mb-3">
-              &gt; Replicate Sagastizabal 2019 on IBM Torino. Try every error mitigation strategy and rank them.
+              &gt; Run H2 VQE on Tuna-9 with native gates. Try post-selection on Hamming weight.
             </p>
             <p className="text-sm text-[#00ff88] leading-relaxed pl-4 border-l border-[#00ff88]/30">
-              TREX (readout error correction) achieves 0.22 kcal/mol — 119x improvement over raw. Adding more mitigation makes it worse.
+              Reached −1.085 Ha — 52 mHa from the FCI ground state. Post-selection cut hardware error 6× and kept 71% of shots.
             </p>
           </div>
         </ScrollReveal>
@@ -118,7 +118,7 @@ function VibecodingSection() {
               className="rounded-lg border border-[#00d4ff]/20 bg-[#00d4ff]/[0.03] p-5 hover:bg-[#00d4ff]/[0.06] hover:border-[#00d4ff]/40 transition-all group"
             >
               <h3 className="text-sm font-bold text-white mb-1 group-hover:text-[#00d4ff] transition-colors">Try it yourself</h3>
-              <p className="text-xs text-gray-500">Claude Code + MCP servers for 3 quantum backends</p>
+              <p className="text-xs text-gray-500">Claude Code + MCP server for Quantum Inspire</p>
             </Link>
             <Link
               href="/get-started#silent-bugs"
