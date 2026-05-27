@@ -277,7 +277,7 @@ export default function QuantumVibecodingPage() {
             <a href="https://dereklomas.me" target="_blank" rel="noopener noreferrer" className="hover:text-[#00d4ff] transition-colors">dereklomas.me</a>
           </div>
           <div>
-            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
+            Quantum Vibecoding &mdash; TU Delft &mdash; 2026
           </div>
         </div>
       </footer>

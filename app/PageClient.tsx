@@ -11,7 +11,7 @@ function Hero() {
   return (
     <section className="min-h-[60vh] flex flex-col items-center justify-center px-6 pt-24 pb-12">
       <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#00d4ff] mb-8 block">
-        TU Delft / QuTech — Open Research Initiative
+        TU Delft — Open Research Initiative
       </span>
       <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black leading-[0.9] tracking-tight mb-8 text-center">
         <span className="text-white">How might </span>
@@ -385,7 +385,7 @@ function HomeFooter() {
               J. Derek Lomas
             </a>
             <span className="text-gray-500" aria-hidden="true">&mdash;</span>
-            <span className="text-gray-400">TU Delft / QuTech</span>
+            <span className="text-gray-400">TU Delft</span>
             <a href="https://orcid.org/0000-0003-2329-7831" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#a6ce39] text-xs transition-colors">
               ORCID<span className="sr-only"> (opens in new tab)</span>
             </a>
@@ -423,7 +423,7 @@ function HomeFooter() {
               j.d.lomas@tudelft.nl
             </a>
             <span className="text-gray-500" aria-hidden="true">&middot;</span>
-            <span className="text-gray-300">h</span>AI<span className="text-gray-300">qu</span> &mdash; 2026
+            Quantum Vibecoding &mdash; 2026
           </div>
           <div>
             Built with AI agents. This entire website, its quantum simulations, and the research

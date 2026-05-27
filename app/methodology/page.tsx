@@ -344,7 +344,7 @@ export default function MethodologyPage() {
               </a>
             </div>
             <div>
-              <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
+              Quantum Vibecoding &mdash; TU Delft &mdash; 2026
             </div>
           </div>
         </div>

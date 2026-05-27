@@ -108,7 +108,7 @@ export default function Nav({ section }: { section?: string }) {
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity" onClick={handleLinkClick}>
             <div className="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse" aria-hidden="true" />
             <span className="font-mono font-bold text-white text-sm">
-              <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span>
+              Quantum Vibecoding
             </span>
           </Link>
           {section && (
@@ -118,7 +118,7 @@ export default function Nav({ section }: { section?: string }) {
             </>
           )}
           <span className="text-[10px] font-mono text-gray-400 hidden md:block ml-1">
-            TU Delft / QuTech
+            TU Delft
           </span>
         </div>
 

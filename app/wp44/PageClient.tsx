@@ -503,7 +503,7 @@ export default function WP44Page() {
               <span className="font-mono text-xs text-[#00d4ff] tracking-widest">WP4.4</span>
               <p className="text-gray-500 text-sm mt-2 leading-relaxed max-w-sm">
                 UX and UI redesign for society.
-                Part of the Quantum Inspire research program at TU Delft / QuTech.
+                Part of the Quantum Inspire research program at TU Delft.
               </p>
             </div>
             <div className="flex flex-wrap gap-6">
@@ -538,7 +538,7 @@ export default function WP44Page() {
               </a>
             </div>
             <div>
-              <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
+              Quantum Vibecoding &mdash; TU Delft &mdash; 2026
             </div>
           </div>
         </div>

@@ -278,7 +278,7 @@ export default function ExplorePage() {
       <footer className="px-6 py-12">
         <div className="max-w-5xl mx-auto flex flex-col items-center gap-3 text-[10px] text-gray-500 font-mono text-center">
           <div>
-            <span className="text-gray-400">h</span>AI<span className="text-gray-400">qu</span> &mdash; TU Delft / QuTech &mdash; 2026
+            Quantum Vibecoding &mdash; TU Delft &mdash; 2026
           </div>
         </div>
       </footer>

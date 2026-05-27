@@ -19,7 +19,7 @@ export default function Footer({
     <footer className="py-12 px-6 border-t border-white/5">
       <div className={`${maxWidth} mx-auto flex flex-col sm:flex-row items-center justify-between gap-4`}>
         <div className="text-xs text-gray-400 font-mono">
-          <span className="text-gray-300">h</span>AI<span className="text-gray-300">qu</span> &mdash; TU Delft / QuTech{showYear && <> &mdash; 2026</>}
+          Quantum Vibecoding &mdash; TU Delft{showYear && <> &mdash; 2026</>}
         </div>
         <div className="flex gap-4 text-xs text-gray-400 font-mono">
           {links.map((link) =>

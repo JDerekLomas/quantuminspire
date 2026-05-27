@@ -1068,7 +1068,7 @@ export default function VQEPage() {
         <footer className="text-center text-xs text-gray-600 py-8 border-t border-quantum-border">
           Part of the{' '}
           <Link href="/" className="text-quantum-accent hover:underline">Quantum Vibecoding</Link>{' '}
-          research initiative at TU Delft / QuTech.
+          research initiative at TU Delft.
           All energies computed from{' '}
           <Link href="/experiments" className="text-quantum-accent hover:underline">PySCF + OpenFermion</Link>{' '}
           with STO-3G basis and verified on{' '}

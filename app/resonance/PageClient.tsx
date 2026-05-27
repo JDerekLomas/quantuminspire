@@ -2478,7 +2478,7 @@ export default function ResonancePage() {
         <footer className="text-center text-xs text-gray-600 py-8 border-t border-quantum-border">
           Part of the{' '}
           <Link href="/" className="text-quantum-accent hover:underline">Quantum Vibecoding</Link>{' '}
-          research initiative at TU Delft / QuTech.
+          research initiative at TU Delft.
           Physics:{' '}
           <a href="https://arxiv.org/abs/1904.06560" target="_blank" rel="noopener noreferrer" className="text-quantum-accent hover:underline">
             Krantz et al. (2019)
