@@ -1006,7 +1006,7 @@ export default function SeePage() {
           {' '}&middot;{' '}
           <Link href="/resonance" className="hover:text-gray-500">Resonance</Link>
           {' '}&middot;{' '}
-          <Link href="/" className="hover:text-gray-500">haiqu</Link>
+          <Link href="/" className="hover:text-gray-500">Quantum Vibecoding</Link>
         </span>
       </footer>
     </div>

@@ -957,7 +957,7 @@ export default function ErrorMitigationPage() {
       {/* Footer */}
       <footer className="border-t border-[#1e293b]/50 py-12">
         <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-600 text-xs font-mono">haiqu — TU Delft / QuTech</p>
+          <p className="text-gray-600 text-xs font-mono">Quantum Vibecoding — TU Delft</p>
           <div className="flex gap-6 text-xs font-mono text-gray-500">
             <Link href="/" className="hover:text-[#00d4ff] transition-colors">Home</Link>
             <Link href="/experiments" className="hover:text-[#00ff88] transition-colors">Experiments</Link>

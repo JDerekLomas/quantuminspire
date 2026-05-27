@@ -404,7 +404,7 @@ export default function QuantumSynthBlogPost() {
               </li>
               <li className="text-sm">
                 <a href="/synth" className="text-[#00d4ff] hover:underline">Quantum Synth (full interactive)</a>
-                <span className="text-gray-600 text-xs font-mono ml-2">haiqu.org/synth</span>
+                <span className="text-gray-600 text-xs font-mono ml-2">quantumvibecoding.org/synth</span>
               </li>
             </ul>
           </div>

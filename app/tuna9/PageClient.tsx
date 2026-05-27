@@ -1424,7 +1424,7 @@ export default function ListenPage() {
       {/* Footer */}
       <footer className="text-center text-xs text-gray-700 py-16 border-t border-[#111827]">
         Part of the{' '}
-        <Link href="/" className="text-gray-500 hover:text-[#00d4ff]">haiqu</Link>{' '}
+        <Link href="/" className="text-gray-500 hover:text-[#00d4ff]">Quantum Vibecoding</Link>{' '}
         research initiative &mdash; TU Delft / QuTech / Quantum Inspire
         <br />
         <span className="text-gray-800 mt-2 inline-block">

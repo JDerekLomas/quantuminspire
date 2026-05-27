@@ -1,7 +1,7 @@
 import AnniversaryClient from './AnniversaryClient'
 
 export const metadata = {
-  title: 'XVII — haiqu',
+  title: 'XVII — Quantum Vibecoding',
   description: 'Seventeen years. Seventeen syllables. A quantum love poem.',
   robots: { index: false, follow: true },
 }

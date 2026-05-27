@@ -353,7 +353,7 @@ export default function ResearchPage() {
               </p>
               <p>
                 <a
-                  href="/haiqu-paper.pdf"
+                  href="/quantum-vibecoding-paper.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#00ff88] hover:underline"

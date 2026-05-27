@@ -674,8 +674,8 @@ export default function ExperimentDetailPage({ params }: { params: { id: string 
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haiqu.org' },
-      { '@type': 'ListItem', position: 2, name: 'Experiments', item: 'https://haiqu.org/experiments' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quantumvibecoding.org' },
+      { '@type': 'ListItem', position: 2, name: 'Experiments', item: 'https://quantumvibecoding.org/experiments' },
       { '@type': 'ListItem', position: 3, name: study.title },
     ],
   }

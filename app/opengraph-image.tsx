@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-export const alt = 'haiqu — AI as the interface between humans and quantum computers'
+export const alt = 'Quantum Vibecoding — AI as the interface between humans and quantum computers'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -89,7 +89,7 @@ export default async function OGImage() {
             color: '#555',
           }}
         >
-          TU Delft / QuTech — haiqu.org
+          TU Delft — quantumvibecoding.org
         </div>
       </div>
     ),

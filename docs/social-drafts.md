@@ -9,7 +9,7 @@ Paste one link into Claude Code. In under 15 minutes you're submitting circuits 
 We used this setup to replicate 6 published quantum papers across 3 chips. 93% of claims passed.
 
 Open source, free hardware access, 12 quantum tools:
-https://haiqu.org/get-started
+https://quantumvibecoding.org/get-started
 
 Built at TU Delft / QuTech. 445 sessions, 349 prompts, 0 lines of quantum code written by hand.
 
@@ -29,13 +29,13 @@ We used this to replicate 6 published quantum computing papers (Sagastizabal 201
 
 We also benchmarked 12 LLMs on Qiskit HumanEval (151 quantum programming tasks). General-purpose frontier models beat every fine-tuned quantum specialist zero-shot. Adding RAG pushed accuracy to 70.9%.
 
-Setup: paste `https://haiqu.org/get-started` into Claude Code and it sets itself up. Or manually: clone the repo, `pip install -r mcp-servers/requirements.txt`, run `claude`. Python 3.9-3.13 supported, .mcp.json auto-configures the servers.
+Setup: paste `https://quantumvibecoding.org/get-started` into Claude Code and it sets itself up. Or manually: clone the repo, `pip install -r mcp-servers/requirements.txt`, run `claude`. Python 3.9-3.13 supported, .mcp.json auto-configures the servers.
 
 All open source. MCP servers are ~200-400 lines of Python each. Free hardware access on all three platforms.
 
-https://haiqu.org/get-started
+https://quantumvibecoding.org/get-started
 
-Paper (PDF): https://haiqu.org/haiqu-paper.pdf
+Paper (PDF): https://quantumvibecoding.org/quantum-vibecoding-paper.pdf
 GitHub: https://github.com/JDerekLomas/quantuminspire
 
 ---
@@ -46,7 +46,7 @@ Quantum Vibecoding on real quantum hardware in under 15 minutes.
 
 Paste this into Claude Code:
 
-    Set me up for quantum vibecoding: https://haiqu.org/get-started
+    Set me up for quantum vibecoding: https://quantumvibecoding.org/get-started
 
 What happens:
 1. Claude reads the page and clones the repo
@@ -58,4 +58,4 @@ What happens:
 
 No accounts needed for the local emulator. Add real hardware when you're ready.
 
-https://haiqu.org/get-started
+https://quantumvibecoding.org/get-started

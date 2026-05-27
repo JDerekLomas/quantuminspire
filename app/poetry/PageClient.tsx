@@ -52,7 +52,7 @@ export default function PoetryPage() {
 
       <footer className="text-center text-xs text-gray-700 py-16 border-t border-[#111827]">
         An ongoing research project from{' '}
-        <Link href="/" className="text-gray-500 hover:text-[#00d4ff]">haiqu</Link>
+        <Link href="/" className="text-gray-500 hover:text-[#00d4ff]">Quantum Vibecoding</Link>
         <br />
         <span className="text-gray-800 mt-2 inline-block">
           <Link href="/tuna9" className="hover:text-gray-500">Meet Tuna-9</Link>

@@ -35,7 +35,7 @@ function Hero() {
           Try it yourself
         </Link>
         <a
-          href="/haiqu-paper.pdf"
+          href="/quantum-vibecoding-paper.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="px-5 py-2.5 rounded-lg text-sm font-mono font-bold bg-white/5 border border-white/20 text-white hover:bg-white/10 transition-all"
@@ -44,7 +44,7 @@ function Hero() {
         </a>
       </div>
       <p className="text-sm font-mono text-gray-400 text-center mb-12">
-        <span className="text-gray-400">h</span><span className="gradient-text font-bold">AI</span><span className="text-gray-400">qu</span>
+        <span className="text-gray-300">Quantum Vibecoding</span>
         <span className="hidden sm:inline text-gray-500 mx-1">&mdash;</span>
         <br className="sm:hidden" />
         AI as the interface between{' '}
@@ -242,7 +242,7 @@ function ScienceSection() {
               Benchmark review &rarr;
             </Link>
             <a
-              href="/haiqu-paper.pdf"
+              href="/quantum-vibecoding-paper.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-mono font-bold text-gray-500 hover:text-white transition-colors"
@@ -366,12 +366,12 @@ function EducationSection() {
 // ─── Footer ─────────────────────────────────────────────────────────────────
 
 function HomeFooter() {
-  const bibtex = `@misc{lomas2026haiqu,
+  const bibtex = `@misc{lomas2026quantumvibecoding,
   author = {Lomas, J. Derek},
-  title  = {haiqu: AI-Accelerated Quantum Science},
+  title  = {Quantum Vibecoding: AI-Accelerated Quantum Science},
   year   = {2026},
-  url    = {https://haiqu.org},
-  note   = {Open research initiative, TU Delft / QuTech.
+  url    = {https://quantumvibecoding.org},
+  note   = {Open research initiative, TU Delft.
             Source: https://github.com/JDerekLomas/quantuminspire}
 }`
 
@@ -391,7 +391,7 @@ function HomeFooter() {
             </a>
           </div>
           <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-400 font-mono">
-            <a href="/haiqu-paper.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            <a href="/quantum-vibecoding-paper.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
               Paper (PDF)
             </a>
             <a href="https://github.com/JDerekLomas/quantuminspire" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">

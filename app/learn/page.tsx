@@ -31,14 +31,14 @@ export default function LearnPage() {
     '@type': 'DefinedTermSet',
     name: 'Quantum Computing Glossary',
     description: '40+ quantum computing terms with plain-English definitions, links to interactive tools, and connections to real experiment data.',
-    url: 'https://haiqu.org/learn',
-    publisher: { '@id': 'https://haiqu.org/#organization' },
+    url: 'https://quantumvibecoding.org/learn',
+    publisher: { '@id': 'https://quantumvibecoding.org/#organization' },
     hasDefinedTerm: GLOSSARY.map(entry => ({
       '@type': 'DefinedTerm',
       name: entry.term,
       description: entry.definition,
-      url: `https://haiqu.org/learn#${entry.category}`,
-      inDefinedTermSet: 'https://haiqu.org/learn',
+      url: `https://quantumvibecoding.org/learn#${entry.category}`,
+      inDefinedTermSet: 'https://quantumvibecoding.org/learn',
     })),
   }
 
@@ -142,7 +142,7 @@ export default function LearnPage() {
       <footer className="border-t border-[#1e293b]/50 py-12">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-600 text-xs font-mono">
-            haiqu — TU Delft / QuTech
+            Quantum Vibecoding — TU Delft
           </p>
           <div className="flex gap-6 text-xs font-mono text-gray-500">
             <Link href="/" className="hover:text-[#00d4ff] transition-colors">Home</Link>

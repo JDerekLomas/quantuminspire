@@ -401,9 +401,9 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
     '@type': 'ScholarlyArticle',
     headline: `${paper.title} — Reproduction`,
     description: `Reproduction of ${paper.authors} (${paper.journal}). ${summary.successes}/${summary.total_claims_tested} claims tested.`,
-    author: { '@type': 'Organization', name: 'haiqu — TU Delft' },
-    publisher: { '@type': 'Organization', name: 'haiqu — TU Delft' },
-    url: `https://haiqu.org/replications/${params.id}`,
+    author: { '@type': 'Organization', name: 'Quantum Vibecoding — TU Delft' },
+    publisher: { '@type': 'Organization', name: 'Quantum Vibecoding — TU Delft' },
+    url: `https://quantumvibecoding.org/replications/${params.id}`,
     datePublished: report.generated,
     about: {
       '@type': 'ScholarlyArticle',
@@ -414,7 +414,7 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
     isPartOf: {
       '@type': 'WebPage',
       name: 'Paper Reproductions',
-      url: 'https://haiqu.org/replications',
+      url: 'https://quantumvibecoding.org/replications',
     },
   }
 
@@ -422,8 +422,8 @@ export default function ReplicationDetailPage({ params }: { params: { id: string
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://haiqu.org' },
-      { '@type': 'ListItem', position: 2, name: 'Replications', item: 'https://haiqu.org/replications' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://quantumvibecoding.org' },
+      { '@type': 'ListItem', position: 2, name: 'Replications', item: 'https://quantumvibecoding.org/replications' },
       { '@type': 'ListItem', position: 3, name: paper.title },
     ],
   }

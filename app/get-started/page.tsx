@@ -169,7 +169,7 @@ export default function GetStartedPage() {
       <section className="border-b border-white/5 px-6 py-16">
         <div className="max-w-4xl mx-auto">
           <Link href="/" className="text-xs font-mono text-gray-500 hover:text-gray-300 transition-colors mb-6 inline-block">
-            &larr; haiqu
+            &larr; Quantum Vibecoding
           </Link>
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4">
             Quantum Vibe Coding
@@ -201,7 +201,7 @@ export default function GetStartedPage() {
               <a href="https://docs.anthropic.com/en/docs/claude-code/overview" className="text-[#00d4ff] hover:underline" target="_blank" rel="noopener noreferrer">Claude Code</a>
               {' '}and ask it to set you up:
             </p>
-            <CodeBlock title="paste into Claude Code">{`Set me up for quantum vibecoding: https://haiqu.org/get-started`}</CodeBlock>
+            <CodeBlock title="paste into Claude Code">{`Set me up for quantum vibecoding: https://quantumvibecoding.org/get-started`}</CodeBlock>
 
             <div className="mt-6 mb-2">
               <p className="text-sm font-bold text-white mb-3">What happens:</p>
@@ -765,7 +765,7 @@ claude`}</CodeBlock>
           <div className="mt-12 text-center text-gray-500 text-xs">
             <p>Built with Claude Code + Quantum Inspire + IBM Quantum + IQM Resonance</p>
             <p className="mt-1">
-              <Link href="/" className="text-[#00d4ff] hover:underline">haiqu</Link>
+              <Link href="/" className="text-[#00d4ff] hover:underline">Quantum Vibecoding</Link>
               {' '}&middot;{' '}
               <Link href="/experiments" className="text-[#00d4ff] hover:underline">experiments</Link>
               {' '}&middot;{' '}

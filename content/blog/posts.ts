@@ -15,7 +15,7 @@ export const posts: BlogPost[] = [
       { label: 'PySCF', url: 'https://pyscf.org' },
       { label: 'OpenFermion', url: 'https://quantumai.google/openfermion' },
       { label: 'Web Audio API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API' },
-      { label: 'Quantum Synth (interactive)', url: 'https://haiqu.org/synth' },
+      { label: 'Quantum Synth (interactive)', url: 'https://quantumvibecoding.org/synth' },
     ],
   },
   {
@@ -213,7 +213,7 @@ export const posts: BlogPost[] = [
 
 <hr />
 
-<p>All experiment code and data: <a href="https://github.com/dereklomas/haiqu">github.com/dereklomas/haiqu</a>. Analysis scripts: <code>experiments/lih_compare.py</code>, <code>experiments/h2_vqe_compare.py</code>. Interactive Hamiltonian explorer: <a href="/hamiltonians">haiqu.org/hamiltonians</a>.</p>`,
+<p>All experiment code and data: <a href="https://github.com/JDerekLomas/quantuminspire">github.com/JDerekLomas/quantuminspire</a>. Analysis scripts: <code>experiments/lih_compare.py</code>, <code>experiments/h2_vqe_compare.py</code>. Interactive Hamiltonian explorer: <a href="/hamiltonians">quantumvibecoding.org/hamiltonians</a>.</p>`,
     sources: [
       { label: 'PySCF: Python-based simulations of chemistry framework', url: 'https://pyscf.org/' },
       { label: 'OpenFermion: quantum chemistry on quantum computers', url: 'https://quantumai.google/openfermion' },
@@ -388,7 +388,7 @@ export const posts: BlogPost[] = [
       { label: 'IBM mitigation ladder (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-mitigation-ladder-001-ibm.json' },
       { label: 'Tuna-9 REM reanalysis (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/tuna9-rem-reanalysis.json' },
       { label: 'Readout calibration data (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/readout-cal-tuna9-q24-001.json' },
-      { label: 'Experiments dashboard', url: 'https://haiqu.org/experiments' },
+      { label: 'Experiments dashboard', url: 'https://quantumvibecoding.org/experiments' },
       { label: 'IBM Qiskit Runtime Primitives', url: 'https://docs.quantum.ibm.com/api/qiskit-ibm-runtime' },
     ],
   },
@@ -569,11 +569,11 @@ export const posts: BlogPost[] = [
 
 <hr />
 
-<p>All raw data &mdash; measurement counts, job IDs, expectation values, decoder metrics &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory. The experiments dashboard at <a href="https://haiqu.org/experiments">/experiments</a> shows live results across all backends.</p>
+<p>All raw data &mdash; measurement counts, job IDs, expectation values, decoder metrics &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory. The experiments dashboard at <a href="https://quantumvibecoding.org/experiments">/experiments</a> shows live results across all backends.</p>
 
 <p>Hardware job IDs: IBM HeH+ VQE (d65ncqoqbmes739d4h30). IBM Cross QV/RB (d65ncilbujdc73ctmjr0). IBM [[4,2,2]] (d65n33je4kfs73cvklt0 + 12 more). Tuna-9 QV (415379&ndash;415394). Tuna-9 RB (415395&ndash;415404). IQM Bell (019c48cf-99f2-7e03). IQM diagnostics (30 jobs, 47K shots).</p>`,
     sources: [
-      { label: 'Experiments dashboard', url: 'https://haiqu.org/experiments' },
+      { label: 'Experiments dashboard', url: 'https://quantumvibecoding.org/experiments' },
       { label: 'HeH+ VQE IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/peruzzo2014-ibm-torino.json' },
       { label: 'Cross QV/RB IBM results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-ibm-torino.json' },
       { label: 'IQM Garnet diagnostics (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/iqm-garnet-diagnostic-suite.json' },
@@ -713,11 +713,11 @@ export const posts: BlogPost[] = [
 
 <hr />
 
-<p>All raw data &mdash; measurement counts, job IDs, expectation values, circuit definitions &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory and <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/research/replication-reports">replication reports</a>. The replications dashboard at <a href="https://haiqu.org/replications">/replications</a> shows live results.</p>
+<p>All raw data &mdash; measurement counts, job IDs, expectation values, circuit definitions &mdash; is available in the <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/experiments/results">experiments/results/</a> directory and <a href="https://github.com/JDerekLomas/quantuminspire/tree/main/research/replication-reports">replication reports</a>. The replications dashboard at <a href="https://quantumvibecoding.org/replications">/replications</a> shows live results.</p>
 
 <p>Hardware job IDs: IBM VQE (d65n0gbe4kfs73cvkisg, d65n0gre4kfs73cvkitg, d65n0hbe4kfs73cvkivg). Tuna-9 QV (415379&ndash;415394). Tuna-9 RB (415395&ndash;415404).</p>`,
     sources: [
-      { label: 'Replications dashboard', url: 'https://haiqu.org/replications' },
+      { label: 'Replications dashboard', url: 'https://quantumvibecoding.org/replications' },
       { label: 'IBM VQE results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/vqe-equilibrium-001-ibm.json' },
       { label: 'Tuna-9 QV results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-qv-tuna9.json' },
       { label: 'Tuna-9 RB results (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/cross2019-rb-tuna9.json' },
@@ -1143,7 +1143,7 @@ export const posts: BlogPost[] = [
     excerpt: "Quantum computing has a representation problem. The math is abstract, the hardware is invisible, and the errors are statistical. We surveyed 20+ visualization tools, built 12 interactive demos, and learned that the best way to understand a qubit is to watch it move.",
     content: `<p>Quantum computing has a representation problem. Classical bits are easy to picture: on or off, 0 or 1. But a qubit lives on the surface of a sphere, entangled states exist in spaces no human has ever seen, and the errors that plague real hardware are statistical patterns buried in thousands of measurement shots. <strong>You cannot debug what you cannot see.</strong></p>
 
-<p>We started the haiqu project wanting to run experiments on real quantum hardware. But we quickly realized that interpreting results &mdash; understanding <em>why</em> a VQE energy was 7 kcal/mol off, or why a Bell state fidelity dropped from 96% to 87% on different qubits &mdash; required seeing the quantum states, not just reading the numbers. So we surveyed the field and built our own tools.</p>
+<p>We started the Quantum Vibecoding project wanting to run experiments on real quantum hardware. But we quickly realized that interpreting results &mdash; understanding <em>why</em> a VQE energy was 7 kcal/mol off, or why a Bell state fidelity dropped from 96% to 87% on different qubits &mdash; required seeing the quantum states, not just reading the numbers. So we surveyed the field and built our own tools.</p>
 
 <h2>The Visualization Landscape</h2>
 
@@ -1214,7 +1214,7 @@ export const posts: BlogPost[] = [
 </ul>
 `,
     sources: [
-      { label: 'Visualization Gallery (20+ tools)', url: 'https://haiqu.org/gallery' },
+      { label: 'Visualization Gallery (20+ tools)', url: 'https://quantumvibecoding.org/gallery' },
       { label: 'Quirk — drag-and-drop circuit editor', url: 'https://algassert.com/quirk' },
       { label: 'QCVIS — multi-view state visualization (Fraunhofer)', url: 'https://github.com/fh-igd-iet/qcvis' },
       { label: 'Quantum Flytrap Virtual Lab (CHI 2022)', url: 'https://quantumflytrap.com/virtual-lab/' },
@@ -1753,7 +1753,7 @@ b = measure q"""
 
 <h2>What's Next</h2>
 
-<p>All 6 papers are now replicated across 4 backends with 93% claim pass rate (25/27). The IBM TREX depth-dependent finding opens a new research question: <em>can we predict which mitigation technique will work best for a given circuit before running it?</em> Circuit depth, gate count, and the ratio of readout error to gate error appear to be the key predictors. The full replication dashboard is live at <a href="https://haiqu.org/replications">quantuminspire.vercel.app/replications</a>.</p>`,
+<p>All 6 papers are now replicated across 4 backends with 93% claim pass rate (25/27). The IBM TREX depth-dependent finding opens a new research question: <em>can we predict which mitigation technique will work best for a given circuit before running it?</em> Circuit depth, gate count, and the ratio of readout error to gate error appear to be the key predictors. The full replication dashboard is live at <a href="https://quantumvibecoding.org/replications">quantuminspire.vercel.app/replications</a>.</p>`,
     sources: [
       { label: 'Sagastizabal et al. (2019)', url: 'https://arxiv.org/abs/1902.11258' },
       { label: 'Kandala et al. (2017) - Hardware-efficient VQE', url: 'https://arxiv.org/abs/1704.05018' },
@@ -1761,7 +1761,7 @@ b = measure q"""
       { label: 'Cross et al. (2019) - Quantum Volume', url: 'https://arxiv.org/abs/1811.12926' },
       { label: 'Harrigan et al. (2021) - QAOA MaxCut', url: 'https://arxiv.org/abs/2004.04197' },
       { label: 'Kim et al. (2023) - Evidence for utility', url: 'https://arxiv.org/abs/2302.11590' },
-      { label: 'Live replication dashboard', url: 'https://haiqu.org/replications' },
+      { label: 'Live replication dashboard', url: 'https://quantumvibecoding.org/replications' },
       { label: 'Replication analyzer (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/agents/replication_analyzer.py' },
       { label: 'HeH+ replication script (GitHub)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/replicate_peruzzo.py' },
     ],
@@ -2207,10 +2207,10 @@ b = measure q"""
 
 <hr />
 
-<p>Full analysis: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/amplification-threshold-analysis.json">amplification-threshold-analysis.json</a>. HeH+ replication: <a href="https://haiqu.org/replications/peruzzo2014">Peruzzo 2014</a>. H2 mitigation results: <a href="/blog/error-mitigation-showdown">error mitigation showdown</a>.</p>`,
+<p>Full analysis: <a href="https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/amplification-threshold-analysis.json">amplification-threshold-analysis.json</a>. HeH+ replication: <a href="https://quantumvibecoding.org/replications/peruzzo2014">Peruzzo 2014</a>. H2 mitigation results: <a href="/blog/error-mitigation-showdown">error mitigation showdown</a>.</p>`,
     sources: [
       { label: 'Amplification threshold analysis (JSON)', url: 'https://github.com/JDerekLomas/quantuminspire/blob/main/experiments/results/amplification-threshold-analysis.json' },
-      { label: 'Peruzzo 2014 replication report', url: 'https://haiqu.org/replications/peruzzo2014' },
+      { label: 'Peruzzo 2014 replication report', url: 'https://quantumvibecoding.org/replications/peruzzo2014' },
       { label: 'Error mitigation showdown', url: '/blog/error-mitigation-showdown' },
       { label: 'Cross-platform comparison', url: '/blog/cross-platform-quantum-comparison' },
       { label: 'Peruzzo et al., Nature 512, 2014', url: 'https://doi.org/10.1038/nature13604' },
@@ -2430,9 +2430,9 @@ b = measure q"""
 
 <hr />
 
-<p>All experiment data: <a href="https://haiqu.org/experiments">experiments dashboard</a>. Cross-platform comparison: <a href="/blog/cross-platform-quantum-comparison">full analysis</a>. Error mitigation techniques: <a href="/blog/error-mitigation-showdown">mitigation showdown</a>. Autonomous hardware characterization: <a href="/blog/ai-characterizes-quantum-processor">characterization report</a>.</p>`,
+<p>All experiment data: <a href="https://quantumvibecoding.org/experiments">experiments dashboard</a>. Cross-platform comparison: <a href="/blog/cross-platform-quantum-comparison">full analysis</a>. Error mitigation techniques: <a href="/blog/error-mitigation-showdown">mitigation showdown</a>. Autonomous hardware characterization: <a href="/blog/ai-characterizes-quantum-processor">characterization report</a>.</p>`,
     sources: [
-      { label: 'Experiments dashboard', url: 'https://haiqu.org/experiments' },
+      { label: 'Experiments dashboard', url: 'https://quantumvibecoding.org/experiments' },
       { label: 'Cross-platform quantum comparison', url: '/blog/cross-platform-quantum-comparison' },
       { label: 'Error mitigation showdown', url: '/blog/error-mitigation-showdown' },
       { label: 'Autonomous hardware characterization', url: '/blog/ai-characterizes-quantum-processor' },

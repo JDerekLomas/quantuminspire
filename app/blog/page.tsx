@@ -5,7 +5,7 @@ import { getAllPosts, categoryColors, categoryLabels } from '@/lib/blog'
 
 export const metadata = {
   title: 'Research Blog',
-  description: 'Research notes, experiment reports, and landscape analysis from the haiqu project at TU Delft.',
+  description: 'Research notes, experiment reports, and landscape analysis from the Quantum Vibecoding project at TU Delft.',
   alternates: {
     canonical: '/blog',
   },

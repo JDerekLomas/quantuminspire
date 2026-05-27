@@ -51,8 +51,8 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
     description: post.excerpt,
     datePublished: post.date,
     author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: 'haiqu — TU Delft' },
-    url: `https://haiqu.org/blog/${post.slug}`,
+    publisher: { '@type': 'Organization', name: 'Quantum Vibecoding — TU Delft' },
+    url: `https://quantumvibecoding.org/blog/${post.slug}`,
     ...(post.heroImage && { image: post.heroImage }),
     keywords: post.tags.join(', '),
   }

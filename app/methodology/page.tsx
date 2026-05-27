@@ -145,7 +145,7 @@ export default function MethodologyPage() {
       <section className="border-b border-white/5 px-6 pt-24 pb-12">
         <div className="max-w-4xl mx-auto">
           <Link href="/" className="text-xs font-mono text-gray-500 hover:text-gray-300 transition-colors mb-6 inline-block">
-            &larr; haiqu
+            &larr; Quantum Vibecoding
           </Link>
           <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight mb-4">
             Methodology

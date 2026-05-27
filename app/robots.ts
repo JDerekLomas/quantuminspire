@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://haiqu.org/sitemap.xml',
+    sitemap: 'https://quantumvibecoding.org/sitemap.xml',
   }
 }

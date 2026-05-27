@@ -2,22 +2,22 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://haiqu.org'),
+  metadataBase: new URL('https://quantumvibecoding.org'),
   title: {
-    default: 'haiqu — AI x Quantum Research',
-    template: '%s — haiqu',
+    default: 'Quantum Vibecoding — AI x Quantum Research',
+    template: '%s — Quantum Vibecoding',
   },
   description: 'AI as the interface between humans and quantum computers. Agents replicate landmark papers on real hardware — 93% of claims pass. Open research from TU Delft.',
   authors: [{ name: 'J. Derek Lomas', url: 'https://dereklomas.me' }],
   openGraph: {
-    title: 'haiqu — AI as the interface between humans & quantum',
-    description: 'AI agents replicate 6 landmark quantum papers on 3 chips through natural language. 93% of claims pass, zero quantum code by hand. Open research from TU Delft / QuTech.',
+    title: 'Quantum Vibecoding — AI as the interface between humans & quantum',
+    description: 'AI agents replicate 6 landmark quantum papers on 3 chips through natural language. 93% of claims pass, zero quantum code by hand. Open research from TU Delft.',
     type: 'website',
-    siteName: 'haiqu',
+    siteName: 'Quantum Vibecoding',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'haiqu — How might AI accelerate quantum?',
+    title: 'Quantum Vibecoding — How might AI accelerate quantum?',
     description: 'AI agents replicate 6 landmark papers on real quantum hardware. 93% pass rate, zero hand-written quantum code.',
   },
   alternates: {
@@ -48,18 +48,18 @@ export default function RootLayout({
             '@graph': [
               {
                 '@type': 'WebSite',
-                '@id': 'https://haiqu.org/#website',
-                url: 'https://haiqu.org',
-                name: 'haiqu',
+                '@id': 'https://quantumvibecoding.org/#website',
+                url: 'https://quantumvibecoding.org',
+                name: 'Quantum Vibecoding',
                 description: 'AI as the interface between humans and quantum computers. Open research from TU Delft.',
-                publisher: { '@id': 'https://haiqu.org/#organization' },
+                publisher: { '@id': 'https://quantumvibecoding.org/#organization' },
               },
               {
                 '@type': 'ResearchOrganization',
-                '@id': 'https://haiqu.org/#organization',
-                name: 'haiqu',
-                url: 'https://haiqu.org',
-                description: 'AI x Quantum research initiative from TU Delft / QuTech investigating how AI agents can accelerate quantum computing.',
+                '@id': 'https://quantumvibecoding.org/#organization',
+                name: 'Quantum Vibecoding',
+                url: 'https://quantumvibecoding.org',
+                description: 'AI x Quantum research initiative from TU Delft investigating how AI agents can accelerate quantum computing.',
                 parentOrganization: {
                   '@type': 'EducationalOrganization',
                   name: 'TU Delft',

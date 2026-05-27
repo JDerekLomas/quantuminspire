@@ -3,7 +3,7 @@ import { getAllPosts } from '@/lib/blog'
 import { getAllStudies } from '@/lib/experiments'
 import { getAllReports } from '@/lib/replications'
 
-const BASE_URL = 'https://haiqu.org'
+const BASE_URL = 'https://quantumvibecoding.org'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts()
