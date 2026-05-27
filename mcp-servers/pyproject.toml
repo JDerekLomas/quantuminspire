@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "MCP servers that let Claude run real quantum experiments on real hardware through natural language"
 readme = "README.md"
 requires-python = ">=3.9"
-license = "MIT"
+license = { text = "MIT" }
 authors = [{ name = "J. Derek Lomas", email = "j.d.lomas@tudelft.nl" }]
 keywords = ["mcp", "quantum", "quantum-computing", "claude", "anthropic", "quantum-inspire", "ibm-quantum", "qrng"]
 classifiers = [
