@@ -14,7 +14,7 @@ const platforms = [
     qubits: 9,
     color: '#00d4ff',
     signupUrl: 'https://portal.quantum-inspire.com/',
-    signupSteps: 'Create account at portal.quantum-inspire.com. Then run: pip install quantuminspire && qi login — it opens your browser to confirm. No API key needed.',
+    signupSteps: 'Create account at portal.quantum-inspire.com. Then run: uvx --from quantuminspire qi login — it opens your browser to confirm. The token persists to ~/.quantuminspire/config.json and the MCP picks it up automatically. No API key needed.',
     configFile: '~/.quantuminspire/config.json',
     free: true,
     notes: 'Unlimited jobs. 9 superconducting qubits. cQASM 3.0 (Quantum Inspire\'s circuit language).',
@@ -409,13 +409,25 @@ pip install -e "mcp-servers[all]"`}</CodeBlock>
             </p>
           </StepCard>
 
-          <StepCard step={4} title="MCP servers (already configured)">
+          <StepCard step={4} title="Add the MCP servers to Claude Code">
             <p>
               MCP (Model Context Protocol) servers expose quantum hardware as tools that Claude Code can call.
-              The repo includes a <code className="text-[#00d4ff]">.mcp.json</code> that configures three servers automatically.
-              When you run <code className="text-[#00d4ff]">claude</code> in the project directory, the servers start on their own.
+              The fastest path is a single <code className="text-[#00d4ff]">claude mcp add</code> command per server:
             </p>
-            <CodeBlock title=".mcp.json — no-clone install via uvx">{`{
+            <CodeBlock title="one-liner install (recommended)">{`claude mcp add qi-circuits  -- uvx --from "quantum-vibecoding-mcp[qi]"  qvc-qi
+claude mcp add ibm-quantum  -- uvx --from "quantum-vibecoding-mcp[ibm]" qvc-ibm
+claude mcp add qrng         -- uvx --from "quantum-vibecoding-mcp[qi]"  qvc-qrng`}</CodeBlock>
+            <p className="text-gray-400 text-xs">
+              These register the servers in your user-level Claude config. Next time you launch
+              <code className="text-[#00d4ff]"> claude</code>, the quantum tools are available everywhere &mdash; no per-project setup.
+              <code className="text-[#00d4ff]"> uvx</code> downloads the package on first run; subsequent runs are cached.
+            </p>
+            <details className="mt-4 text-xs">
+              <summary className="cursor-pointer text-gray-400 hover:text-white">Prefer JSON? Or want to pin to a project?</summary>
+              <p className="text-gray-400 mt-2">
+                Drop this into <code className="text-[#00d4ff]">.mcp.json</code> at the project root instead:
+              </p>
+              <CodeBlock title=".mcp.json (project-scoped)">{`{
   "mcpServers": {
     "qi-circuits": {
       "command": "uvx",
@@ -431,11 +443,10 @@ pip install -e "mcp-servers[all]"`}</CodeBlock>
     }
   }
 }`}</CodeBlock>
-            <p className="text-gray-400 text-xs">
-              <code className="text-[#00d4ff]">uvx</code> downloads and runs the package on demand &mdash; no manual install.
-              If you cloned the repo above, the included <code className="text-[#00d4ff]">.mcp.json</code> uses the local checkout instead.
-              Each server is ~200-400 lines of Python wrapping vendor SDKs as MCP tools. No configuration needed for the local emulator.
-            </p>
+              <p className="text-gray-400 mt-2">
+                If you cloned the repo above, the included <code className="text-[#00d4ff]">.mcp.json</code> uses the local checkout instead.
+              </p>
+            </details>
           </StepCard>
 
           <StepCard step={5} title="Run your first circuit">
