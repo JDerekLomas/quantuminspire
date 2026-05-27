@@ -3,8 +3,11 @@
     "qi-circuits": {
       "type": "stdio",
       "command": ".venv/bin/python",
-      "args": ["mcp-servers/qi-circuits/qi_server.py"],
-      "cwd": "."
+      "args": ["-m", "quantum_vibecoding_mcp.qi"],
+      "cwd": ".",
+      "env": {
+        "PYTHONPATH": "mcp-servers/src"
+      }
     }
   }
 }

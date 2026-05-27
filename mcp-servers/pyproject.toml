@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quantum-vibecoding-mcp"
+version = "0.1.0"
+description = "MCP servers that let Claude run real quantum experiments on real hardware through natural language"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "J. Derek Lomas", email = "j.d.lomas@tudelft.nl" }]
+keywords = ["mcp", "quantum", "quantum-computing", "claude", "anthropic", "quantum-inspire", "ibm-quantum", "qrng"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+  "mcp>=1.0.0",
+]
+
+[project.optional-dependencies]
+qi = [
+  "quantuminspire>=3.5.0",
+  "qxelarator>=0.10.0",
+]
+ibm = [
+  "qiskit>=1.2,<2",
+  "qiskit-ibm-runtime>=0.30",
+]
+all = [
+  "quantum-vibecoding-mcp[qi,ibm]",
+]
+
+[project.scripts]
+qvc-qi = "quantum_vibecoding_mcp.qi:main"
+qvc-ibm = "quantum_vibecoding_mcp.ibm:main"
+qvc-qrng = "quantum_vibecoding_mcp.qrng:main"
+
+[project.urls]
+Homepage = "https://quantumvibecoding.org"
+Repository = "https://github.com/JDerekLomas/quantuminspire"
+Issues = "https://github.com/JDerekLomas/quantuminspire/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quantum_vibecoding_mcp"]

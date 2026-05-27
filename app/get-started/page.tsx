@@ -401,10 +401,11 @@ cd quantuminspire
 
 python3.12 -m venv .venv      # or python3.13 — NOT python3.14+
 source .venv/bin/activate
-pip install -r mcp-servers/requirements.txt`}</CodeBlock>
+pip install -e "mcp-servers[all]"`}</CodeBlock>
             <p className="text-gray-400 text-xs">
-              This installs Qiskit, Quantum Inspire SDK, MCP framework, and all dependencies.
-              If you already ran the quick start above, skip this step.
+              This installs Qiskit, Quantum Inspire SDK, the MCP framework, and registers the
+              <code className="text-[#00d4ff]"> qvc-qi</code>, <code className="text-[#00d4ff]">qvc-ibm</code>,
+              <code className="text-[#00d4ff]"> qvc-qrng</code> commands. If you already ran the quick start above, skip this step.
             </p>
           </StepCard>
 
@@ -414,31 +415,26 @@ pip install -r mcp-servers/requirements.txt`}</CodeBlock>
               The repo includes a <code className="text-[#00d4ff]">.mcp.json</code> that configures three servers automatically.
               When you run <code className="text-[#00d4ff]">claude</code> in the project directory, the servers start on their own.
             </p>
-            <CodeBlock title=".mcp.json (already in the repo)">{`{
+            <CodeBlock title=".mcp.json — no-clone install via uvx">{`{
   "mcpServers": {
     "qi-circuits": {
-      "type": "stdio",
-      "command": ".venv/bin/python",
-      "args": ["mcp-servers/qi-circuits/qi_server.py"],
-      "cwd": "."
+      "command": "uvx",
+      "args": ["--from", "quantum-vibecoding-mcp[qi]", "qvc-qi"]
     },
     "ibm-quantum": {
-      "type": "stdio",
-      "command": ".venv/bin/python",
-      "args": ["mcp-servers/ibm-quantum/ibm_server.py"],
-      "cwd": "."
+      "command": "uvx",
+      "args": ["--from", "quantum-vibecoding-mcp[ibm]", "qvc-ibm"]
     },
     "qrng": {
-      "type": "stdio",
-      "command": ".venv/bin/python",
-      "args": ["mcp-servers/qrng/qrng_server.py"],
-      "cwd": "."
+      "command": "uvx",
+      "args": ["--from", "quantum-vibecoding-mcp[qi]", "qvc-qrng"]
     }
   }
 }`}</CodeBlock>
             <p className="text-gray-400 text-xs">
-              Each server is ~200-400 lines of Python. They&apos;re simple wrappers around vendor SDKs that
-              expose submit/check/get-results as MCP tools. No configuration needed for the local emulator.
+              <code className="text-[#00d4ff]">uvx</code> downloads and runs the package on demand &mdash; no manual install.
+              If you cloned the repo above, the included <code className="text-[#00d4ff]">.mcp.json</code> uses the local checkout instead.
+              Each server is ~200-400 lines of Python wrapping vendor SDKs as MCP tools. No configuration needed for the local emulator.
             </p>
           </StepCard>
 
