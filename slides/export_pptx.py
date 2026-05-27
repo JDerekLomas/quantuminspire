@@ -214,7 +214,7 @@ add_textbox(slide, Inches(0.8), Inches(0.4), Inches(10), Inches(0.6),
 box_data = [
     ("1. PhD Thesis", "Quantum Computational Thinking — framework, metaphors, and prototype for computing-focused QC education", GREEN),
     ("2. MSc Graduation", 'D\'Arcangelis (2024) — "How Might ChatGPT Improve the Accessibility of Quantum Computing?"', GREEN),
-    ("3. Haiqu: AI Agent", "AI-mediated quantum computing — replication study + benchmark + interactive platform", BLUE),
+    ("3. Quantum Vibecoding: AI Agent", "AI-mediated quantum computing — replication study + benchmark + interactive platform", BLUE),
 ]
 
 for i, (title, desc, col) in enumerate(box_data):
@@ -542,13 +542,13 @@ add_textbox(slide, Inches(1.5), Inches(4.0), Inches(8), Inches(0.5),
             color=RGBColor(0x66, 0x77, 0x88), alignment=PP_ALIGN.LEFT)
 
 
-# ── 12. HAIQU.ORG ────────────────────────────────────────────
+# ── 12. QUANTUMVIBECODING.ORG ────────────────────────────────────────────
 slide = prs.slides.add_slide(blank_layout)
 add_textbox(slide, Inches(0.8), Inches(0.3), Inches(11), Inches(0.5),
-            "haiqu.org — AI Meets Quantum Hardware", font_size=26, bold=True, color=NAVY, font_name="Libre Baskerville")
+            "quantumvibecoding.org — AI Meets Quantum Hardware", font_size=26, bold=True, color=NAVY, font_name="Libre Baskerville")
 
 add_textbox(slide, Inches(0.8), Inches(0.9), Inches(11), Inches(0.5),
-            "haiqu.org is the interface between people and quantum computers — ask a question in plain language, get results from real hardware.",
+            "quantumvibecoding.org is the interface between people and quantum computers — ask a question in plain language, get results from real hardware.",
             font_size=14, color=SLATE)
 
 imgs_web = ["website-home-1200.png", "experiments.png", "explore.png"]
@@ -615,10 +615,10 @@ add_textbox(slide, Inches(8), Inches(5.6), Inches(5), Inches(0.5),
             font_size=11, italic=True, color=MUTED, alignment=PP_ALIGN.CENTER)
 
 
-# ── 11. HAIQU: QUESTION ──────────────────────────────────────
+# ── 11. QUANTUM VIBECODING: QUESTION ──────────────────────────────────────
 slide = prs.slides.add_slide(blank_layout)
 add_textbox(slide, Inches(0.8), Inches(0.3), Inches(10), Inches(0.5),
-            "Haiqu: How Good Is AI at Quantum?", font_size=26, bold=True, color=NAVY, font_name="Libre Baskerville")
+            "Quantum Vibecoding: How Good Is AI at Quantum?", font_size=26, bold=True, color=NAVY, font_name="Libre Baskerville")
 
 add_textbox(slide, Inches(0.8), Inches(1.0), Inches(5), Inches(0.3),
             "QISKIT HUMANEVAL (IBM, 2024)", font_size=11, bold=True, color=BLUE)
@@ -646,7 +646,7 @@ add_image_safe(slide, img("ai-translation.png"),
                Inches(7), Inches(1.0), width=Inches(5.8))
 
 
-# ── 12. HAIQU: RESULTS ───────────────────────────────────────
+# ── 12. QUANTUM VIBECODING: RESULTS ───────────────────────────────────────
 slide = prs.slides.add_slide(blank_layout)
 add_textbox(slide, Inches(0.8), Inches(0.3), Inches(10), Inches(0.5),
             "AI Agent Results", font_size=28, bold=True, color=NAVY, font_name="Libre Baskerville")
@@ -710,7 +710,7 @@ sc_data = [
     ('"3 scientific publications"', "DONE", "Thesis chapters (PhD) + AI replication paper (2026)"),
     ('"Fundamental research on mental models"', "DONE", "QCT framework + 39 metaphors + 7 designed (PhD); MSc thesis"),
     ('"Technology probes... co-creation"', "DONE", "Educator interviews + prototype eval n=10 (PhD); Quantum Buddy (MSc)"),
-    ('"Updated UX and interface"', "DONE", "AI agent interface + interactive dashboard (haiqu.org)"),
+    ('"Updated UX and interface"', "DONE", "AI agent interface + interactive dashboard (quantumvibecoding.org)"),
     ('"Data through public repositories"', "DONE", "PhD data online (PhD); open-source repo, 98 results, 230K+ shots"),
     ('"Interfacing to stakeholders" (WP5-7)', "ONGOING", "AI agent approach opens new pathways"),
 ]
@@ -782,7 +782,7 @@ for i, q in enumerate(questions):
 add_textbox(slide, Inches(7), Inches(1.8), Inches(5), Inches(0.3),
             "WHERE WE NEED YOUR HELP", font_size=11, bold=True, color=BLUE)
 help_items = [
-    "•  Evaluation partners: test haiqu.org with your students, researchers, or stakeholders",
+    "•  Evaluation partners: test quantumvibecoding.org with your students, researchers, or stakeholders",
     "•  Domain collaboration: bring your experiments to the AI agent",
     "•  WP5-7 integration: connect the AI interface to real stakeholder needs",
 ]
@@ -804,7 +804,7 @@ box2.fill.fore_color.rgb = SURFACE
 box2.line.color.rgb = BLUE
 box2.line.width = Pt(1)
 add_textbox(slide, Inches(7.2), Inches(3.85), Inches(5), Inches(0.5),
-            "Try it now at haiqu.org — run a quantum experiment in natural language.",
+            "Try it now at quantumvibecoding.org — run a quantum experiment in natural language.",
             font_size=12, bold=True, color=SLATE)
 
 # Core tension box
@@ -857,7 +857,7 @@ for i, line in enumerate(lines):
 contact = [
     "J. Derek Lomas — j.d.lomas@tudelft.nl",
     "Caiseal Beardow — c.p.beardow@tudelft.nl",
-    "IDE & QuTech, TU Delft · haiqu.org",
+    "IDE & QuTech, TU Delft · quantumvibecoding.org",
 ]
 tf2 = add_textbox(slide, Inches(1.5), Inches(5.5), Inches(9), Inches(1.5),
                   "", font_size=12, color=RGBColor(0x88, 0x99, 0xAA),
